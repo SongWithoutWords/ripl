@@ -1,7 +1,8 @@
 package object ast {
   import scala.collection.immutable.Map
 
-  case class Ast(units: Units)
+  // case class Ast(units: Units)
+  type Ast = Units
 
   // A named and referenceable node within the Ast
   sealed trait Node
@@ -10,15 +11,12 @@ package object ast {
   sealed trait Unit extends Node
   // case class Namespace(units: Map[String, Unit])
   case class Fun(t: TFun, params: List[Param], body: List[Exp]) extends Unit
-  case class Var(n: String, e: Exp) extends Unit with Exp {
-    def t = TNone()
-    def reduce = ???
-  }
+
   // case class Rec() extends Unit
 
   case class Param(n: Name, t: Type) extends Node
 
-  sealed trait Exp extends Node {
+  sealed trait Exp extends Unit {
     def t: Type
   }
   case class App(f: Exp, args: List[Exp]) extends Exp {
@@ -38,6 +36,9 @@ package object ast {
   }
   case class Select(e: Exp, n: Name) extends Exp {
     def t = ???
+  }
+  case class Var(n: String, e: Exp) extends Unit with Exp {
+    def t = TNone()
   }
 
   sealed trait Val extends Exp // A known value
