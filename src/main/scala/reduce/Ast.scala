@@ -1,4 +1,4 @@
-package object Ast {
+package object ast {
   import scala.collection.Map
 
   // sealed trait Unit
@@ -6,9 +6,10 @@ package object Ast {
   case class Ast(units: Map[String, Unit])
 
   sealed trait Unit
-  case class Fun(t: TFun, params: List[Param], body: List[Exp]) extends Unit with Exp
+  case class Fun(t: TFun, params: List[Param], body: List[Exp]) extends Unit
   case class Var(n: Name, v: Exp) extends Unit with Exp {
     def t = TNone()
+    def reduce = ???
   }
 
   case class Rec() extends Unit
@@ -17,7 +18,6 @@ package object Ast {
 
   sealed trait Exp {
     def t: Type
-    // def reduce: Exp
   }
   case class App(f: Exp, args: List[Exp]) extends Exp {
     def t = f.t match {
@@ -39,12 +39,10 @@ package object Ast {
   }
 
   sealed trait Val // A known value
-  case class VBln(b: Boolean) extends Exp with Val
-  {
+  case class VBln(b: Boolean) extends Exp with Val {
     def t = TBln()
   }
-  case class VInt(i: Int) extends Exp with Val
-  {
+  case class VInt(i: Int) extends Exp with Val {
     def t = TInt()
   }
   case class VObj(t: Type, fields: Map[String, Val]) extends Exp with Val
