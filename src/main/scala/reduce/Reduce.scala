@@ -1,17 +1,24 @@
 package reduce
 
+import scala.collection.mutable.Set
 import scala.collection.mutable.Stack
 
 import ast._
 
+
 object Reduce {
 
-  def apply(ast: Ast): Ast = {
+  type Errors = Set[Error]
+
+  def apply(ast: Ast): (Ast, Errors) = {
+
+    val errors = Set[Error]()
+    def raise(e: Error) = errors += e
 
     val history = new Stack[Node]
     val units = new IdentityMap[Unit, Unit]
 
-    def redUnit(u: Unit) = units.getOrElseUpdate(u, {
+    def redUnit(u: Unit): Unit = units.getOrElseUpdate(u, {
       history.push(u)
       val result = u match {
         case Fun(t, params, body) => Fun(t, params, body.map(redExp))
@@ -22,6 +29,10 @@ object Reduce {
     })
 
     def redExp(e: Exp): Exp = {
+      if (history.contains(e)) {
+
+      }
+
       history.push(e)
       val result = e match {
 
@@ -35,7 +46,7 @@ object Reduce {
       result
     }
 
-    ast.mapValues(redUnit)
+    (ast.mapValues(redUnit), errors)
   }
 }
 
