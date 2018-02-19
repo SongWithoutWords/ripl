@@ -1,11 +1,10 @@
 package object ast {
   import scala.collection.Map
 
-  // sealed trait Unit
-  // case class Namespace(units: Map[String, Unit])
   case class Ast(units: Map[String, Unit])
 
   sealed trait Unit
+  // case class Namespace(units: Map[String, Unit])
   case class Fun(t: TFun, params: List[Param], body: List[Exp]) extends Unit
   case class Var(n: Name, v: Exp) extends Unit with Exp {
     def t = TNone()
