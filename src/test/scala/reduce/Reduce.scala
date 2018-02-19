@@ -5,25 +5,21 @@ import org.scalatest._
 import ast._
 
 class TestReduce extends FreeSpec with Matchers {
-  "reduce" - {
-    "constants" - {
-      "4 + 5 should be 9" in {
-        Reduce().exp(App(Name("+", Nil), List(VInt(4), VInt(5)))) shouldBe VInt(9)
-      }
+  "constants" - {
+    "4 + 5 should be 9" in {
+      Reduce().exp(App(Name("+", Nil), List(VInt(4), VInt(5)))) shouldBe VInt(9)
     }
-    "references" - {
-      "units should be found by name" in {
-        val a = Var("a", VInt(4))
-        val b = Var("b", Name("a", Nil))
-        val ast = Ast(Map("a" -> a, "b" -> b))
+  }
+  "node references" - {
+    "units should be found by name" in {
+      val a = Var("a", VInt(4))
+      val b = Var("b", Name("a", Nil))
+      val ast = Ast(Map("a" -> a, "b" -> b))
 
-        val bReduced = Var("b", Name("a", List(a)))
-        val astReduced = Ast(Map("a" -> a, "b" -> bReduced))
+      val bReduced = Var("b", Name("a", List(a)))
+      val astReduced = Ast(Map("a" -> a, "b" -> bReduced))
 
-        Reduce(ast).ast(ast) shouldBe astReduced
-      }
-    }
-    "units" - {
+      Reduce(ast).ast(ast) shouldBe astReduced
     }
   }
 }
