@@ -11,86 +11,59 @@ object Reduce {
   type Errors = Set[Error]
 
   def apply(ast: Ast): (Ast, Errors) = {
-
-    val errors = Set[Error]()
-    def raise(e: Error) = errors += e
-
-    val history = new Stack[Node]
-    def catchCycles[A <: Node](input: A, mapping: (A) => A) =
-      if (history.filter(input.eq(_)).nonEmpty) {
-      raise(RecursiveVariableDef())
-      input
-    } else {
-      history.push(input)
-      val result = mapping(input)
-      history.pop()
-      result
-    }
-
-
-
-    // }
-    // def pushNode(n: Node) = {
-    //   println("Pushed " + n)
-    //   history.push(n)
-    // }
-    // def popNode() = {
-    //   println("Popped " + history.top)
-    //   history.pop()
-    // }
-    // def historyContains(n: Node) = {
-    //   val nodeFound = history.filter(n.eq(_)).nonEmpty
-    //   if (nodeFound) {
-    //     println("Found " + n + " in " + history)
-    //   }
-    //   else {
-    //     println("Did not find " + n + " in " + history)
-    //   }
-    //   nodeFound
-    // }
-
-    val units = new IdentityMap[Unit, Unit]
-
-    def mapUnit(u: Unit): Unit = units.getOrElseUpdate(u, {
-      // history.push(u)
-      // pushNode(u)
-      catchCycles(u, (u: Unit) => u match {
-        case Fun(t, params, body) => Fun(t, params, body.map(mapExp))
-        case e: Exp => mapExp(e)
-      })
-      // history.pop()
-      // popNode()
-      // result
-    })
-
-    // def mapSubExprs(e: Exp) = e match {
-    //   case App(app, args) => mapExp(app, args.map(mapExp))
-    //   case Name()
-    // }
-
-    def mapExp(e: Exp): Exp =
-    // if (historyContains(e)) {
-    //   raise(RecursiveVariableDef())
-    //   e
-    e match {
-      case App(Name("+", _), List(VInt(a), VInt(b))) => VInt(a + b)
-      case Name(n, nodes) => Name(n, nodes ++ ast.get(n))
-      case _ => e
-    }
-
-    // def mapExp(e: Exp): Exp = {
-    //   if (historyContains(e)) {
-    //     raise(RecursiveVariableDef())
-    //     return e
-    //   }
-    //   // We only need to push referenceable exps, i.e. vars
-    //   pushNode(e)
-    //   val result = mapExpNoPush(e)
-    //   popNode()
-    //   result
-    // }
-
-    (ast.mapValues(mapUnit), errors)
+    val reduce = new Reduce(ast)
+    (reduce.astOut, reduce.errors)
   }
+}
+
+class Reduce(val astIn: Ast)
+{
+  val errors = Set[Error]()
+  def raise(e: Error) = errors += e
+
+  val history = new Stack[Node]
+  def historyContains(n: Node) = history.filter(n.eq(_)).nonEmpty
+  def catchCycles[A <: Node](input: A, mapping: (A) => A) =
+    if (historyContains(input)) {
+    raise(RecursiveVariableDef())
+    input
+  } else {
+    history.push(input)
+    val result = mapping(input)
+    history.pop()
+    result
+  }
+
+  val units = new IdentityMap[Unit, Unit]
+
+  val astOut = astIn.mapValues(mapUnit)
+
+  def mapUnit(u: Unit): Unit = units.getOrElseUpdate(u, {
+    catchCycles(u, (u: Unit) => u match {
+      case Fun(t, params, body) => Fun(t, params, body.map(mapExp))
+      case e: Exp => mapExp(e)
+    })
+  })
+
+  def mapExp(e: Exp): Exp =
+  e match {
+    case App(Name("+", _), List(VInt(a), VInt(b))) => VInt(a + b)
+
+    case Name(n, nodes) => astOut.get(n) match {
+      case None => UnknownName; Name(n, nodes)
+      case Some(x) => if (historyContains(x)) {
+        raise(RecursiveVariableDef())
+        e
+      } else x match {
+        case v: Val => v
+        case _ => Name(n, mapUnit(x) :: nodes)
+        // Name(n, mapUnit(x) :: nodes)
+      }
+    }
+    case _ => e
+  }
+
+  astOut.view.force
+  // (astOut.view.force, errors)
 }
 
