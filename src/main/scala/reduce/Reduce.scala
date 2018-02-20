@@ -50,7 +50,7 @@ class Reduce(val astIn: Ast)
     case App(Name("+", _), List(VInt(a), VInt(b))) => VInt(a + b)
 
     case Name(n, nodes) => astOut.get(n) match {
-      case None => UnknownName; Name(n, nodes)
+      case None => raise(UnknownName(n)); Name(n, nodes)
       case Some(x) => if (historyContains(x)) {
         raise(RecursiveVariableDef())
         e
@@ -64,6 +64,5 @@ class Reduce(val astIn: Ast)
   }
 
   astOut.view.force
-  // (astOut.view.force, errors)
 }
 

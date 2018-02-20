@@ -17,18 +17,23 @@ class TestReduce extends FreeSpec with Matchers {
       Reduce(input) shouldBe (output, Set())
     }
   }
-  "variables" - {
-    "variables should be found by name" in {
+  "variable references" - {
+    "should be found by name" in {
       val input = Map("a" -> VInt(4), "b" -> Name("a", Nil))
       val output = Map("a" -> VInt(4), "b" -> VInt(4))
       Reduce(input) shouldBe (output, Set())
     }
-    "variables should be found in any order" in {
+    "should be found in any order" in {
       val input = Map("a" -> Name("b", Nil), "b" -> VInt(4))
       val output = Map("a" -> VInt(4), "b" -> VInt(4))
       Reduce(input) shouldBe (output, Set())
     }
-    "cycles should be detected" - {
+    "should result in errors when they don't exist" in {
+      val input = Map("a" -> Name("b", Nil))
+      val output = Map("a" -> Name("b", Nil))
+      Reduce(input) shouldBe (output, Set(UnknownName("b")))
+    }
+    "should result in errors when they form cycles" - {
       "at depth 0" in {
         val input = Map("a" -> Name("a", Nil))
         Reduce(input)._2 shouldBe Set(RecursiveVariableDef())
