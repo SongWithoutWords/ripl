@@ -55,6 +55,10 @@ package object ast {
     def t = TNone()
   }
 
+  sealed trait Intrinsic extends Exp { val n: String; val t: TFun }
+  object IAdd extends Intrinsic { val n = "+"; val t = TFun(List(TInt(), TInt()), TInt()) }
+  object ISub extends Intrinsic { val n = "-"; val t = TFun(List(TInt(), TInt()), TInt()) }
+
   sealed trait Val extends Exp // A known value
   case class VBln(b: Boolean) extends Val {
     def t = TBln()
