@@ -37,7 +37,8 @@ class Reduce(val astIn: Ast)
   val units = new IdentityMap[Unit, Unit]
 
   val astOut = astIn.mapValues(mapUnit)
-  def lookupName(n: String): List[Unit] = ??? // lookup in astout and intrinsic
+  val intrinsics = Intrinsic.values.map(i => (i.n, i)).toMap
+  def lookupName(n: String): List[Unit] = astOut.get(n).toList ++ intrinsics.get(n)
 
   def mapUnit(u: Unit): Unit = units.getOrElseUpdate(u, {
     catchCycles(u, (u: Unit) => u match {
@@ -69,9 +70,9 @@ class Reduce(val astIn: Ast)
       case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
     }
 
-    case Name(n, nodes) => astOut.get(n) match {
-      case None => raise(UnknownName(n)); exp
-      case Some(x) => if (historyContains(x)) {
+    case Name(n, nodes) => lookupName(n) match {
+      case Nil => raise(UnknownName(n)); exp
+      case x::Nil => if (historyContains(x)) {
         raise(RecursiveVariableDef)
         exp
       } else x match {
