@@ -76,6 +76,10 @@ class TestReduce extends FreeSpec with Matchers {
       val input = Map("add" -> add, "a" -> App(Name("add", Nil), List(VInt(4), VInt(5), VInt(6))))
       Reduce(input) shouldBe (input, Set(WrongNumArgs(2, 3)))
     }
+    "should produce errors when non-applicable type applied" in {
+      val input = Map("a" -> App(VInt(4), List(VInt(5))))
+      Reduce(input) shouldBe (input, Set(ApplicationOfNonAppliableType(TInt())))
+    }
   }
 }
 
