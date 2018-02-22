@@ -1,3 +1,5 @@
+import enumeratum._
+
 package object ast {
   import scala.collection.immutable.Map
 
@@ -44,7 +46,6 @@ package object ast {
   case class Name(n: String, nodes: List[Node]) extends Exp {
     def t = nodes match {
       case (e: Exp)::Nil => e.t
-      case (f: Fun)::Nil => f.t
       case _ => println("foop: " + n); TError
     }
   }
@@ -55,9 +56,12 @@ package object ast {
     def t = TNone
   }
 
-  sealed trait Intrinsic extends Exp { val n: String; val t: TFun }
-  object IAdd extends Intrinsic { val n = "+"; val t = TFun(List(TInt, TInt), TInt) }
-  object ISub extends Intrinsic { val n = "-"; val t = TFun(List(TInt, TInt), TInt) }
+  sealed trait Intrinsic extends EnumEntry with Exp { val n: String; val t: TFun }
+  object Intrinsic extends Enum[Intrinsic] {
+    val values = findValues
+    object IAdd extends Intrinsic { val n = "+"; val t = TFun(List(TInt, TInt), TInt) }
+    object ISub extends Intrinsic { val n = "-"; val t = TFun(List(TInt, TInt), TInt) }
+  }
 
   sealed trait Val extends Exp // A known value
   case class VBln(b: Boolean) extends Val {
