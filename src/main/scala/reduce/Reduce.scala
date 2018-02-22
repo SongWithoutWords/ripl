@@ -25,7 +25,7 @@ class Reduce(val astIn: Ast)
   def historyContains(n: Node) = history.filter(n.eq(_)).nonEmpty
   def catchCycles[A <: Node](input: A, mapping: (A) => A) =
     if (historyContains(input)) {
-    raise(RecursiveVariableDef())
+    raise(RecursiveVariableDef)
     input
   } else {
     history.push(input)
@@ -71,7 +71,7 @@ class Reduce(val astIn: Ast)
     case Name(n, nodes) => astOut.get(n) match {
       case None => raise(UnknownName(n)); exp
       case Some(x) => if (historyContains(x)) {
-        raise(RecursiveVariableDef())
+        raise(RecursiveVariableDef)
         exp
       } else x match {
         case v: Val => v
