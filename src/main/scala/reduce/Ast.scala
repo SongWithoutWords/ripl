@@ -20,7 +20,9 @@ package object ast {
   }
   // case class Rec() extends Unit
 
-  case class Param(n: Name, t: Type) extends Node
+  // Idea: store name instead of string to easily catch what we're shadowing?
+  // (same goes for var)
+  case class Param(n: String, t: Type) extends Node
 
   sealed trait Exp extends Unit {
     def t: Type
