@@ -10,8 +10,14 @@ package object ast {
   type Units = Map[String, Unit]
   sealed trait Unit extends Node
   // case class Namespace(units: Map[String, Unit])
-  case class Fun(t: TFun, params: List[Param], body: List[Exp]) extends Unit
 
+  case class Fun(params: List[Param], retType: Option[Type], body: List[Exp])
+      extends Unit with Exp {
+    def t = retType match {
+      case Some(tRet) => TFun(params.map(_.t), tRet)
+      case None => TError()
+    }
+  }
   // case class Rec() extends Unit
 
   case class Param(n: Name, t: Type) extends Node
