@@ -69,17 +69,16 @@ class Reduce(val astIn: Ast)
     }
 
     case Name(n, nodes) => astOut.get(n) match {
-      case None => raise(UnknownName(n)); Name(n, nodes)
+      case None => raise(UnknownName(n)); exp
       case Some(x) => if (historyContains(x)) {
         raise(RecursiveVariableDef())
-        e
+        exp
       } else x match {
         case v: Val => v
         case _ => Name(n, mapUnit(x) :: nodes)
-        // Name(n, mapUnit(x) :: nodes)
       }
     }
-    case _ => e
+    case _ => exp
   }
 
   astOut.view.force
