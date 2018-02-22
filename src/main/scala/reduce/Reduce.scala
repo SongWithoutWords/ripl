@@ -58,6 +58,16 @@ class Reduce(val astIn: Ast)
   def mapExp(exp: Exp): Exp = mapSubExps(exp) match {
     case App(Name("+", _), List(VInt(a), VInt(b))) => VInt(a + b)
 
+    case App(f, args) => f.t match {
+      case TFun(params, ret) => {
+        if (params.length != args.length) {
+          raise(WrongNumArgs(params.length, args.length))
+        }
+        exp
+      }
+      case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
+    }
+
     case Name(n, nodes) => astOut.get(n) match {
       case None => raise(UnknownName(n)); Name(n, nodes)
       case Some(x) => if (historyContains(x)) {
