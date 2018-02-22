@@ -15,7 +15,7 @@ package object ast {
       extends Unit with Exp {
     def t = retType match {
       case Some(tRet) => TFun(params.map(_.t), tRet)
-      case None => TError()
+      case None => TError
     }
   }
   // case class Rec() extends Unit
@@ -30,11 +30,11 @@ package object ast {
   case class App(f: Exp, args: List[Exp]) extends Exp {
     def t = f.t match {
       case TFun(_, r) => r
-      case _ => TError()
+      case _ => TError
     }
   }
   case class Assign(a: Exp, b: Exp) extends Exp {
-    def t = TNone()
+    def t = TNone
   }
   // Used to represent type constraints on expressions, such as variable type annotations
   case class Cons(t: Type, a: Exp) extends Exp
@@ -45,33 +45,33 @@ package object ast {
     def t = nodes match {
       case (e: Exp)::Nil => e.t
       case (f: Fun)::Nil => f.t
-      case _ => println("foop: " + n); TError()
+      case _ => println("foop: " + n); TError
     }
   }
   case class Select(e: Exp, n: Name) extends Exp {
     def t = ???
   }
   case class Var(n: String, e: Exp) extends Unit with Exp {
-    def t = TNone()
+    def t = TNone
   }
 
   sealed trait Intrinsic extends Exp { val n: String; val t: TFun }
-  object IAdd extends Intrinsic { val n = "+"; val t = TFun(List(TInt(), TInt()), TInt()) }
-  object ISub extends Intrinsic { val n = "-"; val t = TFun(List(TInt(), TInt()), TInt()) }
+  object IAdd extends Intrinsic { val n = "+"; val t = TFun(List(TInt, TInt), TInt) }
+  object ISub extends Intrinsic { val n = "-"; val t = TFun(List(TInt, TInt), TInt) }
 
   sealed trait Val extends Exp // A known value
   case class VBln(b: Boolean) extends Val {
-    def t = TBln()
+    def t = TBln
   }
   case class VInt(i: Int) extends Val {
-    def t = TInt()
+    def t = TInt
   }
   case class VObj(t: Type, fields: Map[String, Val]) extends Val
 
   sealed trait Type
-  case class TBln() extends Type
-  case class TError() extends Type
-  case class TInt() extends Type
+  object TBln extends Type
+  object TError extends Type
+  object TInt extends Type
   case class TFun(params: List[Type], ret: Type) extends Type
-  case class TNone() extends Type
+  object TNone extends Type
 }
