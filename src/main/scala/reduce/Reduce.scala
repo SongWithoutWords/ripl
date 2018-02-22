@@ -45,8 +45,17 @@ class Reduce(val astIn: Ast)
     })
   })
 
-  def mapExp(e: Exp): Exp =
-  e match {
+  def mapSubExps(exp: Exp) = exp match {
+    case App(f, args) => App(mapExp(f), args.map(mapExp))
+    case Assign(a, b) => Assign(mapExp(a), mapExp(b))
+    case Cons(t, e) => Cons(t, mapExp(e))
+    case Name(n, nodes) => Name(n, nodes)
+    case Select(e, n) => Select(mapExp(e), n)
+    case Var(n, e) => Var(n, mapExp(e))
+    case _ => exp
+  }
+
+  def mapExp(exp: Exp): Exp = mapSubExps(exp) match {
     case App(Name("+", _), List(VInt(a), VInt(b))) => VInt(a + b)
 
     case Name(n, nodes) => astOut.get(n) match {
