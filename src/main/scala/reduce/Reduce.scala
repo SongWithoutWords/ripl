@@ -37,6 +37,7 @@ class Reduce(val astIn: Ast)
   val units = new IdentityMap[Unit, Unit]
 
   val astOut = astIn.mapValues(mapUnit)
+  def lookupName(n: String): List[Unit] = ??? // lookup in astout and intrinsic
 
   def mapUnit(u: Unit): Unit = units.getOrElseUpdate(u, {
     catchCycles(u, (u: Unit) => u match {

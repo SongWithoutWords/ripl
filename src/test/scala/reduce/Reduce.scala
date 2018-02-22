@@ -51,6 +51,18 @@ class TestReduce extends FreeSpec with Matchers {
       }
     }
   }
+  "basic type checking" - {
+    // "should not result in errors when applied to right types" in {
+    //   val add = Fun
+    //   ( List(Param("a", TInt), Param("b", TInt))
+    //      , Some(TInt)
+    //      , List(App(Name("+", Nil), "a", "b"))
+    //   )
+    //   // val input = Map("a" -> VInt(4), "b" -> Name("a", Nil))
+    //   // val output = Map("a" -> VInt(4), "b" -> VInt(4))
+    //   Reduce(input) shouldBe (output, Set())
+    // }
+  }
   "functions" - {
     "should produce no errors when applied to right types" in {
       val add = Fun(
