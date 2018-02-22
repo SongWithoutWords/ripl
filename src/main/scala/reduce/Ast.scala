@@ -36,6 +36,8 @@ package object ast {
   case class Assign(a: Exp, b: Exp) extends Exp {
     def t = TNone()
   }
+  // Used to represent type constraints on expressions, such as variable type annotations
+  case class Cons(t: Type, a: Exp) extends Exp
   case class If(a: Exp, b: List[Exp], c: List[Exp]) extends Exp {
     def t = ???
   }
