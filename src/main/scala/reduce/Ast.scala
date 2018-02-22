@@ -42,7 +42,11 @@ package object ast {
     def t = ???
   }
   case class Name(n: String, nodes: List[Node]) extends Exp {
-    def t = ???
+    def t = nodes match {
+      case (e: Exp)::Nil => e.t
+      case (f: Fun)::Nil => f.t
+      case _ => println("foop: " + n); TError()
+    }
   }
   case class Select(e: Exp, n: Name) extends Exp {
     def t = ???
