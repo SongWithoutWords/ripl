@@ -25,7 +25,7 @@ class Reduce(val astIn: Ast)
   def historyContains(n: Node) = history.filter(n.eq(_)).nonEmpty
   def catchCycles[A <: Node](input: A, mapping: (A) => A) =
     if (historyContains(input)) {
-    raise(RecursiveVariableDef)
+    raise(RecursiveVariableDef(input))
     input
   } else {
     history.push(input)
@@ -39,6 +39,8 @@ class Reduce(val astIn: Ast)
   val astOut = astIn.mapValues(mapUnit)
   val intrinsics = Intrinsic.values.map(i => (i.n, i)).toMap
   def lookupName(n: String): List[Unit] = astOut.get(n).toList ++ intrinsics.get(n)
+
+  case class Scope(Map[])
 
   def mapUnit(u: Unit): Unit = units.getOrElseUpdate(u, {
     catchCycles(u, (u: Unit) => u match {
@@ -70,10 +72,18 @@ class Reduce(val astIn: Ast)
       case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
     }
 
+    case Fun(params, retType, body) => {
+      // push new scope with the params
+      // traverse body
+      // either enforce the known return type
+      // or gather and find supertype of types returned
+      exp
+    }
+
     case Name(n, nodes) => lookupName(n) match {
       case Nil => raise(UnknownName(n)); exp
       case x::Nil => if (historyContains(x)) {
-        raise(RecursiveVariableDef)
+        raise(RecursiveVariableDef(x))
         exp
       } else x match {
         case v: Val => v
