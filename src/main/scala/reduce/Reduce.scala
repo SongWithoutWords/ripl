@@ -38,13 +38,21 @@ class Reduce(val astIn: Ast)
 
   val astOut = astIn.mapValues(mapUnit)
   val intrinsics = Intrinsic.values.map(i => (i.n, i)).toMap
-  def lookupName(n: String): List[Unit] = astOut.get(n).toList ++ intrinsics.get(n)
 
-  case class Scope(Map[])
+  type Scope = Map[String, Node]
+  var scopes: List[Scope] = Nil
+
+  def pushScope(s: Scope) = { println(s"Pushing scope $s"); scopes = s :: scopes }
+  def popScope() = scopes = scopes.tail
+
+  def lookupName(n: String): List[Node] =
+    astOut.get(n).toList ++
+      intrinsics.get(n) ++
+      scopes.flatMap(_.get(n))
+
 
   def mapUnit(u: Unit): Unit = units.getOrElseUpdate(u, {
     catchCycles(u, (u: Unit) => u match {
-      case Fun(t, params, body) => Fun(t, params, body.map(mapExp))
       case e: Exp => mapExp(e)
     })
   })
@@ -73,11 +81,18 @@ class Reduce(val astIn: Ast)
     }
 
     case Fun(params, retType, body) => {
+
       // push new scope with the params
       // traverse body
       // either enforce the known return type
       // or gather and find supertype of types returned
-      exp
+
+      pushScope(params.map(p => (p.n, p)).toMap)
+
+      val bodyPrime = body.map(mapExp)
+      popScope
+
+      Fun(params, retType, bodyPrime)
     }
 
     case Name(n, nodes) => lookupName(n) match {
@@ -87,7 +102,7 @@ class Reduce(val astIn: Ast)
         exp
       } else x match {
         case v: Val => v
-        case _ => Name(n, mapUnit(x) :: nodes)
+        case _ => Name(n, x :: nodes)
       }
     }
     case _ => exp

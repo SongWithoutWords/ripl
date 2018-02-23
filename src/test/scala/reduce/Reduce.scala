@@ -68,8 +68,8 @@ class TestReduce extends FreeSpec with Matchers {
       val add = Fun(
         List(Param("a", TInt), Param("b", TInt)),
         Some(TInt),
-        List(VInt(4))) //App(Name("+", Nil), List(Name("a", Nil), Name("b", Nil)))))
-      val input = Map("add" -> add, "a" -> App(Name("add", Nil), List(VInt(4), VInt(5))))
+        List(App(Name("+", Nil), List(Name("a", Nil), Name("b", Nil)))))
+      val input = Map("add" -> add, "x" -> App(Name("add", Nil), List(VInt(4), VInt(5))))
       Reduce(input) shouldBe (input, Set())
     }
     "should produce errors when applied to too few args" in {
