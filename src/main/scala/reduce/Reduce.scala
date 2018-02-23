@@ -75,6 +75,7 @@ class Reduce(val astIn: Ast)
         if (params.length != args.length) {
           raise(WrongNumArgs(params.length, args.length))
         }
+        (params, args).zipped.map((p, a) => if (a.t != p) raise(TypeConflict(p, a.t)))
         exp
       }
       case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
