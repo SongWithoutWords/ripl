@@ -24,7 +24,6 @@ package object ast {
 
   // Idea: store name instead of string to easily catch what we're shadowing?
   // (same goes for var)
-  case class Param(n: String, t: Type) extends Node
 
   sealed trait Exp extends Unit {
     def t: Type
@@ -46,9 +45,10 @@ package object ast {
   case class Name(n: String, nodes: List[Node]) extends Exp {
     def t = nodes match {
       case (e: Exp)::Nil => e.t
-      case _ => println("foop: " + n); TError
+      case _ => TError
     }
   }
+  case class Param(n: String, t: Type) extends Exp
   case class Select(e: Exp, n: Name) extends Exp {
     def t = ???
   }
