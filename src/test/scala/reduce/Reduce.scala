@@ -64,42 +64,82 @@ class TestReduce extends FreeSpec with Matchers {
     // }
   }
   "functions" - {
-    "should produce no errors when applied to right types" in {
+    "with one parameter" - {
+      "bind parameter in body" in {
+        def id(ret: Exp) = Fun(Param("a", TInt)::Nil, Some(TInt), ret::Nil)
+
+        val identity = id(Name("a", Nil))
+        val identityPrime = id(Name("a", Param("a", TInt)::Nil))
+
+        Reduce(Map("identity" -> identity)) shouldBe (Map("identity" -> identityPrime), Set())
+      }
+      "bind parameter in deep exp in body" in {
+        val inc = Fun(
+          List(Param("a", TInt)),
+          Some(TInt),
+          List(
+            App(Name("+", Nil),
+                List(Name("a", Nil), VInt(1)))))
+
+        val incPrime = Fun(
+          List(Param("a", TInt)),
+          Some(TInt),
+          List(
+            App(Name("+", Intrinsic.IAdd::Nil),
+                List(Name("a", Param("a", TInt)::Nil), VInt(1)))))
+
+        Reduce(Map("inc" -> inc)) shouldBe (Map("inc" -> incPrime), Set())
+      }
+    }
+
+    "with two parameters" - {
+
       val add = Fun(
         List(Param("a", TInt), Param("b", TInt)),
         Some(TInt),
         List(App(Name("+", Nil), List(Name("a", Nil), Name("b", Nil)))))
-      val input = Map("add" -> add, "x" -> App(Name("add", Nil), List(VInt(4), VInt(5))))
-      Reduce(input) shouldBe (input, Set())
-    }
-    "should produce errors when applied to too few args" in {
-      val add = Fun(
+
+      val addPrime = Fun(
         List(Param("a", TInt), Param("b", TInt)),
         Some(TInt),
-        List(VInt(4)))
-      val input = Map("add" -> add, "a" -> App(Name("add", Nil), List(VInt(4))))
-      Reduce(input) shouldBe (input, Set(WrongNumArgs(2, 1)))
+        List(App(Name("+", Intrinsic.IAdd::Nil),
+                 List(
+                   Name("a", Param("a", TInt)::Nil),
+                   Name("b", Param("b", TInt)::Nil)))))
+
+      "bind parameters in body" in {
+        Reduce(Map("add" -> add)) shouldBe (Map("add" -> addPrime), Set())
+      }
+      "produce no errors when applied to right types" in {
+        val x = App(Name("add", Nil), List(VInt(4), VInt(5)))
+        val xPrime = App(Name("add", addPrime::Nil), List(VInt(4), VInt(5)))
+        Reduce(Map("add" -> add, "x" -> x)) shouldBe
+          (Map("add" -> addPrime, "x" -> xPrime), Set())
+      }
+      "produce errors when applied with too few args" in {
+        val x = App(Name("add", Nil), VInt(4)::Nil)
+        val xPrime = App(Name("add", addPrime::Nil), VInt(4)::Nil)
+        Reduce(Map("add" -> add, "x" -> x)) shouldBe
+          (Map("add" -> addPrime, "x" -> xPrime), Set(WrongNumArgs(2, 1)))
+      }
+      "produce errors when applied with too many args" in {
+        val x = App(Name("add", Nil), VInt(4)::VInt(5)::VInt(6)::Nil)
+        val xPrime = App(Name("add", addPrime::Nil), VInt(4)::VInt(5)::VInt(6)::Nil)
+        Reduce(Map("add" -> add, "x" -> x)) shouldBe
+          (Map("add" -> addPrime, "x" -> xPrime), Set(WrongNumArgs(2, 3)))
+      }
+      "produce errors when applied to wrong types" in {
+        val x = App(Name("add", Nil), VInt(4)::VBln(true)::Nil)
+        val xPrime = App(Name("add", addPrime::Nil), VInt(4)::VBln(true)::Nil)
+        Reduce(Map("add" -> add, "x" -> x)) shouldBe
+          (Map("add" -> addPrime, "x" -> xPrime), Set(TypeConflict(TInt, TBln)))
+      }
+      "produce errors when non-applicable type applied" in {
+        val input = Map("a" -> App(VInt(4), List(VInt(5))))
+        Reduce(input) shouldBe (input, Set(ApplicationOfNonAppliableType(TInt)))
+      }
     }
-    "should produce errors when applied to too many args" in {
-      val add = Fun(
-        List(Param("a", TInt), Param("b", TInt)),
-        Some(TInt),
-        List(VInt(4)))
-      val input = Map("add" -> add, "a" -> App(Name("add", Nil), List(VInt(4), VInt(5), VInt(6))))
-      Reduce(input) shouldBe (input, Set(WrongNumArgs(2, 3)))
-    }
-    "should produce errors when applied to wrong types" in {
-      val add = Fun(
-        List(Param("a", TInt), Param("b", TInt)),
-        Some(TInt),
-        List(VInt(4)))
-      val input = Map("add" -> add, "a" -> App(add, List(VInt(5), VBln(true))))
-      Reduce(input) shouldBe (input, Set(TypeConflict(TInt, TBln)))
-    }
-    "should produce errors when non-applicable type applied" in {
-      val input = Map("a" -> App(VInt(4), List(VInt(5))))
-      Reduce(input) shouldBe (input, Set(ApplicationOfNonAppliableType(TInt)))
-    }
+
   }
 }
 
