@@ -57,26 +57,20 @@ class Reduce(val astIn: Ast)
     })
   })
 
-  def mapSubExps(exp: Exp) = exp match {
-    case App(f, args) => App(mapExp(f), args.map(mapExp))
-    case Assign(a, b) => Assign(mapExp(a), mapExp(b))
-    case Cons(t, e) => Cons(t, mapExp(e))
-    case Name(n, nodes) => Name(n, nodes)
-    case Select(e, n) => Select(mapExp(e), n)
-    case Var(n, e) => Var(n, mapExp(e))
-    case _ => exp
-  }
+  def mapExp(exp: Exp): Exp = exp match {
 
-  def mapExp(exp: Exp): Exp = mapSubExps(exp) match {
     case App(Name("+", _), List(VInt(a), VInt(b))) => VInt(a + b)
 
-    case App(f, args) => f.t match {
+    case App(_f, _args) =>
+      val f = mapExp(_f)
+      val args = _args.map(mapExp)
+      f.t match {
       case TFun(params, ret) => {
         if (params.length != args.length) {
           raise(WrongNumArgs(params.length, args.length))
         }
         (params, args).zipped.map((p, a) => if (a.t != p) raise(TypeConflict(p, a.t)))
-        exp
+        App(f, args)
       }
       case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
     }
