@@ -22,9 +22,6 @@ package object ast {
   }
   // case class Rec() extends Unit
 
-  // Idea: store name instead of string to easily catch what we're shadowing?
-  // (same goes for var)
-
   sealed trait Exp extends Unit {
     def t: Type
   }
@@ -48,6 +45,8 @@ package object ast {
       case _ => TError
     }
   }
+  // Idea: store name instead of string to easily catch what we're shadowing?
+  // (same goes for var)
   case class Param(n: String, t: Type) extends Exp
   case class Select(e: Exp, n: Name) extends Exp {
     def t = ???
