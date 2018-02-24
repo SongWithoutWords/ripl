@@ -56,11 +56,11 @@ package object ast {
   }
 
   sealed trait Intrinsic extends EnumEntry with Exp { val n: String; val t: TFun }
-  object Intrinsic extends Enum[Intrinsic] {
+  case object Intrinsic extends Enum[Intrinsic] {
     val values = findValues
     val valuesByName = values.map(v => v.n -> v).toMap
-    object IAdd extends Intrinsic { val n = "+"; val t = TFun(List(TInt, TInt), TInt) }
-    object ISub extends Intrinsic { val n = "-"; val t = TFun(List(TInt, TInt), TInt) }
+    case object IAdd extends Intrinsic { val n = "+"; val t = TFun(List(TInt, TInt), TInt) }
+    case object ISub extends Intrinsic { val n = "-"; val t = TFun(List(TInt, TInt), TInt) }
   }
 
   sealed trait Val extends Exp // A known value
