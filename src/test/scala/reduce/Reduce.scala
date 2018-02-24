@@ -68,8 +68,8 @@ class TestReduce extends FreeSpec with Matchers {
       val add = Fun(
         List(Param("a", TInt), Param("b", TInt)),
         Some(TInt),
-        List(VInt(4))) //App(Name("+", Nil), List(Name("a", Nil), Name("b", Nil)))))
-      val input = Map("add" -> add, "a" -> App(Name("add", Nil), List(VInt(4), VInt(5))))
+        List(App(Name("+", Nil), List(Name("a", Nil), Name("b", Nil)))))
+      val input = Map("add" -> add, "x" -> App(Name("add", Nil), List(VInt(4), VInt(5))))
       Reduce(input) shouldBe (input, Set())
     }
     "should produce errors when applied to too few args" in {
@@ -87,6 +87,14 @@ class TestReduce extends FreeSpec with Matchers {
         List(VInt(4)))
       val input = Map("add" -> add, "a" -> App(Name("add", Nil), List(VInt(4), VInt(5), VInt(6))))
       Reduce(input) shouldBe (input, Set(WrongNumArgs(2, 3)))
+    }
+    "should produce errors when applied to wrong types" in {
+      val add = Fun(
+        List(Param("a", TInt), Param("b", TInt)),
+        Some(TInt),
+        List(VInt(4)))
+      val input = Map("add" -> add, "a" -> App(add, List(VInt(5), VBln(true))))
+      Reduce(input) shouldBe (input, Set(TypeConflict(TInt, TBln)))
     }
     "should produce errors when non-applicable type applied" in {
       val input = Map("a" -> App(VInt(4), List(VInt(5))))

@@ -25,7 +25,7 @@ class Reduce(val astIn: Ast)
   def historyContains(n: Node) = history.filter(n.eq(_)).nonEmpty
   def catchCycles[A <: Node](input: A, mapping: (A) => A) =
     if (historyContains(input)) {
-    raise(RecursiveVariableDef)
+    raise(RecursiveVariableDef(input))
     input
   } else {
     history.push(input)
@@ -37,11 +37,22 @@ class Reduce(val astIn: Ast)
   val units = new IdentityMap[Unit, Unit]
 
   val astOut = astIn.mapValues(mapUnit)
-  def lookupName(n: String): List[Unit] = ??? // lookup in astout and intrinsic
+  val intrinsics = Intrinsic.values.map(i => (i.n, i)).toMap
+
+  type Scope = Map[String, Node]
+  var scopes: List[Scope] = Nil
+
+  def pushScope(s: Scope) = { println(s"Pushing scope $s"); scopes = s :: scopes }
+  def popScope() = scopes = scopes.tail
+
+  def lookupName(n: String): List[Node] =
+    astOut.get(n).toList ++
+      intrinsics.get(n) ++
+      scopes.flatMap(_.get(n))
+
 
   def mapUnit(u: Unit): Unit = units.getOrElseUpdate(u, {
     catchCycles(u, (u: Unit) => u match {
-      case Fun(t, params, body) => Fun(t, params, body.map(mapExp))
       case e: Exp => mapExp(e)
     })
   })
@@ -64,19 +75,35 @@ class Reduce(val astIn: Ast)
         if (params.length != args.length) {
           raise(WrongNumArgs(params.length, args.length))
         }
+        (params, args).zipped.map((p, a) => if (a.t != p) raise(TypeConflict(p, a.t)))
         exp
       }
       case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
     }
 
-    case Name(n, nodes) => astOut.get(n) match {
-      case None => raise(UnknownName(n)); exp
-      case Some(x) => if (historyContains(x)) {
-        raise(RecursiveVariableDef)
+    case Fun(params, retType, body) => {
+
+      // push new scope with the params
+      // traverse body
+      // either enforce the known return type
+      // or gather and find supertype of types returned
+
+      pushScope(params.map(p => (p.n, p)).toMap)
+
+      val bodyPrime = body.map(mapExp)
+      popScope
+
+      Fun(params, retType, bodyPrime)
+    }
+
+    case Name(n, nodes) => lookupName(n) match {
+      case Nil => raise(UnknownName(n)); exp
+      case x::Nil => if (historyContains(x)) {
+        raise(RecursiveVariableDef(x))
         exp
       } else x match {
         case v: Val => v
-        case _ => Name(n, mapUnit(x) :: nodes)
+        case _ => Name(n, x :: nodes)
       }
     }
     case _ => exp

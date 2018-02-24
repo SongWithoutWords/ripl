@@ -74,9 +74,9 @@ package object ast {
   case class VObj(t: Type, fields: Map[String, Val]) extends Val
 
   sealed trait Type
-  object TBln extends Type
-  object TError extends Type
-  object TInt extends Type
+  case object TBln extends Type
+  case object TError extends Type
+  case object TInt extends Type
   case class TFun(params: List[Type], ret: Type) extends Type
-  object TNone extends Type
+  case object TNone extends Type
 }
