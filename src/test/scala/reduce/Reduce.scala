@@ -17,13 +17,13 @@ class TestReduce extends FreeSpec with Matchers {
       Reduce(input) shouldBe (output, Set())
     }
   }
-  "variable references" - {
-    "are bound by name" in {
+  "named references" - {
+    "are found" in {
       val input = Map("a" -> VInt(4), "b" -> Name("a", Nil))
       val output = Map("a" -> VInt(4), "b" -> VInt(4))
       Reduce(input) shouldBe (output, Set())
     }
-    "are bound in any order" in {
+    "are found in any order" in {
       val input = Map("a" -> Name("b", Nil), "b" -> VInt(4))
       val output = Map("a" -> VInt(4), "b" -> VInt(4))
       Reduce(input) shouldBe (output, Set())
@@ -51,7 +51,19 @@ class TestReduce extends FreeSpec with Matchers {
       }
     }
   }
-  "basic type checking" - {
+  "type constraints" - {
+    "produce no errors when they are met" in {
+      val ast = Map("x" -> Cons(TInt, VInt(3)))
+      Reduce(ast) shouldBe (ast, Set())
+    }
+    "produce errors when they are not met" in {
+      val ast = Map("x" -> Cons(TInt, VBln(true)))
+      Reduce(ast) shouldBe (ast, Set(TypeConflict(TInt, TBln)))
+    }
+  }
+  "assignment" - {
+
+    
   }
   "functions" - {
     "with one parameter" - {

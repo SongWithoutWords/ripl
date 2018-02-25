@@ -69,11 +69,17 @@ class Reduce(val astIn: Ast)
         if (params.length != args.length) {
           raise(WrongNumArgs(params.length, args.length))
         }
-        (params, args).zipped.map((p, a) => if (a.t != p) raise(TypeConflict(p, a.t)))
+        (params, args).zipped.map((p, a) => constrain(p, a))
         App(f, args)
       }
       case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
     }
+
+    case Cons(t, _e) =>
+      val e = mapExp(_e)
+      constrain(t, e)
+      Cons(t, e)
+
 
     case Fun(params, retType, body) => {
 
@@ -102,6 +108,10 @@ class Reduce(val astIn: Ast)
     }
     case _ => exp
   }
+
+  def constrain(a: Exp, b: Exp) { constrain(a.t, b.t) }
+  def constrain(a: Type, b: Exp) { constrain(a, b.t) }
+  def constrain(a: Type, b: Type) { if (a != b) raise(TypeConflict(a, b)) }
 
   astOut.view.force
 }
