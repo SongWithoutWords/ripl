@@ -42,8 +42,11 @@ class Reduce(val astIn: Ast)
   type Scope = Map[String, Node]
   var scopes: List[Scope] = Nil
 
-  def pushScope(s: Scope) = { println(s"Pushing scope $s"); scopes = s :: scopes }
+  def pushScope(s: Scope) = scopes = s :: scopes
   def popScope() = scopes = scopes.tail
+
+  def addLocalBinding(n: String, v: Node)
+    = scopes = scopes.head.updated(n, v) :: scopes.tail
 
   def lookupName(n: String): List[Node] =
     astOut.get(n).toList ++
