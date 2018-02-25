@@ -112,9 +112,9 @@ class Reduce(val astIn: Ast)
     case _ => exp
   }
 
-  def constrain(a: Exp, b: Exp) { constrain(a.t, b.t) }
-  def constrain(a: Type, b: Exp) { constrain(a, b.t) }
-  def constrain(a: Type, b: Type) { if (a != b) raise(TypeConflict(a, b)) }
+  def constrain(a: Exp, b: Exp): scala.Unit = constrain(a.t, b.t)
+  def constrain(a: Type, b: Exp): scala.Unit = constrain(a, b.t)
+  def constrain(a: Type, b: Type): scala.Unit = if (a != b) raise(TypeConflict(a, b))
 
   astOut.view.force
 }
