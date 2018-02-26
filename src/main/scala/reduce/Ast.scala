@@ -13,7 +13,7 @@ package object ast {
   sealed trait Unit extends Node
   // case class Namespace(units: Map[String, Unit])
 
-  case class Fun(params: List[Param], retType: Option[Type], body: List[Exp])
+  case class Fun(params: List[Param], retType: Option[Type], body: Exp)
       extends Unit with Exp {
     def t = retType match {
       case Some(tRet) => TFun(params.map(_.t), tRet)
@@ -35,9 +35,14 @@ package object ast {
     def t = TNone
   }
   // Used to represent type constraints on expressions, such as variable type annotations
+  case class Block(exps: Exp*) extends Exp {
+    def t = exps.lastOption match { case None => TNone; case Some(e) => e.t }
+  }
+
   case class Cons(t: Type, e: Exp) extends Exp
-  case class If(a: Exp, b: List[Exp], c: List[Exp]) extends Exp {
-    def t = ???
+  case class If(a: Exp, b: Exp, c: Exp) extends Exp {
+    // TODO: make this a bit more sophisticated (find common super type)
+    def t = b.t
   }
   case class Name(n: String, nodes: List[Node]) extends Exp {
     def t = nodes match {

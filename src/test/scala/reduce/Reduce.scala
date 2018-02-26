@@ -61,14 +61,13 @@ class TestReduce extends FreeSpec with Matchers {
       Reduce(ast) shouldBe (ast, Set(TypeConflict(TInt, TBln)))
     }
   }
-  "assignment" - {
 
-    
+  "assignment" - {
   }
   "functions" - {
     "with one parameter" - {
       "bind parameter in body" in {
-        def id(ret: Exp) = Fun(Param("a", TInt)::Nil, Some(TInt), ret::Nil)
+        def id(ret: Exp) = Fun(Param("a", TInt)::Nil, Some(TInt), ret)
 
         val identity = id(Name("a", Nil))
         val identityPrime = id(Name("a", Param("a", TInt)::Nil))
@@ -79,16 +78,14 @@ class TestReduce extends FreeSpec with Matchers {
         val inc = Fun(
           List(Param("a", TInt)),
           Some(TInt),
-          List(
             App(Name("+", Nil),
-                List(Name("a", Nil), VInt(1)))))
+                List(Name("a", Nil), VInt(1))))
 
         val incPrime = Fun(
           List(Param("a", TInt)),
           Some(TInt),
-          List(
             App(Name("+", Intrinsic.IAdd::Nil),
-                List(Name("a", Param("a", TInt)::Nil), VInt(1)))))
+                List(Name("a", Param("a", TInt)::Nil), VInt(1))))
 
         Reduce(Map("inc" -> inc)) shouldBe (Map("inc" -> incPrime), Set())
       }
@@ -99,15 +96,15 @@ class TestReduce extends FreeSpec with Matchers {
       val add = Fun(
         List(Param("a", TInt), Param("b", TInt)),
         Some(TInt),
-        List(App(Name("+", Nil), List(Name("a", Nil), Name("b", Nil)))))
+        App(Name("+", Nil), List(Name("a", Nil), Name("b", Nil))))
 
       val addPrime = Fun(
         List(Param("a", TInt), Param("b", TInt)),
         Some(TInt),
-        List(App(Name("+", Intrinsic.IAdd::Nil),
+        App(Name("+", Intrinsic.IAdd::Nil),
                  List(
                    Name("a", Param("a", TInt)::Nil),
-                   Name("b", Param("b", TInt)::Nil)))))
+                   Name("b", Param("b", TInt)::Nil))))
 
       "bind parameters in body" in {
         Reduce(Map("add" -> add)) shouldBe (Map("add" -> addPrime), Set())
@@ -141,7 +138,61 @@ class TestReduce extends FreeSpec with Matchers {
         Reduce(input) shouldBe (input, Set(ApplicationOfNonAppliableType(TInt)))
       }
     }
+  }
+  "if exps" - {
+    "produce no errors with correct types" in {
+      val select = Fun(
+        List(Param("a", TBln), Param("b", TInt), Param("c", TInt)),
+        Some(TInt),
+          If(Name("a", Nil),
+            Name("b", Nil),
+            Name("c", Nil)))
+      val selectPrime = Fun(
+        Param("a", TBln)::Param("b", TInt)::Param("c", TInt)::Nil,
+        Some(TInt),
+          If(
+            Name("a", Param("a", TBln)::Nil),
+            Name("b", Param("b", TInt)::Nil),
+            Name("c", Param("c", TInt)::Nil)))
 
+      Reduce(Map("select" -> select)) shouldBe (Map("select" -> selectPrime), Set())
+    }
+    "produces error with non-boolean condition" in {
+      val select = Fun(
+        List(Param("a", TInt), Param("b", TInt), Param("c", TInt)),
+        Some(TInt),
+        If(Name("a", Nil),
+            Name("b", Nil),
+            Name("c", Nil)))
+      val selectPrime = Fun(
+        Param("a", TInt)::Param("b", TInt)::Param("c", TInt)::Nil,
+        Some(TInt),
+        If(
+          Name("a", Param("a", TInt)::Nil),
+          Name("b", Param("b", TInt)::Nil),
+          Name("c", Param("c", TInt)::Nil)))
+
+      Reduce(Map("select" -> select)) shouldBe
+      (Map("select" -> selectPrime), Set(TypeConflict(TBln, TInt)))
+    }
+    "branches must yield compatible types" in {
+      val select = Fun(
+        List(Param("a", TBln), Param("b", TInt), Param("c", TBln)),
+        Some(TInt),
+        If(Name("a", Nil),
+           Name("b", Nil),
+           Name("c", Nil)))
+      val selectPrime = Fun(
+        Param("a", TBln)::Param("b", TInt)::Param("c", TBln)::Nil,
+        Some(TInt),
+        If(
+          Name("a", Param("a", TBln)::Nil),
+          Name("b", Param("b", TInt)::Nil),
+          Name("c", Param("c", TBln)::Nil)))
+
+      Reduce(Map("select" -> select)) shouldBe
+      (Map("select" -> selectPrime), Set(TypeConflict(TInt, TBln)))
+    }
   }
 }
 

@@ -42,6 +42,7 @@ class Reduce(val astIn: Ast)
   type Scope = Map[String, Node]
   var scopes: List[Scope] = Nil
 
+  def pushScope() = scopes = Map[String, Node]() :: scopes
   def pushScope(s: Scope) = scopes = s :: scopes
   def popScope() = scopes = scopes.tail
 
@@ -78,13 +79,31 @@ class Reduce(val astIn: Ast)
       case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
     }
 
+    case Block(_exps @ _*) =>
+      pushScope()
+      val exps = _exps.map(mapExp)
+      popScope()
+      Block(exps: _*)
+
     case Cons(t, _e) =>
       val e = mapExp(_e)
       constrain(t, e)
       Cons(t, e)
 
+    case If(_a, _b, _c) =>
+      val a = mapExp(_a)
+      constrain(TBln, a.t)
 
-    case Fun(params, retType, body) => {
+      // TODO: reduce to single block if condition is known value
+
+      val b = mapExp(_b)
+      val c = mapExp(_c)
+
+      constrain(b, c)
+
+      If(a, b, c)
+
+    case Fun(params, retType, _body) => {
 
       // push new scope with the params
       // traverse body
@@ -93,10 +112,10 @@ class Reduce(val astIn: Ast)
 
       pushScope(params.map(p => (p.n, p)).toMap)
 
-      val bodyPrime = body.map(mapExp)
-      popScope
+      val body = mapExp(_body)
+      popScope()
 
-      Fun(params, retType, bodyPrime)
+      Fun(params, retType, body)
     }
 
     case Name(n, nodes) => lookupName(n) match {
