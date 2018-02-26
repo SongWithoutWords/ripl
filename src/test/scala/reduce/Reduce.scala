@@ -194,5 +194,44 @@ class TestReduce extends FreeSpec with Matchers {
       (Map("select" -> selectPrime), Set(TypeConflict(TInt, TBln)))
     }
   }
+  "local variables" - {
+    "in blocks" - {
+      val _block = Block(
+        Var("x", VInt(4)),
+        Name("x", Nil))
+      val block = Block(
+        Var("x", VInt(4)),
+        VInt(4))
+      "are bound correctly" in {
+        Reduce(Map("b" -> _block)) shouldBe (Map("b" -> block), Set())
+      }
+      "are not bound outside" in {
+        Reduce(Map("b" -> _block, "y" -> Name("x", Nil))) shouldBe
+        (Map("b" -> block, "y" -> Name("x", Nil)), Set(UnknownName("x")))
+      }
+    }
+    "in functions" - {
+      val a = Param("a", TInt)::Nil
+      val _result = App(Name("+", Nil), Name("a", Nil)::VInt(1)::Nil)
+      val _inc = Fun(a, Some(TInt),
+        Block(
+          Var("result", _result),
+          Name("result", Nil)))
+
+      val result = App(Name("+", Intrinsic.IAdd::Nil), Name("a", a)::VInt(1)::Nil)
+      val inc = Fun(a, Some(TInt),
+        Block(
+          Var("result", App(Name("+", Intrinsic.IAdd::Nil), Name("a", a)::VInt(1)::Nil)),
+          Name("result", result::Nil)))
+
+      "are bound correctly" in {
+        Reduce(Map("inc" -> _inc)) shouldBe (Map("inc" -> inc), Set())
+      }
+      "are not bound outside" in {
+        Reduce(Map("inc" -> _inc, "res" -> Name("result", Nil))) shouldBe
+        (Map("inc" -> inc, "res" -> Name("result", Nil) ), Set(UnknownName("result")))
+      }
+    }
+  }
 }
 

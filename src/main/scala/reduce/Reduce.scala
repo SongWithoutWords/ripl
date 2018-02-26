@@ -128,6 +128,12 @@ class Reduce(val astIn: Ast)
         case _ => Name(n, x :: nodes)
       }
     }
+
+    case Var(n, _e) =>
+      val e = mapExp(_e)
+      addLocalBinding(n, e)
+      Var(n, e)
+
     case _ => exp
   }
 
