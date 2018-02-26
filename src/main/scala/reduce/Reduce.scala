@@ -61,6 +61,11 @@ class Reduce(val astIn: Ast)
     })
   })
 
+  def mapTopLevelExp(exp: Exp) = exp match {
+    // TODO: catch useless expressions, bind variables, etc
+    case _ => ???
+  }
+
   def mapExp(exp: Exp): Exp = exp match {
 
     case App(Name("+", _), List(VInt(a), VInt(b))) => VInt(a + b)
@@ -69,15 +74,14 @@ class Reduce(val astIn: Ast)
       val f = mapExp(_f)
       val args = _args.map(mapExp)
       f.t match {
-      case TFun(params, ret) => {
-        if (params.length != args.length) {
-          raise(WrongNumArgs(params.length, args.length))
-        }
-        (params, args).zipped.map((p, a) => constrain(p, a))
-        App(f, args)
+        case TFun(params, ret) =>
+          if (params.length != args.length) {
+            raise(WrongNumArgs(params.length, args.length))
+          }
+          (params, args).zipped.map((p, a) => constrain(p, a))
+          App(f, args)
+        case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
       }
-      case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
-    }
 
     case Block(_exps @ _*) =>
       pushScope()
@@ -103,7 +107,7 @@ class Reduce(val astIn: Ast)
 
       If(a, b, c)
 
-    case Fun(params, retType, _body) => {
+    case Fun(params, retType, _body) =>
 
       // push new scope with the params
       // traverse body
@@ -116,7 +120,6 @@ class Reduce(val astIn: Ast)
       popScope()
 
       Fun(params, retType, body)
-    }
 
     case Name(n, nodes) => lookupName(n) match {
       case Nil => raise(UnknownName(n)); exp
