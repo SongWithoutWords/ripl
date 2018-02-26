@@ -5,60 +5,68 @@ import org.scalatest._
 import ast._
 
 class TestReduce extends FreeSpec with Matchers {
+
+  def test(in: Map[String, Unit])(out: Map[String, Unit])(errs: Error*): scala.Unit
+    = Reduce(in).shouldBe((out, Set(errs: _*)))
+  def test(in: (String, Unit)*)(out: (String, Unit)*)(errs: Error*): scala.Unit
+    = test(Map(in: _*))(Map(out: _*))(errs: _*)
+  def testErrs(in: Map[String, Unit])(errs: Error*): scala.Unit
+    = Reduce(in)._2.shouldBe(Set(errs: _*))
+
   "constants" - {
     "4 + 5 is 9" in {
-      val input = Map("a" -> App(Name("+", Nil), List(VInt(4), VInt(5))))
-      val output = Map("a" -> VInt(9))
-      Reduce(input) shouldBe (output, Set())
+      val input = "a" -> App(Name("+", Nil), List(VInt(4), VInt(5)))
+      val output = "a" -> VInt(9)
+      test(input)(output)()
     }
     "a + b is 9 given a = 4 and b = 5" in {
-      val input = Map("a" -> App(Name("+", Nil), List(VInt(4), VInt(5))))
-      val output = Map("a" -> VInt(9))
-      Reduce(input) shouldBe (output, Set())
+      val input = "a" -> App(Name("+", Nil), List(VInt(4), VInt(5)))
+      val output = "a" -> VInt(9)
+      test(input)(output)()
     }
   }
   "named references" - {
     "are found" in {
       val input = Map("a" -> VInt(4), "b" -> Name("a", Nil))
       val output = Map("a" -> VInt(4), "b" -> VInt(4))
-      Reduce(input) shouldBe (output, Set())
+      test(input)(output)()
     }
     "are found in any order" in {
       val input = Map("a" -> Name("b", Nil), "b" -> VInt(4))
       val output = Map("a" -> VInt(4), "b" -> VInt(4))
-      Reduce(input) shouldBe (output, Set())
+      test(input)(output)()
     }
     "produce errors when they don't exist" in {
       val input = Map("a" -> Name("b", Nil))
       val output = Map("a" -> Name("b", Nil))
-      Reduce(input) shouldBe (output, Set(UnknownName("b")))
+      test(input)(output)(UnknownName("b"))
     }
     "produce errors when they form cycles" - {
       "at depth 0" in {
         val input = Map("a" -> Name("a", Nil))
-        Reduce(input)._2 shouldBe Set(RecursiveVariableDef)
+        testErrs(input)(RecursiveVariableDef(Name("a", Nil)))
       }
       "at depth 1" in {
         val input = Map("a" -> Name("b", Nil), "b" -> Name("a", Nil))
-        Reduce(input)._2 shouldBe Set(RecursiveVariableDef)
+        testErrs(input)(RecursiveVariableDef(Name("b", Nil)))
       }
       "at depth 2" in {
         val input = Map(
           "a" -> Name("b", Nil),
           "b" -> Name("c", Nil),
           "c" -> Name("a", Nil))
-        Reduce(input)._2 shouldBe Set(RecursiveVariableDef)
+        testErrs(input)(RecursiveVariableDef(Name("b", Nil)))
       }
     }
   }
   "type constraints" - {
     "produce no errors when they are met" in {
       val ast = Map("x" -> Cons(TInt, VInt(3)))
-      Reduce(ast) shouldBe (ast, Set())
+      test(ast)(ast)()
     }
     "produce errors when they are not met" in {
       val ast = Map("x" -> Cons(TInt, VBln(true)))
-      Reduce(ast) shouldBe (ast, Set(TypeConflict(TInt, TBln)))
+      test(ast)(ast)(TypeConflict(TInt, TBln))
     }
   }
 
@@ -72,7 +80,7 @@ class TestReduce extends FreeSpec with Matchers {
         val identity = id(Name("a", Nil))
         val identityPrime = id(Name("a", Param("a", TInt)::Nil))
 
-        Reduce(Map("identity" -> identity)) shouldBe (Map("identity" -> identityPrime), Set())
+        test("identity" -> identity)("identity" -> identityPrime)()
       }
       "bind parameter in deep exp in body" in {
         val inc = Fun(
@@ -87,7 +95,7 @@ class TestReduce extends FreeSpec with Matchers {
             App(Name("+", Intrinsic.IAdd::Nil),
                 List(Name("a", Param("a", TInt)::Nil), VInt(1))))
 
-        Reduce(Map("inc" -> inc)) shouldBe (Map("inc" -> incPrime), Set())
+        test("inc" -> inc)("inc" -> incPrime)()
       }
     }
 
@@ -107,35 +115,40 @@ class TestReduce extends FreeSpec with Matchers {
                    Name("b", Param("b", TInt)::Nil))))
 
       "bind parameters in body" in {
-        Reduce(Map("add" -> add)) shouldBe (Map("add" -> addPrime), Set())
+        test("add" -> add)("add" -> addPrime)()
       }
       "produce no errors when applied to right types" in {
         val x = App(Name("add", Nil), List(VInt(4), VInt(5)))
         val xPrime = App(Name("add", addPrime::Nil), List(VInt(4), VInt(5)))
-        Reduce(Map("add" -> add, "x" -> x)) shouldBe
-          (Map("add" -> addPrime, "x" -> xPrime), Set())
+        test("add" -> add, "x" -> x)("add" -> addPrime, "x" -> xPrime)()
       }
       "produce errors when applied with too few args" in {
         val x = App(Name("add", Nil), VInt(4)::Nil)
         val xPrime = App(Name("add", addPrime::Nil), VInt(4)::Nil)
-        Reduce(Map("add" -> add, "x" -> x)) shouldBe
-          (Map("add" -> addPrime, "x" -> xPrime), Set(WrongNumArgs(2, 1)))
+        test(
+          "add" -> add, "x" -> x)(
+          "add" -> addPrime, "x" -> xPrime)(
+          WrongNumArgs(2, 1))
       }
       "produce errors when applied with too many args" in {
         val x = App(Name("add", Nil), VInt(4)::VInt(5)::VInt(6)::Nil)
         val xPrime = App(Name("add", addPrime::Nil), VInt(4)::VInt(5)::VInt(6)::Nil)
-        Reduce(Map("add" -> add, "x" -> x)) shouldBe
-          (Map("add" -> addPrime, "x" -> xPrime), Set(WrongNumArgs(2, 3)))
+        test(
+          "add" -> add, "x" -> x)(
+          "add" -> addPrime, "x" -> xPrime)(
+          WrongNumArgs(2, 3))
       }
       "produce errors when applied to wrong types" in {
         val x = App(Name("add", Nil), VInt(4)::VBln(true)::Nil)
         val xPrime = App(Name("add", addPrime::Nil), VInt(4)::VBln(true)::Nil)
-        Reduce(Map("add" -> add, "x" -> x)) shouldBe
-          (Map("add" -> addPrime, "x" -> xPrime), Set(TypeConflict(TInt, TBln)))
+        test(
+          "add" -> add, "x" -> x)(
+          "add" -> addPrime, "x" -> xPrime)(
+          TypeConflict(TInt, TBln))
       }
       "produce errors when non-applicable type applied" in {
         val input = Map("a" -> App(VInt(4), List(VInt(5))))
-        Reduce(input) shouldBe (input, Set(ApplicationOfNonAppliableType(TInt)))
+        test(input)(input)(ApplicationOfNonAppliableType(TInt))
       }
     }
   }
@@ -154,8 +167,7 @@ class TestReduce extends FreeSpec with Matchers {
             Name("a", Param("a", TBln)::Nil),
             Name("b", Param("b", TInt)::Nil),
             Name("c", Param("c", TInt)::Nil)))
-
-      Reduce(Map("select" -> select)) shouldBe (Map("select" -> selectPrime), Set())
+      test("select" -> select)("select" -> selectPrime)()
     }
     "produces error with non-boolean condition" in {
       val select = Fun(
@@ -172,8 +184,7 @@ class TestReduce extends FreeSpec with Matchers {
           Name("b", Param("b", TInt)::Nil),
           Name("c", Param("c", TInt)::Nil)))
 
-      Reduce(Map("select" -> select)) shouldBe
-      (Map("select" -> selectPrime), Set(TypeConflict(TBln, TInt)))
+      test("select" -> select)("select" -> selectPrime)(TypeConflict(TBln, TInt))
     }
     "branches must yield compatible types" in {
       val select = Fun(
@@ -190,8 +201,7 @@ class TestReduce extends FreeSpec with Matchers {
           Name("b", Param("b", TInt)::Nil),
           Name("c", Param("c", TBln)::Nil)))
 
-      Reduce(Map("select" -> select)) shouldBe
-      (Map("select" -> selectPrime), Set(TypeConflict(TInt, TBln)))
+      test("select" -> select)("select" -> selectPrime)(TypeConflict(TInt, TBln))
     }
   }
   "local variables" - {
@@ -203,11 +213,13 @@ class TestReduce extends FreeSpec with Matchers {
         Var("x", VInt(4)),
         VInt(4))
       "are bound correctly" in {
-        Reduce(Map("b" -> _block)) shouldBe (Map("b" -> block), Set())
+        test("b" -> _block)("b" -> block)()
       }
       "are not bound outside" in {
-        Reduce(Map("b" -> _block, "y" -> Name("x", Nil))) shouldBe
-        (Map("b" -> block, "y" -> Name("x", Nil)), Set(UnknownName("x")))
+        test(
+          "b" -> _block, "y" -> Name("x", Nil))(
+          "b" -> block, "y" -> Name("x", Nil))(
+          UnknownName("x"))
       }
     }
     "in functions" - {
@@ -225,11 +237,13 @@ class TestReduce extends FreeSpec with Matchers {
           Name("result", result::Nil)))
 
       "are bound correctly" in {
-        Reduce(Map("inc" -> _inc)) shouldBe (Map("inc" -> inc), Set())
+        test("inc" -> _inc)("inc" -> inc)()
       }
       "are not bound outside" in {
-        Reduce(Map("inc" -> _inc, "res" -> Name("result", Nil))) shouldBe
-        (Map("inc" -> inc, "res" -> Name("result", Nil) ), Set(UnknownName("result")))
+        test(
+          "inc" -> _inc, "res" -> Name("result", Nil))(
+          "inc" -> inc, "res" -> Name("result", Nil))(
+          UnknownName("result"))
       }
     }
   }
