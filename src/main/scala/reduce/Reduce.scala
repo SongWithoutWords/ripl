@@ -3,7 +3,7 @@ package reduce
 import scala.collection.mutable.Set
 import scala.collection.mutable.Stack
 
-import ast._
+import reduce.Aliases._
 
 
 object Reduce {
@@ -25,14 +25,14 @@ class Reduce(val astIn: Ast)
   def historyContains(n: Node) = history.filter(n.eq(_)).nonEmpty
   def catchCycles[A <: Node](input: A, mapping: (A) => A) =
     if (historyContains(input)) {
-    raise(RecursiveVariableDef(input))
-    input
-  } else {
-    history.push(input)
-    val result = mapping(input)
-    history.pop()
-    result
-  }
+      raise(RecursiveVariableDef(input))
+      input
+    } else {
+      history.push(input)
+      val result = mapping(input)
+      history.pop()
+      result
+    }
 
   val units = new IdentityMap[Unit, Unit]
 

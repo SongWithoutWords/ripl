@@ -2,8 +2,6 @@ package reduce
 
 import org.scalatest._
 
-import ast._
-
 class TestReduce extends FreeSpec with Matchers {
 
   def test(in: Map[String, Unit])(out: Map[String, Unit])(errs: Error*): scala.Unit
