@@ -1,5 +1,5 @@
 package reduce
 
-object Main extends App {
+object Main extends scala.App {
   println("hello")
 }
