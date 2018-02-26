@@ -1,7 +1,5 @@
 package reduce
 
-// import ast._
-
 sealed trait Error
 
 case class ApplicationOfNonAppliableType(t: Type) extends Error
