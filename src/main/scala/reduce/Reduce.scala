@@ -4,6 +4,7 @@ import scala.collection.mutable.Set
 import scala.collection.mutable.Stack
 
 import reduce.Aliases._
+import reduce.util.MultiMap
 
 
 object Reduce {
@@ -39,15 +40,15 @@ class Reduce(val astIn: Ast)
   val astOut = astIn.mapValues(mapUnit)
   val intrinsics = Intrinsic.values.map(i => (i.n, i)).toMap
 
-  type Scope = Map[String, Node]
+  type Scope = MultiMap[String, Node]
   var scopes: List[Scope] = Nil
 
-  def pushScope() = scopes = Map[String, Node]() :: scopes
+  def pushScope() = scopes = MultiMap[String, Node]() :: scopes
   def pushScope(s: Scope) = scopes = s :: scopes
   def popScope() = scopes = scopes.tail
 
   def addLocalBinding(n: String, v: Node)
-    = scopes = scopes.head.updated(n, v) :: scopes.tail
+    = scopes = scopes.head.add(n, v) :: scopes.tail
 
   def lookupName(n: String): List[Node] =
     astOut.get(n).toList ++
@@ -114,7 +115,7 @@ class Reduce(val astIn: Ast)
       // either enforce the known return type
       // or gather and find supertype of types returned
 
-      pushScope(params.map(p => (p.n, p)).toMap)
+      pushScope(MultiMap(params.map(p => (p.n, p)): _*))
 
       val body = mapExp(_body)
       popScope()
