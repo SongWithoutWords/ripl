@@ -2,13 +2,17 @@ package reduce
 
 import org.scalatest._
 
+import util.{MultiMap => Multi}
+
 class TestReduce extends FreeSpec with Matchers {
 
-  def test(in: Map[String, Unit])(out: Map[String, Unit])(errs: Error*): scala.Unit
+  def test(in: Multi[String, Unit])(out: Multi[String, Unit])(errs: Error*): scala.Unit
     = Reduce(in).shouldBe((out, Set(errs: _*)))
+
   def test(in: (String, Unit)*)(out: (String, Unit)*)(errs: Error*): scala.Unit
-    = test(Map(in: _*))(Map(out: _*))(errs: _*)
-  def testErrs(in: Map[String, Unit])(errs: Error*): scala.Unit
+    = test(Multi(in: _*))(Multi(out: _*))(errs: _*)
+
+  def testErrs(in: Multi[String, Unit])(errs: Error*): scala.Unit
     = Reduce(in)._2.shouldBe(Set(errs: _*))
 
   "constants" - {
@@ -25,31 +29,31 @@ class TestReduce extends FreeSpec with Matchers {
   }
   "named references" - {
     "are found" in {
-      val input = Map("a" -> VInt(4), "b" -> Name("a", Nil))
-      val output = Map("a" -> VInt(4), "b" -> VInt(4))
+      val input = Multi("a" -> VInt(4), "b" -> Name("a", Nil))
+      val output = Multi("a" -> VInt(4), "b" -> VInt(4))
       test(input)(output)()
     }
     "are found in any order" in {
-      val input = Map("a" -> Name("b", Nil), "b" -> VInt(4))
-      val output = Map("a" -> VInt(4), "b" -> VInt(4))
+      val input = Multi("a" -> Name("b", Nil), "b" -> VInt(4))
+      val output = Multi("a" -> VInt(4), "b" -> VInt(4))
       test(input)(output)()
     }
     "produce errors when they don't exist" in {
-      val input = Map("a" -> Name("b", Nil))
-      val output = Map("a" -> Name("b", Nil))
+      val input = Multi("a" -> Name("b", Nil))
+      val output = Multi("a" -> Name("b", Nil))
       test(input)(output)(UnknownName("b"))
     }
     "produce errors when they form cycles" - {
       "at depth 0" in {
-        val input = Map("a" -> Name("a", Nil))
+        val input = Multi("a" -> Name("a", Nil))
         testErrs(input)(RecursiveVariableDef(Name("a", Nil)))
       }
       "at depth 1" in {
-        val input = Map("a" -> Name("b", Nil), "b" -> Name("a", Nil))
+        val input = Multi("a" -> Name("b", Nil), "b" -> Name("a", Nil))
         testErrs(input)(RecursiveVariableDef(Name("b", Nil)))
       }
       "at depth 2" in {
-        val input = Map(
+        val input = Multi(
           "a" -> Name("b", Nil),
           "b" -> Name("c", Nil),
           "c" -> Name("a", Nil))
@@ -59,11 +63,11 @@ class TestReduce extends FreeSpec with Matchers {
   }
   "type constraints" - {
     "produce no errors when they are met" in {
-      val ast = Map("x" -> Cons(TInt, VInt(3)))
+      val ast = Multi("x" -> Cons(TInt, VInt(3)))
       test(ast)(ast)()
     }
     "produce errors when they are not met" in {
-      val ast = Map("x" -> Cons(TInt, VBln(true)))
+      val ast = Multi("x" -> Cons(TInt, VBln(true)))
       test(ast)(ast)(TypeConflict(TInt, TBln))
     }
   }
@@ -145,7 +149,7 @@ class TestReduce extends FreeSpec with Matchers {
           TypeConflict(TInt, TBln))
       }
       "produce errors when non-applicable type applied" in {
-        val input = Map("a" -> App(VInt(4), List(VInt(5))))
+        val input = Multi("a" -> App(VInt(4), List(VInt(5))))
         test(input)(input)(ApplicationOfNonAppliableType(TInt))
       }
     }

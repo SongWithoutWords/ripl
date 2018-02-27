@@ -144,6 +144,6 @@ class Reduce(val astIn: Ast)
   def constrain(a: Type, b: Exp): scala.Unit = constrain(a, b.t)
   def constrain(a: Type, b: Type): scala.Unit = if (a != b) raise(TypeConflict(a, b))
 
-  astOut.view.force
+  astOut.map.view.force
 }
 

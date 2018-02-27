@@ -2,9 +2,11 @@ package reduce
 
 import enumeratum._
 
+import util.MultiMap
+
 object Aliases{
   type Ast = Units
-  type Units = Map[String, Unit]
+  type Units = MultiMap[String, Unit]
 }
 
 // A named and referenceable node within the Ast
