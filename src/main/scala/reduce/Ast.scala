@@ -14,7 +14,12 @@ import Aliases._
 sealed trait Node
 
 sealed trait Unit extends Node
-case class Namespace(units: Units)
+
+object Namespace
+{
+  def apply(units: (String, Unit)*): Namespace = Namespace(MultiMap(units: _*))
+}
+case class Namespace(units: Units) extends Unit
 
 object Fun
 {

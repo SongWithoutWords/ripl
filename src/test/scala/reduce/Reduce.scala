@@ -66,12 +66,14 @@ class TestReduce extends FreeSpec with Matchers {
       }
     }
   }
-  // "namespaces" - {
-  //   val input = Multi(
-  //     "a" -> 
-
-  //   )
-  // }
+  "namespaces" - {
+    "are traversed during reduction" in {
+      val ast = Multi(
+        "math" -> Namespace(
+          "a" -> Cons(TBln, VInt(4))))
+      test(ast)(ast)(TypeConflict(TBln, TInt))
+    }
+  }
   "type constraints" - {
     "produce no errors when they are met" in {
       val ast = Multi("x" -> Cons(TInt, VInt(3)))
