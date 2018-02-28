@@ -69,19 +69,20 @@ class Reduce(val astIn: Ast)
 
   def mapExp(exp: Exp): Exp = exp match {
 
-    case App(Name("+", _), List(VInt(a), VInt(b))) => VInt(a + b)
 
     case App(_f, _args) =>
-      val f = mapExp(_f)
-      val args = _args.map(mapExp)
-      f.t match {
-        case TFun(params, ret) =>
-          if (params.length != args.length) {
-            raise(WrongNumArgs(params.length, args.length))
-          }
-          (params, args).zipped.map((p, a) => constrain(p, a))
-          App(f, args)
-        case _ => raise(ApplicationOfNonAppliableType(f.t)); exp
+      val app = App(mapExp(_f), _args.map(mapExp))
+      app match {
+        case App(Name("+", List(Intrinsic.IAdd)), List(VInt(a), VInt(b))) => VInt(a + b)
+        case App(f, args) => f.t match {
+          case TFun(params, ret) =>
+            if (params.length != args.length) {
+              raise(WrongNumArgs(params.length, args.length))
+            }
+            (params, args).zipped.map((p, a) => constrain(p, a))
+            app
+          case _ => raise(ApplicationOfNonAppliableType(f.t)); app
+        }
       }
 
     case Block(_exps @ _*) =>
