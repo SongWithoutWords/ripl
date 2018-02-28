@@ -69,9 +69,44 @@ class TestReduce extends FreeSpec with Matchers {
   "namespaces" - {
     "are traversed during reduction" in {
       val ast = Multi(
-        "math" -> Namespace(
+        "n" -> Namespace(
           "a" -> Cons(TBln, VInt(4))))
       test(ast)(ast)(TypeConflict(TBln, TInt))
+    }
+    "units are visible within their namespace" in {
+      val _ast = Multi(
+        "n" -> Namespace(
+          "a" -> VInt(4),
+          "b" -> Name("a")))
+      val ast = Multi(
+        "n" -> Namespace(
+          "a" -> VInt(4),
+          "b" -> VInt(4)))
+      test(_ast)(ast)()
+    }
+    "units are visible from sub-namespaces" in {
+      val _ast = Multi(
+        "n" -> Namespace(
+          "a" -> VInt(4),
+          "m" -> Namespace(
+            "b" -> Name("a"))))
+      val ast = Multi(
+        "n" -> Namespace(
+          "a" -> VInt(4),
+          "m" -> Namespace(
+            "b" -> VInt(4))))
+      test(_ast)(ast)()
+    }
+    "units are not visible from outer namespaces" in {
+      val _ast = Multi(
+        "math" -> Namespace(
+          "a" -> VInt(4)),
+        "b" -> Name("a"))
+      val ast = Multi(
+        "math" -> Namespace(
+          "a" -> VInt(4)),
+        "b" -> Name("a"))
+      test(_ast)(ast)(UnknownName("a"))
     }
   }
   "type constraints" - {

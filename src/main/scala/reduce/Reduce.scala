@@ -59,7 +59,12 @@ class Reduce(val astIn: Ast)
   def mapUnit(u: Unit): Unit = units.getOrElseUpdate(u, {
     catchCycles(u, (u: Unit) => u match {
       case e: Exp => mapExp(e)
-      case u@Namespace(units) => Namespace(units.mapValues(mapUnit))
+      case Namespace(_units) =>
+        val units = _units.mapValues(mapUnit)
+        pushScope(units)
+        units.map.view.force
+        popScope()
+        Namespace(units)
     })
   })
 
