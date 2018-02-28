@@ -92,6 +92,7 @@ class Reduce(val astIn: Ast)
       }
 
     case Block(_exps @ _*) =>
+      // TODO: reduce to single exp if is single exp
       pushScope()
       val exps = _exps.map(mapExp)
       popScope()
@@ -129,16 +130,19 @@ class Reduce(val astIn: Ast)
 
       Fun(params, retType, body)
 
-    case Name(n, nodes) => lookupName(n) match {
-      case Nil => raise(UnknownName(n)); exp
-      case x::Nil => if (historyContains(x)) {
-        raise(RecursiveVariableDef(x))
-        exp
-      } else x match {
-        case v: Val => v
-        case _ => Name(n, x :: nodes)
-      }
+    case _n: Name =>
+      val n = mapName(_n)
+      n.nodes match {
+        case List(v: Val) => v
+        case _ => n
     }
+
+    case Select(_e, name) =>
+      val e = mapExp(_e)
+      e match {
+        case Name(namespaceName, List(Namespace(units))) =>
+          Name(s"$namespaceName.$name", units.get(name))
+      }
 
     case Var(n, _e) =>
       val e = mapExp(_e)
@@ -146,6 +150,14 @@ class Reduce(val astIn: Ast)
       Var(n, e)
 
     case _ => exp
+  }
+
+  def mapName(name: Name) = lookupName(name.n) match {
+    case Nil => raise(UnknownName(name.n)); name
+    case x::Nil => if (historyContains(x)) {
+      raise(RecursiveVariableDef(x))
+      name
+    } else Name(name.n, x :: name.nodes)
   }
 
   def constrain(a: Exp, b: Exp): scala.Unit = constrain(a.t, b.t)

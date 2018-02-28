@@ -71,7 +71,7 @@ case class Name(n: String, nodes: List[Node]) extends Exp {
 // Idea: store name instead of string to easily catch what we're shadowing?
 // (same goes for var)
 case class Param(n: String, t: Type) extends Exp
-case class Select(e: Exp, n: Name) extends Exp {
+case class Select(e: Exp, n: String) extends Exp {
   def t = ???
 }
 case class Var(n: String, e: Exp) extends Unit with Exp {

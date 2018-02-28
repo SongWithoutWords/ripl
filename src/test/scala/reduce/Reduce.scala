@@ -99,14 +99,40 @@ class TestReduce extends FreeSpec with Matchers {
     }
     "units are not visible from outer namespaces" in {
       val _ast = Multi(
-        "math" -> Namespace(
+        "n" -> Namespace(
           "a" -> VInt(4)),
         "b" -> Name("a"))
       val ast = Multi(
-        "math" -> Namespace(
+        "n" -> Namespace(
           "a" -> VInt(4)),
         "b" -> Name("a"))
       test(_ast)(ast)(UnknownName("a"))
+    }
+    "units can be selected by name" in {
+      val _ast = Multi(
+        "n" -> Namespace(
+          "a" -> VInt(4)),
+        "b" -> Select(Name("n"), "a"))
+      val ast = Multi(
+        "n" -> Namespace(
+          "a" -> VInt(4)),
+        "b" -> Name("n.a", VInt(4)))
+      test(_ast)(ast)()
+    }
+    "units can be selected by name at depth" in {
+      val _ast = Multi(
+        "n" -> Namespace(
+          "a" -> VInt(4),
+          "m" -> Namespace(
+            "b" -> VInt(7))),
+        "c" -> Select(Select(Name("n"), "m"), "b"))
+      val ast = Multi(
+        "n" -> Namespace(
+          "a" -> VInt(4),
+          "m" -> Namespace(
+            "b" -> VInt(7))),
+        "c" -> Name("n.m.b", VInt(7)))
+      test(_ast)(ast)()
     }
   }
   "type constraints" - {
@@ -161,7 +187,7 @@ class TestReduce extends FreeSpec with Matchers {
         val xPrime = App(Name("add", addPrime), VInt(4), VInt(5))
         test("add" -> add, "x" -> x)("add" -> addPrime, "x" -> xPrime)()
       }
-      "produce errors when applied with too few args" in {
+      "produce errors when applied to too few args" in {
         val x = App(Name("add"), VInt(4))
         val xPrime = App(Name("add", addPrime), VInt(4))
         test(
@@ -169,7 +195,7 @@ class TestReduce extends FreeSpec with Matchers {
           "add" -> addPrime, "x" -> xPrime)(
           WrongNumArgs(2, 1))
       }
-      "produce errors when applied with too many args" in {
+      "produce errors when applied to too many args" in {
         val x = App(Name("add"), VInt(4), VInt(5), VInt(6))
         val xPrime = App(Name("add", addPrime), VInt(4), VInt(5), VInt(6))
         test(
