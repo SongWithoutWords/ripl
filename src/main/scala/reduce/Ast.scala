@@ -8,13 +8,19 @@ object Aliases{
   type Ast = Units
   type Units = MultiMap[String, Unit]
 }
+import Aliases._
 
 // A named and referenceable node within the Ast
 sealed trait Node
 
 sealed trait Unit extends Node
-// case class Namespace(units: Map[String, Unit])
+case class Namespace(units: Units)
 
+object Fun
+{
+  def apply(params: Param*)(retType: Option[Type])(body: Exp): Fun
+    = Fun(params.toList, retType, body)
+}
 case class Fun(params: List[Param], retType: Option[Type], body: Exp)
     extends Unit with Exp {
   def t = retType match {
@@ -22,10 +28,13 @@ case class Fun(params: List[Param], retType: Option[Type], body: Exp)
     case None => TError
   }
 }
-// case class Rec() extends Unit
 
 sealed trait Exp extends Unit {
   def t: Type
+}
+object App
+{
+  def apply(f: Exp, args: Exp*): App = App(f, args.toList)
 }
 case class App(f: Exp, args: List[Exp]) extends Exp {
   def t = f.t match {
@@ -46,6 +55,8 @@ case class If(a: Exp, b: Exp, c: Exp) extends Exp {
   // TODO: make this a bit more sophisticated (find common super type)
   def t = b.t
 }
+
+object Name { def apply(n: String, nodes: Node*): Name = Name(n, nodes.toList) }
 case class Name(n: String, nodes: List[Node]) extends Exp {
   def t = nodes match {
     case (e: Exp)::Nil => e.t
@@ -66,8 +77,8 @@ sealed trait Intrinsic extends EnumEntry with Exp { val n: String; val t: TFun }
 case object Intrinsic extends Enum[Intrinsic] {
   val values = findValues
   val valuesByName = values.map(v => v.n -> v).toMap
-  case object IAdd extends Intrinsic { val n = "+"; val t = TFun(List(TInt, TInt), TInt) }
-  case object ISub extends Intrinsic { val n = "-"; val t = TFun(List(TInt, TInt), TInt) }
+  case object IAdd extends Intrinsic { val n = "+"; val t = TFun(TInt, TInt)(TInt) }
+  case object ISub extends Intrinsic { val n = "-"; val t = TFun(TInt, TInt)(TInt) }
 }
 
 sealed trait Val extends Exp // A known value
@@ -83,5 +94,6 @@ sealed trait Type
 case object TBln extends Type
 case object TError extends Type
 case object TInt extends Type
+object TFun { def apply(params: Type*)(ret: Type): TFun = TFun(params.toList, ret) }
 case class TFun(params: List[Type], ret: Type) extends Type
 case object TNone extends Type

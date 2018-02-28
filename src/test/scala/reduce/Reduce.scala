@@ -17,50 +17,61 @@ class TestReduce extends FreeSpec with Matchers {
 
   "constants" - {
     "4 + 5 is 9" in {
-      val input = "a" -> App(Name("+", Nil), List(VInt(4), VInt(5)))
+      val input = "a" -> App(Name("+"), VInt(4), VInt(5))
       val output = "a" -> VInt(9)
       test(input)(output)()
     }
     "a + b is 9 given a = 4 and b = 5" in {
-      val input = "a" -> App(Name("+", Nil), List(VInt(4), VInt(5)))
-      val output = "a" -> VInt(9)
+      val input = Multi(
+        "a" -> VInt(4),
+        "b" -> VInt(5),
+        "c" -> App(Name("+"), Name("a"), Name("b")))
+      val output = Multi(
+        "a" -> VInt(4),
+        "b" -> VInt(5),
+        "c" -> VInt(9))
       test(input)(output)()
     }
   }
   "named references" - {
     "are found" in {
-      val input = Multi("a" -> VInt(4), "b" -> Name("a", Nil))
+      val input = Multi("a" -> VInt(4), "b" -> Name("a"))
       val output = Multi("a" -> VInt(4), "b" -> VInt(4))
       test(input)(output)()
     }
     "are found in any order" in {
-      val input = Multi("a" -> Name("b", Nil), "b" -> VInt(4))
+      val input = Multi("a" -> Name("b"), "b" -> VInt(4))
       val output = Multi("a" -> VInt(4), "b" -> VInt(4))
       test(input)(output)()
     }
     "produce errors when they don't exist" in {
-      val input = Multi("a" -> Name("b", Nil))
-      val output = Multi("a" -> Name("b", Nil))
-      test(input)(output)(UnknownName("b"))
+      val input = Multi("a" -> Name("b"))
+      test(input)(input)(UnknownName("b"))
     }
     "produce errors when they form cycles" - {
       "at depth 0" in {
-        val input = Multi("a" -> Name("a", Nil))
-        testErrs(input)(RecursiveVariableDef(Name("a", Nil)))
+        val input = Multi("a" -> Name("a"))
+        test(input)(input)(RecursiveVariableDef(Name("a")))
       }
       "at depth 1" in {
-        val input = Multi("a" -> Name("b", Nil), "b" -> Name("a", Nil))
-        testErrs(input)(RecursiveVariableDef(Name("b", Nil)))
+        val input = Multi("a" -> Name("b"), "b" -> Name("a"))
+        testErrs(input)(RecursiveVariableDef(Name("b")))
       }
       "at depth 2" in {
         val input = Multi(
-          "a" -> Name("b", Nil),
-          "b" -> Name("c", Nil),
-          "c" -> Name("a", Nil))
-        testErrs(input)(RecursiveVariableDef(Name("b", Nil)))
+          "a" -> Name("b"),
+          "b" -> Name("c"),
+          "c" -> Name("a"))
+        testErrs(input)(RecursiveVariableDef(Name("b")))
       }
     }
   }
+  // "namespaces" - {
+  //   val input = Multi(
+  //     "a" -> 
+
+  //   )
+  // }
   "type constraints" - {
     "produce no errors when they are met" in {
       val ast = Multi("x" -> Cons(TInt, VInt(3)))
@@ -77,25 +88,19 @@ class TestReduce extends FreeSpec with Matchers {
   "functions" - {
     "with one parameter" - {
       "bind parameter in body" in {
-        def id(ret: Exp) = Fun(Param("a", TInt)::Nil, Some(TInt), ret)
+        def id(ret: Exp) = Fun(Param("a", TInt))(Some(TInt))(ret)
 
-        val identity = id(Name("a", Nil))
-        val identityPrime = id(Name("a", Param("a", TInt)::Nil))
+        val identity = id(Name("a"))
+        val identityPrime = id(Name("a", Param("a", TInt)))
 
         test("identity" -> identity)("identity" -> identityPrime)()
       }
       "bind parameter in deep exp in body" in {
-        val inc = Fun(
-          List(Param("a", TInt)),
-          Some(TInt),
-            App(Name("+", Nil),
-                List(Name("a", Nil), VInt(1))))
+        val inc = Fun(Param("a", TInt))(Some(TInt))(
+          App(Name("+"), Name("a"), VInt(1)))
 
-        val incPrime = Fun(
-          List(Param("a", TInt)),
-          Some(TInt),
-            App(Name("+", Intrinsic.IAdd::Nil),
-                List(Name("a", Param("a", TInt)::Nil), VInt(1))))
+        val incPrime = Fun(Param("a", TInt))(Some(TInt))(
+          App(Name("+", Intrinsic.IAdd), Name("a", Param("a", TInt)), VInt(1)))
 
         test("inc" -> inc)("inc" -> incPrime)()
       }
@@ -103,105 +108,88 @@ class TestReduce extends FreeSpec with Matchers {
 
     "with two parameters" - {
 
-      val add = Fun(
-        List(Param("a", TInt), Param("b", TInt)),
-        Some(TInt),
-        App(Name("+", Nil), List(Name("a", Nil), Name("b", Nil))))
+      val add = Fun(Param("a", TInt), Param("b", TInt))(Some(TInt))(
+        App(Name("+"), Name("a"), Name("b")))
 
-      val addPrime = Fun(
-        List(Param("a", TInt), Param("b", TInt)),
-        Some(TInt),
-        App(Name("+", Intrinsic.IAdd::Nil),
-                 List(
-                   Name("a", Param("a", TInt)::Nil),
-                   Name("b", Param("b", TInt)::Nil))))
+      val addPrime = Fun(Param("a", TInt), Param("b", TInt))(Some(TInt))(
+        App(Name("+", Intrinsic.IAdd),
+            Name("a", Param("a", TInt)),
+            Name("b", Param("b", TInt))))
 
       "bind parameters in body" in {
         test("add" -> add)("add" -> addPrime)()
       }
       "produce no errors when applied to right types" in {
-        val x = App(Name("add", Nil), List(VInt(4), VInt(5)))
-        val xPrime = App(Name("add", addPrime::Nil), List(VInt(4), VInt(5)))
+        val x = App(Name("add"), VInt(4), VInt(5))
+        val xPrime = App(Name("add", addPrime), VInt(4), VInt(5))
         test("add" -> add, "x" -> x)("add" -> addPrime, "x" -> xPrime)()
       }
       "produce errors when applied with too few args" in {
-        val x = App(Name("add", Nil), VInt(4)::Nil)
-        val xPrime = App(Name("add", addPrime::Nil), VInt(4)::Nil)
+        val x = App(Name("add"), VInt(4))
+        val xPrime = App(Name("add", addPrime), VInt(4))
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
           WrongNumArgs(2, 1))
       }
       "produce errors when applied with too many args" in {
-        val x = App(Name("add", Nil), VInt(4)::VInt(5)::VInt(6)::Nil)
-        val xPrime = App(Name("add", addPrime::Nil), VInt(4)::VInt(5)::VInt(6)::Nil)
+        val x = App(Name("add"), VInt(4), VInt(5), VInt(6))
+        val xPrime = App(Name("add", addPrime), VInt(4), VInt(5), VInt(6))
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
           WrongNumArgs(2, 3))
       }
       "produce errors when applied to wrong types" in {
-        val x = App(Name("add", Nil), VInt(4)::VBln(true)::Nil)
-        val xPrime = App(Name("add", addPrime::Nil), VInt(4)::VBln(true)::Nil)
+        val x = App(Name("add"), VInt(4), VBln(true))
+        val xPrime = App(Name("add", addPrime), VInt(4), VBln(true))
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
           TypeConflict(TInt, TBln))
       }
       "produce errors when non-applicable type applied" in {
-        val input = Multi("a" -> App(VInt(4), List(VInt(5))))
+        val input = Multi("a" -> App(VInt(4), VInt(5)))
         test(input)(input)(ApplicationOfNonAppliableType(TInt))
       }
     }
   }
   "if exps" - {
     "produce no errors with correct types" in {
-      val select = Fun(
-        List(Param("a", TBln), Param("b", TInt), Param("c", TInt)),
-        Some(TInt),
-          If(Name("a", Nil),
-            Name("b", Nil),
-            Name("c", Nil)))
-      val selectPrime = Fun(
-        Param("a", TBln)::Param("b", TInt)::Param("c", TInt)::Nil,
-        Some(TInt),
+      val select = Fun(Param("a", TBln), Param("b", TInt), Param("c", TInt))(
+        Some(TInt))(
+        If(Name("a"), Name("b"), Name("c")))
+      val selectPrime = Fun(Param("a", TBln), Param("b", TInt), Param("c", TInt))(
+        Some(TInt))(
           If(
-            Name("a", Param("a", TBln)::Nil),
-            Name("b", Param("b", TInt)::Nil),
-            Name("c", Param("c", TInt)::Nil)))
+            Name("a", Param("a", TBln)),
+            Name("b", Param("b", TInt)),
+            Name("c", Param("c", TInt))))
       test("select" -> select)("select" -> selectPrime)()
     }
     "produces error with non-boolean condition" in {
-      val select = Fun(
-        List(Param("a", TInt), Param("b", TInt), Param("c", TInt)),
-        Some(TInt),
-        If(Name("a", Nil),
-            Name("b", Nil),
-            Name("c", Nil)))
-      val selectPrime = Fun(
-        Param("a", TInt)::Param("b", TInt)::Param("c", TInt)::Nil,
-        Some(TInt),
-        If(
-          Name("a", Param("a", TInt)::Nil),
-          Name("b", Param("b", TInt)::Nil),
-          Name("c", Param("c", TInt)::Nil)))
+      val select = Fun(Param("a", TInt), Param("b", TInt), Param("c", TInt))(
+        Some(TInt))(
+          If(Name("a"), Name("b"), Name("c")))
+      val selectPrime = Fun(Param("a", TInt), Param("b", TInt), Param("c", TInt))(
+        Some(TInt))(
+          If(
+            Name("a", Param("a", TInt)),
+            Name("b", Param("b", TInt)),
+            Name("c", Param("c", TInt))))
 
       test("select" -> select)("select" -> selectPrime)(TypeConflict(TBln, TInt))
     }
     "branches must yield compatible types" in {
-      val select = Fun(
-        List(Param("a", TBln), Param("b", TInt), Param("c", TBln)),
-        Some(TInt),
-        If(Name("a", Nil),
-           Name("b", Nil),
-           Name("c", Nil)))
-      val selectPrime = Fun(
-        Param("a", TBln)::Param("b", TInt)::Param("c", TBln)::Nil,
-        Some(TInt),
-        If(
-          Name("a", Param("a", TBln)::Nil),
-          Name("b", Param("b", TInt)::Nil),
-          Name("c", Param("c", TBln)::Nil)))
+      val select = Fun(Param("a", TBln), Param("b", TInt), Param("c", TBln))(
+        Some(TInt))(
+          If(Name("a"), Name("b"), Name("c")))
+      val selectPrime = Fun(Param("a", TBln), Param("b", TInt), Param("c", TBln))(
+        Some(TInt))(
+          If(
+            Name("a", Param("a", TBln)),
+            Name("b", Param("b", TInt)),
+            Name("c", Param("c", TBln))))
 
       test("select" -> select)("select" -> selectPrime)(TypeConflict(TInt, TBln))
     }
@@ -210,7 +198,7 @@ class TestReduce extends FreeSpec with Matchers {
     "in blocks" - {
       val _block = Block(
         Var("x", VInt(4)),
-        Name("x", Nil))
+        Name("x"))
       val block = Block(
         Var("x", VInt(4)),
         VInt(4))
@@ -219,32 +207,31 @@ class TestReduce extends FreeSpec with Matchers {
       }
       "are not bound outside" in {
         test(
-          "b" -> _block, "y" -> Name("x", Nil))(
-          "b" -> block, "y" -> Name("x", Nil))(
+          "b" -> _block, "y" -> Name("x"))(
+          "b" -> block, "y" -> Name("x"))(
           UnknownName("x"))
       }
     }
     "in functions" - {
-      val a = Param("a", TInt)::Nil
-      val _result = App(Name("+", Nil), Name("a", Nil)::VInt(1)::Nil)
-      val _inc = Fun(a, Some(TInt),
+      val a = Param("a", TInt)
+      val _inc = Fun(a)(Some(TInt))(
         Block(
-          Var("result", _result),
-          Name("result", Nil)))
+          Var("result", App(Name("+"), Name("a"), VInt(1))),
+          Name("result")))
 
-      val result = App(Name("+", Intrinsic.IAdd::Nil), Name("a", a)::VInt(1)::Nil)
-      val inc = Fun(a, Some(TInt),
+      val result = App(Name("+", Intrinsic.IAdd), Name("a", a), VInt(1))
+      val inc = Fun(a)(Some(TInt))(
         Block(
-          Var("result", App(Name("+", Intrinsic.IAdd::Nil), Name("a", a)::VInt(1)::Nil)),
-          Name("result", result::Nil)))
+          Var("result", result),
+          Name("result", result)))
 
       "are bound correctly" in {
         test("inc" -> _inc)("inc" -> inc)()
       }
       "are not bound outside" in {
         test(
-          "inc" -> _inc, "res" -> Name("result", Nil))(
-          "inc" -> inc, "res" -> Name("result", Nil))(
+          "inc" -> _inc, "res" -> Name("result"))(
+          "inc" -> inc, "res" -> Name("result"))(
           UnknownName("result"))
       }
     }
