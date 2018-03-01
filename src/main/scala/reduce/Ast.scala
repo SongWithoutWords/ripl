@@ -15,14 +15,12 @@ sealed trait Node
 
 sealed trait Unit extends Node
 
-object Namespace
-{
+object Namespace {
   def apply(units: (String, Unit)*): Namespace = Namespace(MultiMap(units: _*))
 }
 case class Namespace(units: Units) extends Unit
 
-object Fun
-{
+object Fun {
   def apply(params: Param*)(retType: Option[Type])(body: Exp): Fun
     = Fun(params.toList, retType, body)
 }
@@ -33,6 +31,12 @@ case class Fun(params: List[Param], retType: Option[Type], body: Exp)
     case None => TError
   }
 }
+
+object Struct {
+  def apply(name: String, fields: (String, Type)*): Struct
+    = Struct(name, MultiMap(fields: _*))
+}
+case class Struct(name: String, fields: MultiMap[String, Type]) extends Unit with Type
 
 sealed trait Exp extends Unit {
   def t: Type
@@ -93,7 +97,11 @@ case class VBln(b: Boolean) extends Val {
 case class VInt(i: Int) extends Val {
   def t = TInt
 }
-case class VObj(t: Type, fields: Map[String, Val]) extends Val
+object VObj {
+  def apply(t: Type, fields: (String, Val)*): VObj
+    = VObj(t, MultiMap(fields: _*))
+}
+case class VObj(t: Type, fields: MultiMap[String, Val]) extends Val
 
 sealed trait Type
 case object TBln extends Type

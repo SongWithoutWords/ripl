@@ -65,6 +65,7 @@ class Reduce(val astIn: Ast)
         units.map.view.force
         popScope()
         Namespace(units)
+      case s: Struct => s
     })
   })
 
@@ -74,7 +75,6 @@ class Reduce(val astIn: Ast)
   }
 
   def mapExp(exp: Exp): Exp = exp match {
-
 
     case App(_f, _args) =>
       val app = App(mapExp(_f), _args.map(mapExp))
@@ -132,16 +132,22 @@ class Reduce(val astIn: Ast)
 
     case _n: Name =>
       val n = mapName(_n)
+      // This is complicating things a bit - might be nicer to have an unwrap method
       n.nodes match {
         case List(v: Val) => v
         case _ => n
-    }
+      }
 
-    case Select(_e, name) =>
+    case Select(_e, memberName) =>
       val e = mapExp(_e)
       e match {
-        case Name(namespaceName, List(Namespace(units))) =>
-          Name(s"$namespaceName.$name", units.get(name))
+        case Name(name, List(Namespace(units))) =>
+          Name(s"$name.$memberName", units.get(memberName))
+        case VObj(typ, members) => members.get(memberName) match {
+          case ms@_::_::_ => println(s"Way to many members $ms"); ???
+          case List(v) => v
+          case Nil => raise(UnknownName(memberName)); e
+        }
       }
 
     case Var(n, _e) =>
@@ -149,7 +155,7 @@ class Reduce(val astIn: Ast)
       addLocalBinding(n, e)
       Var(n, e)
 
-    case _ => exp
+    case e => e
   }
 
   def mapName(name: Name) = lookupName(name.n) match {
