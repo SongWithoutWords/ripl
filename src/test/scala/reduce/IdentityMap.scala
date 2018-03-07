@@ -2,6 +2,8 @@ package reduce
 
 import org.scalatest._
 
+import ast.untyped._
+
 class TestIdentityMap extends FreeSpec with Matchers {
   "An IdentityMap" - {
     "should find objects by reference" in {

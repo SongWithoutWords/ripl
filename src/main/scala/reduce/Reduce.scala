@@ -3,7 +3,8 @@ package reduce
 import scala.collection.mutable.Set
 import scala.collection.mutable.Stack
 
-import reduce.Aliases._
+import reduce.ast.{untyped => a0}
+import reduce.ast.{typed => a1}
 import reduce.util.MultiMap
 
 
@@ -11,164 +12,217 @@ object Reduce {
 
   type Errors = Set[Error]
 
-  def apply(ast: Ast): (Ast, Errors) = {
+  def apply(ast: a0.Ast): (a1.Ast, Errors) = {
     val reduce = new Reduce(ast)
     (reduce.astOut, reduce.errors)
   }
 }
 
-class Reduce(val astIn: Ast)
-{
+class Reduce(val astIn: a0.Ast) {
   val errors = Set[Error]()
   def raise(e: Error) = errors += e
 
-  val history = new Stack[Node]
-  def historyContains(n: Node) = history.filter(n.eq(_)).nonEmpty
-  def catchCycles[A <: Node](input: A, mapping: (A) => A) =
-    if (historyContains(input)) {
-      raise(RecursiveVariableDef(input))
-      input
-    } else {
-      history.push(input)
-      val result = mapping(input)
-      history.pop()
-      result
-    }
+  val history = new Stack[a1.Node]
+  def historyContains(n: a1.Node) = history.filter(n.eq(_)).nonEmpty
 
-  val units = new IdentityMap[Unit, Unit]
+  // def catchCycles(Input: a0.Node, mapping: (A) => A) = 
+  // def catchCycles[A <: a0.Node](input: A, mapping: (A) => A) =
+  //   if (historyContains(input)) {
+  //     raise(RecursiveVariableDef(input))
+  //     input
+  //   } else {
+  //     history.push(input)
+  //     val result = mapping(input)
+  //     history.pop()
+  //     result
+  //   }
 
-  val astOut = astIn.mapValues(mapUnit)
-  val intrinsics = Intrinsic.values.map(i => (i.n, i)).toMap
+  val nodes = new IdentityMap[a0.Node, a1.Node]
 
-  type Scope = MultiMap[String, Node]
+  val astOut = astIn.mapValues(mapNode)
+  val intrinsics = a1.Intrinsic.values.map(i => (i.n, i)).toMap
+
+  type Scope = MultiMap[String, a1.Node]
   var scopes: List[Scope] = Nil
 
-  def pushScope() = scopes = MultiMap[String, Node]() :: scopes
+  def pushScope() = scopes = MultiMap[String, a1.Node]() :: scopes
   def pushScope(s: Scope) = scopes = s :: scopes
   def popScope() = scopes = scopes.tail
 
-  def addLocalBinding(n: String, v: Node)
+  def addLocalBinding(n: String, v: a1.Node)
     = scopes = scopes.head.add(n, v) :: scopes.tail
 
-  def lookupName(n: String): List[Node] =
+  def lookupName(n: String): List[a1.Node] =
     astOut.get(n).toList ++
       intrinsics.get(n) ++
       scopes.flatMap(_.get(n))
 
 
-  def mapUnit(u: Unit): Unit = units.getOrElseUpdate(u, {
-    catchCycles(u, (u: Unit) => u match {
-      case e: Exp => mapExp(e)
-      case Namespace(_units) =>
-        val units = _units.mapValues(mapUnit)
-        pushScope(units)
-        units.map.view.force
-        popScope()
-        Namespace(units)
-      case s: Struct => s
-    })
-  })
+  // def mapUnit(u: a0.Node): a1.Node = units.getOrElseUpdate(u, {
+  //   catchCycles(u, (u: a0.Node) => u match {
+  //     case e: Exp => mapExp(e)
+  //     case Namespace(_units) =>
+  //       val units = _units.mapValues(mapUnit)
+  //       pushScope(units)
+  //       units.map.view.force
+  //       popScope()
+  //       Namespace(units)
+  //     case s: Struct => s
+  //   })
+  // })
 
-  def mapTopLevelExp(exp: Exp) = exp match {
+  // def mapTopLevelExp(exp: Exp) = exp match {
     // TODO: catch useless expressions, bind variables, etc
-    case _ => ???
+    // case _ => ???
+  // }
+
+  // def unwrapMap(e: Exp): Node = mapExp(e) match {
+  //   case Name(n, List(unit)) => unit
+  //   case _ => e
+  // }
+
+  def asType(node: a1.Node): a1.Type = node match {
+    case t: a1.Type => t
+    case n => raise(RequiredType(n)); a1.TError
+  }
+  def mapAsType(node: a0.Node): a1.Type = asType(mapNode(node))
+  def asExp(node: a1.Node): a1.Exp = node match {
+    case e: a1.Exp => e
+    case n => raise(RequiredExp(n)); a1.InvalidExp
+  }
+  def mapAsExp(node: a0.Node): a1.Exp = asExp(mapNode(node))
+
+  def mapNode(node: a0.Node): a1.Node = node match {
+    case e: a0.Exp => mapExp(e)
+    case n: a0.Namespace => ???
+    case t: a0.Type => mapType(t)
   }
 
-  def mapExp(exp: Exp): Exp = exp match {
+  def mapExp(exp: a0.Exp): a1.Node = exp match {
 
-    case App(_f, _args) =>
-      val app = App(mapExp(_f), _args.map(mapExp))
-      app match {
-        case App(Name("+", List(Intrinsic.IAdd)), List(VInt(a), VInt(b))) => VInt(a + b)
-        case App(f, args) => f.t match {
-          case TFun(params, ret) =>
+    case a0.App(_f, _args) =>
+
+      val app = a1.App(
+        mapAsExp(_f),
+        _args.map(mapAsExp))
+
+       app match {
+        case a1.App(a1.Intrinsic.IAdd, List(a1.VInt(a), a1.VInt(b))) => a1.VInt(a + b)
+        case a1.App(f: a1.Exp, args) => f.t match {
+          case a1.TFun(params, ret) =>
             if (params.length != args.length) {
               raise(WrongNumArgs(params.length, args.length))
             }
             (params, args).zipped.map((p, a) => constrain(p, a))
-            app
+            a1.App(f, args)
           case _ => raise(ApplicationOfNonAppliableType(f.t)); app
         }
       }
 
-    case Block(_exps @ _*) =>
+    case a0.Block(_exps @ _*) =>
       // TODO: reduce to single exp if is single exp
       pushScope()
-      val exps = _exps.map(mapExp)
+      val exps = _exps.map(mapAsExp)
       popScope()
-      Block(exps: _*)
+      a1.Block(exps: _*)
 
-    case Cons(t, _e) =>
-      val e = mapExp(_e)
+    case a0.Cons(_t, _e) =>
+      val t = mapAsType(_t)
+      val e = mapAsExp(_e)
       constrain(t, e)
-      Cons(t, e)
+      a1.Cons(t, e)
 
-    case If(_a, _b, _c) =>
-      val a = mapExp(_a)
-      constrain(TBln, a.t)
+    case a0.If(_a, _b, _c) =>
+      val a = mapAsExp(_a)
+      constrain(a1.TBln, a)
+      a match {
+        case v: a1.Val => v match {
+          case a1.VBln(true) => mapNode(_b)
+          case a1.VBln(false) => mapNode(_c)
+          case _ => a1.InvalidExp // Error already emitted by constraint
+        }
+        case e =>
+          val b = mapAsExp(_b)
+          val c = mapAsExp(_c)
+          constrain(b, c)
+          a1.If(a, b, c)
+      }
 
-      // TODO: reduce to single block if condition is known value
-
-      val b = mapExp(_b)
-      val c = mapExp(_c)
-
-      constrain(b, c)
-
-      If(a, b, c)
-
-    case Fun(params, retType, _body) =>
+    case a0.Fun(_params, _retType, _body) =>
 
       // push new scope with the params
       // traverse body
       // either enforce the known return type
       // or gather and find supertype of types returned
 
-      pushScope(MultiMap(params.map(p => (p.n, p)): _*))
+      val params = _params.map(p => a1.Param(p.n, mapType(p.t)))
 
-      val body = mapExp(_body)
+      pushScope(MultiMap(params.map(p => (p.n, p)): _*))
+      val body = mapAsExp(_body)
       popScope()
 
-      Fun(params, retType, body)
+      a1.Fun(params, _retType match {case Some(t) => mapType(t); case _ => a1.TError}, body)
 
-    case _n: Name =>
+    case _n: a0.Name =>
       val n = mapName(_n)
       // This is complicating things a bit - might be nicer to have an unwrap method
       n.nodes match {
-        case List(v: Val) => v
+        case List(v: a1.Val) => v
         case _ => n
       }
 
-    case Select(_e, memberName) =>
-      val e = mapExp(_e)
+    case a0.Select(_e, memberName) =>
+      // val e = unwrapMap(_e)
+      val e = mapNode(_e)
       e match {
-        case Name(name, List(Namespace(units))) =>
-          Name(s"$name.$memberName", units.get(memberName))
-        case VObj(typ, members) => members.get(memberName) match {
-          case ms@_::_::_ => println(s"Way to many members $ms"); ???
-          case List(v) => v
-          case Nil => raise(UnknownName(memberName)); e
+
+        // TODO: This is not entirely right, this should be like overload resolution
+        case a1.Namespace(units) => units.get(memberName).head
+
+        case a1.VObj(typ, members) => members.get(memberName) match {
+          case _::_::_ => ???
+          case v::Nil => v
+          case Nil => raise(NonExistentMember(memberName)); e
+        }
+
+        case e: a1.Exp => e.t match {
+          case a1.Struct(_, members) => members.get(memberName) match {
+            case _::_::_ => ???
+                // TODO: How do I propagate the type through? wrap it in an econs?
+            case t::Nil => a1.Select(e, memberName)
+            case Nil => raise(NonExistentMember(memberName)); e
+          }
         }
       }
 
-    case Var(n, _e) =>
-      val e = mapExp(_e)
+    case a0.Var(n, _e) =>
+      val e = mapAsExp(_e)
       addLocalBinding(n, e)
-      Var(n, e)
+      a1.Var(n, e)
 
-    case e => e
+    // case e => e
   }
 
-  def mapName(name: Name) = lookupName(name.n) match {
-    case Nil => raise(UnknownName(name.n)); name
+  def mapType(t: a0.Type): a1.Type = t match {
+    case a0.TBln => a1.TBln
+    case a0.TError => a1.TError
+    case a0.TInt => a1.TInt
+    case a0.TNone => a1.TNone
+    case a0.TFun(_params, _ret) => a1.TFun(_params.map(mapType), mapType(_ret))
+    case a0.Struct(name, fields) => a1.Struct(name, fields.mapValues(mapType))
+  }
+
+  def mapName(name: a0.Name): a1.Name = lookupName(name.n) match {
+    case Nil => raise(UnknownName(name.n)); a1.Name(name.n)
     case x::Nil => if (historyContains(x)) {
       raise(RecursiveVariableDef(x))
-      name
-    } else Name(name.n, x :: name.nodes)
+      a1.Name(name.n)
+    } else a1.Name(name.n, x)
   }
 
-  def constrain(a: Exp, b: Exp): scala.Unit = constrain(a.t, b.t)
-  def constrain(a: Type, b: Exp): scala.Unit = constrain(a, b.t)
-  def constrain(a: Type, b: Type): scala.Unit = if (a != b) raise(TypeConflict(a, b))
+  def constrain(a: a1.Exp, b: a1.Exp): scala.Unit = constrain(a.t, b.t)
+  def constrain(a: a1.Type, b: a1.Exp): scala.Unit = constrain(a, b.t)
+  def constrain(a: a1.Type, b: a1.Type): scala.Unit = if (a != b) raise(TypeConflict(a, b))
 
   astOut.map.view.force
 }

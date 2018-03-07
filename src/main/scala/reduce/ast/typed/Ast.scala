@@ -1,48 +1,26 @@
-package reduce
+package reduce.ast.typed
 
 import enumeratum._
 
-import util.MultiMap
+import reduce.util.MultiMap
 
-object Aliases{
-  type Ast = Units
-  type Units = MultiMap[String, Unit]
-}
-import Aliases._
+// I feel like I need to work on my hierarchy a little bit:
+// what if everything was a node, we got rid of units, and
+// most of the heavy lifting was done in map node?
+// That way, expression constructs yielding non-expressions
+// (such as types or namespaces) will boil off, leaving only
+// true expressions behind?
 
-// A named and referenceable node within the Ast
 sealed trait Node
-
-sealed trait Unit extends Node
-
+sealed trait Exp extends Node { def t: Type }
 object Namespace {
-  def apply(units: (String, Unit)*): Namespace = Namespace(MultiMap(units: _*))
+  def apply(nodes: (String, Node)*): Namespace = Namespace(MultiMap(nodes: _*))
 }
-case class Namespace(units: Units) extends Unit
+case class Namespace(nodes: Nodes) extends Node
+sealed trait Type extends Node
 
-object Fun {
-  def apply(params: Param*)(retType: Option[Type])(body: Exp): Fun
-    = Fun(params.toList, retType, body)
-}
-case class Fun(params: List[Param], retType: Option[Type], body: Exp)
-    extends Unit with Exp {
-  def t = retType match {
-    case Some(tRet) => TFun(params.map(_.t), tRet)
-    case None => TError
-  }
-}
-
-object Struct {
-  def apply(name: String, fields: (String, Type)*): Struct
-    = Struct(name, MultiMap(fields: _*))
-}
-case class Struct(name: String, fields: MultiMap[String, Type]) extends Unit with Type
-
-sealed trait Exp extends Unit {
-  def t: Type
-}
-object App
-{
+// Expressions
+object App {
   def apply(f: Exp, args: Exp*): App = App(f, args.toList)
 }
 case class App(f: Exp, args: List[Exp]) extends Exp {
@@ -65,6 +43,19 @@ case class If(a: Exp, b: Exp, c: Exp) extends Exp {
   def t = b.t
 }
 
+case object InvalidExp extends Exp {
+  def t = TError
+}
+
+object Fun {
+  def apply(params: Param*)(retType: Type)(body: Exp): Fun
+    = Fun(params.toList, retType, body)
+}
+case class Fun(params: List[Param], retType: Type, body: Exp) extends Exp {
+  def t = TFun(params.map(_.t), retType)
+}
+// question: should names even exist in the post reduction ast, or should there
+// just be literal references between nodes?
 object Name { def apply(n: String, nodes: Node*): Name = Name(n, nodes.toList) }
 case class Name(n: String, nodes: List[Node]) extends Exp {
   def t = nodes match {
@@ -76,12 +67,18 @@ case class Name(n: String, nodes: List[Node]) extends Exp {
 // (same goes for var)
 case class Param(n: String, t: Type) extends Exp
 case class Select(e: Exp, n: String) extends Exp {
-  def t = ???
+  def t = e.t match {
+    case Struct(_, members) => members.get(n) match {
+      case t::Nil => t
+      case _ => TError
+    }
+  }
 }
-case class Var(n: String, e: Exp) extends Unit with Exp {
+case class Var(n: String, e: Exp) extends Exp {
   def t = TNone
 }
 
+// Intrinsics
 sealed trait Intrinsic extends EnumEntry with Exp { val n: String; val t: TFun }
 case object Intrinsic extends Enum[Intrinsic] {
   val values = findValues
@@ -90,7 +87,8 @@ case object Intrinsic extends Enum[Intrinsic] {
   case object ISub extends Intrinsic { val n = "-"; val t = TFun(TInt, TInt)(TInt) }
 }
 
-sealed trait Val extends Exp // A known value
+// Values
+sealed trait Val extends Exp
 case class VBln(b: Boolean) extends Val {
   def t = TBln
 }
@@ -103,10 +101,19 @@ object VObj {
 }
 case class VObj(t: Type, fields: MultiMap[String, Val]) extends Val
 
-sealed trait Type
+// Simple types
 case object TBln extends Type
 case object TError extends Type
 case object TInt extends Type
+case object TNone extends Type
+
+// Composite types
 object TFun { def apply(params: Type*)(ret: Type): TFun = TFun(params.toList, ret) }
 case class TFun(params: List[Type], ret: Type) extends Type
-case object TNone extends Type
+object Struct {
+  def apply(name: String, fields: (String, Type)*): Struct
+    = Struct(name, MultiMap(fields: _*))
+}
+case class Struct(name: String, fields: MultiMap[String, Type]) extends Type
+
+
