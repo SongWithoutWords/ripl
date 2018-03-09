@@ -8,7 +8,7 @@ object Namespace {
   def apply(nodes: (String, Node)*): Namespace = Namespace(MultiMap(nodes: _*))
 }
 case class Namespace(nodes: Nodes) extends Node
-sealed trait Type extends Node
+trait Type extends Node
 
 // Expressions
 object App {
@@ -31,20 +31,12 @@ case class Select(e: Exp, n: String) extends Exp
 case class Var(n: String, e: Exp) extends Exp
 
 // Values
-sealed trait Val extends Exp
-case class VBln(b: Boolean) extends Val
-case class VInt(i: Int) extends Val
+trait Val extends Exp
 object VObj {
   def apply(t: Type, fields: (String, Val)*): VObj
     = VObj(t, MultiMap(fields: _*))
 }
 case class VObj(t: Type, fields: MultiMap[String, Val]) extends Val
-
-// Simple types
-case object TBln extends Type
-case object TError extends Type
-case object TInt extends Type
-case object TNone extends Type
 
 // Composite types
 object TFun { def apply(params: Type*)(ret: Type): TFun = TFun(params.toList, ret) }

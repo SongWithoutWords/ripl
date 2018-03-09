@@ -2,6 +2,7 @@ package reduce.ast.typed
 
 import enumeratum._
 
+import reduce.ast.common._
 import reduce.util.MultiMap
 
 // I feel like I need to work on my hierarchy a little bit:
@@ -17,7 +18,7 @@ object Namespace {
   def apply(nodes: (String, Node)*): Namespace = Namespace(MultiMap(nodes: _*))
 }
 case class Namespace(nodes: Nodes) extends Node
-sealed trait Type extends Node
+trait Type extends Node
 
 // Expressions
 object App {
@@ -88,24 +89,12 @@ case object Intrinsic extends Enum[Intrinsic] {
 }
 
 // Values
-sealed trait Val extends Exp
-case class VBln(b: Boolean) extends Val {
-  def t = TBln
-}
-case class VInt(i: Int) extends Val {
-  def t = TInt
-}
+trait Val extends Exp
 object VObj {
   def apply(t: Type, fields: (String, Val)*): VObj
     = VObj(t, MultiMap(fields: _*))
 }
 case class VObj(t: Type, fields: MultiMap[String, Val]) extends Val
-
-// Simple types
-case object TBln extends Type
-case object TError extends Type
-case object TInt extends Type
-case object TNone extends Type
 
 // Composite types
 object TFun { def apply(params: Type*)(ret: Type): TFun = TFun(params.toList, ret) }

@@ -4,6 +4,7 @@ import org.scalatest._
 
 import util.{MultiMap => Multi}
 
+import reduce.ast.common._
 import reduce.ast.{untyped => a0, typed => a1}
 
 class TestReduce extends FreeSpec with Matchers {
@@ -22,36 +23,36 @@ class TestReduce extends FreeSpec with Matchers {
 
   "constants" - {
     "4 + 5 is 9" in {
-      val input = "a" -> a0.App(a0.Name("+"), a0.VInt(4), a0.VInt(5))
-      val output = "a" -> a1.VInt(9)
+      val input = "a" -> a0.App(a0.Name("+"), VInt(4), VInt(5))
+      val output = "a" -> VInt(9)
       test(input)(output)()
     }
     "a + b is 9 given a = 4 and b = 5" in {
       val input = Multi(
-        "a" -> a0.VInt(4),
-        "b" -> a0.VInt(5),
+        "a" -> VInt(4),
+        "b" -> VInt(5),
         "c" -> a0.App(a0.Name("+"), a0.Name("a"), a0.Name("b")))
       val output = Multi(
-        "a" -> a1.VInt(4),
-        "b" -> a1.VInt(5),
-        "c" -> a1.VInt(9))
+        "a" -> VInt(4),
+        "b" -> VInt(5),
+        "c" -> VInt(9))
       test(input)(output)()
     }
   }
   "named references" - {
     "are found" in {
       test(
-        "a" -> a0.VInt(4),
+        "a" -> VInt(4),
         "b" -> a0.Name("a"))(
-        "a" -> a1.VInt(4),
-        "b" -> a1.VInt(4))()
+        "a" -> VInt(4),
+        "b" -> VInt(4))()
     }
     "are found in any order" in {
       test(
         "a" -> a0.Name("b"),
-        "b" -> a0.VInt(4))(
-        "a" -> a1.VInt(4),
-        "b" -> a1.VInt(4))()
+        "b" -> VInt(4))(
+        "a" -> VInt(4),
+        "b" -> VInt(4))()
     }
     "produce errors when they don't exist" in {
       test("a" -> a0.Name("b"))("a" -> a1.Name("b"))(UnknownName("b"))
@@ -84,10 +85,10 @@ class TestReduce extends FreeSpec with Matchers {
       //     "a" -> Cons(TBln, VInt(4))))
       test(
         "n" -> a0.Namespace(
-          "a" -> a0.Cons(a0.TBln, a0.VInt(4))))(
+          "a" -> a0.Cons(TBln, VInt(4))))(
         "n" -> a1.Namespace(
-          "a" -> a1.Cons(a1.TBln, a1.VInt(4))))(
-        TypeConflict(a1.TBln, a1.TInt))
+          "a" -> a1.Cons(TBln, VInt(4))))(
+        TypeConflict(TBln, TInt))
     }
     "units are visible within their namespace" in {
       // val _ast = Multi(
@@ -100,11 +101,11 @@ class TestReduce extends FreeSpec with Matchers {
       //     "b" -> VInt(4)))
       test(
         "n" -> a0.Namespace(
-          "a" -> a0.VInt(4),
+          "a" -> VInt(4),
           "b" -> a0.Name("a")))(
         "n" -> a1.Namespace(
-          "a" -> a1.VInt(4),
-          "b" -> a1.VInt(4)))()
+          "a" -> VInt(4),
+          "b" -> VInt(4)))()
     }
     "units are visible from sub-namespaces" in {
       // val _ast = Multi(
@@ -119,13 +120,13 @@ class TestReduce extends FreeSpec with Matchers {
       //       "b" -> VInt(4))))
       test(
         "n" -> a0.Namespace(
-          "a" -> a0.VInt(4),
+          "a" -> VInt(4),
           "m" -> a0.Namespace(
             "b" -> a0.Name("a"))))(
         "n" -> a1.Namespace(
-          "a" -> a1.VInt(4),
+          "a" -> VInt(4),
           "m" -> a1.Namespace(
-            "b" -> a1.VInt(4))))()
+            "b" -> VInt(4))))()
     }
     "units are not visible from outer namespaces" in {
       // val _ast = Multi(
@@ -138,10 +139,10 @@ class TestReduce extends FreeSpec with Matchers {
       //   "b" -> Name("a"))
       test(
         "n" -> a0.Namespace(
-          "a" -> a0.VInt(4)),
+          "a" -> VInt(4)),
         "b" -> a0.Name("a"))(
         "n" -> a1.Namespace(
-          "a" -> a1.VInt(4)),
+          "a" -> VInt(4)),
         "b" -> a1.Name("a"))(
         UnknownName("a"))
     }
@@ -156,11 +157,11 @@ class TestReduce extends FreeSpec with Matchers {
       //   "b" -> Name("n.a", VInt(4)))
       test(
         "n" -> a0.Namespace(
-          "a" -> a0.VInt(4)),
+          "a" -> VInt(4)),
         "b" -> a0.Select(a0.Name("n"), "a"))(
         "n" -> a1.Namespace(
-          "a" -> a1.VInt(4)),
-        "b" -> a1.Name("n.a", a1.VInt(4)))()
+          "a" -> VInt(4)),
+        "b" -> a1.Name("n.a", VInt(4)))()
     }
     "units can be selected by name at depth" in {
       // val _ast = Multi(the
@@ -177,30 +178,30 @@ class TestReduce extends FreeSpec with Matchers {
       //   "c" -> Name("n.m.b", VInt(7)))
       test(
         "n" -> a0.Namespace(
-          "a" -> a0.VInt(4),
+          "a" -> VInt(4),
           "m" -> a0.Namespace(
-            "b" -> a0.VInt(7))),
+            "b" -> VInt(7))),
         "c" -> a0.Select(a0.Select(a0.Name("n"), "m"), "b"))(
         "n" -> a1.Namespace(
-          "a" -> a1.VInt(4),
+          "a" -> VInt(4),
           "m" -> a1.Namespace(
-            "b" -> a1.VInt(7))),
-        "c" -> a1.Name("n.m.b", a1.VInt(7)))()
+            "b" -> VInt(7))),
+        "c" -> a1.Name("n.m.b", VInt(7)))()
     }
   }
   "type constraints" - {
     "produce no errors when they are met" in {
       // val ast = Multi("x" -> Cons(TInt, VInt(3)))
       test(
-        "x" -> a0.Cons(a0.TInt, a0.VInt(3)))(
-        "x" -> a1.Cons(a1.TInt, a1.VInt(3)))()
+        "x" -> a0.Cons(TInt, VInt(3)))(
+        "x" -> a1.Cons(TInt, VInt(3)))()
     }
     "produce errors when they are not met" in {
       // val ast = Multi("x" -> Cons(TInt, VBln(true)))
       test(
-        "x" -> a0.Cons(a0.TInt, a0.VBln(true)))(
-        "x" -> a1.Cons(a1.TInt, a1.VBln(true)))(
-        TypeConflict(a1.TInt, a1.TBln))
+        "x" -> a0.Cons(TInt, VBln(true)))(
+        "x" -> a1.Cons(TInt, VBln(true)))(
+        TypeConflict(TInt, TBln))
     }
   }
 
@@ -216,11 +217,11 @@ class TestReduce extends FreeSpec with Matchers {
 
         test(
           "identity" -> a0.Fun(
-            a0.Param("a", a0.TInt))(Some(a0.TInt))(
+            a0.Param("a", TInt))(Some(TInt))(
             a0.Name("a")))(
           "identity" -> a1.Fun(
-            a1.Param("a", a1.TInt))(a1.TInt)(
-            a1.Name("a", a1.Param("a", a1.TInt))))()
+            a1.Param("a", TInt))(TInt)(
+            a1.Name("a", a1.Param("a", TInt))))()
       }
       "bind parameter in deep exp in body" in {
         // val inc = Fun(Param("a", TInt))(Some(TInt))(
@@ -230,120 +231,120 @@ class TestReduce extends FreeSpec with Matchers {
         //   App(Name("+", Intrinsic.IAdd), Name("a", Param("a", TInt)), VInt(1)))
 
         test(
-          "inc" -> a0.Fun(a0.Param("a", a0.TInt))(Some(a0.TInt))(
+          "inc" -> a0.Fun(a0.Param("a", TInt))(Some(TInt))(
             a0.App(
               a0.Name("+"),
               a0.Name("a"),
-              a0.VInt(1))))(
-          "inc" -> a1.Fun(a1.Param("a", a1.TInt))(a1.TInt)(
+              VInt(1))))(
+          "inc" -> a1.Fun(a1.Param("a", TInt))(TInt)(
             a1.App(
               a1.Name("+", a1.Intrinsic.IAdd),
-              a1.Name("a", a1.Param("a", a1.TInt)),
-              a1.VInt(1))))()
+              a1.Name("a", a1.Param("a", TInt)),
+              VInt(1))))()
       }
     }
 
     "with two parameters" - {
-      val add = a0.Fun(a0.Param("a", a0.TInt), a0.Param("b", a0.TInt))(Some(a0.TInt))(
+      val add = a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TInt))(
         a0.App(
           a0.Name("+"),
           a0.Name("a"),
           a0.Name("b")))
 
-      val addPrime = a1.Fun(a1.Param("a", a1.TInt), a1.Param("b", a1.TInt))(a1.TInt)(
+      val addPrime = a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt))(TInt)(
         a1.App(a1.Name("+", a1.Intrinsic.IAdd),
-            a1.Name("a", a1.Param("a", a1.TInt)),
-            a1.Name("b", a1.Param("b", a1.TInt))))
+            a1.Name("a", a1.Param("a", TInt)),
+            a1.Name("b", a1.Param("b", TInt))))
 
       "bind parameters in body" in {
         test("add" -> add)("add" -> addPrime)()
       }
       "produce no errors when applied to right types" in {
-        val x = a0.App(a0.Name("add"), a0.VInt(4), a0.VInt(5))
-        val xPrime = a1.App(a1.Name("add", addPrime), a1.VInt(4), a1.VInt(5))
+        val x = a0.App(a0.Name("add"), VInt(4), VInt(5))
+        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4), VInt(5))
         test("add" -> add, "x" -> x)("add" -> addPrime, "x" -> xPrime)()
       }
       "produce errors when applied to too few args" in {
-        val x = a0.App(a0.Name("add"), a0.VInt(4))
-        val xPrime = a1.App(a1.Name("add", addPrime), a1.VInt(4))
+        val x = a0.App(a0.Name("add"), VInt(4))
+        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4))
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
           WrongNumArgs(2, 1))
       }
       "produce errors when applied to too many args" in {
-        val x = a0.App(a0.Name("add"), a0.VInt(4), a0.VInt(5), a0.VInt(6))
-        val xPrime = a1.App(a1.Name("add", addPrime), a1.VInt(4), a1.VInt(5), a1.VInt(6))
+        val x = a0.App(a0.Name("add"), VInt(4), VInt(5), VInt(6))
+        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4), VInt(5), VInt(6))
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
           WrongNumArgs(2, 3))
       }
       "produce errors when applied to wrong types" in {
-        val x = a0.App(a0.Name("add"), a0.VInt(4), a0.VBln(true))
-        val xPrime = a1.App(a1.Name("add", addPrime), a1.VInt(4), a1.VBln(true))
+        val x = a0.App(a0.Name("add"), VInt(4), VBln(true))
+        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4), VBln(true))
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
-          TypeConflict(a1.TInt, a1.TBln))
+          TypeConflict(TInt, TBln))
       }
       "produce errors when non-applicable type applied" in {
         // val input = Multi("a" -> App(VInt(4), VInt(5)))
         test(
-          "a" -> a0.App(a0.VInt(4), a0.VInt(5)))(
-          "a" -> a1.App(a1.VInt(4), a1.VInt(5)))(
-          ApplicationOfNonAppliableType(a1.TInt))
+          "a" -> a0.App(VInt(4), VInt(5)))(
+          "a" -> a1.App(VInt(4), VInt(5)))(
+          ApplicationOfNonAppliableType(TInt))
       }
     }
   }
   "if exps" - {
     "produce no errors with correct types" in {
-      val select = a0.Fun(a0.Param("a", a0.TBln), a0.Param("b", a0.TInt), a0.Param("c", a0.TInt))(
-        Some(a0.TInt))(
+      val select = a0.Fun(a0.Param("a", TBln), a0.Param("b", TInt), a0.Param("c", TInt))(
+        Some(TInt))(
         a0.If(a0.Name("a"), a0.Name("b"), a0.Name("c")))
-      val selectPrime = a1.Fun(a1.Param("a", a1.TBln), a1.Param("b", a1.TInt), a1.Param("c", a1.TInt))(
-        a1.TInt)(
+      val selectPrime = a1.Fun(a1.Param("a", TBln), a1.Param("b", TInt), a1.Param("c", TInt))(
+        TInt)(
           a1.If(
-            a1.Name("a", a1.Param("a", a1.TBln)),
-            a1.Name("b", a1.Param("b", a1.TInt)),
-            a1.Name("c", a1.Param("c", a1.TInt))))
+            a1.Name("a", a1.Param("a", TBln)),
+            a1.Name("b", a1.Param("b", TInt)),
+            a1.Name("c", a1.Param("c", TInt))))
       test("select" -> select)("select" -> selectPrime)()
     }
     "produces error with non-boolean condition" in {
-      val select = a0.Fun(a0.Param("a", a0.TInt), a0.Param("b", a0.TInt), a0.Param("c", a0.TInt))(
-        Some(a0.TInt))(
+      val select = a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt), a0.Param("c", TInt))(
+        Some(TInt))(
           a0.If(a0.Name("a"), a0.Name("b"), a0.Name("c")))
-      val selectPrime = a1.Fun(a1.Param("a", a1.TInt), a1.Param("b", a1.TInt), a1.Param("c", a1.TInt))(
-        a1.TInt)(
+      val selectPrime = a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt), a1.Param("c", TInt))(
+        TInt)(
           a1.If(
-            a1.Name("a", a1.Param("a", a1.TInt)),
-            a1.Name("b", a1.Param("b", a1.TInt)),
-            a1.Name("c", a1.Param("c", a1.TInt))))
+            a1.Name("a", a1.Param("a", TInt)),
+            a1.Name("b", a1.Param("b", TInt)),
+            a1.Name("c", a1.Param("c", TInt))))
 
-      test("select" -> select)("select" -> selectPrime)(TypeConflict(a1.TBln, a1.TInt))
+      test("select" -> select)("select" -> selectPrime)(TypeConflict(TBln, TInt))
     }
     "branches must yield compatible types" in {
-      val select = a0.Fun(a0.Param("a", a0.TBln), a0.Param("b", a0.TInt), a0.Param("c", a0.TBln))(
-        Some(a0.TInt))(
+      val select = a0.Fun(a0.Param("a", TBln), a0.Param("b", TInt), a0.Param("c", TBln))(
+        Some(TInt))(
           a0.If(a0.Name("a"), a0.Name("b"), a0.Name("c")))
-      val selectPrime = a1.Fun(a1.Param("a", a1.TBln), a1.Param("b", a1.TInt), a1.Param("c", a1.TBln))(
-        a1.TInt)(
+      val selectPrime = a1.Fun(a1.Param("a", TBln), a1.Param("b", TInt), a1.Param("c", TBln))(
+        TInt)(
           a1.If(
-            a1.Name("a", a1.Param("a", a1.TBln)),
-            a1.Name("b", a1.Param("b", a1.TInt)),
-            a1.Name("c", a1.Param("c", a1.TBln))))
+            a1.Name("a", a1.Param("a", TBln)),
+            a1.Name("b", a1.Param("b", TInt)),
+            a1.Name("c", a1.Param("c", TBln))))
 
-      test("select" -> select)("select" -> selectPrime)(TypeConflict(a1.TInt, a1.TBln))
+      test("select" -> select)("select" -> selectPrime)(TypeConflict(TInt, TBln))
     }
   }
   "local variables" - {
     "in blocks" - {
       val _block = a0.Block(
-        a0.Var("x", a0.VInt(4)),
+        a0.Var("x", VInt(4)),
         a0.Name("x"))
       val block = a1.Block(
-        a1.Var("x", a1.VInt(4)),
-        a1.VInt(4))
+        a1.Var("x", VInt(4)),
+        VInt(4))
       "are bound correctly" in {
         test("b" -> _block)("b" -> block)()
       }
@@ -356,13 +357,13 @@ class TestReduce extends FreeSpec with Matchers {
     }
     "in functions" - {
       // val a = Param("a", TInt)
-      val _inc = a0.Fun(a0.Param("a", a0.TInt))(Some(a0.TInt))(
+      val _inc = a0.Fun(a0.Param("a", TInt))(Some(TInt))(
         a0.Block(
-          a0.Var("result", a0.App(a0.Name("+"), a0.Name("a"), a0.VInt(1))),
+          a0.Var("result", a0.App(a0.Name("+"), a0.Name("a"), VInt(1))),
           a0.Name("result")))
 
-      val result = a1.App(a1.Name("+", a1.Intrinsic.IAdd), a1.Name("a", a1.Param("a", a1.TInt)), a1.VInt(1))
-      val inc = a1.Fun(a1.Param("a", a1.TInt))(a1.TInt)(
+      val result = a1.App(a1.Name("+", a1.Intrinsic.IAdd), a1.Name("a", a1.Param("a", TInt)), VInt(1))
+      val inc = a1.Fun(a1.Param("a", TInt))(TInt)(
         a1.Block(
           a1.Var("result", result),
           a1.Name("result", result)))
@@ -379,8 +380,8 @@ class TestReduce extends FreeSpec with Matchers {
     }
     "selection" - {
       "members can be selected from struct values" in {
-        val _point = a0.Struct("Point", "x" -> a0.TInt, "y" -> a0.TInt)
-        val point = a1.Struct("Point", "x" -> a1.TInt, "y" -> a1.TInt)
+        val _point = a0.Struct("Point", "x" -> TInt, "y" -> TInt)
+        val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
         // val _ast = Multi(
         //   "Point" -> point,
         //   "a" -> VObj(point, "x" -> VInt(7), "y" -> VInt(3)),
@@ -393,22 +394,22 @@ class TestReduce extends FreeSpec with Matchers {
         // )
         test(
           "Point" -> _point,
-          "a" -> a0.VObj(_point, "x" -> a0.VInt(7), "y" -> a0.VInt(3)),
+          "a" -> a0.VObj(_point, "x" -> VInt(7), "y" -> VInt(3)),
           "b" -> a0.Select(a0.Name("a"), "y")
         )(
           "Point" -> point,
-          "a" -> a1.VObj(point, "x" -> a1.VInt(7), "y" -> a1.VInt(3)),
-          "b" -> a1.VInt(3)
+          "a" -> a1.VObj(point, "x" -> VInt(7), "y" -> VInt(3)),
+          "b" -> VInt(3)
         )()
       }
       "members can  be selected from struct variables" in {
-        val _point = a0.Struct("Point", "x" -> a0.TInt, "y" -> a0.TInt)
+        val _point = a0.Struct("Point", "x" -> TInt, "y" -> TInt)
         val _getX = a0.Fun(a0.Param("point", _point))(Some(_point))(
-          a0.Cons(a0.TInt, a0.Select(a0.Name("point"), "x")))
+          a0.Cons(TInt, a0.Select(a0.Name("point"), "x")))
 
-        val point = a1.Struct("Point", "x" -> a1.TInt, "y" -> a1.TInt)
+        val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
         val getX = a1.Fun(a1.Param("point", point))(point)(
-          a1.Cons(a1.TInt, a1.Select(a1.Name("point", a1.Param("point", point)), "x")))
+          a1.Cons(TInt, a1.Select(a1.Name("point", a1.Param("point", point)), "x")))
         test("getX" -> _getX)("getX" -> getX)()
       }
     }

@@ -3,6 +3,7 @@ package reduce
 import scala.collection.mutable.Set
 import scala.collection.mutable.Stack
 
+import reduce.ast.common._
 import reduce.ast.{untyped => a0}
 import reduce.ast.{typed => a1}
 import reduce.util.MultiMap
@@ -83,7 +84,7 @@ class Reduce(val astIn: a0.Ast) {
 
   def asType(node: a1.Node): a1.Type = node match {
     case t: a1.Type => t
-    case n => raise(RequiredType(n)); a1.TError
+    case n => raise(RequiredType(n)); TError
   }
   def mapAsType(node: a0.Node): a1.Type = asType(mapNode(node))
   def asExp(node: a1.Node): a1.Exp = node match {
@@ -107,7 +108,7 @@ class Reduce(val astIn: a0.Ast) {
         _args.map(mapAsExp))
 
        app match {
-        case a1.App(a1.Intrinsic.IAdd, List(a1.VInt(a), a1.VInt(b))) => a1.VInt(a + b)
+        case a1.App(a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
         case a1.App(f: a1.Exp, args) => f.t match {
           case a1.TFun(params, ret) =>
             if (params.length != args.length) {
@@ -134,11 +135,11 @@ class Reduce(val astIn: a0.Ast) {
 
     case a0.If(_a, _b, _c) =>
       val a = mapAsExp(_a)
-      constrain(a1.TBln, a)
+      constrain(TBln, a)
       a match {
         case v: a1.Val => v match {
-          case a1.VBln(true) => mapNode(_b)
-          case a1.VBln(false) => mapNode(_c)
+          case VBln(true) => mapNode(_b)
+          case VBln(false) => mapNode(_c)
           case _ => a1.InvalidExp // Error already emitted by constraint
         }
         case e =>
@@ -161,7 +162,7 @@ class Reduce(val astIn: a0.Ast) {
       val body = mapAsExp(_body)
       popScope()
 
-      a1.Fun(params, _retType match {case Some(t) => mapType(t); case _ => a1.TError}, body)
+      a1.Fun(params, _retType match {case Some(t) => mapType(t); case _ => TError}, body)
 
     case _n: a0.Name =>
       val n = mapName(_n)
@@ -204,10 +205,11 @@ class Reduce(val astIn: a0.Ast) {
   }
 
   def mapType(t: a0.Type): a1.Type = t match {
-    case a0.TBln => a1.TBln
-    case a0.TError => a1.TError
-    case a0.TInt => a1.TInt
-    case a0.TNone => a1.TNone
+    // case a0.TBln => a1.TBln
+    // case a0.TError => a1.TError
+    // case a0.TInt => a1.TInt
+    // case a0.TNone => a1.TNone
+    case a: TypeAtom => a
     case a0.TFun(_params, _ret) => a1.TFun(_params.map(mapType), mapType(_ret))
     case a0.Struct(name, fields) => a1.Struct(name, fields.mapValues(mapType))
   }
