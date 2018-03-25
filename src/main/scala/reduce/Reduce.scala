@@ -26,18 +26,6 @@ class Reduce(val astIn: a0.Ast) {
   val history = new Stack[a1.Node]
   def historyContains(n: a1.Node) = history.filter(n.eq(_)).nonEmpty
 
-  // def catchCycles(Input: a0.Node, mapping: (A) => A) = 
-  // def catchCycles[A <: a0.Node](input: A, mapping: (A) => A) =
-  //   if (historyContains(input)) {
-  //     raise(RecursiveVariableDef(input))
-  //     input
-  //   } else {
-  //     history.push(input)
-  //     val result = mapping(input)
-  //     history.pop()
-  //     result
-  //   }
-
   val nodes = new IdentityMap[a0.Node, a1.Node]
 
   val astOut = astIn.mapValues(mapNode)
@@ -57,11 +45,6 @@ class Reduce(val astIn: a0.Ast) {
     astOut.get(n).toList ++
       intrinsics.get(n) ++
       scopes.flatMap(_.get(n))
-
-  // def mapTopLevelExp(exp: Exp) = exp match {
-    // TODO: catch useless expressions, bind variables, etc
-    // case _ => ???
-  // }
 
   // def unwrapMap(_e: a0.Exp): a1.Node = mapExp(_e) match {
   //   case a1.Name(n, List(unit)) => unit
@@ -165,7 +148,6 @@ class Reduce(val astIn: a0.Ast) {
       }
 
     case a0.Select(_e, memberName) =>
-      // val e = unwrapMap(_e)
       val e = mapNode(_e)
       e match {
 
