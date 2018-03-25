@@ -58,28 +58,14 @@ class Reduce(val astIn: a0.Ast) {
       intrinsics.get(n) ++
       scopes.flatMap(_.get(n))
 
-
-  // def mapUnit(u: a0.Node): a1.Node = units.getOrElseUpdate(u, {
-  //   catchCycles(u, (u: a0.Node) => u match {
-  //     case e: Exp => mapExp(e)
-  //     case Namespace(_units) =>
-  //       val units = _units.mapValues(mapUnit)
-  //       pushScope(units)
-  //       units.map.view.force
-  //       popScope()
-  //       Namespace(units)
-  //     case s: Struct => s
-  //   })
-  // })
-
   // def mapTopLevelExp(exp: Exp) = exp match {
     // TODO: catch useless expressions, bind variables, etc
     // case _ => ???
   // }
 
-  // def unwrapMap(e: Exp): Node = mapExp(e) match {
-  //   case Name(n, List(unit)) => unit
-  //   case _ => e
+  // def unwrapMap(_e: a0.Exp): a1.Node = mapExp(_e) match {
+  //   case a1.Name(n, List(unit)) => unit
+  //   case e => e
   // }
 
   def asType(node: a1.Node): a1.Type = node match {
@@ -95,7 +81,12 @@ class Reduce(val astIn: a0.Ast) {
 
   def mapNode(node: a0.Node): a1.Node = node match {
     case e: a0.Exp => mapExp(e)
-    case n: a0.Namespace => ???
+    case a0.Namespace(_nodes) =>
+      val nodes = _nodes.mapValues(mapNode)
+      pushScope(nodes)
+      nodes.map.view.force
+      popScope()
+      a1.Namespace(nodes)
     case t: a0.Type => mapType(t)
   }
 
@@ -107,7 +98,7 @@ class Reduce(val astIn: a0.Ast) {
         mapAsExp(_f),
         _args.map(mapAsExp))
 
-       app match {
+      app match {
         case a1.App(a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
         case a1.App(f: a1.Exp, args) => f.t match {
           case a1.TFun(params, ret) =>
@@ -169,6 +160,7 @@ class Reduce(val astIn: a0.Ast) {
       // This is complicating things a bit - might be nicer to have an unwrap method
       n.nodes match {
         case List(v: a1.Val) => v
+        // case List(node) => node
         case _ => n
       }
 
@@ -205,10 +197,6 @@ class Reduce(val astIn: a0.Ast) {
   }
 
   def mapType(t: a0.Type): a1.Type = t match {
-    // case a0.TBln => a1.TBln
-    // case a0.TError => a1.TError
-    // case a0.TInt => a1.TInt
-    // case a0.TNone => a1.TNone
     case a: TypeAtom => a
     case a0.TFun(_params, _ret) => a1.TFun(_params.map(mapType), mapType(_ret))
     case a0.Struct(name, fields) => a1.Struct(name, fields.mapValues(mapType))
