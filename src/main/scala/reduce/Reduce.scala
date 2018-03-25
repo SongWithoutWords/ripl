@@ -201,7 +201,7 @@ class Reduce(val astIn: a0.Ast) {
       addLocalBinding(n, e)
       a1.Var(n, e)
 
-    // case e => e
+    case v: ValAtom => v
   }
 
   def mapType(t: a0.Type): a1.Type = t match {
