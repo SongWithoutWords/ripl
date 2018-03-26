@@ -61,6 +61,19 @@ class Reduce(val astIn: a0.Ast) {
   //   case e => e
   // }
 
+  def unwrap(_n: a1.Node): a1.Node = _n match {
+    case a1.Name(_, List(n)) => n
+    case a1.Name(n, _) => a1.InvalidNode
+    case e: a1.Exp => unwrapExp(e)
+    case n => n
+  }
+
+  def unwrapExp(_e: a1.Exp): a1.Exp = _e match {
+    case a1.EName(_, List(e)) => e
+    case a1.EName(_, _) => a1.InvalidExp
+    case e => e
+  }
+
   def asType(node: a1.Node): a1.Type = node match {
     case t: a1.Type => t
     case n => raise(RequiredType(n)); TError
@@ -68,6 +81,8 @@ class Reduce(val astIn: a0.Ast) {
   def mapAsType(node: a0.Node): a1.Type = asType(mapNode(node))
   def asExp(node: a1.Node): a1.Exp = node match {
     case e: a1.Exp => e
+    case a1.Name(n, nodes) =>
+      a1.EName(n, nodes.collect(e => e match { case e: a1.Exp => e}))
     case n => raise(RequiredExp(n)); a1.InvalidExp
   }
   def mapAsExp(node: a0.Node): a1.Exp = asExp(mapNode(node))
@@ -179,6 +194,7 @@ class Reduce(val astIn: a0.Ast) {
             case t::Nil => a1.Select(e, memberName)
             case Nil => raise(NonExistentMember(memberName)); e
           }
+          case TError => throw new Exception(s"$e")
         }
       }
 

@@ -160,7 +160,7 @@ class TestReduce extends FreeSpec with Matchers {
             a0.Name("a")))(
           "identity" -> a1.Fun(
             a1.Param("a", TInt))(TInt)(
-            a1.Name("a", a1.Param("a", TInt))))()
+            a1.EName("a", a1.Param("a", TInt))))()
       }
       "bind parameter in deep exp in body" in {
         test(
@@ -171,8 +171,8 @@ class TestReduce extends FreeSpec with Matchers {
               VInt(1))))(
           "inc" -> a1.Fun(a1.Param("a", TInt))(TInt)(
             a1.App(
-              a1.Name("+", a1.Intrinsic.IAdd),
-              a1.Name("a", a1.Param("a", TInt)),
+              a1.EName("+", a1.Intrinsic.IAdd),
+              a1.EName("a", a1.Param("a", TInt)),
               VInt(1))))()
       }
     }
@@ -185,21 +185,21 @@ class TestReduce extends FreeSpec with Matchers {
           a0.Name("b")))
 
       val addPrime = a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt))(TInt)(
-        a1.App(a1.Name("+", a1.Intrinsic.IAdd),
-            a1.Name("a", a1.Param("a", TInt)),
-            a1.Name("b", a1.Param("b", TInt))))
+        a1.App(a1.EName("+", a1.Intrinsic.IAdd),
+            a1.EName("a", a1.Param("a", TInt)),
+            a1.EName("b", a1.Param("b", TInt))))
 
       "bind parameters in body" in {
         test("add" -> add)("add" -> addPrime)()
       }
       "produce no errors when applied to right types" in {
         val x = a0.App(a0.Name("add"), VInt(4), VInt(5))
-        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4), VInt(5))
+        val xPrime = a1.App(a1.EName("add", addPrime), VInt(4), VInt(5))
         test("add" -> add, "x" -> x)("add" -> addPrime, "x" -> xPrime)()
       }
       "produce errors when applied to too few args" in {
         val x = a0.App(a0.Name("add"), VInt(4))
-        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4))
+        val xPrime = a1.App(a1.EName("add", addPrime), VInt(4))
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
@@ -207,7 +207,7 @@ class TestReduce extends FreeSpec with Matchers {
       }
       "produce errors when applied to too many args" in {
         val x = a0.App(a0.Name("add"), VInt(4), VInt(5), VInt(6))
-        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4), VInt(5), VInt(6))
+        val xPrime = a1.App(a1.EName("add", addPrime), VInt(4), VInt(5), VInt(6))
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
@@ -215,7 +215,7 @@ class TestReduce extends FreeSpec with Matchers {
       }
       "produce errors when applied to wrong types" in {
         val x = a0.App(a0.Name("add"), VInt(4), VBln(true))
-        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4), VBln(true))
+        val xPrime = a1.App(a1.EName("add", addPrime), VInt(4), VBln(true))
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
@@ -237,9 +237,9 @@ class TestReduce extends FreeSpec with Matchers {
       val selectPrime = a1.Fun(a1.Param("a", TBln), a1.Param("b", TInt), a1.Param("c", TInt))(
         TInt)(
           a1.If(
-            a1.Name("a", a1.Param("a", TBln)),
-            a1.Name("b", a1.Param("b", TInt)),
-            a1.Name("c", a1.Param("c", TInt))))
+            a1.EName("a", a1.Param("a", TBln)),
+            a1.EName("b", a1.Param("b", TInt)),
+            a1.EName("c", a1.Param("c", TInt))))
       test("select" -> select)("select" -> selectPrime)()
     }
     "produces error with non-boolean condition" in {
@@ -249,9 +249,9 @@ class TestReduce extends FreeSpec with Matchers {
       val selectPrime = a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt), a1.Param("c", TInt))(
         TInt)(
           a1.If(
-            a1.Name("a", a1.Param("a", TInt)),
-            a1.Name("b", a1.Param("b", TInt)),
-            a1.Name("c", a1.Param("c", TInt))))
+            a1.EName("a", a1.Param("a", TInt)),
+            a1.EName("b", a1.Param("b", TInt)),
+            a1.EName("c", a1.Param("c", TInt))))
 
       test("select" -> select)("select" -> selectPrime)(TypeConflict(TBln, TInt))
     }
@@ -262,9 +262,9 @@ class TestReduce extends FreeSpec with Matchers {
       val selectPrime = a1.Fun(a1.Param("a", TBln), a1.Param("b", TInt), a1.Param("c", TBln))(
         TInt)(
           a1.If(
-            a1.Name("a", a1.Param("a", TBln)),
-            a1.Name("b", a1.Param("b", TInt)),
-            a1.Name("c", a1.Param("c", TBln))))
+            a1.EName("a", a1.Param("a", TBln)),
+            a1.EName("b", a1.Param("b", TInt)),
+            a1.EName("c", a1.Param("c", TBln))))
 
       test("select" -> select)("select" -> selectPrime)(TypeConflict(TInt, TBln))
     }
@@ -293,11 +293,11 @@ class TestReduce extends FreeSpec with Matchers {
           a0.Var("result", a0.App(a0.Name("+"), a0.Name("a"), VInt(1))),
           a0.Name("result")))
 
-      val result = a1.App(a1.Name("+", a1.Intrinsic.IAdd), a1.Name("a", a1.Param("a", TInt)), VInt(1))
+      val result = a1.App(a1.EName("+", a1.Intrinsic.IAdd), a1.EName("a", a1.Param("a", TInt)), VInt(1))
       val inc = a1.Fun(a1.Param("a", TInt))(TInt)(
         a1.Block(
           a1.Var("result", result),
-          a1.Name("result", result)))
+          a1.EName("result", result)))
 
       "are bound correctly" in {
         test("inc" -> _inc)("inc" -> inc)()
@@ -330,7 +330,7 @@ class TestReduce extends FreeSpec with Matchers {
 
         val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
         val getX = a1.Fun(a1.Param("point", point))(point)(
-          a1.Cons(TInt, a1.Select(a1.Name("point", a1.Param("point", point)), "x")))
+          a1.Cons(TInt, a1.Select(a1.EName("point", a1.Param("point", point)), "x")))
         test("getX" -> _getX)("getX" -> getX)()
       }
     }
