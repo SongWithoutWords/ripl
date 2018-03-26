@@ -23,8 +23,18 @@ class Reduce(val astIn: a0.Ast) {
   val errors = Set[Error]()
   def raise(e: Error) = errors += e
 
-  val history = new Stack[a1.Node]
-  def historyContains(n: a1.Node) = history.filter(n.eq(_)).nonEmpty
+  val history = new Stack[a0.Node]
+  def historyContains(n: a0.Node) = history.filter(n.eq(_)).nonEmpty
+  def catchCycles(input: a0.Node, mapping: (a0.Node) => a1.Node): a1.Node =
+    if (historyContains(input)) {
+      raise(RecursiveVariableDef(input))
+      a1.InvalidExp // Could provide additional information in future
+    } else {
+      history.push(input)
+      val result = mapping(input)
+      history.pop()
+      result
+    }
 
   val nodes = new IdentityMap[a0.Node, a1.Node]
 
@@ -62,16 +72,18 @@ class Reduce(val astIn: a0.Ast) {
   }
   def mapAsExp(node: a0.Node): a1.Exp = asExp(mapNode(node))
 
-  def mapNode(node: a0.Node): a1.Node = node match {
-    case e: a0.Exp => mapExp(e)
-    case a0.Namespace(_nodes) =>
-      val nodes = _nodes.mapValues(mapNode)
-      pushScope(nodes)
-      nodes.map.view.force
-      popScope()
-      a1.Namespace(nodes)
-    case t: a0.Type => mapType(t)
-  }
+  def mapNode(n: a0.Node): a1.Node = nodes.getOrElseUpdate(n, {
+    catchCycles(n, (n: a0.Node) => n match {
+      case e: a0.Exp => mapExp(e)
+      case a0.Namespace(_nodes) =>
+        val nodes = _nodes.mapValues(mapNode)
+        pushScope(nodes)
+        nodes.map.view.force
+        popScope()
+        a1.Namespace(nodes)
+      case t: a0.Type => mapType(t)
+    })
+  })
 
   def mapExp(exp: a0.Exp): a1.Node = exp match {
 
@@ -186,10 +198,7 @@ class Reduce(val astIn: a0.Ast) {
 
   def mapName(name: a0.Name): a1.Name = lookupName(name.n) match {
     case Nil => raise(UnknownName(name.n)); a1.Name(name.n)
-    case x::Nil => if (historyContains(x)) {
-      raise(RecursiveVariableDef(x))
-      a1.Name(name.n)
-    } else a1.Name(name.n, x)
+    case x::Nil => a1.Name(name.n, x)
   }
 
   def constrain(a: a1.Exp, b: a1.Exp): scala.Unit = constrain(a.t, b.t)
