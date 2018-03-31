@@ -174,16 +174,11 @@ class Reduce(val astIn: a0.Ast) {
         case e: a1.Exp => e.t match {
           case a1.Struct(_, members) => members.get(memberName) match {
             case _::_::_ => ???
-                // TODO: How do I propagate the type through? wrap it in an econs?
             case t::Nil => a1.Select(e, memberName)
             case Nil => raise(NonExistentMember(memberName)); e
-            case l => throw new Exception(s"Unhandled member lookup results $l")
           }
           case TError => throw new Exception(s"$e")
-          case t => throw new Exception(s"$e")
         }
-
-        case e => throw new Exception(s"Unhandled node to select from $e")
       }
 
     case a0.Var(n, _e) =>
