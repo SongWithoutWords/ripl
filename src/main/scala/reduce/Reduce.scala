@@ -108,15 +108,15 @@ class Reduce(val astIn: a0.Ast) {
         mapAsExp(_f),
         _args.map(mapAsExp))
 
-      app match {
-        case a1.App(a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
-        case a1.App(f: a1.Exp, args) => f.t match {
+      (unwrap(app.f), app.args.map(unwrapExp)) match {
+        case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
+        case (f: a1.Exp, args) => f.t match {
           case a1.TFun(params, ret) =>
             if (params.length != args.length) {
               raise(WrongNumArgs(params.length, args.length))
             }
             (params, args).zipped.map((p, a) => constrain(p, a))
-            a1.App(f, args)
+            app
           case _ => raise(ApplicationOfNonAppliableType(f.t)); app
         }
       }
