@@ -176,18 +176,18 @@ class Reduce(val astIn: a0.Ast) {
 
     case a0.Select(_e, memberName) =>
       val e = mapNode(_e)
-      e match {
+      (e, unwrap(e)) match {
 
         // TODO: This is not entirely right, this should be like overload resolution
-        case a1.Namespace(units) => units.get(memberName).head
+        case (_, a1.Namespace(units)) => units.get(memberName).head
 
-        case a1.VObj(typ, members) => members.get(memberName) match {
+        case (_, a1.VObj(typ, members)) => members.get(memberName) match {
           case _::_::_ => ???
           case v::Nil => v
           case Nil => raise(NonExistentMember(memberName)); e
         }
 
-        case e: a1.Exp => e.t match {
+        case (e: a1.Exp, _) => e.t match {
           case a1.Struct(_, members) => members.get(memberName) match {
             case _::_::_ => ???
                 // TODO: How do I propagate the type through? wrap it in an econs?

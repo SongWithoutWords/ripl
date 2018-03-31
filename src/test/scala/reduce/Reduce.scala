@@ -119,7 +119,7 @@ class TestReduce extends FreeSpec with Matchers {
         "b" -> a0.Select(a0.Name("n"), "a"))(
         "n" -> a1.Namespace(
           "a" -> VInt(4)),
-        "b" -> a1.Name("n.a", VInt(4)))()
+        "b" -> VInt(4))()
     }
     "units can be selected by name at depth" in {
       test(
@@ -132,7 +132,7 @@ class TestReduce extends FreeSpec with Matchers {
           "a" -> VInt(4),
           "m" -> a1.Namespace(
             "b" -> VInt(7))),
-        "c" -> a1.Name("n.m.b", VInt(7)))()
+        "c" -> VInt(7))()
     }
   }
   "type constraints" - {
