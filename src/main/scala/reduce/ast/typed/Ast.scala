@@ -18,9 +18,6 @@ sealed trait Exp extends Node { def t: Type }
 
 case object InvalidNode extends Node
 
-object Name { def apply(n: String, nodes: Node*): Name = Name(n, nodes.toList) }
-case class Name(n: String, nodes: List[Node]) extends Node
-
 object Namespace {
   def apply(nodes: (String, Node)*): Namespace = Namespace(MultiMap(nodes: _*))
 }
@@ -67,20 +64,14 @@ case class Fun(params: List[Param], retType: Type, body: Exp) extends Exp {
 
 // Should names even exist in the post reduction ast, or should there
 // just be literal references between nodes?
-object EName { def apply(n: String, exps: Exp*): EName = EName(n, exps.toList) }
-case class EName(n: String, exps: List[Exp]) extends Exp {
+object Name { def apply(n: String, exps: Exp*): Name = Name(n, exps.toList) }
+case class Name(n: String, exps: List[Exp]) extends Exp {
   def t = exps match {
     case (e: Exp)::Nil => e.t
     case _ => TError
   }
 }
 
-// {
-//   def t = nodes match {
-//     case (e: Exp)::Nil => e.t
-//     case _ => TError
-//   }
-// }
 // Idea: store name instead of string to easily catch what we're shadowing?
 // (same goes for var)
 case class Param(n: String, t: Type) extends Exp

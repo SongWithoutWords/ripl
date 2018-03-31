@@ -56,24 +56,6 @@ class Reduce(val astIn: a0.Ast) {
       intrinsics.get(n) ++
       scopes.flatMap(_.get(n))
 
-  // def unwrapMap(_e: a0.Exp): a1.Node = mapExp(_e) match {
-  //   case a1.Name(n, List(unit)) => unit
-  //   case e => e
-  // }
-
-  def unwrap(_n: a1.Node): a1.Node = _n match {
-    case a1.Name(_, List(n)) => n
-    case a1.Name(n, _) => a1.InvalidNode
-    case e: a1.Exp => unwrapExp(e)
-    case n => n
-  }
-
-  def unwrapExp(_e: a1.Exp): a1.Exp = _e match {
-    case a1.EName(_, List(e)) => e
-    case a1.EName(_, _) => a1.InvalidExp
-    case e => e
-  }
-
   def asType(node: a1.Node): a1.Type = node match {
     case t: a1.Type => t
     case n => raise(RequiredType(n)); TError
@@ -81,8 +63,8 @@ class Reduce(val astIn: a0.Ast) {
   def mapAsType(node: a0.Node): a1.Type = asType(mapNode(node))
   def asExp(node: a1.Node): a1.Exp = node match {
     case e: a1.Exp => e
-    case a1.Name(n, nodes) =>
-      a1.EName(n, nodes.collect(e => e match { case e: a1.Exp => e}))
+    // case a1.Name(n, nodes) =>
+      // a1.EName(n, nodes.collect(e => e match { case e: a1.Exp => e}))
     case n => raise(RequiredExp(n)); a1.InvalidExp
   }
   def mapAsExp(node: a0.Node): a1.Exp = asExp(mapNode(node))
@@ -108,7 +90,7 @@ class Reduce(val astIn: a0.Ast) {
         mapAsExp(_f),
         _args.map(mapAsExp))
 
-      (unwrap(app.f), app.args.map(unwrapExp)) match {
+      (app.f, app.args) match {
         case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
         case (f: a1.Exp, args) => f.t match {
           case a1.TFun(params, ret) =>
@@ -165,37 +147,43 @@ class Reduce(val astIn: a0.Ast) {
 
       a1.Fun(params, _retType match {case Some(t) => mapType(t); case _ => TError}, body)
 
-    case _n: a0.Name =>
-      val n = mapName(_n)
-      // This is complicating things a bit - might be nicer to have an unwrap method
-      n.nodes match {
-        case List(v: a1.Val) => v
-        // case List(node) => node
-        case _ => n
+    case a0.Name(n) => lookupName(n) match {
+      case Nil => raise(UnknownName(n)); a1.Name(n)
+      case x::Nil => x match {
+        case n: a1.Namespace => n
+        case i: a1.Intrinsic => i
+        case v: a1.Val => v
+        case t: a1.Type => t
+        case e: a1.Exp => a1.Name(n, e)
       }
+    }
 
     case a0.Select(_e, memberName) =>
       val e = mapNode(_e)
-      (e, unwrap(e)) match {
+      e match {
 
         // TODO: This is not entirely right, this should be like overload resolution
-        case (_, a1.Namespace(units)) => units.get(memberName).head
+        case a1.Namespace(units) => units.get(memberName).head
 
-        case (_, a1.VObj(typ, members)) => members.get(memberName) match {
+        case a1.VObj(typ, members) => members.get(memberName) match {
           case _::_::_ => ???
           case v::Nil => v
           case Nil => raise(NonExistentMember(memberName)); e
         }
 
-        case (e: a1.Exp, _) => e.t match {
+        case e: a1.Exp => e.t match {
           case a1.Struct(_, members) => members.get(memberName) match {
             case _::_::_ => ???
                 // TODO: How do I propagate the type through? wrap it in an econs?
             case t::Nil => a1.Select(e, memberName)
             case Nil => raise(NonExistentMember(memberName)); e
+            case l => throw new Exception(s"Unhandled member lookup results $l")
           }
           case TError => throw new Exception(s"$e")
+          case t => throw new Exception(s"$e")
         }
+
+        case e => throw new Exception(s"Unhandled node to select from $e")
       }
 
     case a0.Var(n, _e) =>
@@ -203,6 +191,11 @@ class Reduce(val astIn: a0.Ast) {
       addLocalBinding(n, e)
       a1.Var(n, e)
 
+    case v: a0.Val => mapVal(v)
+  }
+
+  def mapVal(v: a0.Val): a1.Val = v match {
+    case a0.VObj(typ, members) => a1.VObj(mapType(typ), members.mapValues(mapVal))
     case v: ValAtom => v
   }
 
@@ -210,11 +203,6 @@ class Reduce(val astIn: a0.Ast) {
     case a: TypeAtom => a
     case a0.TFun(_params, _ret) => a1.TFun(_params.map(mapType), mapType(_ret))
     case a0.Struct(name, fields) => a1.Struct(name, fields.mapValues(mapType))
-  }
-
-  def mapName(name: a0.Name): a1.Name = lookupName(name.n) match {
-    case Nil => raise(UnknownName(name.n)); a1.Name(name.n)
-    case x::Nil => a1.Name(name.n, x)
   }
 
   def constrain(a: a1.Exp, b: a1.Exp): scala.Unit = constrain(a.t, b.t)
