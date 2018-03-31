@@ -24,7 +24,6 @@ object Fun {
     = Fun(params.toList, retType, body)
 }
 case class Fun(params: List[Param], retType: Option[Type], body: Exp) extends Exp
-// object Name { def apply(n: String, nodes: Node*): Name = Name(n, nodes.toList) }
 case class Name(n: String) extends Exp
 case class Param(n: String, t: Type) extends Exp
 case class Select(e: Exp, n: String) extends Exp
