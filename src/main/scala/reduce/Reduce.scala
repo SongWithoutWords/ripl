@@ -63,8 +63,6 @@ class Reduce(val astIn: a0.Ast) {
   def mapAsType(node: a0.Node): a1.Type = asType(mapNode(node))
   def asExp(node: a1.Node): a1.Exp = node match {
     case e: a1.Exp => e
-    // case a1.Name(n, nodes) =>
-      // a1.EName(n, nodes.collect(e => e match { case e: a1.Exp => e}))
     case n => raise(RequiredExp(n)); a1.InvalidExp
   }
   def mapAsExp(node: a0.Node): a1.Exp = asExp(mapNode(node))
@@ -91,7 +89,20 @@ class Reduce(val astIn: a0.Ast) {
         _args.map(mapAsExp))
 
       (app.f, app.args) match {
+
+        // Compile time evaluation
         case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
+
+
+        // Method call syntax
+        // case (a1.Select(e, n), args) =>
+        //   lookupName(n) match {
+        //     case method: Exp => method.t match {
+        //       case TFun(params, args)
+        //   }
+        // }
+
+        // Typical function application
         case (f: a1.Exp, args) => f.t match {
           case a1.TFun(params, ret) =>
             if (params.length != args.length) {
