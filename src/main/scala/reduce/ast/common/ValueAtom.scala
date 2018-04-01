@@ -5,13 +5,18 @@ import reduce.ast.common._
 
 object ImplicitConversions {
   implicit def ImplicitBln(b: Boolean): VBln = VBln(b)
-  implicit def ImplicitInt(b: Int): VInt = VInt(b)
+  implicit def ImplicitFlt(f: Float): VFlt = VFlt(f)
+  implicit def ImplicitInt(i: Int): VInt = VInt(i)
 }
 
 sealed trait ValAtom extends a0.Val with a1.Val
 
 case class VBln(b: Boolean) extends ValAtom {
   def t = TBln
+}
+
+case class VFlt(f: Float) extends ValAtom {
+  def t = TFlt
 }
 
 case class VInt(i: Int) extends ValAtom {
