@@ -1,10 +1,13 @@
 package reduce
 
+import scala.language.implicitConversions
+
 import org.scalatest._
 
 import util.{MultiMap => Multi}
 
 import reduce.ast.common._
+import reduce.ast.common.ImplicitConversions._
 import reduce.ast.{untyped => a0, typed => a1}
 
 class TestReduce extends FreeSpec with Matchers {
@@ -23,46 +26,50 @@ class TestReduce extends FreeSpec with Matchers {
 
   "constants" - {
     "4 + 5 is 9" in {
-      val input = "a" -> a0.App(a0.Name("+"), VInt(4), VInt(5))
-      val output = "a" -> VInt(9)
-      test(input)(output)()
+      test(
+        "a" -> a0.App(a0.Name("+"), 4, 5))(
+        "a" -> 9)()
     }
     "a + b is 9 given a = 4 and b = 5" in {
-      val input = Multi(
-        "a" -> VInt(4),
-        "b" -> VInt(5),
-        "c" -> a0.App(a0.Name("+"), a0.Name("a"), a0.Name("b")))
-      val output = Multi(
-        "a" -> VInt(4),
-        "b" -> VInt(5),
-        "c" -> VInt(9))
-      test(input)(output)()
+      test(
+        "a" -> 4,
+        "b" -> 5,
+        "c" -> a0.App(a0.Name("+"), a0.Name("a"), a0.Name("b")))(
+        "a" -> 4,
+        "b" -> 5,
+        "c" -> 9)()
     }
   }
   "named references" - {
     "are found" in {
       test(
-        "a" -> VInt(4),
+        "a" -> 4,
         "b" -> a0.Name("a"))(
-        "a" -> VInt(4),
-        "b" -> VInt(4))()
+        "a" -> 4,
+        "b" -> 4)()
     }
     "are found in any order" in {
       test(
         "a" -> a0.Name("b"),
-        "b" -> VInt(4))(
-        "a" -> VInt(4),
-        "b" -> VInt(4))()
+        "b" -> 4)(
+        "a" -> 4,
+        "b" -> 4)()
     }
     "produce errors when they don't exist" in {
       test("a" -> a0.Name("b"))("a" -> a1.Name("b"))(UnknownName("b"))
     }
     "produce errors when they form cycles" - {
       "at depth 0" in {
-        test("a" -> a0.Name("a"))("a" -> a1.Name("a", a1.InvalidExp))(RecursiveVariableDef(a0.Name("a")))
+        test(
+          "a" -> a0.Name("a"))(
+          "a" -> a1.Name("a", a1.InvalidExp))(
+          RecursiveVariableDef(a0.Name("a")))
       }
       "at depth 1" in {
-        testErrs("a" -> a0.Name("b"), "b" -> a0.Name("a"))(RecursiveVariableDef(a0.Name("b")))
+        testErrs(
+          "a" -> a0.Name("b"),
+          "b" -> a0.Name("a"))(
+          RecursiveVariableDef(a0.Name("b")))
       }
       "at depth 2" in {
         testErrs(
@@ -77,28 +84,28 @@ class TestReduce extends FreeSpec with Matchers {
     "are traversed during reduction" in {
       test(
         "n" -> a0.Namespace(
-          "a" -> a0.Cons(TBln, VInt(4))))(
+          "a" -> a0.Cons(TBln, 4)))(
         "n" -> a1.Namespace(
-          "a" -> a1.Cons(TBln, VInt(4))))(
+          "a" -> a1.Cons(TBln, 4)))(
         TypeConflict(TBln, TInt))
     }
     "units are visible within their namespace" in {
       test(
         "n" -> a0.Namespace(
-          "a" -> VInt(4),
+          "a" -> 4,
           "b" -> a0.Name("a")))(
         "n" -> a1.Namespace(
-          "a" -> VInt(4),
-          "b" -> VInt(4)))()
+          "a" -> 4,
+          "b" -> 4))()
     }
     "units are visible from sub-namespaces" in {
       test(
         "n" -> a0.Namespace(
-          "a" -> VInt(4),
+          "a" -> 4,
           "m" -> a0.Namespace(
             "b" -> a0.Name("a"))))(
         "n" -> a1.Namespace(
-          "a" -> VInt(4),
+          "a" -> 4,
           "m" -> a1.Namespace(
             "b" -> VInt(4))))()
     }
@@ -119,32 +126,32 @@ class TestReduce extends FreeSpec with Matchers {
         "b" -> a0.Select(a0.Name("n"), "a"))(
         "n" -> a1.Namespace(
           "a" -> VInt(4)),
-        "b" -> VInt(4))()
+        "b" -> 4)()
     }
     "units can be selected by name at depth" in {
       test(
         "n" -> a0.Namespace(
-          "a" -> VInt(4),
+          "a" -> 4,
           "m" -> a0.Namespace(
             "b" -> VInt(7))),
         "c" -> a0.Select(a0.Select(a0.Name("n"), "m"), "b"))(
         "n" -> a1.Namespace(
-          "a" -> VInt(4),
+          "a" -> 4,
           "m" -> a1.Namespace(
             "b" -> VInt(7))),
-        "c" -> VInt(7))()
+        "c" -> 7)()
     }
   }
   "type constraints" - {
     "produce no errors when they are met" in {
       test(
-        "x" -> a0.Cons(TInt, VInt(3)))(
-        "x" -> a1.Cons(TInt, VInt(3)))()
+        "x" -> a0.Cons(TInt, 3))(
+        "x" -> a1.Cons(TInt, 3))()
     }
     "produce errors when they are not met" in {
       test(
-        "x" -> a0.Cons(TInt, VBln(true)))(
-        "x" -> a1.Cons(TInt, VBln(true)))(
+        "x" -> a0.Cons(TInt, true))(
+        "x" -> a1.Cons(TInt, true))(
         TypeConflict(TInt, TBln))
     }
   }
@@ -168,12 +175,12 @@ class TestReduce extends FreeSpec with Matchers {
             a0.App(
               a0.Name("+"),
               a0.Name("a"),
-              VInt(1))))(
+              1)))(
           "inc" -> a1.Fun(a1.Param("a", TInt))(TInt)(
             a1.App(
               a1.Intrinsic.IAdd,
               a1.Name("a", a1.Param("a", TInt)),
-              VInt(1))))()
+              1)))()
       }
     }
 
@@ -193,29 +200,29 @@ class TestReduce extends FreeSpec with Matchers {
         test("add" -> add)("add" -> addPrime)()
       }
       "produce no errors when applied to right types" in {
-        val x = a0.App(a0.Name("add"), VInt(4), VInt(5))
-        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4), VInt(5))
+        val x = a0.App(a0.Name("add"), 4, 5)
+        val xPrime = a1.App(a1.Name("add", addPrime), 4, 5)
         test("add" -> add, "x" -> x)("add" -> addPrime, "x" -> xPrime)()
       }
       "produce errors when applied to too few args" in {
-        val x = a0.App(a0.Name("add"), VInt(4))
-        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4))
+        val x = a0.App(a0.Name("add"), 4)
+        val xPrime = a1.App(a1.Name("add", addPrime), 4)
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
           WrongNumArgs(2, 1))
       }
       "produce errors when applied to too many args" in {
-        val x = a0.App(a0.Name("add"), VInt(4), VInt(5), VInt(6))
-        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4), VInt(5), VInt(6))
+        val x = a0.App(a0.Name("add"), 4, 5, 6)
+        val xPrime = a1.App(a1.Name("add", addPrime), 4, 5, 6)
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
           WrongNumArgs(2, 3))
       }
       "produce errors when applied to wrong types" in {
-        val x = a0.App(a0.Name("add"), VInt(4), VBln(true))
-        val xPrime = a1.App(a1.Name("add", addPrime), VInt(4), VBln(true))
+        val x = a0.App(a0.Name("add"), 4, true)
+        val xPrime = a1.App(a1.Name("add", addPrime), 4, true)
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
@@ -223,8 +230,8 @@ class TestReduce extends FreeSpec with Matchers {
       }
       "produce errors when non-applicable type applied" in {
         test(
-          "a" -> a0.App(VInt(4), VInt(5)))(
-          "a" -> a1.App(VInt(4), VInt(5)))(
+          "a" -> a0.App(4, 5))(
+          "a" -> a1.App(4, 5))(
           ApplicationOfNonAppliableType(TInt))
       }
     }
@@ -272,11 +279,11 @@ class TestReduce extends FreeSpec with Matchers {
   "local variables" - {
     "in blocks" - {
       val _block = a0.Block(
-        a0.Var("x", VInt(4)),
+        a0.Var("x", 4),
         a0.Name("x"))
       val block = a1.Block(
-        a1.Var("x", VInt(4)),
-        VInt(4))
+        a1.Var("x", 4),
+        4)
       "are bound correctly" in {
         test("b" -> _block)("b" -> block)()
       }
@@ -290,10 +297,10 @@ class TestReduce extends FreeSpec with Matchers {
     "in functions" - {
       val _inc = a0.Fun(a0.Param("a", TInt))(Some(TInt))(
         a0.Block(
-          a0.Var("result", a0.App(a0.Name("+"), a0.Name("a"), VInt(1))),
+          a0.Var("result", a0.App(a0.Name("+"), a0.Name("a"), 1)),
           a0.Name("result")))
 
-      val result = a1.App(a1.Intrinsic.IAdd, a1.Name("a", a1.Param("a", TInt)), VInt(1))
+      val result = a1.App(a1.Intrinsic.IAdd, a1.Name("a", a1.Param("a", TInt)), 1)
       val inc = a1.Fun(a1.Param("a", TInt))(TInt)(
         a1.Block(
           a1.Var("result", result),
@@ -315,12 +322,12 @@ class TestReduce extends FreeSpec with Matchers {
         val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
         test(
           "Point" -> _point,
-          "a" -> a0.VObj(_point, "x" -> VInt(7), "y" -> VInt(3)),
+          "a" -> a0.VObj(_point, "x" -> 7, "y" -> 3),
           "b" -> a0.Select(a0.Name("a"), "y")
         )(
           "Point" -> point,
-          "a" -> a1.VObj(point, "x" -> VInt(7), "y" -> VInt(3)),
-          "b" -> VInt(3)
+          "a" -> a1.VObj(point, "x" -> 7, "y" -> 3),
+          "b" -> 3
         )()
       }
       "members can  be selected from struct variables" in {
