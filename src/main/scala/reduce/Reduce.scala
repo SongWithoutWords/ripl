@@ -39,7 +39,7 @@ class Reduce(val astIn: a0.Ast) {
   val nodes = new IdentityMap[a0.Node, a1.Node]
 
   val astOut = astIn.mapValues(mapNode)
-  val intrinsics = a1.Intrinsic.values.map(i => (i.n, i)).toMap
+  val intrinsics = MultiMap(a1.Intrinsic.values.map(i => (i.n, i)): _*)
 
   type Scope = MultiMap[String, a1.Node]
   var scopes: List[Scope] = Nil
