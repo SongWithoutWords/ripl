@@ -66,9 +66,11 @@ class TestReduce extends FreeSpec with Matchers {
           RecursiveVariableDef(a0.Name("a")))
       }
       "at depth 1" in {
-        testErrs(
+        test(
           "a" -> a0.Name("b"),
           "b" -> a0.Name("a"))(
+          "a" -> a1.Name("b", a1.Name("a", a1.InvalidExp)),
+          "b" -> a1.Name("a", a1.InvalidExp))(
           RecursiveVariableDef(a0.Name("b")))
       }
       "at depth 2" in {
