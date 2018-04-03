@@ -325,7 +325,7 @@ class TestReduce extends FreeSpec with Matchers {
       val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
       test(
         "Point" -> _point,
-        "a" -> a0.VObj(_point, "x" -> 7, "y" -> 3),
+        "a" -> a0.VObj(a0.Name("Point"), "x" -> 7, "y" -> 3),
         "b" -> a0.Select(a0.Name("a"), "y")
       )(
         "Point" -> point,

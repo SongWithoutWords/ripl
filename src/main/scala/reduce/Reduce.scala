@@ -84,6 +84,7 @@ class Reduce(val astIn: a0.Ast) {
         nodes.map.view.force
         popScope()
         a1.Namespace(nodes)
+
       case t: a0.Type => mapType(t)
     })
   })
@@ -209,14 +210,14 @@ class Reduce(val astIn: a0.Ast) {
   }
 
   def mapVal(v: a0.Val): a1.Val = v match {
-    case a0.VObj(typ, members) => a1.VObj(mapType(typ), members.mapValues(mapVal))
+    case a0.VObj(typ, members) => a1.VObj(mapAsType(typ), members.mapValues(mapVal))
     case v: ValAtom => v
   }
 
   def mapType(t: a0.Type): a1.Type = t match {
     case a: TypeAtom => a
-    case a0.TFun(_params, _ret) => a1.TFun(_params.map(mapType), mapType(_ret))
-    case a0.Struct(name, fields) => a1.Struct(name, fields.mapValues(mapType))
+    case a0.TFun(_params, _ret) => a1.TFun(_params.map(mapAsType), mapAsType(_ret))
+    case a0.Struct(name, fields) => a1.Struct(name, fields.mapValues(mapAsType))
   }
 
   def constrain(a: a1.Exp, b: a1.Exp): scala.Unit = constrain(a.t, b.t)

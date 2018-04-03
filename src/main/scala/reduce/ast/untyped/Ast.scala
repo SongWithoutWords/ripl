@@ -12,9 +12,9 @@ trait Type extends Node
 
 // Expressions
 object App {
-  def apply(f: Node, args: Node*): App = App(f, args.toList)
+  def apply(f: Exp, args: Exp*): App = App(f, args.toList)
 }
-case class App(f: Node, args: List[Node]) extends Exp
+case class App(f: Exp, args: List[Exp]) extends Exp
 case class Assign(a: Exp, b: Exp) extends Exp
 case class Block(exps: Exp*) extends Exp
 case class Cons(t: Type, e: Exp) extends Exp
@@ -32,16 +32,16 @@ case class Var(n: String, e: Exp) extends Exp
 // Values
 trait Val extends Exp
 object VObj {
-  def apply(t: Type, fields: (String, Val)*): VObj
+  def apply(t: Exp, fields: (String, Val)*): VObj
     = VObj(t, MultiMap(fields: _*))
 }
-case class VObj(t: Type, fields: MultiMap[String, Val]) extends Val
+case class VObj(t: Node, fields: MultiMap[String, Val]) extends Val
 
 // Composite types
-object TFun { def apply(params: Type*)(ret: Type): TFun = TFun(params.toList, ret) }
-case class TFun(params: List[Type], ret: Type) extends Type
+object TFun { def apply(params: Node*)(ret: Node): TFun = TFun(params.toList, ret) }
+case class TFun(params: List[Node], ret: Node) extends Type
 object Struct {
-  def apply(name: String, fields: (String, Type)*): Struct
+  def apply(name: String, fields: (String, Node)*): Struct
     = Struct(name, MultiMap(fields: _*))
 }
-case class Struct(name: String, fields: MultiMap[String, Type]) extends Type
+case class Struct(name: String, fields: MultiMap[String, Node]) extends Type
