@@ -159,13 +159,13 @@ class Reduce(val astIn: a0.Ast) {
       // either enforce the known return type
       // or gather and find supertype of types returned
 
-      val params = _params.map(p => a1.Param(p.n, mapType(p.t)))
+      val params = _params.map(p => a1.Param(p.n, mapAsType(p.t)))
 
       pushScope(MultiMap(params.map(p => (p.n, p)): _*))
       val body = mapAsExp(_body)
       popScope()
 
-      found(a1.Fun(params, _retType match {case Some(t) => mapType(t); case _ => TError}, body))
+      found(a1.Fun(params, _retType match {case Some(t) => mapAsType(t); case _ => TError}, body))
 
     case a0.Name(n) => lookupName(n) match {
       case Nil => raise(UnknownName(n)); found(a1.Name(n))

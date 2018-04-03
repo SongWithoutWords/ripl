@@ -20,12 +20,12 @@ case class Block(exps: Exp*) extends Exp
 case class Cons(t: Type, e: Exp) extends Exp
 case class If(a: Exp, b: Exp, c: Exp) extends Exp
 object Fun {
-  def apply(params: Param*)(retType: Option[Type])(body: Exp): Fun
+  def apply(params: Param*)(retType: Option[Node])(body: Exp): Fun
     = Fun(params.toList, retType, body)
 }
-case class Fun(params: List[Param], retType: Option[Type], body: Exp) extends Exp
+case class Fun(params: List[Param], retType: Option[Node], body: Exp) extends Exp
 case class Name(n: String) extends Exp
-case class Param(n: String, t: Type) extends Exp
+case class Param(n: String, t: Node) extends Exp
 case class Select(e: Exp, n: String) extends Exp
 case class Var(n: String, e: Exp) extends Exp
 
