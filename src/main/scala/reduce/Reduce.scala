@@ -3,8 +3,6 @@ package reduce
 import scala.collection.immutable.Set
 import scala.collection.mutable.Stack
 
-// import scalaz._
-
 import reduce.ast.common._
 import reduce.ast.{untyped => a0}
 import reduce.ast.{typed => a1}
@@ -134,90 +132,52 @@ class Reduce(val astIn: a0.Ast) {
 
   def mapExp(kind: Kind, exp: a0.Exp): ReduceM[a1.Node] = exp match {
 
-    case a0.App(_f, _args) =>
+    case a0.App(_f, _args) => for {
+      f <- mapAsExp(None, _f)
+      args <- mapM(_args){ mapAsExp(None, _) }
 
-      // val app = a1.App(
-        // mapAsExp(None, _f),
-        // _args.map(mapAsExp(None, _)))
+      val app = a1.App(f, args)
+      result <- (f, args) match {
 
-      for {
-        f <- mapAsExp(None, _f)
-        args <- mapM(_args){mapAsExp(None, _)}// _args.map(mapAsExp(None, _))
+        // Compile time evaluation
+        case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => pure(VInt(a + b))
 
-        val app = a1.App(f, args)
-        app <- (f, args) match {
+          // Method call syntax
+          // case (a1.Select(e, n), args) =>
+          //   lookupName(n) match {
+          //     case method: Exp => method.t match {
+          //       case TFun(params, args)
+          //   }
+          // }
 
-          // Compile time evaluation
-          case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => pure(VInt(a + b))
-
-
-            // Method call syntax
-            // case (a1.Select(e, n), args) =>
-            //   lookupName(n) match {
-            //     case method: Exp => method.t match {
-            //       case TFun(params, args)
-            //   }
-            // }
-
-          // Typical function application
-          case (f: a1.Exp, args) => f.t match {
-            case a1.TFun(params, ret) =>
-              (params, args).zipped.map((p, a) => constrainImpure(p, a))
-              when(params.length != args.length){ raise(WrongNumArgs(params.length, args.length)) } >>
-                pure(app)
-            case _ => raise(ApplicationOfNonAppliableType(f.t)) >> pure(app)
-          }
+        // Typical function application
+        case (f: a1.Exp, args) => f.t match {
+          case a1.TFun(params, ret) =>
+            (params, args).zipped.map((p, a) => constrainImpure(p, a))
+            when(params.length != args.length){ raise(WrongNumArgs(params.length, args.length)) } >>
+              pure(app)
+          case _ => raise(ApplicationOfNonAppliableType(f.t)) >> pure(app)
         }
       }
-      yield app
-        // val app = a1.App(f, args)
-        // (app.f, app.args) match {
-
-          // Compile time evaluation
-          // case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
-
-
-            // Method call syntax
-            // case (a1.Select(e, n), args) =>
-            //   lookupName(n) match {
-            //     case method: Exp => method.t match {
-            //       case TFun(params, args)
-            //   }
-            // }
-
-          // Typical function application
-      //     case (f: a1.Exp, args) => f.t match {
-      //       case a1.TFun(params, ret) =>
-      //         (params, args).zipped.map((p, a) => constrain(p, a))
-      //         when(params.length != args.length, raise(WrongNumArgs(params.length, args.length))) >>
-      //           pure(app)
-      //       case _ => raise(ApplicationOfNonAppliableType(f.t)) >> pure(app)
-      //     }
-      //   }
-      // }
+    }
+    yield result
 
     case a0.Block(_exps @ _*) =>
       // TODO: reduce to single exp if is single exp
       pushScope()
       for {
-        exps <- mapM(_exps.toList){mapAsExp(None, _)} //_exps.map(mapAsExp(None, _))
+        exps <- mapM(_exps.toList){ mapAsExp(None, _) }
       } yield {
         popScope();
         a1.Block(exps: _*)
       }
 
-      // pushScope()
-      // val exps = _exps.map(mapAsExp(None, _))
-      // popScope()
-      // pure(a1.Block(exps: _*))
-
     case a0.Cons(_t, _e) =>
       val t = mapAsType(_t)
-
-      for { e <- mapAsExp(Some(t), _e); _ <- constrain(t, e) } yield a1.Cons(t, e)
-      // val e = mapAsExp(Some(t), _e)
-      // constrain(t, e)
-      // pure(a1.Cons(t, e))
+      for {
+        e <- mapAsExp(Some(t), _e)
+        _ <- constrain(t, e)
+      } yield a1.Cons(t, e)
 
     case a0.If(_a, _b, _c) => for {
       a <- mapAsExp(Some(TBln), _a)
@@ -229,34 +189,13 @@ class Reduce(val astIn: a0.Ast) {
           case _ => pure(a1.InvalidExp) // Error already emitted by constraint
         }
         case e => for {
+          // come up with something more sophisticated if you can
           b <- mapAsExp(None, _b)
           c <- mapAsExp(Some(b.t), _c)
           _ <- constrain(b, c)
         } yield a1.If(a, b, c)
-
-          // come up with something more sophisticated if you can
-          // val b = mapAsExp(None, _b)
-          // val c = mapAsExp(Some(b.t), _c)
-          // constrain(b, c)
-          // pure(a1.If(a, b, c))
       }
-   } yield result
-
-      // val a = mapAsExp(Some(TBln), _a)
-      // // constrain(TBln, a)
-      // a match {
-      //   case v: a1.Val => v match {
-      //     case VBln(true) => pure(mapNode(kind, _b))
-      //     case VBln(false) => pure(mapNode(kind, _c))
-      //     case _ => pure(a1.InvalidExp) // Error already emitted by constraint
-      //   }
-      //   case e =>
-      //     // come up with something more sophisticated if you can
-      //     val b = mapAsExp(None, _b)
-      //     val c = mapAsExp(Some(b.t), _c)
-      //     // constrain(b, c)
-      //     pure(a1.If(a, b, c))
-      // }
+    } yield result
 
     case a0.Fun(_params, _retType, _body) =>
 
@@ -272,12 +211,6 @@ class Reduce(val astIn: a0.Ast) {
         body <- mapAsExp(None, _body)
         _ <- impure(popScope())
       } yield a1.Fun(params, _retType match {case Some(t) => mapAsType(t); case _ => TError}, body)
-
-      // pushScope(MultiMap(params.map(p => (p.n, p)): _*))
-      // val body = mapAsExp(None, _body)
-      // popScope()
-
-      // pure(a1.Fun(params, _retType match {case Some(t) => mapAsType(t); case _ => TError}, body))
 
     case a0.Name(n) => lookupName(n) match {
       case Nil => raise(UnknownName(n)) >> pure(a1.Name(n))
@@ -322,10 +255,6 @@ class Reduce(val astIn: a0.Ast) {
         addLocalBinding(n, e)
         a1.Var(n, e)
       }
-      // mapAsExp(None, _e) >>= { e =>
-      // addLocalBinding(n, e)
-      // pure(a1.Var(n, e))
-      // }
 
     case v: a0.Val => pure(mapVal(v))
   }
