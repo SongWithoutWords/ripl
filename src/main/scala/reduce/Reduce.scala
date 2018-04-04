@@ -24,6 +24,7 @@ case object ReduceM {
   def impure(impureAction: =>Unit) = {impureAction; pure()}
 
   def pure[A](a: A): ReduceM[A] = ReduceM(a, Set())
+  def pure(): ReduceM[Unit] = ReduceM((), Set())
 
   def raise(e: Error): ReduceM[Unit] = ReduceM((), Set(e))
 
@@ -38,6 +39,14 @@ case object ReduceM {
     case Nil => pure(Nil)
     case a::rem => f(a) >>= { b => mapM(rem)(f) >>= {bs => pure(b::bs) } }
   }
+
+  def zipWithM[A, B](as: List[A], bs: List[B])(f: (A, B) => ReduceM[Unit]): ReduceM[Unit] = {
+    val zip: List[(A, B)] = (as, bs).zipped.map((a, b) => (a, b))
+    mapM(zip) { case (a, b) => f(a, b) } >> pure()
+  }
+
+
+  // (params, args).zipped.map((p, a) => constrainImpure(p, a))
 
 }
 import ReduceM._
@@ -153,7 +162,7 @@ class Reduce(val astIn: a0.Ast) {
         // Typical function application
         case (f: a1.Exp, args) => f.t match {
           case a1.TFun(params, ret) =>
-            (params, args).zipped.map((p, a) => constrainImpure(p, a))
+            zipWithM(params, args)((p, a) => constrain(p, a)) >>
             when(params.length != args.length){ raise(WrongNumArgs(params.length, args.length)) } >>
               pure(app)
           case _ => raise(ApplicationOfNonAppliableType(f.t)) >> pure(app)
