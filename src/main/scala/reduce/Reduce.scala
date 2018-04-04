@@ -3,6 +3,8 @@ package reduce
 import scala.collection.immutable.Set
 import scala.collection.mutable.Stack
 
+// import scalaz._
+
 import reduce.ast.common._
 import reduce.ast.{untyped => a0}
 import reduce.ast.{typed => a1}
@@ -19,19 +21,38 @@ object Reduce {
   }
 }
 
+case object ReduceM {
+  def pure[A](a: A): ReduceM[A] = ReduceM(a, Set())
+
+  def raise(e: Error): ReduceM[Unit] = ReduceM((), Set(e))
+
+  def when[A](condition: Boolean, action: ReduceM[A]) = if(condition) action else pure()
+
+}
+import ReduceM._
+
+
+case class ReduceM[+A](a: A, errors: Set[Error]) {
+
+  def map[B](f: A => B) = ReduceM(f(a), errors)
+
+  def >>[B](rhs: ReduceM[B]) = ReduceM(rhs.a, errors union rhs.errors)
+
+  def >>=[B](f: A => ReduceM[B]): ReduceM[B] = {
+    val ReduceM(b, rhsErrors) = f(a)
+    ReduceM(b, errors union rhsErrors)
+  }
+}
+
 class Reduce(val astIn: a0.Ast) {
   var errors = Set[Error]()
-  def raise(e: Error) = errors = errors + e
-
-  def found[A](a: A): (A, Set[Error]) = (a, Set())
-
-  def foundWithError[A](a: A, e: Error): (A, Set[Error]) = (a, Set(e))
+  def raiseImpure(e: Error) = errors = errors + e
 
   val history = new Stack[a0.Node]
   def historyContains(n: a0.Node) = history.filter(n.eq(_)).nonEmpty
   def catchCycles(input: a0.Node, mapping: (a0.Node) => a1.Node): a1.Node =
     if (historyContains(input)) {
-      raise(RecursiveVariableDef(input))
+      raiseImpure(RecursiveVariableDef(input))
       a1.InvalidExp // Could provide additional information in future
     } else {
       history.push(input)
@@ -62,12 +83,12 @@ class Reduce(val astIn: a0.Ast) {
 
   def asType(node: a1.Node): a1.Type = node match {
     case t: a1.Type => t
-    case n => raise(RequiredType(n)); TError
+    case n => raiseImpure(RequiredType(n)); TError
   }
   def mapAsType(node: a0.Node): a1.Type = asType(mapNode(KType, node))
   def asExp(node: a1.Node): a1.Exp = node match {
     case e: a1.Exp => e
-    case n => raise(RequiredExp(n)); a1.InvalidExp
+    case n => raiseImpure(RequiredExp(n)); a1.InvalidExp
   }
   def mapAsExp(t: Option[a1.Type], node: a0.Node): a1.Exp = asExp(mapNode(KExp(t), node))
 
@@ -80,7 +101,7 @@ class Reduce(val astIn: a0.Ast) {
   def mapNode(kind: Kind, n: a0.Node): a1.Node = nodes.getOrElseUpdate(n, {
     catchCycles(n, (n: a0.Node) => n match {
       case _e: a0.Exp =>
-        val (e, errs) = mapExp(KAny, _e)
+        val ReduceM(e, errs) = mapExp(KAny, _e)
         errors = errors union errs
         e
 
@@ -95,7 +116,7 @@ class Reduce(val astIn: a0.Ast) {
     })
   })
 
-  def mapExp(kind: Kind, exp: a0.Exp): (a1.Node, Set[Error]) = exp match {
+  def mapExp(kind: Kind, exp: a0.Exp): ReduceM[a1.Node] = exp match {
 
     case a0.App(_f, _args) =>
 
@@ -106,7 +127,7 @@ class Reduce(val astIn: a0.Ast) {
      (app.f, app.args) match {
 
         // Compile time evaluation
-        case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => found(VInt(a + b))
+        case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => pure(VInt(a + b))
 
 
         // Method call syntax
@@ -120,12 +141,10 @@ class Reduce(val astIn: a0.Ast) {
         // Typical function application
         case (f: a1.Exp, args) => f.t match {
           case a1.TFun(params, ret) =>
-            if (params.length != args.length) {
-              raise(WrongNumArgs(params.length, args.length))
-            }
             (params, args).zipped.map((p, a) => constrain(p, a))
-            found(app)
-          case _ => foundWithError(app, ApplicationOfNonAppliableType(f.t))
+            when(params.length != args.length, raise(WrongNumArgs(params.length, args.length))) >>
+            pure(app)
+          case _ => raise(ApplicationOfNonAppliableType(f.t)) >> pure(app)
         }
       }
 
@@ -134,29 +153,29 @@ class Reduce(val astIn: a0.Ast) {
       pushScope()
       val exps = _exps.map(mapAsExp(None, _))
       popScope()
-      found(a1.Block(exps: _*))
+      pure(a1.Block(exps: _*))
 
     case a0.Cons(_t, _e) =>
       val t = mapAsType(_t)
       val e = mapAsExp(Some(t), _e)
       constrain(t, e)
-      found(a1.Cons(t, e))
+      pure(a1.Cons(t, e))
 
     case a0.If(_a, _b, _c) =>
       val a = mapAsExp(Some(TBln), _a)
       // constrain(TBln, a)
       a match {
         case v: a1.Val => v match {
-          case VBln(true) => found(mapNode(kind, _b))
-          case VBln(false) => found(mapNode(kind, _c))
-          case _ => found(a1.InvalidExp) // Error already emitted by constraint
+          case VBln(true) => pure(mapNode(kind, _b))
+          case VBln(false) => pure(mapNode(kind, _c))
+          case _ => pure(a1.InvalidExp) // Error already emitted by constraint
         }
         case e =>
           // come up with something more sophisticated if you can
           val b = mapAsExp(None, _b)
           val c = mapAsExp(Some(b.t), _c)
           constrain(b, c)
-          found(a1.If(a, b, c))
+          pure(a1.If(a, b, c))
       }
 
     case a0.Fun(_params, _retType, _body) =>
@@ -172,16 +191,16 @@ class Reduce(val astIn: a0.Ast) {
       val body = mapAsExp(None, _body)
       popScope()
 
-      found(a1.Fun(params, _retType match {case Some(t) => mapAsType(t); case _ => TError}, body))
+      pure(a1.Fun(params, _retType match {case Some(t) => mapAsType(t); case _ => TError}, body))
 
     case a0.Name(n) => lookupName(n) match {
-      case Nil => raise(UnknownName(n)); found(a1.Name(n))
+      case Nil => raise(UnknownName(n)) >> pure(a1.Name(n))
       case x::Nil => x match {
-        case n: a1.Namespace => found(n)
-        case i: a1.Intrinsic => found(i)
-        case v: a1.Val => found(v)
-        case t: a1.Type => found(t)
-        case e: a1.Exp => found(a1.Name(n, e))
+        case n: a1.Namespace => pure(n)
+        case i: a1.Intrinsic => pure(i)
+        case v: a1.Val => pure(v)
+        case t: a1.Type => pure(t)
+        case e: a1.Exp => pure(a1.Name(n, e))
       }
     }
 
@@ -190,21 +209,21 @@ class Reduce(val astIn: a0.Ast) {
       e match {
 
         // TODO: Filter to the required kind
-        case a1.Namespace(units) => found(units.get(memberName).head)
+        case a1.Namespace(units) => pure(units.get(memberName).head)
 
         // TODO: Filter to the required kind
         case a1.VObj(typ, members) => members.get(memberName) match {
           case _::_::_ => ???
-          case v::Nil => found(v)
-          case Nil => foundWithError(e, NonExistentMember(memberName))
+          case v::Nil => pure(v)
+          case Nil => raise(NonExistentMember(memberName)) >> pure(e)
         }
 
         // TODO: Filter to the required kind
         case e: a1.Exp => e.t match {
           case a1.Struct(_, members) => members.get(memberName) match {
             case _::_::_ => ???
-            case t::Nil => found(a1.Select(e, memberName))
-            case Nil => foundWithError(e, NonExistentMember(memberName))
+            case t::Nil => pure(a1.Select(e, memberName))
+            case Nil => raise(NonExistentMember(memberName)) >> pure(e)
           }
           case TError => throw new Exception(s"$e")
         }
@@ -213,9 +232,9 @@ class Reduce(val astIn: a0.Ast) {
     case a0.Var(n, _e) =>
       val e = mapAsExp(None, _e)
       addLocalBinding(n, e)
-      found(a1.Var(n, e))
+      pure(a1.Var(n, e))
 
-    case v: a0.Val => found(mapVal(v))
+    case v: a0.Val => pure(mapVal(v))
   }
 
   def mapVal(v: a0.Val): a1.Val = v match {
@@ -231,7 +250,7 @@ class Reduce(val astIn: a0.Ast) {
 
   def constrain(a: a1.Exp, b: a1.Exp): scala.Unit = constrain(a.t, b.t)
   def constrain(a: a1.Type, b: a1.Exp): scala.Unit = constrain(a, b.t)
-  def constrain(a: a1.Type, b: a1.Type): scala.Unit = if (a != b) raise(TypeConflict(a, b))
+  def constrain(a: a1.Type, b: a1.Type): scala.Unit = if (a != b) raiseImpure(TypeConflict(a, b))
 
   astOut.map.view.force
 }
