@@ -40,7 +40,13 @@ case object ReduceM {
     case a::rem => f(a) >>= { b => mapM(rem)(f) >>= {bs => pure(b::bs) } }
   }
 
-  def multiMapM[K, A, B](as: MultiMap[K, A])(f: A => ReduceM[B]): ReduceM[MultiMap[K, B]] = ???
+  def mapM[K, A, B](as: Map[K, A])(f: A => ReduceM[B]): ReduceM[Map[K, B]] = {
+    mapM(as.toList){ case (k, a) => for {b <- f(a)} yield (k, b) }.map(_.toMap)
+  }
+
+  def mapM[K, A, B](as: MultiMap[K, A])(f: A => ReduceM[B]): ReduceM[MultiMap[K, B]] = {
+    mapM(as.map) { as => mapM(as){f}}.map(MultiMap(_))
+  }
 
   def zipWithM[A, B](as: List[A], bs: List[B])(f: (A, B) => ReduceM[Unit]): ReduceM[Unit] = {
     val zip: List[(A, B)] = (as, bs).zipped.map((a, b) => (a, b))
@@ -270,7 +276,7 @@ class Reduce(val astIn: a0.Ast) {
   def mapVal(v: a0.Val): ReduceM[a1.Val] = v match {
     case a0.VObj(_t, _members) => for {
       t <- mapAsType(_t)
-      members <- multiMapM(_members){mapVal}
+      members <- mapM(_members){mapVal}
     } yield a1.VObj(t, members)
     case v: ValAtom => pure(v)
   }
@@ -282,7 +288,7 @@ class Reduce(val astIn: a0.Ast) {
       ret <- mapAsType(_ret)
     } yield a1.TFun(params, ret)
     case a0.Struct(name, _fields) => for {
-      fields <- multiMapM(_fields) {mapAsType}
+      fields <- mapM(_fields) {mapAsType}
     } yield a1.Struct(name, fields)
   }
 
