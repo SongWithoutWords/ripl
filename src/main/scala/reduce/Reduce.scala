@@ -286,10 +286,6 @@ class Reduce(val astIn: a0.Ast) {
     } yield a1.Struct(name, fields)
   }
 
-  def constrainImpure(a: a1.Exp, b: a1.Exp): scala.Unit = constrainImpure(a.t, b.t)
-  def constrainImpure(a: a1.Type, b: a1.Exp): scala.Unit = constrainImpure(a, b.t)
-  def constrainImpure(a: a1.Type, b: a1.Type): scala.Unit = if (a != b) raiseImpure(TypeConflict(a, b))
-
   astOut.map.view.force
 }
 
