@@ -40,13 +40,12 @@ case object ReduceM {
     case a::rem => f(a) >>= { b => mapM(rem)(f) >>= {bs => pure(b::bs) } }
   }
 
+  def multiMapM[K, A, B](as: MultiMap[K, A])(f: A => ReduceM[B]): ReduceM[MultiMap[K, B]] = ???
+
   def zipWithM[A, B](as: List[A], bs: List[B])(f: (A, B) => ReduceM[Unit]): ReduceM[Unit] = {
     val zip: List[(A, B)] = (as, bs).zipped.map((a, b) => (a, b))
     mapM(zip) { case (a, b) => f(a, b) } >> pure()
   }
-
-
-  // (params, args).zipped.map((p, a) => constrainImpure(p, a))
 
 }
 import ReduceM._
@@ -103,11 +102,11 @@ class Reduce(val astIn: a0.Ast) {
       intrinsics.get(n) ++
       scopes.flatMap(_.get(n))
 
-  def asType(node: a1.Node): a1.Type = node match {
-    case t: a1.Type => t
-    case n => raiseImpure(RequiredType(n)); TError
+  def asType(node: a1.Node): ReduceM[a1.Type] = node match {
+    case t: a1.Type => pure(t)
+    case n => raise(RequiredType(n)) >> pure(TError)
   }
-  def mapAsType(node: a0.Node): a1.Type = asType(mapNode(KType, node))
+  def mapAsType(node: a0.Node): ReduceM[a1.Type] = asType(mapNode(KType, node))
 
   def asExp(node: a1.Node): ReduceM[a1.Exp] = node match {
     case e: a1.Exp => pure(e)
@@ -135,7 +134,10 @@ class Reduce(val astIn: a0.Ast) {
         popScope()
         a1.Namespace(nodes)
 
-      case t: a0.Type => mapType(t)
+      case _t: a0.Type =>
+       val ReduceM(t, errs) = mapType(_t)
+       errors = errors union errs
+       t
     })
   })
 
@@ -144,8 +146,7 @@ class Reduce(val astIn: a0.Ast) {
     case a0.App(_f, _args) => for {
       f <- mapAsExp(None, _f)
       args <- mapM(_args){ mapAsExp(None, _) }
-
-      val app = a1.App(f, args)
+      app = a1.App(f, args)
       result <- (f, args) match {
 
         // Compile time evaluation
@@ -182,8 +183,8 @@ class Reduce(val astIn: a0.Ast) {
       }
 
     case a0.Cons(_t, _e) =>
-      val t = mapAsType(_t)
       for {
+        t <- mapAsType(_t)
         e <- mapAsExp(Some(t), _e)
         _ <- constrain(t, e)
       } yield a1.Cons(t, e)
@@ -206,20 +207,18 @@ class Reduce(val astIn: a0.Ast) {
       }
     } yield result
 
-    case a0.Fun(_params, _retType, _body) =>
+    case a0.Fun(_params, _retType, _body) => for {
+      params <- mapM(_params) {p => for {t <- mapAsType(p.t)} yield a1.Param(p.n, t)}
+      retType <- _retType match {case Some(t) => mapAsType(t); case _ => pure(TError)}
+      _ <- impure(pushScope(MultiMap(params.map(p => (p.n, p)): _*)))
+      body <- mapAsExp(None, _body)
+      _ <- impure(popScope())
+    } yield a1.Fun(params, retType, body)
 
       // push new scope with the params
       // traverse body
       // either enforce the known return type
       // or gather and find supertype of types returned
-
-      val params = _params.map(p => a1.Param(p.n, mapAsType(p.t)))
-
-      pushScope(MultiMap(params.map(p => (p.n, p)): _*))
-      for {
-        body <- mapAsExp(None, _body)
-        _ <- impure(popScope())
-      } yield a1.Fun(params, _retType match {case Some(t) => mapAsType(t); case _ => TError}, body)
 
     case a0.Name(n) => lookupName(n) match {
       case Nil => raise(UnknownName(n)) >> pure(a1.Name(n))
@@ -265,18 +264,26 @@ class Reduce(val astIn: a0.Ast) {
         a1.Var(n, e)
       }
 
-    case v: a0.Val => pure(mapVal(v))
+    case v: a0.Val => mapVal(v)
   }
 
-  def mapVal(v: a0.Val): a1.Val = v match {
-    case a0.VObj(typ, members) => a1.VObj(mapAsType(typ), members.mapValues(mapVal))
-    case v: ValAtom => v
+  def mapVal(v: a0.Val): ReduceM[a1.Val] = v match {
+    case a0.VObj(_t, _members) => for {
+      t <- mapAsType(_t)
+      members <- multiMapM(_members){mapVal}
+    } yield a1.VObj(t, members)
+    case v: ValAtom => pure(v)
   }
 
-  def mapType(t: a0.Type): a1.Type = t match {
-    case a: TypeAtom => a
-    case a0.TFun(_params, _ret) => a1.TFun(_params.map(mapAsType), mapAsType(_ret))
-    case a0.Struct(name, fields) => a1.Struct(name, fields.mapValues(mapAsType))
+  def mapType(t: a0.Type): ReduceM[a1.Type] = t match {
+    case t: TypeAtom => pure(t)
+    case a0.TFun(_params, _ret) => for {
+      params <- mapM(_params){mapAsType}
+      ret <- mapAsType(_ret)
+    } yield a1.TFun(params, ret)
+    case a0.Struct(name, _fields) => for {
+      fields <- multiMapM(_fields) {mapAsType}
+    } yield a1.Struct(name, fields)
   }
 
   def constrainImpure(a: a1.Exp, b: a1.Exp): scala.Unit = constrainImpure(a.t, b.t)
