@@ -237,13 +237,6 @@ class Reduce(val astIn: a0.Ast) {
         case e: a1.Exp => pure(a1.Name(n, e))
         }
       }
-      // case x::Nil => x match {
-      //   case n: a1.Namespace => pure(n)
-      //   case i: a1.Intrinsic => pure(i)
-      //   case v: a1.Val => pure(v)
-      //   case t: a1.Type => pure(t)
-      //   case e: a1.Exp => pure(a1.Name(n, e))
-      // }
     }
 
     case a0.Select(_e, memberName) =>
