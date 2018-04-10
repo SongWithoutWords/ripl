@@ -129,7 +129,8 @@ class Reduce(val astIn: a0.Ast) {
   def mapNode(kind: Kind, n: a0.Node): a1.Node = nodes.getOrElseUpdate(n, {
     catchCycles(n, (n: a0.Node) => n match {
       case _e: a0.Exp =>
-        val ReduceM(e, errs) = mapExp(KAny, _e)
+        // This isn't quite safe/right, but we'll figure it out
+        val ReduceM(List(e), errs) = mapExp(KAny, _e)
         errors = errors union errs
         e
 
@@ -147,7 +148,7 @@ class Reduce(val astIn: a0.Ast) {
     })
   })
 
-  def mapExp(kind: Kind, exp: a0.Exp): ReduceM[a1.Node] = exp match {
+  def mapExp(kind: Kind, exp: a0.Exp): ReduceM[List[a1.Node]] = exp match {
 
     case a0.App(_f, _args) => for {
       f <- mapAsExp(None, _f)
@@ -176,7 +177,7 @@ class Reduce(val astIn: a0.Ast) {
         }
       }
     }
-    yield result
+    yield List(result)
 
     case a0.Block(_exps @ _*) =>
       // TODO: reduce to single exp if is single exp
@@ -185,7 +186,7 @@ class Reduce(val astIn: a0.Ast) {
         exps <- mapM(_exps.toList){ mapAsExp(None, _) }
       } yield {
         popScope();
-        a1.Block(exps: _*)
+        List(a1.Block(exps: _*))
       }
 
     case a0.Cons(_t, _e) =>
@@ -193,7 +194,7 @@ class Reduce(val astIn: a0.Ast) {
         t <- mapAsType(_t)
         e <- mapAsExp(Some(t), _e)
         _ <- constrain(t, e)
-      } yield a1.Cons(t, e)
+      } yield List(a1.Cons(t, e))
 
     case a0.If(_a, _b, _c) => for {
       a <- mapAsExp(Some(TBln), _a)
@@ -211,7 +212,7 @@ class Reduce(val astIn: a0.Ast) {
           _ <- constrain(b, c)
         } yield a1.If(a, b, c)
       }
-    } yield result
+    } yield List(result)
 
     case a0.Fun(_params, _retType, _body) => for {
       params <- mapM(_params) {p => for {t <- mapAsType(p.t)} yield a1.Param(p.n, t)}
@@ -219,7 +220,7 @@ class Reduce(val astIn: a0.Ast) {
       _ <- impure(pushScope(MultiMap(params.map(p => (p.n, p)): _*)))
       body <- mapAsExp(None, _body)
       _ <- impure(popScope())
-    } yield a1.Fun(params, retType, body)
+    } yield List(a1.Fun(params, retType, body))
 
       // push new scope with the params
       // traverse body
@@ -227,14 +228,22 @@ class Reduce(val astIn: a0.Ast) {
       // or gather and find supertype of types returned
 
     case a0.Name(n) => lookupName(n) match {
-      case Nil => raise(UnknownName(n)) >> pure(a1.Name(n))
-      case x::Nil => x match {
+      case Nil => raise(UnknownName(n)) >> pure(List(a1.Name(n)))
+      case exps => mapM(exps) {exp => exp match {
         case n: a1.Namespace => pure(n)
         case i: a1.Intrinsic => pure(i)
         case v: a1.Val => pure(v)
         case t: a1.Type => pure(t)
         case e: a1.Exp => pure(a1.Name(n, e))
+        }
       }
+      // case x::Nil => x match {
+      //   case n: a1.Namespace => pure(n)
+      //   case i: a1.Intrinsic => pure(i)
+      //   case v: a1.Val => pure(v)
+      //   case t: a1.Type => pure(t)
+      //   case e: a1.Exp => pure(a1.Name(n, e))
+      // }
     }
 
     case a0.Select(_e, memberName) =>
@@ -242,21 +251,20 @@ class Reduce(val astIn: a0.Ast) {
       e match {
 
         // TODO: Filter to the required kind
-        case a1.Namespace(units) => pure(units.get(memberName).head)
+        case a1.Namespace(units) => pure(units.get(memberName))
 
         // TODO: Filter to the required kind
         case a1.VObj(typ, members) => members.get(memberName) match {
-          case _::_::_ => ???
-          case v::Nil => pure(v)
-          case Nil => raise(NonExistentMember(memberName)) >> pure(e)
+          case Nil => raise(NonExistentMember(memberName)) >> pure(List(a1.InvalidExp))
+          case xs => pure(xs)
         }
 
         // TODO: Filter to the required kind
         case e: a1.Exp => e.t match {
           case a1.Struct(_, members) => members.get(memberName) match {
             case _::_::_ => ???
-            case t::Nil => pure(a1.Select(e, memberName))
-            case Nil => raise(NonExistentMember(memberName)) >> pure(e)
+            case Nil => raise(NonExistentMember(memberName)) >> pure(List(a1.InvalidExp))
+            case t::Nil => pure(List(a1.Select(e, memberName)))
           }
           case TError => throw new Exception(s"$e")
         }
@@ -267,10 +275,10 @@ class Reduce(val astIn: a0.Ast) {
         e <- mapAsExp(None, _e)
       } yield {
         addLocalBinding(n, e)
-        a1.Var(n, e)
+        List(a1.Var(n, e))
       }
 
-    case v: a0.Val => mapVal(v)
+    case v: a0.Val => mapVal(v).map(List(_))
   }
 
   def mapVal(v: a0.Val): ReduceM[a1.Val] = v match {
