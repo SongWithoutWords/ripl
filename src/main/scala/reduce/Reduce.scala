@@ -36,14 +36,6 @@ case object ReduceM {
   def constrain(a: a1.Type, b: a1.Exp): ReduceM[Unit] = constrain(a, b.t)
   def constrain(a: a1.Type, b: a1.Type): ReduceM[Unit] = when (a != b) { raise(TypeConflict(a, b)) }
 
-
-  def chooseOverloadExp(overloads: List[ReduceM[a1.Exp]]): ReduceM[a1.Exp] =
-    chooseOverload(overloads, a1.InvalidExp)
-  def chooseOverloadType(overloads: List[ReduceM[a1.Node]]): ReduceM[a1.Node] =
-    chooseOverload(overloads, a1.InvalidExp)
-  def chooseOverloadNode(overloads: List[ReduceM[a1.Type]]): ReduceM[a1.Type] =
-    chooseOverload(overloads, TError)
-
   def chooseOverload[A](overloads: List[ReduceM[A]], default: A): ReduceM[A] =
     overloads.foldLeft(List[ReduceM[A]]()) {
       (bestOverloads: List[ReduceM[A]], overload: ReduceM[A]) => bestOverloads match {
