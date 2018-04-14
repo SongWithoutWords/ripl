@@ -275,7 +275,7 @@ class Reduce(val astIn: a0.Ast) {
     case a0.If(_a, _b, _c) =>
       val ReduceM(a, errs) = mapAsExp(Some(TBln), _a)
 
-      a match {
+      {a match {
         case v: a1.Val => v match {
           case VBln(true) => mapNode(kind, _b)
           case VBln(false) => mapNode(kind, _c)
@@ -289,7 +289,7 @@ class Reduce(val astIn: a0.Ast) {
           c <- mapAsExp(Some(b.t), _c)
           // _ <- constrain(b, c)
         } yield a1.If(a, b, c))
-      }
+      }}.map{raise(errs) >> _}
 
     case a0.Fun(_params, _retType, _body) => List(for {
       params <- mapM(_params) {p => for {t <- mapAsType(p.t)} yield a1.Param(p.n, t)}
