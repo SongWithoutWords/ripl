@@ -39,11 +39,12 @@ case class App(f: Exp, args: List[Exp]) extends Exp {
 case class Assign(a: Exp, b: Exp) extends Exp {
   def t = TNone
 }
-// Used to represent type constraints on expressions, such as variable type annotations
-case class Block(exps: Exp*) extends Exp {
+object Block { def apply(exps: Exp*): Block = Block(exps.toList) }
+case class Block(exps: List[Exp]) extends Exp {
   def t = exps.lastOption match { case None => TNone; case Some(e) => e.t }
 }
 
+// Used to represent type constraints on expressions, such as variable type annotations
 case class Cons(t: Type, e: Exp) extends Exp
 case class If(a: Exp, b: Exp, c: Exp) extends Exp {
   // TODO: make this a bit more sophisticated (find common super type)
@@ -96,8 +97,8 @@ case object Intrinsic extends Enum[Intrinsic] {
   case object ISub extends Intrinsic { val n = "-"; val t = TFun(TInt, TInt)(TInt) }
 
   // Put this aside temporarily, so I can ensure my code's still working ;p
-  // case object FAdd extends Intrinsic { val n = "+"; val t = TFun(TFlt, TFlt)(TFlt) }
-  // case object FSub extends Intrinsic { val n = "-"; val t = TFun(TFlt, TFlt)(TFlt) }
+  case object FAdd extends Intrinsic { val n = "+"; val t = TFun(TFlt, TFlt)(TFlt) }
+  case object FSub extends Intrinsic { val n = "-"; val t = TFun(TFlt, TFlt)(TFlt) }
 }
 
 // Values

@@ -16,7 +16,8 @@ object App {
 }
 case class App(f: Exp, args: List[Exp]) extends Exp
 case class Assign(a: Exp, b: Exp) extends Exp
-case class Block(exps: Exp*) extends Exp
+object Block { def apply(exps: Exp*): Block = Block(exps.toList) }
+case class Block(exps: List[Exp]) extends Exp
 case class Cons(t: Type, e: Exp) extends Exp
 case class If(a: Exp, b: Exp, c: Exp) extends Exp
 object Fun {
