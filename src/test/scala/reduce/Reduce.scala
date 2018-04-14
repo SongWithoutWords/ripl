@@ -144,6 +144,16 @@ class TestReduce extends FreeSpec with Matchers {
         "c" -> 7)()
     }
   }
+  "type" - {
+    "are mapped correctly" - {
+      "TBln" in {
+        test("bool" -> TBln)("bool" -> TBln)()
+      }
+      "(TInt, TInt) -> TBln" in {
+        test("f" -> a0.TFun(TInt, TInt)(TBln))("f" -> a1.TFun(TInt, TInt)(TBln))()
+      }
+    }
+  }
   "type constraints" - {
     "produce no errors when they are met" in {
       test(
