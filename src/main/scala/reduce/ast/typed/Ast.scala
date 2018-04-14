@@ -76,14 +76,8 @@ case class Name(n: String, exps: List[Exp]) extends Exp {
 // Idea: store name instead of string to easily catch what we're shadowing?
 // (same goes for var)
 case class Param(n: String, t: Type) extends Exp
-case class Select(e: Exp, n: String) extends Exp {
-  def t = e.t match {
-    case Struct(_, members) => members.get(n) match {
-      case t::Nil => t
-      case _ => TError
-    }
-  }
-}
+case class Select(e: Exp, n: String, t: Type) extends Exp
+
 case class Var(n: String, e: Exp) extends Exp {
   def t = TNone
 }

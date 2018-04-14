@@ -346,11 +346,11 @@ class TestReduce extends FreeSpec with Matchers {
     "members can  be selected from struct variables" in {
       val _point = a0.Struct("Point", "x" -> TInt, "y" -> TInt)
       val _getX = a0.Fun(a0.Param("point", _point))(Some(_point))(
-        a0.Cons(TInt, a0.Select(a0.Name("point"), "x")))
+        a0.Select(a0.Name("point"), "x"))
 
       val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
       val getX = a1.Fun(a1.Param("point", point))(point)(
-        a1.Cons(TInt, a1.Select(a1.Name("point", a1.Param("point", point)), "x")))
+        a1.Select(a1.Name("point", a1.Param("point", point)), "x", TInt))
       test("getX" -> _getX)("getX" -> getX)()
     }
   }

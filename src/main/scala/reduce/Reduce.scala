@@ -332,13 +332,8 @@ class Reduce(val astIn: a0.Ast) {
 
         // TODO: Filter to the required kind
         case e: a1.Exp => e.t match {
-          case a1.Struct(_, members) => members.get(memberName).map(pure(_))
-          // match {
-          //   case _::_::_ => ???
-          //   case Nil => raise(NonExistentMember(memberName)) >> pure(List(a1.InvalidExp))
-          //   case t::Nil => pure(List(a1.Select(e, memberName)))
-          // }
-          case TError => throw new Exception(s"$e")
+          case a1.Struct(_, memberTypes) =>
+            memberTypes.get(memberName).map {t => pure(a1.Select(e, memberName, t))}
         }
       } }.map(raise(errs) >> _) }
 
