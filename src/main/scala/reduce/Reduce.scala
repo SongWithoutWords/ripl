@@ -200,18 +200,20 @@ class Reduce(val astIn: a0.Ast) {
       overloads.map {
         (_f: ReduceM[a1.Exp]) => _f.a.t match {
           case a1.TFun(params, ret) =>
-            for {
-              f <- _f
-              args <- mapM((params, argOverloads).zipped.toList) {
-                case (param: a1.Type, overloads: List[ReduceM[a1.Exp]]) =>
-                  chooseOverload(param, overloads)
+            when(params.length != _args.length){ raise(WrongNumArgs(params.length, _args.length)) } >> {
+              for {
+                f <- _f
+                args <- mapM((params, argOverloads).zipped.toList) {
+                  case (param: a1.Type, overloads: List[ReduceM[a1.Exp]]) =>
+                    chooseOverload(param, overloads)
+                }
+              } yield a1.App(f, args) match {
+
+                // Compile time evaluation
+                case a1.App(a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
+
+                case app => app
               }
-            } yield a1.App(f, args) match {
-
-              // Compile time evaluation
-              case a1.App(a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
-
-              case app => app
             }
           case _ => raise(ApplicationOfNonAppliableType(_f.a.t)) >> _f
         }

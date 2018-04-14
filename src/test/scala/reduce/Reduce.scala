@@ -226,7 +226,7 @@ class TestReduce extends FreeSpec with Matchers {
       }
       "produce errors when applied to too many args" in {
         val x = a0.App(a0.Name("add"), 4, 5, 6)
-        val xPrime = a1.App(a1.Name("add", addPrime), 4, 5, 6)
+        val xPrime = a1.App(a1.Name("add", addPrime), 4, 5)
         test(
           "add" -> add, "x" -> x)(
           "add" -> addPrime, "x" -> xPrime)(
