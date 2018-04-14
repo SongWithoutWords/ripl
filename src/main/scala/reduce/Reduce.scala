@@ -9,10 +9,13 @@ import reduce.ast.{typed => a1}
 import reduce.util.MultiMap
 
 
-object Reduce {
-
+object Types {
   type Errors = Set[Error]
+}
+import Types._
 
+
+object Reduce {
   def apply(ast: a0.Ast): (a1.Ast, Errors) = {
     val reduce = new Reduce(ast)
     (reduce.astOut, reduce.errors)
@@ -26,11 +29,43 @@ case object ReduceM {
   def pure[A](a: A): ReduceM[A] = ReduceM(a, Set())
   def pure(): ReduceM[Unit] = ReduceM((), Set())
 
+  def raise(errors: Errors): ReduceM[Unit] = ReduceM((), errors)
   def raise(e: Error): ReduceM[Unit] = ReduceM((), Set(e))
 
   def constrain(a: a1.Exp, b: a1.Exp): ReduceM[Unit] = constrain(a.t, b.t)
   def constrain(a: a1.Type, b: a1.Exp): ReduceM[Unit] = constrain(a, b.t)
   def constrain(a: a1.Type, b: a1.Type): ReduceM[Unit] = when (a != b) { raise(TypeConflict(a, b)) }
+
+
+  def chooseOverloadExp(overloads: List[ReduceM[a1.Exp]]): ReduceM[a1.Exp] =
+    chooseOverload(overloads, a1.InvalidExp)
+  def chooseOverloadType(overloads: List[ReduceM[a1.Node]]): ReduceM[a1.Node] =
+    chooseOverload(overloads, a1.InvalidExp)
+  def chooseOverloadNode(overloads: List[ReduceM[a1.Type]]): ReduceM[a1.Type] =
+    chooseOverload(overloads, TError)
+
+  def chooseOverload[A](overloads: List[ReduceM[A]], default: A): ReduceM[A] =
+    overloads.foldLeft(List[ReduceM[A]]()) {
+      (bestOverloads: List[ReduceM[A]], overload: ReduceM[A]) => bestOverloads match {
+        case Nil => List(overload)
+        case _ =>
+          val errorCount = overload.errors.size
+          val bestErrorCount = bestOverloads.head.errors.size
+          if (errorCount < bestErrorCount) {
+            List(overload)
+          } else if (errorCount > bestErrorCount) {
+            bestOverloads
+          }
+          else overload :: bestOverloads
+      }
+    } match {
+      case Nil => pure(default)
+      case List(result) => result
+      case overloads => raise(AmbiguousOverload(overloads)) >> pure(default)
+    }
+
+  def chooseOverload(t: a1.Type, es: List[ReduceM[a1.Exp]]): ReduceM[a1.Exp] =
+    chooseOverload(es.map{ e => constrain(t, e.a) >> e }, a1.InvalidExp)
 
   def when[A](condition: Boolean)(action: ReduceM[Unit]): ReduceM[Unit] =
     if(condition) action else pure()
@@ -74,13 +109,14 @@ case class ReduceM[+A](a: A, errors: Set[Error]) {
 class Reduce(val astIn: a0.Ast) {
   var errors = Set[Error]()
   def raiseImpure(e: Error) = errors = errors + e
+  def raiseImpure(errs: Errors) = errors = errors union errs
 
   val history = new Stack[a0.Node]
   def historyContains(n: a0.Node) = history.filter(n.eq(_)).nonEmpty
-  def catchCycles(input: a0.Node, mapping: (a0.Node) => a1.Node): a1.Node =
+  def catchCycles[A](input: a0.Node, default: A, mapping: (a0.Node) => A): A =
     if (historyContains(input)) {
       raiseImpure(RecursiveVariableDef(input))
-      a1.InvalidExp // Could provide additional information in future
+      default
     } else {
       history.push(input)
       val result = mapping(input)
@@ -88,9 +124,9 @@ class Reduce(val astIn: a0.Ast) {
       result
     }
 
-  val nodes = new IdentityMap[a0.Node, a1.Node]
+  val nodes = new IdentityMap[a0.Node, List[ReduceM[a1.Node]]]
 
-  val astOut = astIn.mapValues(mapNode(KAny, _))
+  val astOut = astIn.mapValues(mapNamespaceMember(_))
   val intrinsics = MultiMap(a1.Intrinsic.values.map(i => (i.n, i)): _*)
 
   type Scope = MultiMap[String, a1.Node]
@@ -108,17 +144,24 @@ class Reduce(val astIn: a0.Ast) {
       intrinsics.get(n) ++
       scopes.flatMap(_.get(n))
 
-  def asType(node: a1.Node): ReduceM[a1.Type] = node match {
-    case t: a1.Type => pure(t)
-    case n => raise(RequiredType(n)) >> pure(TError)
+  def mapAsType(node: a0.Node): ReduceM[a1.Type] = mapNode(KType, node) match {
+    case List(ReduceM(t: a1.Type, errs)) => ReduceM(t, errs)
+    case Nil => pure(TError)
+    case nodes => nodes.collect{case x@ReduceM(t: a1.Type, _) => x} match {
+      case List(ReduceM(t: a1.Type, errs)) => ReduceM(t, errs)
+      case Nil => raise(RequiredType(node)) >> pure(TError)
+        // throw new Exception(s"$nodes")
+      case _ => raise(AmbiguousType(node)) >> pure(TError)
+    }
   }
-  def mapAsType(node: a0.Node): ReduceM[a1.Type] = asType(mapNode(KType, node))
 
-  def asExp(node: a1.Node): ReduceM[a1.Exp] = node match {
-    case e: a1.Exp => pure(e)
-    case n => raise(RequiredExp(n)) >> pure(a1.InvalidExp)
+  def mapAsExp(node: a0.Node): List[ReduceM[a1.Exp]] =
+    mapNode(KExp(None), node).collect{ case ReduceM(e: a1.Exp, errs) => ReduceM(e, errs) }
+
+  def mapAsExp(ot: Option[a1.Type], node: a0.Node): ReduceM[a1.Exp] = ot match {
+    case Some(t) => chooseOverload(t, mapAsExp(node))
+    case None => chooseOverload(mapAsExp(node), a1.InvalidExp)
   }
-  def mapAsExp(t: Option[a1.Type], node: a0.Node): ReduceM[a1.Exp] = asExp(mapNode(KExp(t), node))
 
   sealed trait Kind
   case object KAny extends Kind
@@ -126,101 +169,141 @@ class Reduce(val astIn: a0.Ast) {
   case class KExp(t: Option[a1.Type]) extends Kind
   // case class KVal(t: a1.Type) extends Kind
 
-  def mapNode(kind: Kind, n: a0.Node): a1.Node = nodes.getOrElseUpdate(n, {
-    catchCycles(n, (n: a0.Node) => n match {
-      case _e: a0.Exp =>
-        // This isn't quite safe/right, but we'll figure it out
-        val ReduceM(List(e), errs) = mapExp(KAny, _e)
-        errors = errors union errs
-        e
+  def mapNamespaceMember(_n: a0.Node): a1.Node = {
+    val ReduceM(n, errs) = chooseOverload(mapNode(KAny, _n), a1.InvalidExp)
+    raiseImpure(errs)
+    n
+  }
+  //   match {
+  //   case Nil => a1.InvalidExp
+  //   case List(ReduceM(n, errs)) =>
+  //     raiseImpure(errs)
+  //     n
+  //   case units =>
+  //     raiseImpure(AmbiguousUnit(units))
+  //     a1.InvalidExp
+  // }
+
+  def mapNode(kind: Kind, n: a0.Node): List[ReduceM[a1.Node]] = nodes.getOrElseUpdate(n, {
+    catchCycles(n, List(raise(RecursiveVariableDef(n)) >> pure(a1.InvalidExp)), (n: a0.Node) => n match {
+      case _e: a0.Exp => mapExp(KAny, _e)
 
       case a0.Namespace(_nodes) =>
-        val nodes = _nodes.mapValues(mapNode(KAny, _))
+        val nodes = _nodes.mapValues(mapNamespaceMember(_))
         pushScope(nodes)
         nodes.map.view.force
         popScope()
-        a1.Namespace(nodes)
+        List(pure(a1.Namespace(nodes)))
 
-      case _t: a0.Type =>
-       val ReduceM(t, errs) = mapType(_t)
-       errors = errors union errs
-       t
+      case _t: a0.Type => mapType(_t)
     })
   })
 
-  def mapExp(kind: Kind, exp: a0.Exp): ReduceM[List[a1.Node]] = exp match {
+  def mapExp(kind: Kind, exp: a0.Exp): List[ReduceM[a1.Node]] = exp match {
 
-    case a0.App(_f, _args) => for {
-      f <- mapAsExp(None, _f)
-      args <- mapM(_args){ mapAsExp(None, _) }
-      app = a1.App(f, args)
-      result <- (f, args) match {
+    case a0.App(_f, _args) =>
+      val overloads = mapAsExp(_f)
+      val argOverloads = _args.map{mapAsExp(_)}
 
-        // Compile time evaluation
-        case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => pure(VInt(a + b))
-
-          // Method call syntax
-          // case (a1.Select(e, n), args) =>
-          //   lookupName(n) match {
-          //     case method: Exp => method.t match {
-          //       case TFun(params, args)
-          //   }
-          // }
-
-        // Typical function application
-        case (f: a1.Exp, args) => f.t match {
+      overloads.map {
+        (_f: ReduceM[a1.Exp]) => _f.a.t match {
           case a1.TFun(params, ret) =>
-            zipWithM(params, args)((p, a) => constrain(p, a)) >>
-            when(params.length != args.length){ raise(WrongNumArgs(params.length, args.length)) } >>
-              pure(app)
-          case _ => raise(ApplicationOfNonAppliableType(f.t)) >> pure(app)
+            for {
+              f <- _f
+              args <- mapM((params, argOverloads).zipped.toList) {
+                case (param: a1.Type, overloads: List[ReduceM[a1.Exp]]) =>
+                  chooseOverload(param, overloads)
+              }
+            } yield a1.App(f, args) match {
+
+              // Compile time evaluation
+              case a1.App(a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
+
+              case app => app
+            }
+          case _ => raise(ApplicationOfNonAppliableType(_f.a.t)) >> _f
         }
       }
-    }
-    yield List(result)
 
-    case a0.Block(_exps @ _*) =>
+
+
+//       overloads.map(f => for {
+//       overloads <- mapAsExp(None, _f)
+//       args <- mapM(_args){ mapAsExp(None, _) }
+//       app = a1.App(f, args)
+//       result <- (f, args) match {
+
+//         // Compile time evaluation
+//         case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => pure(VInt(a + b))
+
+//           // Method call syntax
+//           // case (a1.Select(e, n), args) =>
+//           //   lookupName(n) match {
+//           //     case method: Exp => method.t match {
+//           //       case TFun(params, args)
+//           //   }
+//           // }
+
+//         // Typical function application
+//         case (f: a1.Exp, args) => f.t match {
+//           case a1.TFun(params, ret) =>
+//             zipWithM(params, args)((p, a) => constrain(p, a)) >>
+//             when(params.length != args.length){ raise(WrongNumArgs(params.length, args.length)) } >>
+//               pure(app)
+//           case _ => raise(ApplicationOfNonAppliableType(f.t)) >> pure(app)
+//         }
+//       }
+//     }
+//     yield result
+
+//       )
+//       List(
+
+// )
+
+    case a0.Block(_exps) => List{
       // TODO: reduce to single exp if is single exp
       pushScope()
       for {
-        exps <- mapM(_exps.toList){ mapAsExp(None, _) }
+        exps <- mapM(_exps){ mapAsExp(None, _) }
       } yield {
-        popScope();
-        List(a1.Block(exps: _*))
-      }
+        popScope()
+        a1.Block(exps)
+      }}
 
     case a0.Cons(_t, _e) =>
-      for {
+      List(for {
         t <- mapAsType(_t)
         e <- mapAsExp(Some(t), _e)
-        _ <- constrain(t, e)
-      } yield List(a1.Cons(t, e))
+        // _ <- constrain(t, e)
+      } yield a1.Cons(t, e))
 
-    case a0.If(_a, _b, _c) => for {
-      a <- mapAsExp(Some(TBln), _a)
-      _ <- constrain(TBln, a)
-      result <- a match {
+    case a0.If(_a, _b, _c) =>
+      val ReduceM(a, errs) = mapAsExp(Some(TBln), _a)
+
+      a match {
         case v: a1.Val => v match {
-          case VBln(true) => pure(mapNode(kind, _b))
-          case VBln(false) => pure(mapNode(kind, _c))
-          case _ => pure(a1.InvalidExp) // Error already emitted by constraint
+          case VBln(true) => mapNode(kind, _b)
+          case VBln(false) => mapNode(kind, _c)
+          case _ => List(pure(a1.InvalidExp))
         }
-        case e => for {
+        case e => List(for {
           // come up with something more sophisticated if you can
+          // I guess I could determine the compatible intersections between overloads of b and c
+          // as and bs
           b <- mapAsExp(None, _b)
           c <- mapAsExp(Some(b.t), _c)
-          _ <- constrain(b, c)
-        } yield a1.If(a, b, c)
+          // _ <- constrain(b, c)
+        } yield a1.If(a, b, c))
       }
-    } yield List(result)
 
-    case a0.Fun(_params, _retType, _body) => for {
+    case a0.Fun(_params, _retType, _body) => List(for {
       params <- mapM(_params) {p => for {t <- mapAsType(p.t)} yield a1.Param(p.n, t)}
       retType <- _retType match {case Some(t) => mapAsType(t); case _ => pure(TError)}
       _ <- impure(pushScope(MultiMap(params.map(p => (p.n, p)): _*)))
       body <- mapAsExp(None, _body)
       _ <- impure(popScope())
-    } yield List(a1.Fun(params, retType, body))
+    } yield a1.Fun(params, retType, body))
 
       // push new scope with the params
       // traverse body
@@ -228,8 +311,8 @@ class Reduce(val astIn: a0.Ast) {
       // or gather and find supertype of types returned
 
     case a0.Name(n) => lookupName(n) match {
-      case Nil => raise(UnknownName(n)) >> pure(List(a1.Name(n)))
-      case exps => mapM(exps) {exp => exp match {
+      case Nil => List(raise(UnknownName(n)) >> pure(a1.Name(n)))
+      case exps => exps map { exp => exp match {
         case n: a1.Namespace => pure(n)
         case i: a1.Intrinsic => pure(i)
         case v: a1.Val => pure(v)
@@ -240,38 +323,40 @@ class Reduce(val astIn: a0.Ast) {
     }
 
     case a0.Select(_e, memberName) =>
-      val e = mapNode(KAny, _e)
-      e match {
+      val exps = mapNode(KAny, _e)
+      exps flatMap { case ReduceM(e, errs) => { e match {
 
         // TODO: Filter to the required kind
-        case a1.Namespace(units) => pure(units.get(memberName))
+        case a1.Namespace(units) => units.get(memberName).map(pure(_))
 
         // TODO: Filter to the required kind
-        case a1.VObj(typ, members) => members.get(memberName) match {
-          case Nil => raise(NonExistentMember(memberName)) >> pure(List(a1.InvalidExp))
-          case xs => pure(xs)
-        }
+        case a1.VObj(typ, members) => members.get(memberName).map(pure(_))
+        // match {
+        //   case Nil => raise(NonExistentMember(memberName)) >> pure(List(a1.InvalidExp))
+        //   case xs => pure(xs)
+        // }
 
         // TODO: Filter to the required kind
         case e: a1.Exp => e.t match {
-          case a1.Struct(_, members) => members.get(memberName) match {
-            case _::_::_ => ???
-            case Nil => raise(NonExistentMember(memberName)) >> pure(List(a1.InvalidExp))
-            case t::Nil => pure(List(a1.Select(e, memberName)))
-          }
+          case a1.Struct(_, members) => members.get(memberName).map(pure(_))
+          // match {
+          //   case _::_::_ => ???
+          //   case Nil => raise(NonExistentMember(memberName)) >> pure(List(a1.InvalidExp))
+          //   case t::Nil => pure(List(a1.Select(e, memberName)))
+          // }
           case TError => throw new Exception(s"$e")
         }
-      }
+      } }.map(raise(errs) >> _) }
 
     case a0.Var(n, _e) =>
-      for {
+      List(for {
         e <- mapAsExp(None, _e)
       } yield {
         addLocalBinding(n, e)
-        List(a1.Var(n, e))
-      }
+        a1.Var(n, e)
+      })
 
-    case v: a0.Val => mapVal(v).map(List(_))
+    case v: a0.Val => List(mapVal(v))
   }
 
   def mapVal(v: a0.Val): ReduceM[a1.Val] = v match {
@@ -282,7 +367,7 @@ class Reduce(val astIn: a0.Ast) {
     case v: ValAtom => pure(v)
   }
 
-  def mapType(t: a0.Type): ReduceM[a1.Type] = t match {
+  def mapType(t: a0.Type): List[ReduceM[a1.Type]] = List(t match {
     case t: TypeAtom => pure(t)
     case a0.TFun(_params, _ret) => for {
       params <- mapM(_params){mapAsType}
@@ -291,7 +376,7 @@ class Reduce(val astIn: a0.Ast) {
     case a0.Struct(name, _fields) => for {
       fields <- mapM(_fields) {mapAsType}
     } yield a1.Struct(name, fields)
-  }
+  })
 
   astOut.map.view.force
 }
