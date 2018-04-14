@@ -243,7 +243,7 @@ class TestReduce extends FreeSpec with Matchers {
       "produce errors when non-applicable type applied" in {
         test(
           "a" -> a0.App(4, 5))(
-          "a" -> a1.App(4, 5))(
+          "a" -> 4)(
           ApplicationOfNonAppliableType(TInt))
       }
     }
