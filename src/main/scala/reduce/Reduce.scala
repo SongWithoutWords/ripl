@@ -37,8 +37,8 @@ case object ReduceM {
   def constrain(a: a1.Type, b: a1.Type): ReduceM[Unit] = when (a != b) { raise(TypeConflict(a, b)) }
 
   def chooseOverload[A](overloads: List[ReduceM[A]], default: A): ReduceM[A] =
-    overloads.foldLeft(List[ReduceM[A]]()) {
-      (bestOverloads: List[ReduceM[A]], overload: ReduceM[A]) => bestOverloads match {
+    overloads.foldLeft[List[ReduceM[A]]](Nil) {
+      (bestOverloads, overload) => bestOverloads match {
         case Nil => List(overload)
         case _ =>
           val errorCount = overload.errors.size
