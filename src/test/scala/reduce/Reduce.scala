@@ -401,5 +401,23 @@ class TestReduce extends FreeSpec with Matchers {
                  a1.Name("b", a1.Param("b", TFlt)))))()
     }
   }
+
+  "syntax extensions" -{
+    "method call syntax" - {
+      "4.+(5)" in {
+        test(
+          "x" -> a0.App(a0.Select(4, "+"), 5))(
+          "x" -> 9
+          )()
+      }
+      "4.+(5).+(6)" in {
+        test(
+          "x" -> a0.App(a0.Select(a0.App(a0.Select(4, "+"), 5), "+"), 6) )(
+          "x" -> 15
+        )()
+      }
+    }
+  }
+
 }
 
