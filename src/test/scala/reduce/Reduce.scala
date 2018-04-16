@@ -378,6 +378,17 @@ class TestReduce extends FreeSpec with Matchers {
                  a1.Name("a", a1.Param("a", TInt)),
                  a1.Name("b", a1.Param("b", TInt)))))()
     }
+    "integer multiplication is selected for ints" in {
+      test(
+        "iAdd" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TInt))(
+          a0.App(a0.Name("*"),
+                 a0.Name("a"),
+                 a0.Name("b"))))(
+        "iAdd" -> a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt))(TInt)(
+          a1.App(a1.Intrinsic.IMul,
+                 a1.Name("a", a1.Param("a", TInt)),
+                 a1.Name("b", a1.Param("b", TInt)))))()
+    }
     "floating point addition is selected for floats" in {
       test(
         "iAdd" -> a0.Fun(a0.Param("a", TFlt), a0.Param("b", TFlt))(Some(TFlt))(
@@ -386,6 +397,17 @@ class TestReduce extends FreeSpec with Matchers {
                  a0.Name("b"))))(
         "iAdd" -> a1.Fun(a1.Param("a", TFlt), a1.Param("b", TFlt))(TFlt)(
           a1.App(a1.Intrinsic.FAdd,
+                 a1.Name("a", a1.Param("a", TFlt)),
+                 a1.Name("b", a1.Param("b", TFlt)))))()
+    }
+    "floating point multiplication is selected for floats" in {
+      test(
+        "iAdd" -> a0.Fun(a0.Param("a", TFlt), a0.Param("b", TFlt))(Some(TFlt))(
+          a0.App(a0.Name("*"),
+                 a0.Name("a"),
+                 a0.Name("b"))))(
+        "iAdd" -> a1.Fun(a1.Param("a", TFlt), a1.Param("b", TFlt))(TFlt)(
+          a1.App(a1.Intrinsic.FMul,
                  a1.Name("a", a1.Param("a", TFlt)),
                  a1.Name("b", a1.Param("b", TFlt)))))()
     }
