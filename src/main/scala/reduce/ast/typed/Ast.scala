@@ -91,11 +91,11 @@ case object Intrinsic extends Enum[Intrinsic] {
   case object ISub extends Intrinsic { val n = "-"; val t = TFun(TInt, TInt)(TInt) }
   case object IMul extends Intrinsic { val n = "*"; val t = TFun(TInt, TInt)(TInt) }
 
-  // Put this aside temporarily, so I can ensure my code's still working ;p
   case object FAdd extends Intrinsic { val n = "+"; val t = TFun(TFlt, TFlt)(TFlt) }
   case object FSub extends Intrinsic { val n = "-"; val t = TFun(TFlt, TFlt)(TFlt) }
   case object FMul extends Intrinsic { val n = "*"; val t = TFun(TFlt, TFlt)(TFlt) }
 }
+
 
 // Values
 trait Val extends Exp
