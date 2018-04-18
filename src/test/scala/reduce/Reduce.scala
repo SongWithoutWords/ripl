@@ -402,8 +402,37 @@ class TestReduce extends FreeSpec with Matchers {
     }
   }
 
-  "syntax extensions" -{
+  "syntax extensions" - {
     "method call syntax" - {
+      // val _lengthSquared = a0.Fun(a0.Param("v", _vector))(Some(TFlt))(
+      //   a0.App(a0.Name("+"),
+      //           a0.App(a0.Name("*"), _vSelectX, _vSelectX),
+      //           a0.App(a0.Name("*"), _vSelectY, _vSelectY)))
+
+      // )
+
+      // val _lengthSquared = a0.Fun(a0.Param("v", _vector))(Some(TFlt))(
+      //   a0.App(a0.Name("+"),
+      //          a0.App(a0.Name("*"), _vSelectX, _vSelectX),
+      //          a0.App(a0.Name("*"), _vSelectY, _vSelectY)))
+
+      val _vector = a0.Struct("Vector", "x" -> TFlt, "y" -> TFlt)
+
+      val _vSelectX = a0.Select(a0.Name("v"), "x")
+      val _vSelectY = a0.Select(a0.Name("v"), "y")
+
+      val _product = a0.Fun(a0.Param("v", _vector))(Some(TFlt))(
+        a0.App(a0.Name("*"), _vSelectX, _vSelectY))
+
+      val vector = a1.Struct("Vector", "x" -> TFlt, "y" -> TFlt)
+
+      val vSelectX = a1.Select(a1.Param("v", vector), "x", TFlt)
+      val vSelectY = a1.Select(a1.Param("v", vector), "y", TFlt)
+
+      val product = a1.Fun(a1.Param("v", vector))(TFlt)(
+        a1.App(a1.Intrinsic.FMul, vSelectX, vSelectY))
+
+
       "4.+(5)" in {
         test(
           "x" -> a0.App(a0.Select(4, "+"), 5))(
@@ -414,6 +443,27 @@ class TestReduce extends FreeSpec with Matchers {
         test(
           "x" -> a0.App(a0.Select(a0.App(a0.Select(4, "+"), 5), "+"), 6) )(
           "x" -> 15
+        )()
+      }
+
+      "vector length squared" in {
+
+        val v = a1.VObj(vector, "x" -> 3.f, "y" -> 4.f)
+        test(
+          "Vector" -> _vector,
+          "product" -> _product,
+          // "u" -> a0.VObj(a0.Name("Vector"), "x" -> 3.f, "y" -> 4.f)
+            // ,
+          // "vLength" -> a0.App(a0.Select(a0.Name("v"), "lengthSquared"))
+        )(
+
+          "Vector" -> vector,
+          "product" -> product,
+          // "u" -> v
+
+
+          //   ,
+          // "vLength" -> a1.App(lengthSquared, v)
         )()
       }
     }
