@@ -193,67 +193,44 @@ class Reduce(val astIn: a0.Ast) {
 
   def mapExp(kind: Kind, exp: a0.Exp): List[ReduceM[a1.Node]] = exp match {
 
+    // case a0.App(a0.Select(_e, name), _args) => lookupName(name).flatMap { _0: Node => GenTraversableOnce[B] }
+
     case a0.App(_f, _args) =>
-      val overloads = mapAsExp(_f)
-      val argOverloads = _args.map{mapAsExp(_)}
 
-      overloads.map {
-        (_f: ReduceM[a1.Exp]) => _f.a.t match {
+
+      def chooseArgs(_f: ReduceM[a1.Exp], argOverloads: List[List[ReduceM[a1.Exp]]]): ReduceM[a1.Exp] = {
+        _f.a.t match {
           case a1.TFun(params, ret) =>
-            when(params.length != _args.length){ raise(WrongNumArgs(params.length, _args.length)) } >> {
-              for {
-                f <- _f
-                args <- mapM((params, argOverloads).zipped.toList) {
-                  case (param: a1.Type, overloads: List[ReduceM[a1.Exp]]) =>
-                    chooseOverload(param, overloads)
-                }
-              } yield a1.App(f, args) match {
-
-                // Compile time evaluation
-                case a1.App(a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
-
-                case app => app
+            when(params.length != argOverloads.length){ raise(WrongNumArgs(params.length, argOverloads.length)) } >> {
+            for {
+              f <- _f
+              args <- mapM((params, argOverloads).zipped.toList) {
+                case (param: a1.Type, overloads: List[ReduceM[a1.Exp]]) =>
+                  chooseOverload(param, overloads)
               }
+            } yield a1.App(f, args) match {
+
+              // Compile time evaluation
+              case a1.App(a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
+
+              case app => app
             }
+          }
           case _ => raise(ApplicationOfNonAppliableType(_f.a.t)) >> _f
         }
       }
 
+      val overloads = mapAsExp(_f)
+      val argOverloads = _args.map{mapAsExp(_)}
+      overloads.map(chooseArgs(_, argOverloads)) ++ (_f match {
 
-
-//       overloads.map(f => for {
-//       overloads <- mapAsExp(None, _f)
-//       args <- mapM(_args){ mapAsExp(None, _) }
-//       app = a1.App(f, args)
-//       result <- (f, args) match {
-
-//         // Compile time evaluation
-//         case (a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => pure(VInt(a + b))
-
-//           // Method call syntax
-//           // case (a1.Select(e, n), args) =>
-//           //   lookupName(n) match {
-//           //     case method: Exp => method.t match {
-//           //       case TFun(params, args)
-//           //   }
-//           // }
-
-//         // Typical function application
-//         case (f: a1.Exp, args) => f.t match {
-//           case a1.TFun(params, ret) =>
-//             zipWithM(params, args)((p, a) => constrain(p, a)) >>
-//             when(params.length != args.length){ raise(WrongNumArgs(params.length, args.length)) } >>
-//               pure(app)
-//           case _ => raise(ApplicationOfNonAppliableType(f.t)) >> pure(app)
-//         }
-//       }
-//     }
-//     yield result
-
-//       )
-//       List(
-
-// )
+        // Method call syntax
+        case a0.Select(_e, name) =>
+          val methodArgs = mapAsExp(_e) :: argOverloads
+          val methodOverloads = lookupName(name).collect{case e: a1.Exp => e}.map(pure(_))
+          methodOverloads.map(chooseArgs(_, methodArgs))
+        case _ => Nil
+      })
 
     case a0.Block(_exps) => List{
       // TODO: reduce to single exp if is single exp
@@ -334,6 +311,7 @@ class Reduce(val astIn: a0.Ast) {
         case e: a1.Exp => e.t match {
           case a1.Struct(_, memberTypes) =>
             memberTypes.get(memberName).map {t => pure(a1.Select(e, memberName, t))}
+          case t => List(raise(SelectionFromNonStructType(t)) >> pure(a1.InvalidExp))
         }
       } }.map(raise(errs) >> _) }
 
