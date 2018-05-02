@@ -3,6 +3,7 @@ package reduce.ast.typed
 import enumeratum._
 
 import reduce.ast.common._
+import reduce.ast.{untyped => a0}
 import reduce.util.MultiMap
 
 // I feel like I need to work on my hierarchy a little bit:
@@ -52,6 +53,10 @@ case class If(a: Exp, b: Exp, c: Exp) extends Exp {
 }
 
 case object InvalidExp extends Exp {
+  def t = TError
+}
+
+case class RecursiveDef(cycle: List[a0.Node]) extends Exp {
   def t = TError
 }
 

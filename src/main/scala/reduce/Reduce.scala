@@ -103,18 +103,31 @@ class Reduce(val astIn: a0.Ast) {
   def raiseImpure(e: Error) = errors = errors + e
   def raiseImpure(errs: Errors) = errors = errors union errs
 
-  val history = new Stack[a0.Node]
-  def historyContains(n: a0.Node) = history.filter(n.eq(_)).nonEmpty
-  def catchCycles[A](input: a0.Node, default: A, mapping: (a0.Node) => A): A =
-    if (historyContains(input)) {
-      raiseImpure(RecursiveVariableDef(input))
-      default
-    } else {
-      history.push(input)
-      val result = mapping(input)
-      history.pop()
-      result
+
+  def findCycle(node: a0.Node, history: List[a0.Node]): List[a0.Node] = {
+    def impl(accum: List[a0.Node], rem: List[a0.Node]): List[a0.Node] = rem match {
+      case Nil => Nil
+
+      case head::tail =>
+        if(head eq node) (head :: accum).reverse
+        else impl(head :: accum, tail)
     }
+    impl(Nil, history)
+  }
+
+  var history = List[a0.Node]()
+  def catchCycles(input: a0.Node, mapping: a0.Node => List[ReduceM[a1.Node]]): List[ReduceM[a1.Node]] = findCycle(input, history) match {
+    case Nil =>
+      history = input :: history
+      val result = mapping(input)
+      history = history.tail
+      result
+    case cycle => List(
+      when (cycle.collect{ case f: a0.Fun => f } == Nil) {
+        raise(RecursiveVariableDef(cycle))
+      } >> pure(a1.RecursiveDef(cycle))
+    )
+  }
 
   val nodes = new IdentityMap[a0.Node, List[ReduceM[a1.Node]]]
 
@@ -177,7 +190,7 @@ class Reduce(val astIn: a0.Ast) {
   // }
 
   def mapNode(kind: Kind, n: a0.Node): List[ReduceM[a1.Node]] = nodes.getOrElseUpdate(n, {
-    catchCycles(n, List(raise(RecursiveVariableDef(n)) >> pure(a1.InvalidExp)), (n: a0.Node) => n match {
+    catchCycles(n, (n: a0.Node) => n match {
       case _e: a0.Exp => mapExp(KAny, _e)
 
       case a0.Namespace(_nodes) =>

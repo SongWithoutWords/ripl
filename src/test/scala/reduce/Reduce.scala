@@ -62,23 +62,25 @@ class TestReduce extends FreeSpec with Matchers {
       "at depth 0" in {
         test(
           "a" -> a0.Name("a"))(
-          "a" -> a1.Name("a", a1.InvalidExp))(
-          RecursiveVariableDef(a0.Name("a")))
+          "a" -> a1.Name("a", a1.RecursiveDef(a0.Name("a") :: Nil)))(
+          RecursiveVariableDef(a0.Name("a") :: Nil))
       }
       "at depth 1" in {
+        val cycle = a0.Name("a") :: a0.Name("b") :: Nil
         test(
           "a" -> a0.Name("b"),
           "b" -> a0.Name("a"))(
-          "a" -> a1.Name("b", a1.Name("a", a1.InvalidExp)),
-          "b" -> a1.Name("a", a1.InvalidExp))(
-          RecursiveVariableDef(a0.Name("b")))
+          "a" -> a1.Name("b", a1.Name("a", a1.RecursiveDef(cycle))),
+          "b" -> a1.Name("a", a1.RecursiveDef(cycle)))(
+          RecursiveVariableDef(cycle))
       }
       "at depth 2" in {
+        val cycle = a0.Name("a") :: a0.Name("b") :: a0.Name("c") :: Nil
         testErrs(
           "a" -> a0.Name("b"),
           "b" -> a0.Name("c"),
           "c" -> a0.Name("a"))(
-          RecursiveVariableDef(a0.Name("b")))
+          RecursiveVariableDef(a0.Name("a") :: a0.Name("c") :: a0.Name("b") :: Nil))
       }
     }
   }

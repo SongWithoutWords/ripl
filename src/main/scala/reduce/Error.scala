@@ -10,11 +10,12 @@ case class AmbiguousOverload[A](overloads: List[ReduceM[A]]) extends Error
 case class AmbiguousUnit(overloads: List[ReduceM[a1.Node]]) extends Error
 case class ApplicationOfNonAppliableType(t: a1.Type) extends Error
 case class NonExistentMember(n: String) extends Error
-case class RecursiveVariableDef(n: a0.Node) extends Error
+case class RecursiveVariableDef(cycle: List[a0.Node]) extends Error
 case class RequiredExp(found: a1.Node) extends Error
 case class RequiredType(input: a0.Node) extends Error
 case class SelectionFromNonStructType(t: a1.Type) extends Error
 case class TypeConflict(expected: a1.Type, found: a1.Type) extends Error
 case class UnknownName(n: String) extends Error
+case object UseOfInvalidExp extends Error
 case class WrongNumArgs(expected: Int, found: Int) extends Error
 
