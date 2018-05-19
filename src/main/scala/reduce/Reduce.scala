@@ -247,7 +247,15 @@ class Reduce(val astIn: a0.Ast) {
             .map{ e => when(e == a1.InvalidExp){raise(UseOfInvalidExp)} >> pure(e)}
           methodOverloads.map(chooseArgs(_, methodArgs))
         case _ => Nil
-      })
+      }) ++ {
+
+        // Application syntax
+        val appArgs = overloads :: argOverloads
+        val appOverloads = lookupName("apply")
+          .collect{ case e: a1.Exp => e }
+          .map{ e => when(e == a1.InvalidExp){raise(UseOfInvalidExp)} >> pure(e) }
+        appOverloads.map(chooseArgs(_, appArgs))
+      }
 
     case a0.Block(_exps) => List{
       // TODO: reduce to single exp if is single exp
