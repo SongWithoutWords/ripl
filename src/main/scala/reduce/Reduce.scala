@@ -340,13 +340,12 @@ class Reduce(val astIn: a0.Ast) {
         }
       } }.map(raise(errs) >> _) }
 
-    case a0.Var(n, _e) =>
-      List(for {
-        e <- mapAsExp(None, _e)
+    case a0.Var(n, _e) => List(for {
+      e <- mapAsExp(None, _e)
       } yield {
         addLocalBinding(n, e)
         a1.Var(n, e)
-      })
+    })
 
     case v: a0.Val => List(mapVal(v))
   }
