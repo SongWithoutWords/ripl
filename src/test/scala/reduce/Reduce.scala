@@ -87,6 +87,7 @@ class TestReduce extends FreeSpec with Matchers {
           "c" -> a0.Name("a"))(
           RecursiveVariableDef(a0.Name("a") :: a0.Name("c") :: a0.Name("b") :: Nil))
       }
+      // TODO: add similar tests to catch cycles in sub-expressions
     }
   }
   "namespaces" - {
