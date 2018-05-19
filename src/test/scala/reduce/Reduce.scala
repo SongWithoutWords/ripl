@@ -58,6 +58,11 @@ class TestReduce extends FreeSpec with Matchers {
     "produce errors when they don't exist" in {
       test("a" -> a0.Name("b"))("a" -> a1.Name("b"))(UnknownName("b"))
     }
+    // What are your criteria, your true criteria going to be to detect cyclic variables?
+    // Is it the depth of the cycle that are important or the contents? Contents, I think.
+    // If the cycle includes more than 1 variable, it is verukt.
+    // Might need to sit down with a pad of paper for this one.
+
     "produce errors when they form cycles" - {
       "at depth 0" in {
         test(
