@@ -491,6 +491,41 @@ class TestReduce extends FreeSpec with Matchers {
         // test("apply" -> _apply)("apply" -> apply)()
         test("apply" -> _apply, "x" -> a0.App(5, 4))("apply" -> apply, "x" -> a1.App(apply, 5, 4))()
       }
+      "f(x) = a * x + b" in {
+
+        val _line = a0.Struct("Line", "a" -> TFlt, "b" -> TFlt)
+        val line = a1.Struct("Line", "a" -> TFlt, "b" -> TFlt)
+
+        val _lSelectA = a0.Select(a0.Name("l"), "a")
+        val _lSelectB = a0.Select(a0.Name("l"), "b")
+
+        val lSelectA = a1.Select(a1.Name("l", a1.Param("l", line)), "a", TFlt)
+        val lSelectB = a1.Select(a1.Name("l", a1.Param("l", line)), "b", TFlt)
+
+        val _apply = a0.Fun(a0.Param("l", _line), a0.Param("x", TFlt))(Some(TFlt))(
+          a0.App(a0.Name("+"),
+                a0.App(a0.Name("*"), _lSelectA, a0.Name("x")),
+                _lSelectB))
+
+        val apply = a1.Fun(a1.Param("l", line), a1.Param("x", TFlt))(TFlt)(
+          LSelectB)
+          a1.App(a1.Intrinsic.FAdd,
+                a1.App(a1.Intrinsic.FMul, lSelectA, a1.Name("x", a1.Param("x", TFlt))),
+                lSelectB))
+
+        val _l = a0.VObj(a0.Name("Line"), "a" -> 2.f, "b" -> 1.f)
+        val l = a1.VObj(line, "a" -> 2.f, "b" -> 1.f)
+
+        test(
+          "Line" -> _line,
+          "apply" -> _apply,
+          // "y" -> a0.App(_l, 4.f)
+        )(
+          "Line" -> line,
+          "apply" -> apply,
+          // "y" -> a1.App(apply, l, 4.f)
+        )()
+      }
     }
   }
 }
