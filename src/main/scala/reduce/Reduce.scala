@@ -242,7 +242,9 @@ class Reduce(val astIn: a0.Ast) {
         // Method call syntax
         case a0.Select(_e, name) =>
           val methodArgs = mapAsExp(_e) :: argOverloads
-          val methodOverloads = lookupName(name).collect{case e: a1.Exp => e}.map(pure(_))
+          val methodOverloads = lookupName(name)
+            .collect{case e: a1.Exp => e}
+            .map{ e => when(e == a1.InvalidExp){raise(UseOfInvalidExp)} >> pure(e)}
           methodOverloads.map(chooseArgs(_, methodArgs))
         case _ => Nil
       })
