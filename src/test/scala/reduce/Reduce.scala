@@ -10,10 +10,12 @@ import reduce.ast.common._
 import reduce.ast.common.ImplicitConversions._
 import reduce.ast.{untyped => a0, typed => a1}
 
+import CustomMatchers.matchAst
+
 class TestReduce extends FreeSpec with Matchers {
 
   def test(in: Multi[String, a0.Node])(out: Multi[String, a1.Node])(errs: Error*): Unit
-    = Reduce(in).shouldBe((out, Set(errs: _*)))
+    = Reduce(in) should matchAst((out, Set(errs: _*)))
 
   def test(in: (String, a0.Node)*)(out: (String, a1.Node)*)(errs: Error*): Unit
     = test(Multi(in: _*))(Multi(out: _*))(errs: _*)
@@ -509,12 +511,21 @@ class TestReduce extends FreeSpec with Matchers {
         val lSelectB = a1.Select(a1.Name("l", a1.Param("l", line)), "b", TFlt)
 
         val _apply = a0.Fun(a0.Param("l", _line), a0.Param("x", TFlt))(Some(TFlt))(
+
+          // _lSelectB)
+
+          // a0.App(a0.Name("+"), _lSelectA, _lSelectB))
+
           a0.App(a0.Name("+"),
                 a0.App(a0.Name("*"), _lSelectA, a0.Name("x")),
                 _lSelectB))
 
         val apply = a1.Fun(a1.Param("l", line), a1.Param("x", TFlt))(TFlt)(
-          LSelectB)
+
+          // lSelectB)
+
+          // a1.App(a1.Intrinsic.FAdd, lSelectA, lSelectB))
+
           a1.App(a1.Intrinsic.FAdd,
                 a1.App(a1.Intrinsic.FMul, lSelectA, a1.Name("x", a1.Param("x", TFlt))),
                 lSelectB))
