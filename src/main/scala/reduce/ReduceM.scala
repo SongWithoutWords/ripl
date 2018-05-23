@@ -57,6 +57,11 @@ case object ReduceM {
   def when[A](condition: Boolean)(action: ReduceM[Unit]): ReduceM[Unit] =
     if(condition) action else pure()
 
+  def mapM[A, B](ma: Option[A])(f: A => ReduceM[B]): ReduceM[Option[B]] = ma match {
+    case None => pure(None)
+    case Some(a) => f(a).map(Some(_))
+  }
+
   def mapM[A, B](as: List[A])(f: A => ReduceM[B]): ReduceM[List[B]] = as match {
     case Nil => pure(Nil)
     case a::rem => f(a) >>= { b => mapM(rem)(f) >>= {bs => pure(b::bs) } }
