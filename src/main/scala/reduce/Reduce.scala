@@ -270,11 +270,11 @@ class Reduce(val astIn: a0.Ast) {
     case a0.Fun(_params, _retType, _body) => List(for {
       params <- mapM(_params) {p => for {t <- mapAsType(p.t)} yield a1.Param(p.n, t)}
 
-      retType <- _retType match {case Some(t) => mapAsType(t); case _ => pure(TError)}
+      retType <- mapM(_retType){mapAsType}
       _ <- impure(pushScope(MultiMap(params.map(p => (p.n, p)): _*)))
-      body <- mapAsExp(Some(retType), _body)
+      body <- mapAsExp(retType, _body)
       _ <- impure(popScope())
-    } yield a1.Fun(params, retType, body))
+    } yield a1.Fun(params, retType.getOrElse(body.t), body))
 
       // push new scope with the params
       // traverse body
