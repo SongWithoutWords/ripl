@@ -109,6 +109,10 @@ case object Intrinsic extends Enum[Intrinsic] {
 
   case object FEql extends Intrinsic { val n = "=="; val t = TFun(TFlt, TFlt)(TBln) }
   case object FNeq extends Intrinsic { val n = "/="; val t = TFun(TFlt, TFlt)(TBln) }
+
+  // Conversions
+  case object ItoF extends Intrinsic { val n = "IntegerToFloat"; val t = TFun(TInt)(TFlt) }
+  case object FtoI extends Intrinsic { val n = "TruncateFloatToInteger"; val t = TFun(TFlt)(TInt) }
 }
 
 
