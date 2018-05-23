@@ -52,30 +52,7 @@ case object ReduceM {
   def raise(errors: Errors): ReduceM[Unit] = raise(ReduceInfo(errors, 0))
   def raise(e: Error): ReduceM[Unit] = raise(Set(e))
 
-  def constrain(a: a1.Exp, b: a1.Exp): ReduceM[Unit] = constrain(a.t, b.t)
-  def constrain(a: a1.Type, b: a1.Exp): ReduceM[Unit] = constrain(a, b.t)
-  def constrain(a: a1.Type, b: a1.Type): ReduceM[Unit] = when (a != b) { raise(TypeConflict(a, b)) }
-
-  def chooseOverload[A](overloads: List[ReduceM[A]], default: A): ReduceM[A] =
-    overloads.foldLeft[List[ReduceM[A]]](Nil) {
-      (bestOverloads, overload) => bestOverloads match {
-        case Nil => List(overload)
-        case _ =>
-          val bestOverloadInfo = bestOverloads.head.info
-          overload.info.compare(bestOverloads.head.info) match {
-            case Ordering.LT => List(overload)
-            case Ordering.GT => bestOverloads
-            case Ordering.EQ => overload :: bestOverloads
-          }
-      }
-    } match {
-      case Nil => pure(default)
-      case List(result) => result
-      case overloads => raise(AmbiguousOverload(overloads)) >> pure(default)
-    }
-
-  def chooseOverload(t: a1.Type, es: List[ReduceM[a1.Exp]]): ReduceM[a1.Exp] =
-    chooseOverload(es.map{ e => constrain(t, e.value) >> e }, a1.InvalidExp)
+  def raiseImplicitConversion(): ReduceM[Unit] = raise(ReduceInfo(Set(), 1))
 
   def when[A](condition: Boolean)(action: ReduceM[Unit]): ReduceM[Unit] =
     if(condition) action else pure()

@@ -25,6 +25,47 @@ class Reduce(val astIn: a0.Ast) {
   def raiseImpure(e: Error) = errors = errors + e
   def raiseImpure(errs: Errors) = errors = errors union errs
 
+  def constrain(requiredType: a1.Type, exp: ReduceM[a1.Exp]): ReduceM[a1.Exp]
+    = exp >>= {constrain(requiredType, _)}
+
+  def constrain(requiredType: a1.Type, exp: a1.Exp): ReduceM[a1.Exp] = {
+
+    val expType = exp.t
+
+    if (expType == requiredType) pure(exp)
+    else {
+      lookupImplicitConversions(expType).collect{
+        conversion => conversion.t match {
+          case a1.TFun(List(tIn), tOut) if tIn == expType && tOut == requiredType => conversion
+        }
+      } match {
+        case Nil => raise(TypeConflict(requiredType, expType)) >> pure(exp)
+        case List(conversion) => raiseImplicitConversion() >> pure(evalApp(a1.App(conversion, exp)))
+        case conversions => raise(AmbiguousImplicitConversions(conversions)) >> pure(exp)
+      }
+    }
+  }
+
+  def chooseOverload[A](overloads: List[ReduceM[A]], default: A): ReduceM[A] =
+    overloads.foldLeft[List[ReduceM[A]]](Nil) {
+      (bestOverloads, overload) => bestOverloads match {
+        case Nil => List(overload)
+        case _ =>
+          val bestOverloadInfo = bestOverloads.head.info
+          overload.info.compare(bestOverloads.head.info) match {
+            case Ordering.LT => List(overload)
+            case Ordering.GT => bestOverloads
+            case Ordering.EQ => overload :: bestOverloads
+          }
+      }
+    } match {
+      case Nil => pure(default)
+      case List(result) => result
+      case overloads => raise(AmbiguousOverload(overloads)) >> pure(default)
+    }
+
+  def chooseOverload(t: a1.Type, es: List[ReduceM[a1.Exp]]): ReduceM[a1.Exp] =
+    chooseOverload(es.map{ constrain(t, _) }, a1.InvalidExp)
 
   def findCycle(node: a0.Node, history: List[a0.Node]): List[a0.Node] = {
     def impl(accum: List[a0.Node], rem: List[a0.Node]): List[a0.Node] = rem match {
@@ -70,6 +111,8 @@ class Reduce(val astIn: a0.Ast) {
     astOut.get(n).toList ++
       intrinsics.get(n) ++
       scopes.flatMap(_.get(n))
+
+  def lookupImplicitConversions(t: a1.Type): List[a1.Exp] = BuiltInConversions.entries(t)
 
   def mapAsType(node: a0.Node): ReduceM[a1.Type] = mapNode(KType, node) match {
     case List(ReduceM(t: a1.Type, info)) => ReduceM(t, info)
