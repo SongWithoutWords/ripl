@@ -252,8 +252,16 @@ class Reduce(val astIn: a0.Ast) {
         // Application syntax
         val appArgs = overloads :: argOverloads
         val appOverloads = lookupName("apply")
-          .collect{ case e: a1.Exp => e }
-          .map{ e => when(e == a1.InvalidExp){raise(UseOfInvalidExp)} >> pure(e) }
+          .collect {
+            case e: a1.Exp => {
+              e match {
+                case a1.InvalidExp => raise(UseOfInvalidExp)
+                // case a1.RecursiveDef(cycle) => // TODO: Not sure if this is necessary or not
+                //   raise (RecursiveVariableDef(cycle))
+                case _ => pure()
+              }
+            } >> pure(e)
+          }
         appOverloads.map(chooseArgs(_, appArgs))
       }
 
