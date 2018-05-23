@@ -27,23 +27,29 @@ object CustomMatchers {
       Files.write(expectedPath, expectedString.getBytes(StandardCharsets.UTF_8))
       Files.write(resultPath, resultString.getBytes(StandardCharsets.UTF_8))
 
-      if (!success) {
+      // if (!success) {
+      //   val command = Seq(
+      //     "emacsclient",
+      //     "--create-frame",
+      //     "--alternate-editor", "",
+      //     "--eval", s"""(ediff "${resultPath.toString}" "${expectedPath.toString}")"""
+      //   )
 
-        val command = Seq(
-          "emacsclient",
-          "--create-frame",
-          "--alternate-editor", "",
-          "--eval", s"""(ediff "${resultPath.toString}" "${expectedPath.toString}")"""
-        )
+      //   println("Invoking: " + command)
 
-        println("Invoking: " + command)
+      //   command.!
+      // }
 
-        command.!
-      }
+      // Could consider trying to get git-diff to work in future
+      // might be able to get it inline with the test results
+
       MatchResult(
         success,
-        "Result ast:\n" + PrettyPrint(result) + "\nDid not equal:\n" + PrettyPrint(expected)
-        , ""
+        if (!success) {
+          val process = Process(Seq("git", "diff", "--no-index", expectedPath.toString, resultPath.toString))
+          process.lines_!.mkString("\n")
+        } else "",
+        ""
       )
     }
   }
