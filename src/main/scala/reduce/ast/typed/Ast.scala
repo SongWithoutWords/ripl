@@ -100,6 +100,8 @@ case object Intrinsic extends Enum[Intrinsic] {
 
   case object IEql extends Intrinsic { val n = "=="; val t = TFun(TInt, TInt)(TBln) }
   case object INeq extends Intrinsic { val n = "/="; val t = TFun(TInt, TInt)(TBln) }
+  case object ILeq extends Intrinsic { val n = "<="; val t = TFun(TInt, TInt)(TBln) }
+  case object IGeq extends Intrinsic { val n = ">="; val t = TFun(TInt, TInt)(TBln) }
 
   case object FAdd extends Intrinsic { val n = "+"; val t = TFun(TFlt, TFlt)(TFlt) }
   case object FSub extends Intrinsic { val n = "-"; val t = TFun(TFlt, TFlt)(TFlt) }
