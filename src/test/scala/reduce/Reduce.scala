@@ -487,6 +487,7 @@ class TestReduce extends FreeSpec with Matchers {
       }
     }
     "application syntax" - {
+
       "5(4)" in {
         val _apply = a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TInt))(
           a0.App(a0.Name("*"), a0.Name("a"), a0.Name("b")))
@@ -496,9 +497,9 @@ class TestReduce extends FreeSpec with Matchers {
                  a1.Name("a", a1.Param("a", TInt)),
                  a1.Name("b", a1.Param("b", TInt))))
 
-        // test("apply" -> _apply)("apply" -> apply)()
         test("apply" -> _apply, "x" -> a0.App(5, 4))("apply" -> apply, "x" -> a1.App(apply, 5, 4))()
       }
+
       "f(x) = a * x + b" in {
 
         val _line = a0.Struct("Line", "a" -> TFlt, "b" -> TFlt)
