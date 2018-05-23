@@ -95,10 +95,20 @@ case object Intrinsic extends Enum[Intrinsic] {
   case object IAdd extends Intrinsic { val n = "+"; val t = TFun(TInt, TInt)(TInt) }
   case object ISub extends Intrinsic { val n = "-"; val t = TFun(TInt, TInt)(TInt) }
   case object IMul extends Intrinsic { val n = "*"; val t = TFun(TInt, TInt)(TInt) }
+  case object IDiv extends Intrinsic { val n = "//"; val t = TFun(TInt, TInt)(TInt) }
+  case object IMod extends Intrinsic { val n = "%"; val t = TFun(TInt, TInt)(TInt) }
+
+  case object IEql extends Intrinsic { val n = "=="; val t = TFun(TInt, TInt)(TBln) }
+  case object INeq extends Intrinsic { val n = "/="; val t = TFun(TInt, TInt)(TBln) }
 
   case object FAdd extends Intrinsic { val n = "+"; val t = TFun(TFlt, TFlt)(TFlt) }
   case object FSub extends Intrinsic { val n = "-"; val t = TFun(TFlt, TFlt)(TFlt) }
   case object FMul extends Intrinsic { val n = "*"; val t = TFun(TFlt, TFlt)(TFlt) }
+  case object FDiv extends Intrinsic { val n = "/"; val t = TFun(TFlt, TFlt)(TFlt) }
+  case object FMod extends Intrinsic { val n = "%"; val t = TFun(TFlt, TFlt)(TFlt) }
+
+  case object FEql extends Intrinsic { val n = "=="; val t = TFun(TFlt, TFlt)(TBln) }
+  case object FNeq extends Intrinsic { val n = "/="; val t = TFun(TFlt, TFlt)(TBln) }
 }
 
 
