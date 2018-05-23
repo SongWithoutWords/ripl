@@ -126,6 +126,16 @@ class Reduce(val astIn: a0.Ast) {
     })
   })
 
+  def evalApp(app: a1.App): a1.Exp = app match {
+
+    case a1.App(a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
+    case a1.App(a1.Intrinsic.FAdd, List(VFlt(a), VFlt(b))) => VFlt(a + b)
+    case a1.App(a1.Intrinsic.ItoF, List(VInt(a))) => VFlt(a)
+    case a1.App(a1.Intrinsic.FtoI, List(VFlt(a))) => VInt(a.toInt)
+
+    case app => app
+  }
+
   def mapExp(kind: Kind, exp: a0.Exp): List[ReduceM[a1.Node]] = exp match {
 
     case a0.App(_f, _args) =>
@@ -142,13 +152,7 @@ class Reduce(val astIn: a0.Ast) {
                 case (param: a1.Type, overloads: List[ReduceM[a1.Exp]]) =>
                   chooseOverload(param, overloads)
               }
-            } yield a1.App(f, args) match {
-
-              // Compile time evaluation
-              case a1.App(a1.Intrinsic.IAdd, List(VInt(a), VInt(b))) => VInt(a + b)
-
-              case app => app
-            }
+            } yield evalApp(a1.App(f, args))
           }
           case _ => raise(ApplicationOfNonAppliableType(_f.value.t)) >> _f
         }
