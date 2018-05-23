@@ -206,10 +206,7 @@ class Reduce(val astIn: a0.Ast) {
 
   def mapExp(kind: Kind, exp: a0.Exp): List[ReduceM[a1.Node]] = exp match {
 
-    // case a0.App(a0.Select(_e, name), _args) => lookupName(name).flatMap { _0: Node => GenTraversableOnce[B] }
-
     case a0.App(_f, _args) =>
-
 
       def chooseArgs(_f: ReduceM[a1.Exp], argOverloads: List[List[ReduceM[a1.Exp]]]): ReduceM[a1.Exp] = {
         _f.a.t match {
