@@ -21,8 +21,8 @@ object CustomMatchers {
       val expectedPath = Files.createTempFile("ast", "expected")
       val resultPath = Files.createTempFile("ast", "result")
 
-      val expectedString = PrettyPrint(expected)
-      val resultString = PrettyPrint(result)
+      val expectedString = PrettyPrint(expected) + "\n" // prevent git complaint about missing newline
+      val resultString = PrettyPrint(result) + "\n"
 
       Files.write(expectedPath, expectedString.getBytes(StandardCharsets.UTF_8))
       Files.write(resultPath, resultString.getBytes(StandardCharsets.UTF_8))
