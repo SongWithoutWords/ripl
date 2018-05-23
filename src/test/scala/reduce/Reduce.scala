@@ -327,6 +327,49 @@ class TestReduce extends FreeSpec with Matchers {
         )(TypeConflict(point, vector))
       }
     }
+
+    "infer return type when no excplicit type is provided" - {
+      "f(Int a, Int b) = a + b has return type Int" in {
+        test(
+          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(None){
+            a0.App(a0.Name("+"), a0.Name("a"), a0.Name("b"))
+          }
+        )(
+          "f" -> a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt))(TInt){
+            a1.App(a1.Intrinsic.IAdd,
+                   a1.Name("a", a1.Param("a", TInt)),
+                   a1.Name("b", a1.Param("b", TInt)))
+          }
+        )()
+      }
+      "add(Flt a, Flt b) = a + b has return type Flt" in {
+        test(
+          "f" -> a0.Fun(a0.Param("a", TFlt), a0.Param("b", TFlt))(None){
+            a0.App(a0.Name("+"), a0.Name("a"), a0.Name("b"))
+          }
+        )(
+          "f" -> a1.Fun(a1.Param("a", TFlt), a1.Param("b", TFlt))(TFlt){
+            a1.App(a1.Intrinsic.FAdd,
+                   a1.Name("a", a1.Param("a", TFlt)),
+                   a1.Name("b", a1.Param("b", TFlt)))
+          }
+        )()
+      }
+      "add(Int a, Flt b) = a + b has return type Flt" in {
+        test(
+          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TFlt))(None){
+            a0.App(a0.Name("+"), a0.Name("a"), a0.Name("b"))
+          }
+        )(
+          "f" -> a1.Fun(a1.Param("a", TInt), a1.Param("b", TFlt))(TFlt){
+            a1.App(a1.Intrinsic.FAdd,
+                   a1.App(a1.Intrinsic.ItoF,
+                          a1.Name("a", a1.Param("a", TInt))),
+                   a1.Name("b", a1.Param("b", TFlt)))
+          }
+        )()      }
+      // TODO: Do an example with a user-defined type when you have constructors on line
+    }
   }
   "if exps" - {
     "produce no errors with correct types" in {
