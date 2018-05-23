@@ -510,22 +510,12 @@ class TestReduce extends FreeSpec with Matchers {
         val lSelectA = a1.Select(a1.Name("l", a1.Param("l", line)), "a", TFlt)
         val lSelectB = a1.Select(a1.Name("l", a1.Param("l", line)), "b", TFlt)
 
-        val _apply = a0.Fun(a0.Param("l", _line), a0.Param("x", TFlt))(Some(TFlt))(
-
-          // _lSelectB)
-
-          // a0.App(a0.Name("+"), _lSelectA, _lSelectB))
-
+        val _apply = a0.Fun(a0.Param("l", a0.Name("Line")), a0.Param("x", TFlt))(Some(TFlt))(
           a0.App(a0.Name("+"),
                 a0.App(a0.Name("*"), _lSelectA, a0.Name("x")),
                 _lSelectB))
 
         val apply = a1.Fun(a1.Param("l", line), a1.Param("x", TFlt))(TFlt)(
-
-          // lSelectB)
-
-          // a1.App(a1.Intrinsic.FAdd, lSelectA, lSelectB))
-
           a1.App(a1.Intrinsic.FAdd,
                 a1.App(a1.Intrinsic.FMul, lSelectA, a1.Name("x", a1.Param("x", TFlt))),
                 lSelectB))
@@ -536,11 +526,11 @@ class TestReduce extends FreeSpec with Matchers {
         test(
           "Line" -> _line,
           "apply" -> _apply,
-          // "y" -> a0.App(_l, 4.f)
+          "y" -> a0.App(_l, 4.f)
         )(
           "Line" -> line,
           "apply" -> apply,
-          // "y" -> a1.App(apply, l, 4.f)
+          "y" -> a1.App(apply, l, 4.f)
         )()
       }
     }
