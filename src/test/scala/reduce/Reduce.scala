@@ -526,21 +526,21 @@ class TestReduce extends FreeSpec with Matchers {
         )(TypeConflict(TInt, TFlt))
       }
 
-      "floating point ops are selected for mixed operations" - {
-          "4.f + 5 == 9.f" in {
-            test(
-              "x" -> a0.App(a0.Name("+"), 4.f, 5)
-            )(
-              "x" -> 9.f
-            )()
-          }
-          "4 + 5.f == 9.f" in {
-            test(
-              "x" -> a0.App(a0.Name("+"), 4, 5.f)
-            )(
-              "x" -> 9.f
-            )()
-          }
+      "floating point ops are selected for mixed floating point and integral ops" - {
+        "4.f + 5 == 9.f" in {
+          test(
+            "x" -> a0.App(a0.Name("+"), 4.f, 5)
+          )(
+            "x" -> 9.f
+          )()
+        }
+        "4 + 5.f == 9.f" in {
+          test(
+            "x" -> a0.App(a0.Name("+"), 4, 5.f)
+          )(
+            "x" -> 9.f
+          )()
+        }
       }
     }
   }
