@@ -257,6 +257,76 @@ class TestReduce extends FreeSpec with Matchers {
           ApplicationOfNonAppliableType(TInt))
       }
     }
+
+    "enforce known return types" - {
+
+      val _vector = a0.Struct("Vector", "x" -> TFlt, "y" -> TFlt)
+      val vector = a1.Struct("Vector", "x" -> TFlt, "y" -> TFlt)
+
+      val _point = a0.Struct("Point", "x" -> TInt, "y" -> TInt)
+      val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
+
+      "produce errors when Bln is required and Int is returned" in {
+        test(
+          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TBln)){
+            a0.App(a0.Name("+"),
+                   a0.Name("a"),
+                   a0.Name("b"))
+          }
+        )(
+          "f" -> a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt))(TBln){
+            a1.App(a1.Intrinsic.IAdd,
+                   a1.Name("a", a1.Param("a", TInt)),
+                   a1.Name("b", a1.Param("b", TInt)))
+          }
+        )(TypeConflict(TBln, TInt))
+      }
+      "produce errors when Bln is required and Vector is returned" in {
+        test(
+          "Vector" -> _vector,
+          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TBln)){
+            a0.VObj(a0.Name("Vector"), "x" -> 1.f, "b" -> 2.f)
+          }
+        )(
+          "Vector" -> vector,
+          "f" -> a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt))(TBln){
+            a1.VObj(vector, "x" -> 1.f, "b" -> 2.f)
+          }
+        )(TypeConflict(TBln, vector))
+      }
+      "produce errors when Point is required and Int is returned" in {
+        test(
+          "Point" -> _point,
+          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(a0.Name("Point"))){
+            a0.App(a0.Name("+"),
+                   a0.Name("a"),
+                   a0.Name("b"))
+          }
+        )(
+          "Point" -> point,
+          "f" -> a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt))(point){
+            a1.App(a1.Intrinsic.IAdd,
+                   a1.Name("a", a1.Param("a", TInt)),
+                   a1.Name("b", a1.Param("b", TInt)))
+          }
+        )(TypeConflict(point, TInt))
+      }
+      "produce errors when Point is required and Vector is returned" in {
+        test(
+          "Point" -> _point,
+          "Vector" -> _vector,
+          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(a0.Name("Point"))){
+            a0.VObj(a0.Name("Vector"), "x" -> 1.f, "b" -> 2.f)
+          }
+        )(
+          "Point" -> point,
+          "Vector" -> vector,
+          "f" -> a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt))(point){
+            a1.VObj(vector, "x" -> 1.f, "b" -> 2.f)
+          }
+        )(TypeConflict(point, vector))
+      }
+    }
   }
   "if exps" - {
     "produce no errors with correct types" in {
