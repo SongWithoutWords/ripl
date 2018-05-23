@@ -508,6 +508,43 @@ class TestReduce extends FreeSpec with Matchers {
     }
   }
 
+  "implicit conversions" - {
+    "built in" - {
+
+      "integers can be assigned to floats" in {
+        test(
+          "x" -> a0.Cons(TFlt, 4)
+        )(
+          "x" -> a1.Cons(TFlt, 4.f)
+        )()
+      }
+      "floats cannot be assigned to ints" in {
+        test(
+          "x" -> a0.Cons(TInt, 4.f)
+        )(
+          "x" -> a1.Cons(TInt, 4.f)
+        )(TypeConflict(TInt, TFlt))
+      }
+
+      "floating point ops are selected for mixed operations" - {
+          "4.f + 5 == 9.f" in {
+            test(
+              "x" -> a0.App(a0.Name("+"), 4.f, 5)
+            )(
+              "x" -> 9.f
+            )()
+          }
+          "4 + 5.f == 9.f" in {
+            test(
+              "x" -> a0.App(a0.Name("+"), 4, 5.f)
+            )(
+              "x" -> 9.f
+            )()
+          }
+      }
+    }
+  }
+
   "syntax extensions" - {
     "method call syntax" - {
 
