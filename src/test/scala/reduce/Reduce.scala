@@ -384,6 +384,37 @@ class TestReduce extends FreeSpec with Matchers {
       }
       // TODO: Do an example with a user-defined type when you have constructors on line
     }
+
+    "can be defined recursively" - {
+      "with explicit return type" - {
+        "fact(Int n) -> Int => if n <= 1 then 1 else n * fact(n - 1)" in {
+
+          val _fact = a0.Fun(a0.Param("n", TInt))(Some(TInt))(
+            a0.If(
+              a0.App(a0.Name("<="), a0.Name("n"), 1),
+              1,
+              a0.App(a0.Name("*"),
+                     a0.Name("n"),
+                     a0.App(a0.Name("fact"),
+                            a0.App(a0.Name("-"),
+                                   a0.Name("n"),
+                                   1)))))
+
+          val fact = a1.Fun(a1.Param("n", TInt))(TInt)(
+                a1.If(
+                  a1.App(a1.Intrinsic.ILeq, a1.Name("n", a1.Param("n", TInt)), 1),
+                  1,
+                  a1.App(a1.Intrinsic.IMul,
+                         a1.Name("n", a1.Param("n", TInt)),
+                         a1.App(a1.Name("fact", a1.RecursiveDef(_fact :: Nil)),
+                                a1.App(a1.Intrinsic.ISub,
+                                       a1.Name("n", a1.Param("n", TInt)),
+                                       1)))))
+
+          test("fact" -> _fact)("fact" -> fact)()
+        }
+      }
+    }
   }
   "if exps" - {
     "produce no errors with correct types" in {
