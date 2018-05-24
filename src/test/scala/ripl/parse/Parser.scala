@@ -103,14 +103,12 @@ class TestParser extends FreeSpec with Matchers {
         }
       }
       "integer literals" - {
-        "0 is an integer" in {
+        "0" in {
           test("0")(VInt(0))
         }
-        "4 is an integer" in {
+        "4" in {
           test("4")(VInt(4))
         }
-
-
       }
       "floating point literals" - {
 
