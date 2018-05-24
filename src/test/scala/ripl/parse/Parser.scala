@@ -16,53 +16,90 @@ class TestParser extends FreeSpec with Matchers {
   "expressions" - {
     "exp0" - {
       "names" - {
-        "John is a name" in {
-          testName("John")
+        "simple names" - {
+          "John" in {
+            testName("John")
+          }
+          "tim" in {
+            testName("tim")
+          }
+          "H2O" in {
+            testName("H2O")
+          }
         }
-        "tim is a name" in {
-          testName("tim")
+        "naming conventions" - {
+          "camelCase" in {
+            testName("camelCase")
+          }
+          "StudlyCase" in {
+            testName("StudlyCase")
+          }
+          "snake_case" in {
+            testName("snake_case")
+          }
+          "SCREAMING_SNAKE_CASE" in {
+            testName("SCREAMING_SNAKE_CASE")
+          }
+          "_surrounded_with_under_scores_" in {
+            testName("_surrounded_with_under_scores_")
+          }
         }
-        "H2O is a name" in {
-          testName("H2O")
+        "names with keyword substrings" - {
+          "truest" in {
+            testName("truest")
+          }
+          "falsely" in {
+            testName("falsely")
+          }
+          "iffith" in {
+            testName("iffith")
+          }
+          "thennis" in {
+            testName("thennis")
+          }
+          "elsely" in {
+            testName("elsely")
+          }
         }
-        "camelCase is a name" in {
-          testName("camelCase")
+        "operators" - {
+          "+" in {
+            testName("+")
+          }
+          "-" in {
+            testName("-")
+          }
+          "*" in {
+            testName("*")
+          }
+          "/" in {
+            testName("/")
+          }
+          "%" in {
+            testName("%")
+          }
+          ":" in {
+            testName(":")
+          }
+          "++" in {
+            testName("++")
+          }
+          ">>=" in {
+            testName(">>=")
+          }
+          "<>" in {
+            testName("<>")
+          }
+          "<$>" in {
+            testName("<$>")
+          }
+          "<:>" in {
+            testName("<:>")
+          }
+          "?!" in {
+            testName("?!")
+          }
         }
-        "StudlyCase is a name" in {
-          testName("StudlyCase")
         }
-        "snake_case is a name" in {
-          testName("snake_case")
-        }
-        "SCREAMING_SNAKE_CASE is a name" in {
-          testName("SCREAMING_SNAKE_CASE")
-        }
-        "_surrounded_in_under_scores_ is a name" in {
-          testName("_surrounded_in_under_scores_")
-        }
-        "+ is a name" in {
-          testName("+")
-        }
-        "- is a name" in {
-          testName("-")
-        }
-        "* is a name" in {
-          testName("*")
-        }
-        "/ is a name" in {
-          testName("/")
-        }
-        "% is a name" in {
-          testName("%")
-        }
-        "++ is a name" in {
-          testName("++")
-        }
-        ">>= is a name" in {
-          testName(">>=")
-        }
-        "--< is a name" in {
-          testName("--<")
         }
       }
       "integer literals" - {
