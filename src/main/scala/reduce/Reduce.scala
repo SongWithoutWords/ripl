@@ -67,30 +67,52 @@ class Reduce(val astIn: a0.Ast) {
   def chooseOverload(t: a1.Type, es: List[ReduceM[a1.Exp]]): ReduceM[a1.Exp] =
     chooseOverload(es.map{ constrain(t, _) }, a1.InvalidExp)
 
-  def findCycle(node: a0.Node, history: List[a0.Node]): List[a0.Node] = {
-    def impl(accum: List[a0.Node], rem: List[a0.Node]): List[a0.Node] = rem match {
+  def findCycle(node: a0.Node, history: List[a1.Cycle.Component]): List[a1.Cycle.Component] = {
+    def impl(accum: List[a1.Cycle.Component], rem: List[a1.Cycle.Component]): List[a1.Cycle.Component] = rem match {
       case Nil => Nil
-
       case head::tail =>
-        if(head eq node) (head :: accum).reverse
+        if(head.node eq node) (head :: accum).reverse
         else impl(head :: accum, tail)
     }
     impl(Nil, history)
   }
 
-  var history = List[a0.Node]()
-  def catchCycles(input: a0.Node, mapping: a0.Node => List[ReduceM[a1.Node]]): List[ReduceM[a1.Node]] = findCycle(input, history) match {
-    case Nil =>
-      history = input :: history
-      val result = mapping(input)
-      history = history.tail
-      result
-    case cycle => List(
-      when (cycle.collect{ case f: a0.Fun => f } == Nil) {
-        raise(RecursiveVariableDef(cycle))
-      } >> pure(a1.RecursiveDef(cycle))
-    )
+  var history = List[a1.Cycle.Component]()
+
+  def addToHistory(input: a0.Node, mapping: a0.Node => List[ReduceM[a1.Node]]): List[ReduceM[a1.Node]] = {
+    val cycleComponent = input match {
+      case f@a0.Fun(params, retTypeOpt, _) =>
+        a1.Cycle.Fun(
+          f,
+          mapM(params){ case a0.Param(_, t) => mapAsType(t) }.value,
+          mapM(retTypeOpt){ mapAsType }.value)
+      case _ => a1.Cycle.Node(input)
+    }
+    history = cycleComponent :: history
+    val result = mapping(input)
+    history = history.tail
+    result
   }
+
+  def catchCycles(input: a0.Node, mapping: a0.Node => List[ReduceM[a1.Node]]): List[ReduceM[a1.Node]]
+    = findCycle(input, history) match {
+      case Nil => mapping(input)
+      case cycle => List(
+        when (cycle.collect{ case f: a1.Cycle.Fun => f } != cycle) {
+          raise(RecursiveVariableDef(a1.Cycle(cycle)))
+        } >> (
+          cycle match {
+            case a1.Cycle.Fun(_, paramTypes, optionalRetType)::_ => optionalRetType match {
+              case Some(_) => pure()
+              case None => raise(RecursiveFunctionLacksExplicitReturnType(a1.Cycle(cycle)))
+            }
+            case _ => pure()
+        }) >> pure(a1.Cycle(cycle))
+      )
+    }
+
+  def catchCyclesAndAddToHistory(input: a0.Node, mapping: a0.Node => List[ReduceM[a1.Node]]): List[ReduceM[a1.Node]]
+    = catchCycles(input, addToHistory(_, mapping))
 
   val nodes = new IdentityMap[a0.Node, List[ReduceM[a1.Node]]]
 
@@ -140,10 +162,12 @@ class Reduce(val astIn: a0.Ast) {
   // case class KVal(t: a1.Type) extends Kind
 
   def mapNamespaceMember(_n: a0.Node): a1.Node = {
-    val ReduceM(n, info) = chooseOverload(mapNode(KAny, _n), a1.InvalidExp)
+    val ReduceM(n, info) = chooseOverload(mapNodeAndAddToHistory(KAny, _n), a1.InvalidExp)
     raiseImpure(info.errors)
     n
   }
+
+
   //   match {
   //   case Nil => a1.InvalidExp
   //   case List(ReduceM(n, errs)) =>
@@ -154,20 +178,24 @@ class Reduce(val astIn: a0.Ast) {
   //     a1.InvalidExp
   // }
 
-  def mapNode(kind: Kind, n: a0.Node): List[ReduceM[a1.Node]] = nodes.getOrElseUpdate(n, {
-    catchCycles(n, (n: a0.Node) => n match {
-      case _e: a0.Exp => mapExp(KAny, _e)
+  def mapNodeWithoutCycleDetection(n: a0.Node) = n match {
+    case _e: a0.Exp => mapExp(KAny, _e)
 
-      case a0.Namespace(_nodes) =>
-        val nodes = _nodes.mapValues(mapNamespaceMember(_))
-        pushScope(nodes)
-        nodes.map.view.force
-        popScope()
-        List(pure(a1.Namespace(nodes)))
+    case a0.Namespace(_nodes) =>
+      val nodes = _nodes.mapValues(mapNamespaceMember(_))
+      pushScope(nodes)
+      nodes.map.view.force
+      popScope()
+      List(pure(a1.Namespace(nodes)))
 
-      case _t: a0.Type => mapType(_t)
-    })
-  })
+    case _t: a0.Type => mapType(_t)
+  }
+
+  def mapNode(kind: Kind, n: a0.Node): List[ReduceM[a1.Node]] =
+    nodes.getOrElseUpdate(n, catchCycles(n, mapNodeWithoutCycleDetection))
+
+  def mapNodeAndAddToHistory(kind: Kind, n: a0.Node): List[ReduceM[a1.Node]] =
+    nodes.getOrElseUpdate(n, catchCyclesAndAddToHistory(n, mapNodeWithoutCycleDetection))
 
   def evalApp(app: a1.App): a1.Exp = app match {
 

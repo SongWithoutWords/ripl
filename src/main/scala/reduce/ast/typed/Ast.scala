@@ -4,6 +4,7 @@ import enumeratum._
 
 import reduce.ast.common._
 import reduce.ast.{untyped => a0}
+import reduce.ReduceM
 import reduce.util.MultiMap
 
 // I feel like I need to work on my hierarchy a little bit:
@@ -56,8 +57,30 @@ case object InvalidExp extends Exp {
   def t = TError
 }
 
-case class RecursiveDef(cycle: List[a0.Node]) extends Exp {
-  def t = TError
+// sealed trait CycleComponent {
+//   def node: a0.Node
+// }
+// object CycleComponent {
+//   case class Fun(node: a0.Fun, params: List[Type], ret: Option[Type]) extends CycleComponent
+//   // case class Fun(node: a0.Fun, t: ReduceM[TFun], ret: Option[TFun]) extends CycleComponent
+//   case class Node(node: a0.Node) extends CycleComponent
+
+//   implicit def apply(node: a0.Node) = Node(node)
+// }
+
+// case class 
+
+object Cycle {
+  sealed trait Component { def node: a0.Node }
+  case class Fun(node: a0.Fun, params: List[Type], ret: Option[Type]) extends Component
+  case class Node(node: a0.Node) extends Component
+}
+
+case class Cycle(cycle: List[Cycle.Component]) extends Exp {
+  def t = cycle match {
+    case Cycle.Fun(_, paramTypes, Some(t))::_ => TFun(paramTypes, t)
+    case _ => TError
+  }
 }
 
 object Fun {

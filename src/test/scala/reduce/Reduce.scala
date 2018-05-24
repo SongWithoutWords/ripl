@@ -67,27 +67,31 @@ class TestReduce extends FreeSpec with Matchers {
 
     "produce errors when they form cycles" - {
       "at depth 0" in {
+        val cycle = a1.Cycle(a1.Cycle.Node(a0.Name("a")) :: Nil)
         test(
           "a" -> a0.Name("a"))(
-          "a" -> a1.Name("a", a1.RecursiveDef(a0.Name("a") :: Nil)))(
-          RecursiveVariableDef(a0.Name("a") :: Nil))
+          "a" -> a1.Name("a", cycle))(
+          RecursiveVariableDef(cycle))
       }
       "at depth 1" in {
-        val cycle = a0.Name("a") :: a0.Name("b") :: Nil
+        val cycle = a1.Cycle(a1.Cycle.Node(a0.Name("a")) :: a1.Cycle.Node(a0.Name("b")) :: Nil)
         test(
           "a" -> a0.Name("b"),
           "b" -> a0.Name("a"))(
-          "a" -> a1.Name("b", a1.Name("a", a1.RecursiveDef(cycle))),
-          "b" -> a1.Name("a", a1.RecursiveDef(cycle)))(
+          "a" -> a1.Name("b", a1.Name("a", cycle)),
+          "b" -> a1.Name("a", cycle))(
           RecursiveVariableDef(cycle))
       }
       "at depth 2" in {
-        val cycle = a0.Name("a") :: a0.Name("b") :: a0.Name("c") :: Nil
+        val cycle = a1.Cycle(
+          a1.Cycle.Node(a0.Name("a")) ::
+          a1.Cycle.Node(a0.Name("c")) ::
+          a1.Cycle.Node(a0.Name("b")) :: Nil)
         testErrs(
           "a" -> a0.Name("b"),
           "b" -> a0.Name("c"),
           "c" -> a0.Name("a"))(
-          RecursiveVariableDef(a0.Name("a") :: a0.Name("c") :: a0.Name("b") :: Nil))
+          RecursiveVariableDef(cycle))
       }
       // TODO: add similar tests to catch cycles in sub-expressions
     }
@@ -391,25 +395,39 @@ class TestReduce extends FreeSpec with Matchers {
 
           val _fact = a0.Fun(a0.Param("n", TInt))(Some(TInt))(
             a0.If(
-              a0.App(a0.Name("<="), a0.Name("n"), 1),
+              a0.App(
+                a0.Name("<="),
+                a0.Name("n"),
+                1),
               1,
-              a0.App(a0.Name("*"),
-                     a0.Name("n"),
-                     a0.App(a0.Name("fact"),
-                            a0.App(a0.Name("-"),
-                                   a0.Name("n"),
-                                   1)))))
+              a0.App(
+                a0.Name("*"),
+                  a0.Name("n"),
+                  a0.App(
+                    a0.Name("fact"),
+                    a0.App(
+                      a0.Name("-"),
+                      a0.Name("n"),
+                      1)))))
 
           val fact = a1.Fun(a1.Param("n", TInt))(TInt)(
-                a1.If(
-                  a1.App(a1.Intrinsic.ILeq, a1.Name("n", a1.Param("n", TInt)), 1),
-                  1,
-                  a1.App(a1.Intrinsic.IMul,
-                         a1.Name("n", a1.Param("n", TInt)),
-                         a1.App(a1.Name("fact", a1.RecursiveDef(_fact :: Nil)),
-                                a1.App(a1.Intrinsic.ISub,
-                                       a1.Name("n", a1.Param("n", TInt)),
-                                       1)))))
+            a1.If(
+              a1.App(
+                a1.Intrinsic.ILeq,
+                a1.Name("n", a1.Param("n", TInt)),
+                1),
+              1,
+              a1.App(
+                a1.Intrinsic.IMul,
+                a1.Name("n", a1.Param("n", TInt)),
+                a1.App(
+                  a1.Name(
+                    "fact",
+                    a1.Cycle(a1.Cycle.Fun(_fact, List(TInt), Some(TInt))::Nil) :: Nil),
+                  a1.App(
+                    a1.Intrinsic.ISub,
+                    a1.Name("n", a1.Param("n", TInt)),
+                    1)))))
 
           test("fact" -> _fact)("fact" -> fact)()
         }
@@ -511,7 +529,7 @@ class TestReduce extends FreeSpec with Matchers {
         "b" -> 3
       )()
     }
-    "members can  be selected from struct variables" in {
+    "members can be selected from struct variables" in {
       val _point = a0.Struct("Point", "x" -> TInt, "y" -> TInt)
       val _getX = a0.Fun(a0.Param("point", a0.Name("Point")))(Some(TInt))(
         a0.Select(a0.Name("point"), "x"))
