@@ -217,14 +217,15 @@ class Reduce(val astIn: a0.Ast) {
             val paramCount = params.length
             val argCount = argOverloads.length
             when(paramCount != argCount){ raise(WrongNumArgs(paramCount, argCount)) } >> {
-            for {
-              f <- _f
-              args <- mapM((params, argOverloads).zipped.toList) {
-                case (param: a1.Type, overloads: List[ReduceM[a1.Exp]]) =>
-                  chooseOverload(param, overloads)
-              }
-            } yield evalApp(a1.App(f, args))
-          }
+              for {
+                f <- _f
+                args <- mapM((params, argOverloads).zipped.toList) {
+                  case (param: a1.Type, overloads: List[ReduceM[a1.Exp]]) =>
+                    chooseOverload(param, overloads)
+                }
+              } yield evalApp(a1.App(f, args))
+            }
+          case TError => _f
           case _ => raise(ApplicationOfNonAppliableType(_f.value.t)) >> _f
         }
       }
