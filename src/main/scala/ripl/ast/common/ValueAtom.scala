@@ -1,7 +1,7 @@
-package reduce.ast.common
+package ripl.ast.common
 
-import reduce.ast.{untyped => a0, typed => a1}
-import reduce.ast.common._
+import ripl.ast.{untyped => a0, typed => a1}
+import ripl.ast.common._
 
 object ImplicitConversions {
   implicit def ImplicitBln(b: Boolean): VBln = VBln(b)

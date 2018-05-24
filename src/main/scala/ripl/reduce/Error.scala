@@ -1,7 +1,7 @@
-package reduce
+package ripl.reduce
 
-import reduce.ast.{untyped => a0}
-import reduce.ast.{typed => a1}
+import ripl.ast.{untyped => a0}
+import ripl.ast.{typed => a1}
 
 sealed trait Error
 

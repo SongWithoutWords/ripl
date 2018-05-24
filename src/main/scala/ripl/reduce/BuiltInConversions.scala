@@ -1,8 +1,8 @@
-package reduce
+package ripl.reduce
 
-import ast.typed._
-import ast.common._
-import util.MultiMap
+import ripl.ast.typed._
+import ripl.ast.common._
+import ripl.util.MultiMap
 
 object BuiltInConversions {
   val entries: MultiMap[Type, Exp] = MultiMap(

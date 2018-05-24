@@ -1,13 +1,14 @@
-package reduce
+package ripl.reduce
 
 import scala.collection.immutable.Set
 import scala.collection.mutable.Stack
 
-import reduce.ast.common._
-import reduce.ast.{untyped => a0}
-import reduce.ast.{typed => a1}
-import reduce.util.MultiMap
-import reduce.util.Ordering
+import ripl.ast.common._
+import ripl.ast.{untyped => a0}
+import ripl.ast.{typed => a1}
+import ripl.util.IdentityMap
+import ripl.util.MultiMap
+import ripl.util.Ordering
 
 import Types._
 import ReduceM._

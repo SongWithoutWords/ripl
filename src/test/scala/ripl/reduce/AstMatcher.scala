@@ -1,4 +1,4 @@
-package reduce
+package ripl.reduce
 
 import java.nio.file.Files
 import java.nio.charset.StandardCharsets
@@ -8,8 +8,8 @@ import org.scalatest._
 import matchers._
 
 
-import reduce.ast.typed._
-import reduce.util.PrettyPrint
+import ripl.ast.typed._
+import ripl.util.PrettyPrint
 
 object CustomMatchers {
 
@@ -27,18 +27,18 @@ object CustomMatchers {
       Files.write(expectedPath, expectedString.getBytes(StandardCharsets.UTF_8))
       Files.write(resultPath, resultString.getBytes(StandardCharsets.UTF_8))
 
-      // if (!success) {
-      //   val command = Seq(
-      //     "emacsclient",
-      //     "--create-frame",
-      //     "--alternate-editor", "",
-      //     "--eval", s"""(ediff "${resultPath.toString}" "${expectedPath.toString}")"""
-      //   )
+      if (!success) {
+        val command = Seq(
+          "emacsclient",
+          "--create-frame",
+          "--alternate-editor", "",
+          "--eval", s"""(ediff "${resultPath.toString}" "${expectedPath.toString}")"""
+        )
 
-      //   println("Invoking: " + command)
+        println("Invoking: " + command)
 
-      //   command.!
-      // }
+        command.!
+      }
 
       // Could consider trying to get git-diff to work in future
       // might be able to get it inline with the test results
@@ -46,7 +46,7 @@ object CustomMatchers {
       MatchResult(
         success,
         if (!success) {
-          val process = Process(Seq("git", "diff", "--no-index", expectedPath.toString, resultPath.toString))
+          val process = Process(Seq("git", "diff", "--no-index", "--histogram", expectedPath.toString, resultPath.toString))
           process.lines_!.mkString("\n")
         } else "",
         ""

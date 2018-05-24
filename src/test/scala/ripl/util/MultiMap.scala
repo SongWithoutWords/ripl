@@ -1,8 +1,8 @@
-package reduce
+package ripl.util
 
 import org.scalatest._
 
-import reduce.util.MultiMap
+import ripl.util.MultiMap
 
 class TestMultiMap extends FreeSpec with Matchers {
   "A MultiMap" - {

@@ -1,11 +1,11 @@
-package reduce.ast.typed
+package ripl.ast.typed
 
 import enumeratum._
 
-import reduce.ast.common._
-import reduce.ast.{untyped => a0}
-import reduce.ReduceM
-import reduce.util.MultiMap
+import ripl.ast.common._
+import ripl.ast.{untyped => a0}
+import ripl.reduce.ReduceM
+import ripl.util.MultiMap
 
 // I feel like I need to work on my hierarchy a little bit:
 // what if everything was a node, we got rid of units, and

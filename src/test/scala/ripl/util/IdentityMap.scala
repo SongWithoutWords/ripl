@@ -1,9 +1,9 @@
-package reduce
+package ripl.util
 
 import org.scalatest._
 
-import ast.common._
-import ast.untyped._
+import ripl.ast.common._
+import ripl.ast.untyped._
 
 class TestIdentityMap extends FreeSpec with Matchers {
   "An IdentityMap" - {

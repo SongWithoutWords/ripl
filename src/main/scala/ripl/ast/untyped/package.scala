@@ -1,7 +1,7 @@
-package reduce.ast
+package ripl.ast
 
-import reduce.ast.untyped._
-import reduce.util.MultiMap
+import ripl.ast.untyped._
+import ripl.util.MultiMap
 
 package object untyped {
   type Ast = Nodes

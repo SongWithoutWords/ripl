@@ -1,6 +1,6 @@
-package reduce.ast.untyped
+package ripl.ast.untyped
 
-import reduce.util.MultiMap
+import ripl.util.MultiMap
 
 sealed trait Node
 sealed trait Exp extends Node

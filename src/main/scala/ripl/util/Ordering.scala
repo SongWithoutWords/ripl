@@ -1,4 +1,4 @@
-package reduce.util
+package ripl.util
 
 case object Ordering {
   def apply(a: Int, b: Int): Ordering = {

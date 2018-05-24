@@ -1,4 +1,4 @@
-package reduce.util
+package ripl.util
 
 object PrettyPrint
 {

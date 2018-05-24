@@ -1,4 +1,4 @@
-package reduce
+package ripl.util
 
 import scala.collection.mutable.HashMap
 

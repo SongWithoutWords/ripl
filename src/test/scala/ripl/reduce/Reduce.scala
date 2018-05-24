@@ -1,16 +1,16 @@
-package reduce
+package ripl.reduce
 
 import scala.language.implicitConversions
 
 import org.scalatest._
 
-import util.{MultiMap => Multi}
+import ripl.util.{MultiMap => Multi}
 
-import reduce.ast.common._
-import reduce.ast.common.ImplicitConversions._
-import reduce.ast.{untyped => a0, typed => a1}
+import ripl.ast.common._
+import ripl.ast.common.ImplicitConversions._
+import ripl.ast.{untyped => a0, typed => a1}
 
-import CustomMatchers.matchAst
+import ripl.reduce.CustomMatchers.matchAst
 
 class TestReduce extends FreeSpec with Matchers {
 

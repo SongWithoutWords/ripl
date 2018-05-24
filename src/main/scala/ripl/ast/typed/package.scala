@@ -1,7 +1,7 @@
-package reduce.ast
+package ripl.ast
 
-import reduce.ast.typed._
-import reduce.util.MultiMap
+import ripl.ast.typed._
+import ripl.util.MultiMap
 
 package object typed {
   type Nodes = MultiMap[String, Node]

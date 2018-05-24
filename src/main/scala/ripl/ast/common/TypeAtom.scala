@@ -1,6 +1,6 @@
-package reduce.ast.common
+package ripl.ast.common
 
-import reduce.ast.{untyped => a0, typed => a1}
+import ripl.ast.{untyped => a0, typed => a1}
 
 
 sealed trait TypeAtom extends a0.Type with a1.Type
