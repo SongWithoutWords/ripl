@@ -111,7 +111,16 @@ class TestParser extends FreeSpec with Matchers {
         }
       }
       "floating point literals" - {
+        "0.0" in {
+          test("0.0")(VFlt(0.0f))
 
+        }
+        "4.037" in {
+          test("4.037")(VFlt(4.037f))
+        }
+        "0.019" in {
+          test("0.019")(VFlt(0.019f))
+        }
       }
       "bracketed expressions" - {
 
