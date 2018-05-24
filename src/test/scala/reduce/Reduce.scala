@@ -390,47 +390,87 @@ class TestReduce extends FreeSpec with Matchers {
     }
 
     "can be defined recursively" - {
-      "with explicit return type" - {
-        "fact(Int n) -> Int => if n <= 1 then 1 else n * fact(n - 1)" in {
-
-          val _fact = a0.Fun(a0.Param("n", TInt))(Some(TInt))(
-            a0.If(
-              a0.App(
-                a0.Name("<="),
+      "with explicit return type" in {
+        val _fact = a0.Fun(a0.Param("n", TInt))(Some(TInt))(
+          a0.If(
+            a0.App(
+              a0.Name("<="),
+              a0.Name("n"),
+              1),
+            1,
+            a0.App(
+              a0.Name("*"),
                 a0.Name("n"),
-                1),
-              1,
-              a0.App(
-                a0.Name("*"),
-                  a0.Name("n"),
+                a0.App(
+                  a0.Name("fact"),
                   a0.App(
-                    a0.Name("fact"),
-                    a0.App(
-                      a0.Name("-"),
-                      a0.Name("n"),
-                      1)))))
-
-          val fact = a1.Fun(a1.Param("n", TInt))(TInt)(
-            a1.If(
-              a1.App(
-                a1.Intrinsic.ILeq,
-                a1.Name("n", a1.Param("n", TInt)),
-                1),
-              1,
-              a1.App(
-                a1.Intrinsic.IMul,
-                a1.Name("n", a1.Param("n", TInt)),
-                a1.App(
-                  a1.Name(
-                    "fact",
-                    a1.Cycle(a1.Cycle.Fun(_fact, List(TInt), Some(TInt))::Nil) :: Nil),
-                  a1.App(
-                    a1.Intrinsic.ISub,
-                    a1.Name("n", a1.Param("n", TInt)),
+                    a0.Name("-"),
+                    a0.Name("n"),
                     1)))))
 
-          test("fact" -> _fact)("fact" -> fact)()
-        }
+
+        val cycle = a1.Cycle(a1.Cycle.Fun(_fact, List(TInt), Some(TInt))::Nil)
+
+        val fact = a1.Fun(a1.Param("n", TInt))(TInt)(
+          a1.If(
+            a1.App(
+              a1.Intrinsic.ILeq,
+              a1.Name("n", a1.Param("n", TInt)),
+              1),
+            1,
+            a1.App(
+              a1.Intrinsic.IMul,
+              a1.Name("n", a1.Param("n", TInt)),
+              a1.App(
+                a1.Name("fact", cycle :: Nil),
+                a1.App(
+                  a1.Intrinsic.ISub,
+                  a1.Name("n", a1.Param("n", TInt)),
+                  1)))))
+
+        test("fact" -> _fact)("fact" -> fact)()
+      }
+      "will raise an error without an explicit return type" in {
+        val _fact = a0.Fun(a0.Param("n", TInt))(None)(
+          a0.If(
+            a0.App(
+              a0.Name("<="),
+              a0.Name("n"),
+              1),
+            1,
+            a0.App(
+              a0.Name("*"),
+                a0.Name("n"),
+                a0.App(
+                  a0.Name("fact"),
+                  a0.App(
+                    a0.Name("-"),
+                    a0.Name("n"),
+                    1)))))
+
+        val cycle = a1.Cycle(a1.Cycle.Fun(_fact, List(TInt), None)::Nil)
+
+        val fact = a1.Fun(a1.Param("n", TInt))(TInt)(
+          a1.If(
+            a1.App(
+              a1.Intrinsic.ILeq,
+              a1.Name("n", a1.Param("n", TInt)),
+              1),
+            1,
+            a1.App(
+              a1.Intrinsic.IMul,
+              a1.Name("n", a1.Param("n", TInt)),
+
+              // Application gets replaced with first exp in case of non-applicable type
+              a1.Name("fact", cycle :: Nil))))
+
+        test(
+          "fact" -> _fact
+        )(
+          "fact" -> fact
+        )(
+          RecursiveFunctionLacksExplicitReturnType(cycle)
+        )
       }
     }
   }
