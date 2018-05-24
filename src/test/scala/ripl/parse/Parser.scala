@@ -99,7 +99,13 @@ class TestParser extends FreeSpec with Matchers {
             testName("?!")
           }
         }
+      }
+      "boolean literals" - {
+        "true" in {
+          test("true")(VBln(true))
         }
+        "false" in {
+          test("false")(VBln(false))
         }
       }
       "integer literals" - {
