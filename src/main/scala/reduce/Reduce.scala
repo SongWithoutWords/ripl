@@ -33,6 +33,7 @@ class Reduce(val astIn: a0.Ast) {
     val expType = exp.t
 
     if (expType == requiredType) pure(exp)
+    else if (expType == TError || requiredType == TError) pure(exp)
     else {
       lookupImplicitConversions(expType).collect{
         conversion => conversion.t match {
