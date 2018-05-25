@@ -129,7 +129,16 @@ class TestParser extends FreeSpec with Matchers {
         }
       }
       "bracketed expressions" - {
-
+        "a * (x + b)" in {
+          test("a * (x + b)")(
+            App(
+              Name("*"),
+              Name("a"),
+              App(
+                Name("+"),
+                Name("x"),
+                Name("b"))))
+        }
       }
     }
     "exp1" - {
