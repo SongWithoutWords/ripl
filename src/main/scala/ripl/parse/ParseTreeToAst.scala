@@ -50,6 +50,7 @@ case object ParseTreeToAst {
     case n: riplParser.MultiplyContext => mapMultiplication(n)
     case n: riplParser.BinOpContext => mapBinOp(n)
     case n: riplParser.IfContext => mapIf(n)
+    case n: riplParser.ApplyContext => mapApply(n)
     case n: riplParser.Exp10Context => mapExp0(n.exp0)
   }
 
@@ -79,8 +80,16 @@ case object ParseTreeToAst {
       mapExp1(c.exp1(1)),
       mapExp1(c.exp1(2)))
 
+  def mapApply(c: riplParser.ApplyContext): App =
+    App(
+      mapExp0(c.exp0()),
+      mapExps(c.exps()))
+
   def mapExp2(c: riplParser.Exp2Context): Exp = c match {
     case n: riplParser.Exp21Context => mapExp1(n.exp1)
   }
+
+  def mapExps(c: riplParser.ExpsContext): List[Exp] =
+    scala.collection.JavaConverters.asScalaBuffer(c.exp2()).map(mapExp2).toList
 }
 
