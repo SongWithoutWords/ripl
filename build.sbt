@@ -11,6 +11,10 @@ lazy val root = (project in file(".")).
     libraryDependencies ++= Seq(
       scalaTest % Test,
       enumeratum
-
     )
   )
+
+enablePlugins(Antlr4Plugin)
+antlr4GenListener in Antlr4 := false
+antlr4GenVisitor in Antlr4 := false
+

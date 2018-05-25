@@ -13,9 +13,9 @@ import ripl.util.PrettyPrint
 
 object CustomMatchers {
 
-  class AstMatcher(expected: Product) extends Matcher[Product] {
+  class AstMatcher(expected: Any) extends Matcher[Any] {
 
-    def apply(result: Product) = {
+    def apply(result: Any) = {
       val success = result == expected;
 
       val expectedPath = Files.createTempFile("ast", "expected")
@@ -54,6 +54,6 @@ object CustomMatchers {
     }
   }
 
-  def matchAst(expected: Product) = new AstMatcher(expected)
+  def matchAst(expected: Any) = new AstMatcher(expected)
 }
 
