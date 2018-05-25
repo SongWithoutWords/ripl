@@ -12,7 +12,7 @@ case object Parser {
     val tokens = new CommonTokenStream(lexer)
     val parser = new riplParser(tokens)
 
-    ParseTreeToAst(parser.exp1())
+    ParseTreeToAst(parser.exp2())
   }
 }
 
