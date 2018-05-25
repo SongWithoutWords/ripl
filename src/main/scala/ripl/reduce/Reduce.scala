@@ -181,6 +181,8 @@ class Reduce(val astIn: a0.Ast) {
   // }
 
   def mapNodeWithoutCycleDetection(n: a0.Node) = n match {
+    case _t: a0.Type => mapType(_t)
+
     case _e: a0.Exp => mapExp(KAny, _e)
 
     case a0.Namespace(_nodes) =>
@@ -189,8 +191,6 @@ class Reduce(val astIn: a0.Ast) {
       nodes.map.view.force
       popScope()
       List(pure(a1.Namespace(nodes)))
-
-    case _t: a0.Type => mapType(_t)
   }
 
   def mapNode(kind: Kind, n: a0.Node): List[ReduceM[a1.Node]] =
