@@ -146,7 +146,17 @@ class TestParser extends FreeSpec with Matchers {
         "4 + 5" in {
           test("4 + 5")(App(Name("+"), VInt(4), VInt(5)))
         }
-        "a * x + b" in {
+        "1 + 2 + 3 parsed as (1 + 2) + 3" in {
+          test("1 + 2 + 3")(
+            App(
+              Name("+"),
+              App(
+                Name("+"),
+                VInt(1),
+                VInt(2)),
+              VInt(3)))
+        }
+        "a * x + b parsed as (a * x) + b" in {
           test("a * x + b")(
             App(
               Name("+"),
