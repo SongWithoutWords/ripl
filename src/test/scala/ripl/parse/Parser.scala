@@ -132,6 +132,26 @@ class TestParser extends FreeSpec with Matchers {
 
       }
     }
+    "exp1" - {
+      "binary operations" - {
+        "4 + 5" in {
+          test("4 + 5")(App(Name("+"), VInt(4), VInt(5)))
+        }
+        "a * x + b" in {
+          test("a * x + b")(
+            App(
+              Name("+"),
+              App(
+                Name("*"),
+                Name("a"),
+                Name("x")),
+              Name("b")))
+
+        }
+
+      }
+    }
+
   }
 }
 
