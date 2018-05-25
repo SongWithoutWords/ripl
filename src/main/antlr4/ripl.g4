@@ -80,9 +80,13 @@ Ampersand
     : '&';
 LessThan
     : '<';
+Equal
+    : '=';
 GreaterThan
     : '>';
-Equal
+At
+    : '@';
+EqualEqual
     : '==';
 NotEqual
     : '!=';
