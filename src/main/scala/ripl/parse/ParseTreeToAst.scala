@@ -20,6 +20,12 @@ case object ParseTreeToAst {
     case n: riplParser.IntContext => mapInt(n)
     case n: riplParser.FltContext => mapFlt(n)
     case n: riplParser.BracketExpContext => mapBracketExp(n)
+
+    case n: riplParser.PlusContext => Name("+")
+    case n: riplParser.MinusContext => Name("-")
+    case n: riplParser.StarContext => Name("*")
+    case n: riplParser.SlashContext => Name("/")
+    case n: riplParser.PercentContext => Name("%")
   }
 
   def mapName(c: riplParser.NameContext): Name

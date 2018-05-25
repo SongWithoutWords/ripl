@@ -114,7 +114,15 @@ exp0
     | VBln              #bln
     | VInt              #int
     | VFlt              #flt
+
     | '(' exp2 ')'      #bracketExp
+
+    // Recover names of operator tokens to enable reference outside of binops
+    | Plus              #plus
+    | Minus             #minus
+    | Star              #star
+    | Slash             #slash
+    | Percent           #percent
     ;
 
 exp1
