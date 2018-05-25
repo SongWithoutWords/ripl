@@ -110,7 +110,6 @@ Name
 
 // grammar
 exp0
-// : LParen exp1 RParen
     : Name
         #name
     | VBln
