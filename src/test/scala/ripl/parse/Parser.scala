@@ -149,6 +149,24 @@ class TestParser extends FreeSpec with Matchers {
         "-x" in {
           test("-x")(App(Name("-"), Name("x")))
         }
+        "-a + b" in {
+          test("-a + b")(
+            App(
+              Name("+"),
+              App(
+                Name("-"),
+                Name("a")),
+              Name("b")))
+        }
+        "a + -b" in {
+          test("a + -b")(
+            App(
+              Name("+"),
+              Name("a"),
+              App(
+                Name("-"),
+                Name("b"))))
+        }
       }
       "binary operations" - {
         "4 + 5" in {
