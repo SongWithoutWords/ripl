@@ -216,6 +216,46 @@ class TestParser extends FreeSpec with Matchers {
                 Name("b"))))
         }
       }
+      "function types" - {
+        "Int -> Int" in {
+          test("Int -> Int")(
+            TFun(List(Name("Int")), Name("Int"))
+          )
+        }
+        "(Int) -> Int" in {
+          test("(Int) -> Int")(
+            TFun(List(Name("Int")), Name("Int"))
+          )
+        }
+        "(Int, Int) -> Bln" in {
+          test("(Int, Int) -> Bln")(
+            TFun(List(Name("Int"), Name("Int")), Name("Bln"))
+          )
+        }
+        "Flt -> Int -> Bln" in {
+          test("Flt -> Int -> Bln")(
+            TFun(
+              List(
+                Name("Flt")),
+              TFun(
+                List(
+                  Name("Int")),
+                Name("Bln")
+              )))
+        }
+        "(Int, Int) -> Int -> Int" in {
+          test("(Int, Int) -> Int -> Int")(
+            TFun(
+              List(
+                Name("Int"),
+                Name("Int")),
+              TFun(
+                List(
+                  Name("Int")),
+                Name("Int")
+              )))
+        }
+      }
       "if expressions" - {
         "if a then b else c" in {
           test("if a then b else c")(
