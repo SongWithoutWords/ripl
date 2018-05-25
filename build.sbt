@@ -16,5 +16,5 @@ lazy val root = (project in file(".")).
 
 enablePlugins(Antlr4Plugin)
 antlr4GenListener in Antlr4 := false
-antlr4GenVisitor in Antlr4 := true
+antlr4GenVisitor in Antlr4 := false
 
