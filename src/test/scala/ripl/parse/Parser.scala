@@ -146,9 +146,7 @@ class TestParser extends FreeSpec with Matchers {
                 Name("a"),
                 Name("x")),
               Name("b")))
-
         }
-
       }
     }
 
