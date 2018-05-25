@@ -11,6 +11,7 @@ case object ParseTreeToAst {
   def apply(context: ParserRuleContext): Node = context match {
     case c: riplParser.Exp0Context => mapExp0(c)
     case c: riplParser.Exp1Context => mapExp1(c)
+    case c: riplParser.Exp2Context => mapExp2(c)
   }
 
   def mapExp0(c: riplParser.Exp0Context): Exp = c match {
@@ -48,5 +49,9 @@ case object ParseTreeToAst {
     App(Name("*"),
       mapExp1(c.exp1(0)),
       mapExp1(c.exp1(1)))
+
+  def mapExp2(c: riplParser.Exp2Context): Exp = c match {
+    case n: riplParser.Exp21Context => mapExp1(n.exp1)
+  }
 }
 
