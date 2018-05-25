@@ -45,10 +45,15 @@ case object ParseTreeToAst {
 
 
   def mapExp1(c: riplParser.Exp1Context): Exp = c match {
+    case n: riplParser.NegateContext => mapNegate(n)
     case n: riplParser.AdditionContext => mapAddition(n)
     case n: riplParser.MultiplicationContext => mapMultiplication(n)
     case n: riplParser.Exp10Context => mapExp0(n.exp0)
   }
+
+  def mapNegate(c: riplParser.NegateContext): App =
+    App(Name("-"),
+      mapExp1(c.exp1()))
 
   def mapAddition(c: riplParser.AdditionContext): App =
     App(Name("+"),

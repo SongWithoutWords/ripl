@@ -126,7 +126,10 @@ exp0
     ;
 
 exp1
-    : exp1 '*' exp1
+    : '-' exp1
+        #negate
+
+    | exp1 '*' exp1
         #multiplication
 
     | exp1 '+' exp1
