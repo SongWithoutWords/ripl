@@ -218,6 +218,17 @@ class TestParser extends FreeSpec with Matchers {
             If(Name("a"), Name("b"), Name("c"))
           )
         }
+        "if a then b else if c then d else e" in {
+          test("if a then b else c")(
+            If(
+              Name("a"),
+              Name("b"),
+              If(
+                Name("c"),
+                Name("d"),
+                Name("e")))
+          )
+        }
         "if n <= 1 then 1 else n * fact(n - 1)" in {
           test("if n <= 1 then 1 else n * fact(n - 1)")(
             If(
