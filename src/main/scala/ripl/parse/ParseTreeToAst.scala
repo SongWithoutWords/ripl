@@ -19,6 +19,7 @@ case object ParseTreeToAst {
     case n: riplParser.BlnContext => mapBln(n)
     case n: riplParser.IntContext => mapInt(n)
     case n: riplParser.FltContext => mapFlt(n)
+    case n: riplParser.BracketExpContext => mapBracketExp(n)
   }
 
   def mapName(c: riplParser.NameContext): Name
@@ -32,6 +33,9 @@ case object ParseTreeToAst {
 
   def mapFlt(c: riplParser.FltContext): VFlt
     = VFlt(c.getText.toFloat)
+
+  def mapBracketExp(c: riplParser.BracketExpContext): Exp
+    = mapExp2(c.exp2())
 
 
   def mapExp1(c: riplParser.Exp1Context): Exp = c match {
