@@ -48,6 +48,8 @@ case object ParseTreeToAst {
     case n: riplParser.NegateContext => mapNegate(n)
     case n: riplParser.AdditionContext => mapAddition(n)
     case n: riplParser.MultiplicationContext => mapMultiplication(n)
+    case n: riplParser.BinOpContext => mapBinOp(n)
+    case n: riplParser.IfExpContext => mapIf(n)
     case n: riplParser.Exp10Context => mapExp0(n.exp0)
   }
 
@@ -64,6 +66,18 @@ case object ParseTreeToAst {
     App(Name("*"),
       mapExp1(c.exp1(0)),
       mapExp1(c.exp1(1)))
+
+  def mapBinOp(c: riplParser.BinOpContext): App =
+    App(
+      mapExp0(c.exp0()),
+      mapExp1(c.exp1(0)),
+      mapExp1(c.exp1(1)))
+
+  def mapIf(c: riplParser.IfExpContext): If =
+    If(
+      mapExp1(c.exp1(0)),
+      mapExp1(c.exp1(1)),
+      mapExp1(c.exp1(2)))
 
   def mapExp2(c: riplParser.Exp2Context): Exp = c match {
     case n: riplParser.Exp21Context => mapExp1(n.exp1)
