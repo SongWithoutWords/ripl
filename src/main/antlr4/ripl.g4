@@ -130,25 +130,25 @@ exp1
         #negate
 
     | exp1 '*' exp1
-        #multiplication
+        #multiply
 
     | exp1 '+' exp1
-        #addition
+        #add
 
     | exp1 exp0 exp1
         #binOp
 
     | If exp1 Then exp1 Else exp1
-        #ifExp
+        #if
 
     | '(' exps? ')' '->' exp0
         #funType
 
     | exp0 '(' exps? ')'
-        #application
+        #apply
 
     | exp0 '.' Name
-        #selection
+        #select
 
     | exp0
         #exp10
@@ -156,7 +156,7 @@ exp1
 
 exp2
     : exp1 '=' exp1
-        #assignment
+        #assign
 
     | exp1
         #exp21
