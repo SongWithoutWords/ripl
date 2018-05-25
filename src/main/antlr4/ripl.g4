@@ -28,16 +28,16 @@ fragment OpChar
     | '*'
     | '+'
     | '-'
-    // | '.' // I don't think a dot can be used unambiguously
+    // | '.' // Not sure it can be used without ambiguity
     | '/'
     | ':'
     | '<'
     | '='
     | '>'
     | '?'
-    | '@'
+    // | '@' // Not sure it can be used without ambiguity
     | '^'
-    // | '~' // I don't think a tilda can be used unambiguously
+    // | '~' // Not sure it can be used without ambiguity
     ;
 
 
