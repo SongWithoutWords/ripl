@@ -141,10 +141,10 @@ exp1
     | If exp1 Then exp1 Else exp1
         #ifExp
 
-    | '('exp1? (',' exp1)* ')' '->' exp0
+    | '(' exps? ')' '->' exp0
         #funType
 
-    | exp0 '('exp1? (',' exp1)* ')'
+    | exp0 '(' exps? ')'
         #application
 
     | exp0 '.' Name
@@ -160,5 +160,9 @@ exp2
 
     | exp1
         #exp21
+    ;
+
+exps
+    : exp2 (',' exp2)*
     ;
 
