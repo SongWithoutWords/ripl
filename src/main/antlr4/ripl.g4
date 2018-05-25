@@ -147,7 +147,7 @@ exp1
     | exp1 exp0 exp1
         #binOp
 
-    | '(' exps? ')' '->' exp0
+    | funTypeParams '->' exp1
         #funType
 
     | exp0 '(' exps? ')'
@@ -169,6 +169,13 @@ exp2
 
     | exp1
         #exp21
+    ;
+
+funTypeParams
+    : exp0
+        #funTypeParamExp
+    | '(' exps ')'
+        #funTypeParamExps
     ;
 
 exps
