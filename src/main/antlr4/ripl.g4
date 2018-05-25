@@ -117,6 +117,8 @@ exp0
 
     | '(' exp2 ')'      #bracketExp
 
+    | '@'               #impure
+
     // Recover names of operator tokens to enable reference outside of binops
     | Plus              #plus
     | Minus             #minus
@@ -126,7 +128,10 @@ exp0
     ;
 
 exp1
-    : '-' exp1
+    : '~' exp1
+        #mutable
+
+    | '-' exp1
         #negate
 
     | exp1 '*' exp1
