@@ -52,9 +52,6 @@ FatArrow
 
 
 // tokens with data
-Name
-    : [a-z]+;
-
 VInt
     : '0' | [1-9][0-9]*;
 
@@ -64,6 +61,11 @@ VFlt
 VBln
     : 'true'
     | 'false';
+
+Name
+    : LetterOrUnderscore LetterOrUnderscoreOrDigit*
+    | OpChar+
+    ;
 
 // grammar
 exp
