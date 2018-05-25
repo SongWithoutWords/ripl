@@ -229,7 +229,11 @@ class TestParser extends FreeSpec with Matchers {
         }
         "(Int, Int) -> Bln" in {
           test("(Int, Int) -> Bln")(
-            TFun(List(Name("Int"), Name("Int")), Name("Bln"))
+            TFun(
+              List(
+                Name("Int"),
+                Name("Int")),
+              Name("Bln"))
           )
         }
         "Flt -> Int -> Bln" in {
