@@ -10,8 +10,10 @@ import ripl.reduce.CustomMatchers.matchAst
 
 class TestParser extends FreeSpec with Matchers {
 
-  def test(input: String)(out: Node): Unit = Parser(input) should matchAst(out)
-  def testName(input: String): Unit = Parser(input) should matchAst(Name(input))
+  def test(input: String)(out: Node): Unit
+    = Parse.exp(input) should matchAst(out)
+  def testName(input: String): Unit
+    = Parse.exp(input) should matchAst(Name(input))
 
   "expressions" - {
     "exp0" - {
