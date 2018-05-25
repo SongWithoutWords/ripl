@@ -110,20 +110,11 @@ Name
 
 // grammar
 exp0
-    : Name
-        #name
-
-    | VBln
-        #bln
-
-    | VInt
-        #int
-
-    | VFlt
-        #flt
-
-    | '(' exp2 ')'
-        #bracketExp
+    : Name              #name
+    | VBln              #bln
+    | VInt              #int
+    | VFlt              #flt
+    | '(' exp2 ')'      #bracketExp
     ;
 
 exp1
