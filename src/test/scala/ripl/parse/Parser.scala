@@ -1,4 +1,4 @@
-package ripl.parser
+package ripl.parse
 
 import org.scalatest._
 
