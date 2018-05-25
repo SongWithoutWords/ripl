@@ -135,8 +135,8 @@ exp1
     | exp1 '+' exp1
         #addition
 
-    // | exp1 exp0 exp1
-    //     #binOp
+    | exp1 exp0 exp1
+        #binOp
 
     | If exp0 Then exp0 Else exp0
         #ifExp
