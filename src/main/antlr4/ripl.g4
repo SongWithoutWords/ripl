@@ -138,7 +138,7 @@ exp1
     | exp1 exp0 exp1
         #binOp
 
-    | If exp0 Then exp0 Else exp0
+    | If exp1 Then exp1 Else exp1
         #ifExp
 
     | '('exp1? (',' exp1)* ')' '->' exp0
