@@ -112,12 +112,16 @@ Name
 exp0
     : Name
         #name
+
     | VBln
         #bln
+
     | VInt
         #int
+
     | VFlt
         #flt
+
     | '(' exp2 ')'
         #bracketExp
     ;
@@ -125,6 +129,7 @@ exp0
 exp1
     : exp1 '*' exp1
         #multiplication
+
     | exp1 '+' exp1
         #addition
 
@@ -133,12 +138,16 @@ exp1
 
     | If exp0 Then exp0 Else exp0
         #ifExp
+
     | '('exp1? (',' exp1)* ')' '->' exp0
         #funType
+
     | exp0 '('exp1? (',' exp1)* ')'
         #application
+
     | exp0 '.' Name
         #selection
+
     | exp0
         #exp10
     ;
@@ -146,6 +155,7 @@ exp1
 exp2
     : exp1 '=' exp1
         #assignment
+
     | exp1
         #exp21
     ;
