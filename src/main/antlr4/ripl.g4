@@ -109,39 +109,45 @@ Name
     ;
 
 // grammar
-exp
-    : exp2
-    | exp1
-    | exp0
-    ;
-
-exp2
-    : exp1 '=' exp1
-    ;
-
-exp1
-    : exp0 exp0 exp0
-        #binaryOp
-    | If exp0 Then exp0 Else exp0
-        #ifExp
-    | '('exp1? (',' exp1)* ')' '->' exp0
-        #functionType
-    | exp0 '('exp1? (',' exp1)* ')'
-        #application
-    | exp0 '.' Name
-        #selection
-    ;
-
 exp0
-    // : LParen exp1 RParen
+// : LParen exp1 RParen
     : Name
         #name
+    | VBln
+        #bln
     | VInt
         #int
     | VFlt
         #flt
-    | '(' exp ')'
+    | '(' exp2 ')'
         #bracketExp
     ;
 
+exp1
+    : exp1 '*' exp1
+        #multiplication
+    | exp1 '+' exp1
+        #addition
+
+    // | exp1 exp0 exp1
+    //     #binOp
+
+    | If exp0 Then exp0 Else exp0
+        #ifExp
+    | '('exp1? (',' exp1)* ')' '->' exp0
+        #funType
+    | exp0 '('exp1? (',' exp1)* ')'
+        #application
+    | exp0 '.' Name
+        #selection
+    | exp0
+        #exp10
+    ;
+
+exp2
+    : exp1 '=' exp1
+        #assignment
+    | exp1
+        #exp21
+    ;
 
