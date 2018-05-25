@@ -147,9 +147,6 @@ exp1
     | exp1 exp0 exp1
         #binOp
 
-    | If exp1 Then exp1 Else exp1
-        #if
-
     | '(' exps? ')' '->' exp0
         #funType
 
@@ -164,7 +161,10 @@ exp1
     ;
 
 exp2
-    : exp1 '=' exp1
+    : If exp1 Then exp1 Else exp2
+        #if
+
+    | exp1 '=' exp1
         #assign
 
     | exp1
