@@ -166,6 +166,16 @@ class TestParser extends FreeSpec with Matchers {
                 Name("x")),
               Name("b")))
         }
+        "a + x * b parsed as a + (x * b)" in {
+          test("a + x * b")(
+            App(
+              Name("+"),
+              Name("a"),
+              App(
+                Name("*"),
+                Name("x"),
+                Name("b"))))
+        }
       }
     }
 
