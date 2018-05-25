@@ -8,7 +8,7 @@ object Namespace {
   def apply(nodes: (String, Node)*): Namespace = Namespace(MultiMap(nodes: _*))
 }
 case class Namespace(nodes: Nodes) extends Node
-trait Type extends Node
+trait Type extends Exp
 
 // Expressions
 object App {
