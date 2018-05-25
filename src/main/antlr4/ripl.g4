@@ -2,6 +2,47 @@ grammar ripl;
 
 @header { package ripl.parser.antlr; }
 
+
+// fragments
+fragment Underscore
+    : '_';
+fragment Upper
+    : 'A' .. 'Z';
+fragment Lower
+    : 'a' .. 'z';
+fragment Letter
+    : Upper | Lower;
+fragment LetterOrUnderscore
+    : Letter | Underscore;
+fragment Digit
+    : '0' .. '9';
+fragment LetterOrUnderscoreOrDigit
+    : LetterOrUnderscore | Digit;
+
+fragment OpChar
+    : '!'
+    | '#'
+    | '$'
+    | '%'
+    | '&'
+    | '*'
+    | '+'
+    | '-'
+    // | '.' // I don't think a dot can be used unambiguously
+    | '/'
+    | ':'
+    | '<'
+    | '='
+    | '>'
+    | '?'
+    | '@'
+    | '^'
+    // | '~' // I don't think a tilda can be used unambiguously
+    ;
+
+
+// Tokens
+
 // keywords
 If
     : 'if';
