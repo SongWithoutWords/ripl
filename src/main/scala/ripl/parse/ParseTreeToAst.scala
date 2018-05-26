@@ -50,6 +50,7 @@ case object ParseTreeToAst {
     case n: riplParser.MultiplyContext => mapMultiplication(n)
     case n: riplParser.BinOpContext => mapBinOp(n)
     case n: riplParser.FunTypeContext => mapFunType(n)
+    case n: riplParser.FunContext => mapFun(n)
     case n: riplParser.ApplyContext => mapApply(n)
     case n: riplParser.Exp10Context => mapExp0(n.exp0)
   }
@@ -74,10 +75,17 @@ case object ParseTreeToAst {
       mapExp1(c.exp1(0)),
       mapExp1(c.exp1(1)))
 
-  def mapFunType(c: riplParser.FunTypeContext): Exp =
+  def mapFunType(c: riplParser.FunTypeContext): TFun =
     TFun(
       mapFunParamTypes(c.funTypeParams()),
       mapExp1(c.exp1()))
+
+  def mapFun(c: riplParser.FunContext): Fun = c.exp1().size match {
+    case 1 =>
+      Fun(mapParams(c.params()), None, mapExp1(c.exp1(0)))
+    case 2 =>
+      Fun(mapParams(c.params()), Some(mapExp1(c.exp1(0))), mapExp1(c.exp1(1)))
+  }
 
   def mapIf(c: riplParser.IfContext): If =
     If(
@@ -103,5 +111,19 @@ case object ParseTreeToAst {
       case c: riplParser.FunTypeParamExpContext => List(mapExp0(c.exp0()))
       case c: riplParser.FunTypeParamExpsContext => mapExps(c.exps())
     }
+
+  def mapParams(c: riplParser.ParamsContext): List[Param] = c match {
+    case null => Nil
+    case params => scala.collection.JavaConverters.asScalaBuffer(c.param())
+      .map(mapParam)
+      .toList
+  }
+
+  def mapParam(c: riplParser.ParamContext): Param = c match {
+    case c: riplParser.ParamDoubleContext =>
+      Param(
+        mapExp0(c.exp0(1)) match { case Name(n) => n; case _ => "ExpectedName" },
+        mapExp0(c.exp0(0)))
+  }
 }
 

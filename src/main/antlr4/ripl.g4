@@ -150,6 +150,9 @@ exp1
     | funTypeParams '->' exp1
         #funType
 
+    | '(' params? ')' ('->' exp1)? '=>' exp1
+        #fun
+
     | exp0 '(' exps? ')'
         #apply
 
@@ -180,5 +183,16 @@ funTypeParams
 
 exps
     : exp2 (',' exp2)*
+    ;
+
+params
+    : param (',' param)*
+    ;
+
+param
+    // : exp0
+        // #paramSingle // will be used for purity, e.g. getInput(~@) -> String
+    : exp0 exp0
+        #paramDouble
     ;
 
