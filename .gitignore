@@ -18,4 +18,7 @@ project/plugins/project/
 *.class
 *.log
 
+### Ensime ###
+.ensime*
+
 # End of https://www.gitignore.io/api/sbt,scala
