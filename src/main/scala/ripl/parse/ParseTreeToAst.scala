@@ -1,5 +1,7 @@
 package ripl.parse
 
+import scala.collection.JavaConverters.asScalaBuffer
+
 import org.antlr.v4.runtime.ParserRuleContext
 
 import ripl.parser.antlr.{riplParser => rp}
@@ -57,7 +59,7 @@ case object ParseTreeToAst {
 
     case c: rp.FunContext =>
       Fun(
-        scala.collection.JavaConverters.asScalaBuffer(c.params)
+        asScalaBuffer(c.params)
           .map(mapParam)
           .toList,
         c.returnType match {
@@ -85,7 +87,7 @@ case object ParseTreeToAst {
   }
 
   def mapExps(c: rp.ExpsContext): List[Exp] =
-    scala.collection.JavaConverters.asScalaBuffer(c.exp2()).map(mapExp2).toList
+    asScalaBuffer(c.exp2()).map(mapExp2).toList
 
   def mapFunParamTypes(c: rp.FunTypeParamsContext): List[Exp] =
     c match {
