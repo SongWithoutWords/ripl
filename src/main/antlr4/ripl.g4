@@ -150,7 +150,7 @@ exp1
     | paramTypes=funTypeParams '->' returnType=exp1
         #funType
 
-    | '(' params? ')' ('->' exp1)? '=>' exp1
+    | '(' ( params+=param (',' params+=param)* )? ')' ('->' exp1)? '=>' exp1
         #fun
 
     | f=exp0 '(' args=exps? ')'
@@ -183,10 +183,6 @@ funTypeParams
 
 exps
     : exp2 (',' exp2)*
-    ;
-
-params
-    : param (',' param)*
     ;
 
 param
