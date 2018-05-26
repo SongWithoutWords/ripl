@@ -15,92 +15,78 @@ case object ParseTreeToAst {
   }
 
   def mapExp0(c: rp.Exp0Context): Exp = c match {
-    case n: rp.NameContext => mapName(n)
-    case n: rp.BlnContext => mapBln(n)
-    case n: rp.IntContext => mapInt(n)
-    case n: rp.FltContext => mapFlt(n)
-    case n: rp.BracketExpContext => mapBracketExp(n)
+    case c: rp.NameContext => Name(c.Name().getText)
+    case c: rp.BlnContext => VBln(c.VBln().getText.toBoolean)
+    case c: rp.IntContext => VInt(c.VInt().getText.toInt)
+    case c: rp.FltContext => VFlt(c.getText.toFloat)
+    case c: rp.BracketExpContext => mapExp2(c.exp2())
 
-    case n: rp.PlusContext => Name("+")
-    case n: rp.MinusContext => Name("-")
-    case n: rp.StarContext => Name("*")
-    case n: rp.SlashContext => Name("/")
-    case n: rp.PercentContext => Name("%")
+    case c: rp.PlusContext => Name("+")
+    case c: rp.MinusContext => Name("-")
+    case c: rp.StarContext => Name("*")
+    case c: rp.SlashContext => Name("/")
+    case c: rp.PercentContext => Name("%")
   }
-
-  def mapName(c: rp.NameContext): Name
-    = Name(c.Name().getText)
-
-  def mapBln(c: rp.BlnContext): VBln
-    = VBln(c.VBln().getText.toBoolean)
-
-  def mapInt(c: rp.IntContext): VInt
-    = VInt(c.VInt().getText.toInt)
-
-  def mapFlt(c: rp.FltContext): VFlt
-    = VFlt(c.getText.toFloat)
-
-  def mapBracketExp(c: rp.BracketExpContext): Exp
-    = mapExp2(c.exp2())
-
 
   def mapExp1(c: rp.Exp1Context): Exp = c match {
-    case n: rp.NegateContext => mapNegate(n)
-    case n: rp.AddContext => mapAddition(n)
-    case n: rp.MultiplyContext => mapMultiplication(n)
-    case n: rp.BinOpContext => mapBinOp(n)
-    case n: rp.FunTypeContext => mapFunType(n)
-    case n: rp.FunContext => mapFun(n)
-    case n: rp.ApplyContext => mapApply(n)
-    case n: rp.Exp10Context => mapExp0(n.exp0)
+
+    case c: rp.NegateContext =>
+      App(
+        Name("-"),
+        mapExp1(c.exp1()))
+
+    case c: rp.AddContext =>
+      App(
+        Name("+"),
+        mapExp1(c.exp1(0)),
+        mapExp1(c.exp1(1)))
+
+    case c: rp.MultiplyContext =>
+      App(
+        Name("*"),
+        mapExp1(c.exp1(0)),
+        mapExp1(c.exp1(1)))
+
+    case c: rp.BinOpContext =>
+      App(
+        mapExp0(c.exp0()),
+        mapExp1(c.exp1(0)),
+        mapExp1(c.exp1(1)))
+
+    case c: rp.FunTypeContext =>
+      TFun(
+        mapFunParamTypes(c.funTypeParams()),
+        mapExp1(c.exp1()))
+
+    case c: rp.FunContext => c.exp1().size match {
+      case 1 =>
+        Fun(
+          mapParams(c.params()),
+          None,
+          mapExp1(c.exp1(0)))
+      case 2 =>
+        Fun(
+          mapParams(c.params()),
+          Some(mapExp1(c.exp1(0))),
+          mapExp1(c.exp1(1)))
+    }
+
+    case c: rp.ApplyContext =>
+      App(
+        mapExp0(c.exp0()),
+        mapExps(c.exps()))
+
+    case n: rp.Exp10Context =>
+      mapExp0(n.exp0)
   }
-
-  def mapNegate(c: rp.NegateContext): App =
-    App(Name("-"),
-      mapExp1(c.exp1()))
-
-  def mapAddition(c: rp.AddContext): App =
-    App(Name("+"),
-      mapExp1(c.exp1(0)),
-      mapExp1(c.exp1(1)))
-
-  def mapMultiplication(c: rp.MultiplyContext): App =
-    App(Name("*"),
-      mapExp1(c.exp1(0)),
-      mapExp1(c.exp1(1)))
-
-  def mapBinOp(c: rp.BinOpContext): App =
-    App(
-      mapExp0(c.exp0()),
-      mapExp1(c.exp1(0)),
-      mapExp1(c.exp1(1)))
-
-  def mapFunType(c: rp.FunTypeContext): TFun =
-    TFun(
-      mapFunParamTypes(c.funTypeParams()),
-      mapExp1(c.exp1()))
-
-  def mapFun(c: rp.FunContext): Fun = c.exp1().size match {
-    case 1 =>
-      Fun(mapParams(c.params()), None, mapExp1(c.exp1(0)))
-    case 2 =>
-      Fun(mapParams(c.params()), Some(mapExp1(c.exp1(0))), mapExp1(c.exp1(1)))
-  }
-
-  def mapIf(c: rp.IfContext): If =
-    If(
-      mapExp1(c.exp1(0)),
-      mapExp1(c.exp1(1)),
-      mapExp2(c.exp2))
-
-  def mapApply(c: rp.ApplyContext): App =
-    App(
-      mapExp0(c.exp0()),
-      mapExps(c.exps()))
 
   def mapExp2(c: rp.Exp2Context): Exp = c match {
+    case c: rp.IfContext =>
+      If(
+        mapExp1(c.exp1(0)),
+        mapExp1(c.exp1(1)),
+        mapExp2(c.exp2))
     case n: rp.Exp21Context => mapExp1(n.exp1)
-    case n: rp.IfContext => mapIf(n)
   }
 
   def mapExps(c: rp.ExpsContext): List[Exp] =
