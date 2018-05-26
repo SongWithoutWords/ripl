@@ -21,7 +21,7 @@ case object ParseTreeToAst {
     case c: rp.FltContext => VFlt(c.getText.toFloat)
     case c: rp.BracketExpContext => mapExp2(c.exp2())
 
-    // Catch-all for tokens that can be referenced by name
+    // Use operator token text as the names of the operators
     case _ => Name(c.getText())
   }
 
