@@ -55,22 +55,16 @@ case object ParseTreeToAst {
         mapFunParamTypes(c.funTypeParams()),
         mapExp1(c.exp1()))
 
-    case c: rp.FunContext => c.exp1().size match {
-      case 1 =>
-        Fun(
-          scala.collection.JavaConverters.asScalaBuffer(c.params)
-                .map(mapParam)
-                .toList,
-          None,
-          mapExp1(c.exp1(0)))
-      case 2 =>
-        Fun(
-          scala.collection.JavaConverters.asScalaBuffer(c.params)
-                .map(mapParam)
-                .toList,
-          Some(mapExp1(c.exp1(0))),
-          mapExp1(c.exp1(1)))
-    }
+    case c: rp.FunContext =>
+      Fun(
+        scala.collection.JavaConverters.asScalaBuffer(c.params)
+          .map(mapParam)
+          .toList,
+        c.returnType match {
+          case null => None
+          case rt => Some(mapExp1(rt))
+        },
+        mapExp1(c.exp))
 
     case c: rp.ApplyContext =>
       App(
