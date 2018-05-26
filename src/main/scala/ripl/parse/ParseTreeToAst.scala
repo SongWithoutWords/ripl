@@ -19,7 +19,7 @@ case object ParseTreeToAst {
     case c: rp.BlnContext => VBln(c.VBln().getText.toBoolean)
     case c: rp.IntContext => VInt(c.VInt().getText.toInt)
     case c: rp.FltContext => VFlt(c.getText.toFloat)
-    case c: rp.BracketExpContext => mapExp2(c.exp2())
+    case c: rp.BracketExpContext => mapExp2(c.e)
 
     // Use operator token text as the names of the operators
     case _ => Name(c.getText())
@@ -30,25 +30,25 @@ case object ParseTreeToAst {
     case c: rp.NegateContext =>
       App(
         Name("-"),
-        mapExp1(c.exp1()))
+        mapExp1(c.e))
 
     case c: rp.AddContext =>
       App(
         Name("+"),
-        mapExp1(c.exp1(0)),
-        mapExp1(c.exp1(1)))
+        mapExp1(c.e1),
+        mapExp1(c.e2))
 
     case c: rp.MultiplyContext =>
       App(
         Name("*"),
-        mapExp1(c.exp1(0)),
-        mapExp1(c.exp1(1)))
+        mapExp1(c.e1),
+        mapExp1(c.e2))
 
     case c: rp.BinOpContext =>
       App(
-        mapExp0(c.exp0()),
-        mapExp1(c.exp1(0)),
-        mapExp1(c.exp1(1)))
+        mapExp0(c.op),
+        mapExp1(c.e1),
+        mapExp1(c.e2))
 
     case c: rp.FunTypeContext =>
       TFun(
@@ -70,8 +70,8 @@ case object ParseTreeToAst {
 
     case c: rp.ApplyContext =>
       App(
-        mapExp0(c.exp0()),
-        mapExps(c.exps()))
+        mapExp0(c.f),
+        mapExps(c.args))
 
     case n: rp.Exp10Context =>
       mapExp0(n.exp0)
@@ -80,9 +80,9 @@ case object ParseTreeToAst {
   def mapExp2(c: rp.Exp2Context): Exp = c match {
     case c: rp.IfContext =>
       If(
-        mapExp1(c.exp1(0)),
-        mapExp1(c.exp1(1)),
-        mapExp2(c.exp2))
+        mapExp1(c.e1),
+        mapExp1(c.e2),
+        mapExp2(c.e3))
     case n: rp.Exp21Context => mapExp1(n.exp1)
   }
 
