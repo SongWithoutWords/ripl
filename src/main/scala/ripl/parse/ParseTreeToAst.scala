@@ -21,11 +21,8 @@ case object ParseTreeToAst {
     case c: rp.FltContext => VFlt(c.getText.toFloat)
     case c: rp.BracketExpContext => mapExp2(c.exp2())
 
-    case c: rp.PlusContext => Name("+")
-    case c: rp.MinusContext => Name("-")
-    case c: rp.StarContext => Name("*")
-    case c: rp.SlashContext => Name("/")
-    case c: rp.PercentContext => Name("%")
+    // Catch-all for tokens that can be referenced by name
+    case _ => Name(c.getText())
   }
 
   def mapExp1(c: rp.Exp1Context): Exp = c match {
