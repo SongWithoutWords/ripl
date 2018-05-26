@@ -119,7 +119,7 @@ exp0
     | VInt              #int
     | VFlt              #flt
 
-    | '(' exp2 ')'      #bracketExp
+    | '(' e=exp2 ')'    #bracketExp
 
     | '@'               #impure
 
@@ -132,39 +132,42 @@ exp0
     ;
 
 exp1
-    : '~' exp1
+    : '~' e=exp1
         #mutable
 
-    | '-' exp1
+    | '-' e=exp1
         #negate
 
-    | exp1 '*' exp1
+    | e1=exp1 '*' e2=exp1
         #multiply
 
-    | exp1 '+' exp1
+    | e1=exp1 '+' e2=exp1
         #add
 
-    | exp1 exp0 exp1
+    | e1=exp1 op=exp0 e2=exp1
         #binOp
 
-    | funTypeParams '->' exp1
+    | paramTypes=funTypeParams '->' returnType=exp1
         #funType
 
-    | exp0 '(' exps? ')'
+    | '(' ( params+=param (',' params+=param)* )? ')' ('->' returnType=exp1)? '=>' exp=exp1
+        #fun
+
+    | f=exp0 '(' args=exps? ')'
         #apply
 
-    | exp0 '.' Name
+    | e=exp0 '.' name=Name
         #select
 
-    | exp0
+    | e=exp0
         #exp10
     ;
 
 exp2
-    : If exp1 Then exp1 Else exp2
+    : If e1=exp1 Then e2=exp1 Else e3=exp2
         #if
 
-    | exp1 '=' exp1
+    | a=exp1 '=' b=exp1
         #assign
 
     | exp1
@@ -180,5 +183,12 @@ funTypeParams
 
 exps
     : exp2 (',' exp2)*
+    ;
+
+param
+    // : exp0
+        // #paramSingle // will be used for purity, e.g. getInput(~@) -> String
+    : exp0 exp0
+        #paramDouble
     ;
 

@@ -297,6 +297,62 @@ class TestParser extends FreeSpec with Matchers {
 
         }
       }
+      "functions" - {
+        "() => None" in {
+          test("() => None")(
+            Fun()(None)(
+              Name("None")))
+        }
+        "(Int a) => a + 1" in {
+          test("(Int a) => a + 1")(
+            Fun(Param("a", Name("Int")))(None)(
+              App(
+                Name("+"),
+                Name("a"),
+                VInt(1))))
+        }
+        "(Int a) -> Int => a + 1" in {
+          test("(Int a) -> Int => a + 1")(
+            Fun(Param("a", Name("Int")))(Some(Name("Int")))(
+              App(
+                Name("+"),
+                Name("a"),
+                VInt(1))))
+        }
+        "(Int a, Int b) => a + b" in {
+          test("(Int a, Int b) => a + b")(
+            Fun(
+              Param("a", Name("Int")),
+              Param("b", Name("Int")))(
+              None)(
+              App(
+                Name("+"),
+                Name("a"),
+                Name("b"))))
+        }
+        "(Int a, Int b) -> Int => a + b" in {
+          test("(Int a, Int b) -> Int => a + b")(
+            Fun(
+              Param("a", Name("Int")),
+              Param("b", Name("Int")))(
+              Some(Name("Int")))(
+              App(
+                Name("+"),
+                Name("a"),
+                Name("b"))))
+        }
+        "(Int n) => if n <= 1 then 1 else n * fact(n - 1)" in {
+          test("(Int a, Int b) => a + b")(
+            Fun(
+              Param("a", Name("Int")),
+              Param("b", Name("Int")))(
+              None)(
+              App(
+                Name("+"),
+                Name("a"),
+                Name("b"))))
+        }
+      }
     }
 
   }
