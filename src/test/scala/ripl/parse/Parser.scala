@@ -68,6 +68,15 @@ class TestParser extends FreeSpec with Matchers {
         test("4.037")(VFlt(4.037f))
         test("0.019")(VFlt(0.019f))
       }
+      "string literals" - {
+        test("\"hello world!\"")(VStr("hello world!"))
+
+        test("if value then \"true\" else \"false\"")(
+          If(
+            Name("value"),
+            VStr("true"),
+            VStr("false")))
+      }
       "bracketed expressions" - {
         test("a * (x + b)"){
           App(
