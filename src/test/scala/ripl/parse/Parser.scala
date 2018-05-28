@@ -246,6 +246,34 @@ class TestParser extends FreeSpec with Matchers {
                   Name("x")),
                 Name("b")))
           }
+          "a == b and b == c" in {
+            test("a == b and b == c")(
+              App(
+                Name("and"),
+                App(
+                  Name("=="),
+                  Name("a"),
+                  Name("b")),
+                App(
+                  Name("=="),
+                  Name("b"),
+                  Name("c"))))
+          }
+          "a and b or b and not c" in {
+            test("a and b or b and not c")(
+              App(
+                Name("or"),
+                App(
+                  Name("and"),
+                  Name("a"),
+                  Name("b")),
+                App(
+                  Name("and"),
+                  Name("b"),
+                  App(
+                    Name("not"),
+                    Name("c")))))
+          }
         }
       }
       "combined binary and unary operations" - {
