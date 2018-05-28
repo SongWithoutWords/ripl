@@ -139,17 +139,16 @@ exp0
     ;
 
 exp1
-    : '~' e=exp1
-        #mutable
 
-    | '-' e=exp1
-        #negate
 
     | e1=exp1 '*' e2=exp1
         #multiply
 
     | e1=exp1 '+' e2=exp1
         #add
+    : op=('~'|'-'|'not') e=exp1
+        #unaryOp
+
 
     | e1=exp1 op=exp0 e2=exp1
         #binOp

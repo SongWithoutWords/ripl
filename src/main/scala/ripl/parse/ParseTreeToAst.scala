@@ -29,9 +29,9 @@ case object ParseTreeToAst {
 
   def mapExp1(c: rp.Exp1Context): Exp = c match {
 
-    case c: rp.NegateContext =>
+    case c: rp.UnaryOpContext =>
       App(
-        Name("-"),
+        Name(c.op.getText()),
         mapExp1(c.e))
 
     case c: rp.AddContext =>
