@@ -95,6 +95,13 @@ ThinArrow
 FatArrow
     : '=>';
 
+And
+    : 'and';
+Or
+    : 'or';
+Not
+    : 'not';
+
 
 // tokens with data
 VInt
