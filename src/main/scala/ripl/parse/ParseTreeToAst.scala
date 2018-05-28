@@ -34,15 +34,33 @@ case object ParseTreeToAst {
         Name(c.op.getText()),
         mapExp1(c.e))
 
-    case c: rp.AddContext =>
+    case c: rp.BinOpMulDivModContext =>
       App(
-        Name("+"),
+        Name(c.op.getText()),
         mapExp1(c.e1),
         mapExp1(c.e2))
 
-    case c: rp.MultiplyContext =>
+    case c: rp.BinOpAddSubContext =>
       App(
-        Name("*"),
+        Name(c.op.getText()),
+        mapExp1(c.e1),
+        mapExp1(c.e2))
+
+    case c: rp.BinOpCompareContext =>
+      App(
+        Name(c.op.getText()),
+        mapExp1(c.e1),
+        mapExp1(c.e2))
+
+    case c: rp.BinOpAndContext =>
+      App(
+        Name("and"),
+        mapExp1(c.e1),
+        mapExp1(c.e2))
+
+    case c: rp.BinOpOrContext =>
+      App(
+        Name("or"),
         mapExp1(c.e1),
         mapExp1(c.e2))
 
