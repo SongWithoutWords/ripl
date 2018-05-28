@@ -60,6 +60,8 @@ Comma
     : ',';
 Period
     : '.';
+Quote
+    : '"';
 
 // operators
 Tilda
@@ -114,6 +116,10 @@ VBln
     : 'true'
     | 'false';
 
+VStr
+    : '"' .*? '"'
+    ;
+
 Name
     : LetterOrUnderscore LetterOrUnderscoreOrDigit*
     | OpChar+
@@ -125,6 +131,7 @@ exp0
     | VBln              #bln
     | VInt              #int
     | VFlt              #flt
+    | VStr              #str
 
     | '(' e=exp2 ')'    #bracketExp
 
