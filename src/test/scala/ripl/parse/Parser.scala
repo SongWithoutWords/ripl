@@ -274,6 +274,17 @@ class TestParser extends FreeSpec with Matchers {
                     Name("not"),
                     Name("c")))))
           }
+          "character.isHappy and character.isHealthy" in {
+            test("character.isHappy and character.isHealthy")(
+              App(
+                Name("and"),
+                Select(
+                  Name("character"),
+                  "isHappy"),
+                Select(
+                  Name("character"),
+                  "isHealthy")))
+          }
         }
       }
       "combined binary and unary operations" - {
