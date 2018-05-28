@@ -95,6 +95,13 @@ ThinArrow
 FatArrow
     : '=>';
 
+And
+    : 'and';
+Or
+    : 'or';
+Not
+    : 'not';
+
 
 // tokens with data
 VInt
@@ -132,17 +139,30 @@ exp0
     ;
 
 exp1
-    : '~' e=exp1
-        #mutable
 
-    | '-' e=exp1
-        #negate
+    // Left associativity is intuitive for addition, subtraction, multiplication, division
+    // Right associativity is intuitive for list construction and exponentiation
+    // http://kevincantu.org/code/operators.html
 
-    | e1=exp1 '*' e2=exp1
-        #multiply
+    // Another thought: should selection be treated as another operator?
 
-    | e1=exp1 '+' e2=exp1
-        #add
+    : op=('~'|'-'|'not') e=exp1
+        #unaryOp
+
+    | e1=exp1 op=('*'|'/'|'%') e2=exp1
+        #binOpMulDivMod
+
+    | e1=exp1 op=('+'|'-') e2=exp1
+        #binOpAddSub
+
+    | e1=exp1 op=('<'|'<='|'=='|'!='|'>='|'>') e2=exp1
+        #binOpCompare
+
+    | e1=exp1 'and' e2=exp1
+        #binOpAnd
+
+    | e1=exp1 'or' e2=exp1
+        #binOpOr
 
     | e1=exp1 op=exp0 e2=exp1
         #binOp
@@ -156,7 +176,7 @@ exp1
     | f=exp0 '(' args=exps? ')'
         #apply
 
-    | e=exp0 '.' name=Name
+    | e1=exp0 '.' e2=exp0
         #select
 
     | e=exp0

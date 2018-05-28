@@ -29,20 +29,38 @@ case object ParseTreeToAst {
 
   def mapExp1(c: rp.Exp1Context): Exp = c match {
 
-    case c: rp.NegateContext =>
+    case c: rp.UnaryOpContext =>
       App(
-        Name("-"),
+        Name(c.op.getText()),
         mapExp1(c.e))
 
-    case c: rp.AddContext =>
+    case c: rp.BinOpMulDivModContext =>
       App(
-        Name("+"),
+        Name(c.op.getText()),
         mapExp1(c.e1),
         mapExp1(c.e2))
 
-    case c: rp.MultiplyContext =>
+    case c: rp.BinOpAddSubContext =>
       App(
-        Name("*"),
+        Name(c.op.getText()),
+        mapExp1(c.e1),
+        mapExp1(c.e2))
+
+    case c: rp.BinOpCompareContext =>
+      App(
+        Name(c.op.getText()),
+        mapExp1(c.e1),
+        mapExp1(c.e2))
+
+    case c: rp.BinOpAndContext =>
+      App(
+        Name("and"),
+        mapExp1(c.e1),
+        mapExp1(c.e2))
+
+    case c: rp.BinOpOrContext =>
+      App(
+        Name("or"),
         mapExp1(c.e1),
         mapExp1(c.e2))
 
@@ -72,6 +90,11 @@ case object ParseTreeToAst {
       App(
         mapExp0(c.f),
         mapExps(c.args))
+
+    case c: rp.SelectContext =>
+      Select(
+        mapExp0(c.e1),
+        mapExp0(c.e2) match { case Name(n) => n; case _ => "ExpectedName" })
 
     case n: rp.Exp10Context =>
       mapExp0(n.exp0)

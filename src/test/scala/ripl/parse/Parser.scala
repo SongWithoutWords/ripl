@@ -148,43 +148,143 @@ class TestParser extends FreeSpec with Matchers {
         "-7" in {
           test("-7")(App(Name("-"), VInt(7)))
         }
+        "- -7" in {
+          test("- -7")(
+            App(
+              Name("-"),
+              App(
+                Name("-"),
+                VInt(7))))
+        }
         "-x" in {
           test("-x")(App(Name("-"), Name("x")))
+        }
+        "not true" in {
+          test("not true")(App(Name("not"), VBln(true)))
         }
       }
       "binary operations" - {
         "4 + 5" in {
           test("4 + 5")(App(Name("+"), VInt(4), VInt(5)))
         }
-        "1 + 2 + 3 parsed as (1 + 2) + 3" in {
-          test("1 + 2 + 3")(
-            App(
-              Name("+"),
+        "4 - 5" in {
+          test("4 - 5")(App(Name("-"), VInt(4), VInt(5)))
+        }
+        "are left-associative" - {
+          "1 + 2 + 3 => (1 + 2) + 3" in {
+            test("1 + 2 + 3")(
               App(
                 Name("+"),
-                VInt(1),
-                VInt(2)),
-              VInt(3)))
-        }
-        "a * x + b parsed as (a * x) + b" in {
-          test("a * x + b")(
-            App(
-              Name("+"),
+                App(
+                  Name("+"),
+                  VInt(1),
+                  VInt(2)),
+                VInt(3)))
+          }
+          "1 - 2 + 3 => (1 - 2) + 3" in {
+            test("1 - 2 + 3")(
               App(
-                Name("*"),
+                Name("+"),
+                App(
+                  Name("-"),
+                  VInt(1),
+                  VInt(2)),
+                VInt(3)))
+          }
+          "1 + 2 - 3 + 4 => ((1 + 2) - 3) + 4" in {
+            test("1 + 2 - 3 + 4")(
+              App(
+                Name("+"),
+                App(
+                  Name("-"),
+                  App(
+                    Name("+"),
+                    VInt(1),
+                    VInt(2)),
+                  VInt(3)),
+                VInt(4)))
+          }
+        }
+        "are subject to precedence" - {
+          "a * x + b => (a * x) + b" in {
+            test("a * x + b")(
+              App(
+                Name("+"),
+                App(
+                  Name("*"),
+                  Name("a"),
+                  Name("x")),
+                Name("b")))
+          }
+          "a + x * b => a + (x * b)" in {
+            test("a + x * b")(
+              App(
+                Name("+"),
                 Name("a"),
-                Name("x")),
-              Name("b")))
-        }
-        "a + x * b parsed as a + (x * b)" in {
-          test("a + x * b")(
-            App(
-              Name("+"),
-              Name("a"),
+                App(
+                  Name("*"),
+                  Name("x"),
+                  Name("b"))))
+          }
+          "a / x + b => (a / x) + b" in {
+            test("a / x + b")(
               App(
-                Name("*"),
-                Name("x"),
-                Name("b"))))
+                Name("+"),
+                App(
+                  Name("/"),
+                  Name("a"),
+                  Name("x")),
+                Name("b")))
+          }
+          "a % x + b => (a % x) + b" in {
+            test("a % x + b")(
+              App(
+                Name("+"),
+                App(
+                  Name("%"),
+                  Name("a"),
+                  Name("x")),
+                Name("b")))
+          }
+          "a == b and b == c" in {
+            test("a == b and b == c")(
+              App(
+                Name("and"),
+                App(
+                  Name("=="),
+                  Name("a"),
+                  Name("b")),
+                App(
+                  Name("=="),
+                  Name("b"),
+                  Name("c"))))
+          }
+          "a and b or b and not c" in {
+            test("a and b or b and not c")(
+              App(
+                Name("or"),
+                App(
+                  Name("and"),
+                  Name("a"),
+                  Name("b")),
+                App(
+                  Name("and"),
+                  Name("b"),
+                  App(
+                    Name("not"),
+                    Name("c")))))
+          }
+          "character.isHappy and character.isHealthy" in {
+            test("character.isHappy and character.isHealthy")(
+              App(
+                Name("and"),
+                Select(
+                  Name("character"),
+                  "isHappy"),
+                Select(
+                  Name("character"),
+                  "isHealthy")))
+          }
         }
       }
       "combined binary and unary operations" - {
@@ -214,6 +314,19 @@ class TestParser extends FreeSpec with Matchers {
                 Name("+"),
                 Name("a"),
                 Name("b"))))
+        }
+        "character.isHungry and not character.isBusy" in {
+          test("character.isHungry and not character.isBusy")(
+            App(
+              Name("and"),
+              Select(
+                Name("character"),
+                "isHungry"),
+              App(
+                Name("not"),
+                Select(
+                  Name("character"),
+                  "isBusy"))))
         }
       }
       "function types" - {
