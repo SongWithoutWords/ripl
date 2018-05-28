@@ -210,6 +210,26 @@ class TestParser extends FreeSpec with Matchers {
                 Name("x"),
                 Name("b"))))
         }
+        "a / x + b parsed as (a / x) + b" in {
+          test("a / x + b")(
+            App(
+              Name("+"),
+              App(
+                Name("/"),
+                Name("a"),
+                Name("x")),
+              Name("b")))
+        }
+        "a % x + b parsed as (a % x) + b" in {
+          test("a % x + b")(
+            App(
+              Name("+"),
+              App(
+                Name("%"),
+                Name("a"),
+                Name("x")),
+              Name("b")))
+        }
       }
       "combined binary and unary operations" - {
         "-a + b" in {
