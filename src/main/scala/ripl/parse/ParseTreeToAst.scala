@@ -95,7 +95,6 @@ case object ParseTreeToAst {
       Select(
         mapExp0(c.e1),
         mapExp0(c.e2) match { case Name(n) => n; case _ => "ExpectedName" })
-        // c.name.getText())
 
     case n: rp.Exp10Context =>
       mapExp0(n.exp0)
