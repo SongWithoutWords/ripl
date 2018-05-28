@@ -84,7 +84,7 @@ case object ParseTreeToAst {
           case null => None
           case rt => Some(mapExp1(rt))
         },
-        mapExp1(c.exp))
+        mapExp2(c.exp))
 
     case c: rp.ApplyContext =>
       App(

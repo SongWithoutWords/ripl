@@ -170,7 +170,7 @@ exp1
     | paramTypes=funTypeParams '->' returnType=exp1
         #funType
 
-    | '(' ( params+=param (',' params+=param)* )? ')' ('->' returnType=exp1)? '=>' exp=exp1
+    | '(' ( params+=param (',' params+=param)* )? ')' ('->' returnType=exp1)? '=>' exp=exp2
         #fun
 
     | f=exp0 '(' args=exps? ')'
