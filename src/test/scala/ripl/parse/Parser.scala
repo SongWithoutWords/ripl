@@ -304,6 +304,19 @@ class TestParser extends FreeSpec with Matchers {
                 Name("a"),
                 Name("b"))))
         }
+        "character.isHungry and not character.isBusy" in {
+          test("character.isHungry and not character.isBusy")(
+            App(
+              Name("and"),
+              Select(
+                Name("character"),
+                "isHungry"),
+              App(
+                Name("not"),
+                Select(
+                  Name("character"),
+                  "isBusy"))))
+        }
       }
       "function types" - {
         "Int -> Int" in {
