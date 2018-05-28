@@ -176,7 +176,7 @@ exp1
     | f=exp0 '(' args=exps? ')'
         #apply
 
-    | e=exp0 '.' name=Name
+    | e1=exp0 '.' e2=exp0
         #select
 
     | e=exp0
