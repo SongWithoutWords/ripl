@@ -171,7 +171,7 @@ class TestParser extends FreeSpec with Matchers {
           test("4 - 5")(App(Name("-"), VInt(4), VInt(5)))
         }
         "are left-associative" - {
-          "1 + 2 + 3 parsed as (1 + 2) + 3" in {
+          "1 + 2 + 3 => (1 + 2) + 3" in {
             test("1 + 2 + 3")(
               App(
                 Name("+"),
@@ -205,45 +205,47 @@ class TestParser extends FreeSpec with Matchers {
                 VInt(4)))
           }
         }
-        "a * x + b parsed as (a * x) + b" in {
-          test("a * x + b")(
-            App(
-              Name("+"),
+        "are subject to precedence" - {
+          "a * x + b => (a * x) + b" in {
+            test("a * x + b")(
               App(
-                Name("*"),
+                Name("+"),
+                App(
+                  Name("*"),
+                  Name("a"),
+                  Name("x")),
+                Name("b")))
+          }
+          "a + x * b => a + (x * b)" in {
+            test("a + x * b")(
+              App(
+                Name("+"),
                 Name("a"),
-                Name("x")),
-              Name("b")))
-        }
-        "a + x * b parsed as a + (x * b)" in {
-          test("a + x * b")(
-            App(
-              Name("+"),
-              Name("a"),
+                App(
+                  Name("*"),
+                  Name("x"),
+                  Name("b"))))
+          }
+          "a / x + b => (a / x) + b" in {
+            test("a / x + b")(
               App(
-                Name("*"),
-                Name("x"),
-                Name("b"))))
-        }
-        "a / x + b parsed as (a / x) + b" in {
-          test("a / x + b")(
-            App(
-              Name("+"),
+                Name("+"),
+                App(
+                  Name("/"),
+                  Name("a"),
+                  Name("x")),
+                Name("b")))
+          }
+          "a % x + b => (a % x) + b" in {
+            test("a % x + b")(
               App(
-                Name("/"),
-                Name("a"),
-                Name("x")),
-              Name("b")))
-        }
-        "a % x + b parsed as (a % x) + b" in {
-          test("a % x + b")(
-            App(
-              Name("+"),
-              App(
-                Name("%"),
-                Name("a"),
-                Name("x")),
-              Name("b")))
+                Name("+"),
+                App(
+                  Name("%"),
+                  Name("a"),
+                  Name("x")),
+                Name("b")))
+          }
         }
       }
       "combined binary and unary operations" - {
