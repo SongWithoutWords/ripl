@@ -170,25 +170,40 @@ class TestParser extends FreeSpec with Matchers {
         "4 - 5" in {
           test("4 - 5")(App(Name("-"), VInt(4), VInt(5)))
         }
-        "1 + 2 + 3 parsed as (1 + 2) + 3" in {
-          test("1 + 2 + 3")(
-            App(
-              Name("+"),
+        "are left-associative" - {
+          "1 + 2 + 3 parsed as (1 + 2) + 3" in {
+            test("1 + 2 + 3")(
               App(
                 Name("+"),
-                VInt(1),
-                VInt(2)),
-              VInt(3)))
-        }
-        "1 - 2 + 3 parsed as (1 - 2) + 3" in {
-          test("1 - 2 + 3")(
-            App(
-              Name("+"),
+                App(
+                  Name("+"),
+                  VInt(1),
+                  VInt(2)),
+                VInt(3)))
+          }
+          "1 - 2 + 3 => (1 - 2) + 3" in {
+            test("1 - 2 + 3")(
               App(
-                Name("-"),
-                VInt(1),
-                VInt(2)),
-              VInt(3)))
+                Name("+"),
+                App(
+                  Name("-"),
+                  VInt(1),
+                  VInt(2)),
+                VInt(3)))
+          }
+          "1 + 2 + 3 + 4 => ((1 + 2) + 3) + 4" in {
+            test("1 + 2 + 3 + 4")(
+              App(
+                Name("+"),
+                App(
+                  Name("+"),
+                  App(
+                    Name("+"),
+                    VInt(1),
+                    VInt(2)),
+                  VInt(3)),
+                VInt(4)))
+          }
         }
         "a * x + b parsed as (a * x) + b" in {
           test("a * x + b")(
