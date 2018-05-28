@@ -148,6 +148,14 @@ class TestParser extends FreeSpec with Matchers {
         "-7" in {
           test("-7")(App(Name("-"), VInt(7)))
         }
+        "- -7" in {
+          test("- -7")(
+            App(
+              Name("-"),
+              App(
+                Name("-"),
+                VInt(7))))
+        }
         "-x" in {
           test("-x")(App(Name("-"), Name("x")))
         }
