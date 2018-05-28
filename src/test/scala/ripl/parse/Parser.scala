@@ -191,12 +191,12 @@ class TestParser extends FreeSpec with Matchers {
                   VInt(2)),
                 VInt(3)))
           }
-          "1 + 2 + 3 + 4 => ((1 + 2) + 3) + 4" in {
-            test("1 + 2 + 3 + 4")(
+          "1 + 2 - 3 + 4 => ((1 + 2) - 3) + 4" in {
+            test("1 + 2 - 3 + 4")(
               App(
                 Name("+"),
                 App(
-                  Name("+"),
+                  Name("-"),
                   App(
                     Name("+"),
                     VInt(1),
