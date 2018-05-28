@@ -21,6 +21,7 @@ case object ParseTreeToAst {
     case c: rp.BlnContext => VBln(c.VBln().getText.toBoolean)
     case c: rp.IntContext => VInt(c.VInt().getText.toInt)
     case c: rp.FltContext => VFlt(c.getText.toFloat)
+    case c: rp.StrContext => VStr(c.getText.stripPrefix("\"").stripSuffix("\""))
     case c: rp.BracketExpContext => mapExp2(c.e)
 
     // Use operator token text as the names of the operators
