@@ -356,35 +356,65 @@ class TestParser extends FreeSpec with Matchers {
                     VInt(1)))))))
       }
       "blocks" - {
-        test("{}"){
-          Block()
-        }
-        test("{{}}"){
-          Block(Block())
-        }
-        test("{a}"){
-          Block(Name("a"))
-        }
-        test("{ a }"){
-          Block(Name("a"))
-        }
-        test("{ a; }"){
-          Block(Name("a"))
-        }
-        test("{ a; b }"){
-          Block(Name("a"), Name("b"))
-        }
-        test("{ a; b; { i; j; k }; x; y }"){
-          Block(
-            Name("a"),
-            Name("b"),
+        "delimited by punctuation" - {
+          test("{}"){
+            Block()
+          }
+          test("{{}}"){
+            Block(Block())
+          }
+          test("{a}"){
+            Block(Name("a"))
+          }
+          test("{ a }"){
+            Block(Name("a"))
+          }
+          test("{ a; }"){
+            Block(Name("a"))
+          }
+          test("{ a; b }"){
+            Block(Name("a"), Name("b"))
+          }
+          test("{ a; b; { i; j; k }; x; y }"){
             Block(
-              Name("i"),
-              Name("j"),
-              Name("k")),
-            Name("x"),
-            Name("y"),
-          )
+              Name("a"),
+              Name("b"),
+              Block(
+                Name("i"),
+                Name("j"),
+                Name("k")),
+              Name("x"),
+              Name("y"),
+            )
+          }
+        }
+        "delimited by whitespace" - {
+          test{
+"""
+  a
+"""
+          }(Block(Name("a")))
+          test{
+"""
+  a
+  b
+"""
+          }(Block(Name("a"), Name("b")))
+          test{
+"""
+  a
+  b
+    c
+    d
+    e
+"""
+          }(Block(
+              Name("a"),
+              Name("b"),
+              Block(
+                Name("c"),
+                Name("d"),
+                Name("e"))))
         }
       }
     }
