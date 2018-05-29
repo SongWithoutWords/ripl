@@ -1,18 +1,12 @@
-import Dependencies._
+name      := "ripl"
+version   := "0.1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).
-  settings(
-    inThisBuild(List(
-      organization := "com.ripl",
-      scalaVersion := "2.12.3",
-      version      := "0.1.0-SNAPSHOT"
-    )),
-    name := "ripl",
-    libraryDependencies ++= Seq(
-      scalaTest % Test,
-      enumeratum
-    )
-  )
+organization := "org.ripl"
+scalaVersion := "2.12.3"
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "3.0.3" % Test,
+  "com.beachape" %% "enumeratum" % "1.5.12"
+)
 
 enablePlugins(Antlr4Plugin)
 antlr4GenListener in Antlr4 := false
