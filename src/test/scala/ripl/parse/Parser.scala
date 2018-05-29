@@ -403,6 +403,15 @@ class TestParser extends FreeSpec with Matchers {
           test{
 """
   a
+    b
+"""
+          }(Block(
+              Name("a"),
+              Block(
+                Name("b"))))
+          test{
+"""
+  a
   b
     c
     d
