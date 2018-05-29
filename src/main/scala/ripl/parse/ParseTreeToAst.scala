@@ -97,6 +97,9 @@ case object ParseTreeToAst {
         mapExp0(c.e1),
         mapExp0(c.e2) match { case Name(n) => n; case _ => "ExpectedName" })
 
+    case c: rp.BlockContext =>
+      Block(asScalaBuffer(c.es).map(mapExp2).toList)
+
     case n: rp.Exp10Context =>
       mapExp0(n.exp0)
   }

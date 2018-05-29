@@ -68,6 +68,9 @@ exp1
     | e1=exp0 Period e2=exp0
         #select
 
+    | Indent (es+=exp2 Semicolon)* es+=exp2? Dedent
+        #block
+
     | e=exp0
         #exp10
     ;
@@ -93,6 +96,8 @@ funTypeParams
 exps
     : exp2 (Comma exp2)*
     ;
+// Would this be better as:
+//  : (exp2 Comma)* exp2?
 
 param
     // : exp0
