@@ -2,6 +2,8 @@ lexer grammar RiplLexer;
 
 @header { package ripl.parser.antlr; }
 
+// tokens { INDENT, DEDENT }
+
 fragment Underscore
     : '_';
 fragment Upper
@@ -51,6 +53,12 @@ LParen
     : '(';
 RParen
     : ')';
+Indent
+    : '{';
+Dedent
+    : '}';
+Semicolon
+    : ';';
 Comma
     : ',';
 Period
