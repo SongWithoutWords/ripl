@@ -27,18 +27,18 @@ object CustomMatchers {
       Files.write(expectedPath, expectedString.getBytes(StandardCharsets.UTF_8))
       Files.write(resultPath, resultString.getBytes(StandardCharsets.UTF_8))
 
-      if (!success) {
-        val command = Seq(
-          "emacsclient",
-          "--create-frame",
-          "--alternate-editor", "",
-          "--eval", s"""(ediff "${resultPath.toString}" "${expectedPath.toString}")"""
-        )
+      // if (!success) {
+      //   val command = Seq(
+      //     "emacsclient",
+      //     "--create-frame",
+      //     "--alternate-editor", "",
+      //     "--eval", s"""(ediff "${resultPath.toString}" "${expectedPath.toString}")"""
+      //   )
 
-        println("Invoking: " + command)
+        // println("Invoking: " + command)
 
-        command.!
-      }
+        // command.!
+      // }
 
       // Could consider trying to get git-diff to work in future
       // might be able to get it inline with the test results

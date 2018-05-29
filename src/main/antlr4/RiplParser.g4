@@ -1,26 +1,28 @@
-parser grammar riplParser;
+parser grammar RiplParser;
+
+options { tokenVocab = RiplLexer; }
 
 @header { package ripl.parser.antlr; }
 
 
 // grammar
 exp0
-    : Name              #name
-    | VBln              #bln
-    | VInt              #int
-    | VFlt              #flt
-    | VStr              #str
+    : Name                  #name
+    | VBln                  #bln
+    | VInt                  #int
+    | VFlt                  #flt
+    | VStr                  #str
 
-    | '(' e=exp2 ')'    #bracketExp
+    | LParen e=exp2 RParen  #bracketExp
 
-    | '@'               #impure
+    | At                    #impure
 
     // Recover names of operator tokens to enable reference outside of binops
-    | Plus              #plus
-    | Minus             #minus
-    | Star              #star
-    | Slash             #slash
-    | Percent           #percent
+    | Plus                  #plus
+    | Minus                 #minus
+    | Star                  #star
+    | Slash                 #slash
+    | Percent               #percent
     ;
 
 exp1
@@ -31,37 +33,39 @@ exp1
 
     // Another thought: should selection be treated as another operator?
 
-    : op=('~'|'-'|'not') e=exp1
+    : op=(Tilda | Minus | Not) e=exp1
         #unaryOp
 
-    | e1=exp1 op=('*'|'/'|'%') e2=exp1
+    | e1=exp1 op=(Star | Slash | Percent) e2=exp1
         #binOpMulDivMod
 
-    | e1=exp1 op=('+'|'-') e2=exp1
+    | e1=exp1 op=(Plus | Minus) e2=exp1
         #binOpAddSub
 
-    | e1=exp1 op=('<'|'<='|'=='|'!='|'>='|'>') e2=exp1
+    | e1=exp1 op=(LT | LTEQ | EQ | NEQ | GTEQ | GT) e2=exp1
         #binOpCompare
 
-    | e1=exp1 'and' e2=exp1
+    | e1=exp1 And e2=exp1
         #binOpAnd
 
-    | e1=exp1 'or' e2=exp1
+    | e1=exp1 Or e2=exp1
         #binOpOr
 
     | e1=exp1 op=exp0 e2=exp1
         #binOp
 
-    | paramTypes=funTypeParams '->' returnType=exp1
+    | paramTypes=funTypeParams ThinArrow returnType=exp1
         #funType
 
-    | '(' ( params+=param (',' params+=param)* )? ')' ('->' returnType=exp1)? '=>' exp=exp2
+    | LParen ( params += param (Comma params += param)* )? RParen
+        (ThinArrow returnType = exp1)?
+        FatArrow exp = exp2
         #fun
 
-    | f=exp0 '(' args=exps? ')'
+    | f=exp0 LParen args=exps? RParen
         #apply
 
-    | e1=exp0 '.' e2=exp0
+    | e1=exp0 Period e2=exp0
         #select
 
     | e=exp0
@@ -72,7 +76,7 @@ exp2
     : If e1=exp1 Then e2=exp1 Else e3=exp2
         #if
 
-    | a=exp1 '=' b=exp1
+    | a=exp1 Equal b=exp1
         #assign
 
     | exp1
@@ -82,12 +86,12 @@ exp2
 funTypeParams
     : exp0
         #funTypeParamExp
-    | '(' exps ')'
+    | LParen exps RParen
         #funTypeParamExps
     ;
 
 exps
-    : exp2 (',' exp2)*
+    : exp2 (Comma exp2)*
     ;
 
 param

@@ -1,4 +1,4 @@
-lexer grammar riplLex;
+lexer grammar RiplLexer;
 
 @header { package ripl.parser.antlr; }
 
@@ -75,18 +75,23 @@ Chevron
     : '^';
 Ampersand
     : '&';
-LessThan
-    : '<';
 Equal
     : '=';
-GreaterThan
+LT
+    : '<';
+LTEQ
+    : '<=';
+EQ
+    : '==';
+NEQ
+    : '!=';
+GTEQ
+    : '>=';
+GT
     : '>';
 At
     : '@';
-EqualEqual
-    : '==';
-NotEqual
-    : '!=';
+
 ThinArrow
     : '->';
 FatArrow

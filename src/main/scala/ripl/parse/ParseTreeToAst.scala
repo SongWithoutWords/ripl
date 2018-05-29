@@ -4,7 +4,7 @@ import scala.collection.JavaConverters.asScalaBuffer
 
 import org.antlr.v4.runtime.ParserRuleContext
 
-import ripl.parser.antlr.{riplParser => rp}
+import ripl.parser.antlr.{RiplParser => rp}
 import ripl.ast.common._
 import ripl.ast.untyped._
 
