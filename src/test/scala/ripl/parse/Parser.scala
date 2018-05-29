@@ -62,6 +62,7 @@ class TestParser extends FreeSpec with Matchers {
       "integer literals" - {
         test("0")(VInt(0))
         test("4")(VInt(4))
+        test("1536")(VInt(1536))
       }
       "floating point literals" - {
         test("0.0")(VFlt(0.0f))
