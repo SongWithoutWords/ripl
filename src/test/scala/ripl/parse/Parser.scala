@@ -5,6 +5,7 @@ import org.scalatest._
 import ripl.ast.common._
 import ripl.ast.untyped._
 import ripl.parser._
+import ripl.util.MultiMap
 
 import ripl.reduce.CustomMatchers.matchAst
 
@@ -477,6 +478,50 @@ class TestParser extends FreeSpec with Matchers {
                   Name("z"))),
               Name("b"),
               Name("c")))
+        }
+      }
+      "user-defined types" - {
+        "structs" - {
+          test("struct Empty {}")(Struct("Empty"))
+          test("struct Vector { f32 x; f32 y }")(
+            Struct(
+              "Vector",
+              "x" -> Name("f32"),
+              "y" -> Name("f32")))
+          test(
+"""
+struct Vector
+  f32 x; f32 y
+"""
+          )(
+            Struct(
+              "Vector",
+              "x" -> Name("f32"),
+              "y" -> Name("f32")))
+          test(
+"""
+struct Vector
+  f32 x
+  f32 y
+"""
+          )(
+            Struct(
+              "Vector",
+              "x" -> Name("f32"),
+              "y" -> Name("f32")))
+          test(
+"""
+struct Colour
+  i8 red
+  i8 green
+  i8 blue
+"""
+          )(
+            Struct(
+              "Colour",
+              "red" -> Name("i8"),
+              "green" -> Name("i8"),
+              "blue" -> Name("i8")))
         }
       }
     }
