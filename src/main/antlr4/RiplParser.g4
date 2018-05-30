@@ -68,7 +68,7 @@ exp1
     | e1=exp0 Period e2=exp0
         #select
 
-    | Indent (es+=exp2 Semicolon)* es+=exp2? Dedent
+    | blockBegin (es+=exp2 lineSep)* es+=exp2? blockEnd
         #block
 
     | e=exp0
@@ -91,6 +91,21 @@ funTypeParams
         #funTypeParamExp
     | LParen exps RParen
         #funTypeParamExps
+    ;
+
+blockBegin
+    : Indent
+    | LBrace
+    ;
+
+blockEnd
+    : Dedent
+    | RBrace
+    ;
+
+lineSep
+    : Newline
+    | Semicolon
     ;
 
 exps
