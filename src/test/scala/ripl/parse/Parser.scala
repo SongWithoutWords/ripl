@@ -536,6 +536,98 @@ data Colour
                 Name("A"),
                 Name("B"))))
         }
+        "combined union and data syntax" - {
+          test(
+          "union MaybeI32 { data Some { i32 value }; data None }"
+          )(
+            Union(
+              "MaybeI32",
+              List(
+                Struct(
+                  "Some",
+                  "value" -> Name("i32")),
+                Struct("None"))))
+          test(
+"""
+union MaybeI32
+  data Some { i32 value }
+  data None
+"""
+          )(
+            Union(
+              "MaybeI32",
+              List(
+                Struct(
+                  "Some",
+                  "value" -> Name("i32")),
+                Struct("None"))))
+
+          val expUserType =
+            Union(
+              "Exp",
+              List(
+                Name("f32"),
+                Struct(
+                  "Add",
+                  "e1" -> Name("Exp"),
+                  "e2" -> Name("Exp")),
+                Struct(
+                  "Sub",
+                  "e1" -> Name("Exp"),
+                  "e2" -> Name("Exp")),
+                Struct(
+                  "Mul",
+                  "e1" -> Name("Exp"),
+                  "e2" -> Name("Exp")),
+                Struct(
+                  "Div",
+                  "e1" -> Name("Exp"),
+                  "e2" -> Name("Exp"))))
+          test(
+"""
+union Exp
+  f32
+  data Add { Exp e1; Exp e2 }
+  data Sub { Exp e1; Exp e2 }
+  data Mul { Exp e1; Exp e2 }
+  data Div { Exp e1; Exp e2 }
+"""
+          )(expUserType)
+
+          test(
+"""
+union Exp
+  f32
+  data Add { Exp e1; Exp e2; }
+  data Sub { Exp e1; Exp e2 }
+  data Mul
+    Exp e1; Exp e2
+  data Div
+    Exp e1
+    Exp e2
+"""
+          )(expUserType)
+
+          test(
+"""
+union Exp
+  f32
+  data Add
+    Exp e1
+    Exp e2
+  data Sub
+    Exp e1
+    Exp e2
+  data Mul
+    Exp e1
+    Exp e2
+  data Div
+    Exp e1
+    Exp e2
+"""
+          )(expUserType)
+
+        }
       }
     }
   }
