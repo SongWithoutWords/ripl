@@ -4,7 +4,7 @@ import scala.collection.JavaConverters.asScalaBuffer
 
 import org.antlr.v4.runtime.ParserRuleContext
 
-import ripl.parser.antlr.{riplParser => rp}
+import ripl.parser.antlr.{RiplParser => rp}
 import ripl.ast.common._
 import ripl.ast.untyped._
 
@@ -21,6 +21,7 @@ case object ParseTreeToAst {
     case c: rp.BlnContext => VBln(c.VBln().getText.toBoolean)
     case c: rp.IntContext => VInt(c.VInt().getText.toInt)
     case c: rp.FltContext => VFlt(c.getText.toFloat)
+    case c: rp.StrContext => VStr(c.getText.stripPrefix("\"").stripSuffix("\""))
     case c: rp.BracketExpContext => mapExp2(c.e)
 
     // Use operator token text as the names of the operators
@@ -29,20 +30,38 @@ case object ParseTreeToAst {
 
   def mapExp1(c: rp.Exp1Context): Exp = c match {
 
-    case c: rp.NegateContext =>
+    case c: rp.UnaryOpContext =>
       App(
-        Name("-"),
+        Name(c.op.getText()),
         mapExp1(c.e))
 
-    case c: rp.AddContext =>
+    case c: rp.BinOpMulDivModContext =>
       App(
-        Name("+"),
+        Name(c.op.getText()),
         mapExp1(c.e1),
         mapExp1(c.e2))
 
-    case c: rp.MultiplyContext =>
+    case c: rp.BinOpAddSubContext =>
       App(
-        Name("*"),
+        Name(c.op.getText()),
+        mapExp1(c.e1),
+        mapExp1(c.e2))
+
+    case c: rp.BinOpCompareContext =>
+      App(
+        Name(c.op.getText()),
+        mapExp1(c.e1),
+        mapExp1(c.e2))
+
+    case c: rp.BinOpAndContext =>
+      App(
+        Name("and"),
+        mapExp1(c.e1),
+        mapExp1(c.e2))
+
+    case c: rp.BinOpOrContext =>
+      App(
+        Name("or"),
         mapExp1(c.e1),
         mapExp1(c.e2))
 
@@ -66,12 +85,20 @@ case object ParseTreeToAst {
           case null => None
           case rt => Some(mapExp1(rt))
         },
-        mapExp1(c.exp))
+        mapExp2(c.exp))
 
     case c: rp.ApplyContext =>
       App(
         mapExp0(c.f),
         mapExps(c.args))
+
+    case c: rp.SelectContext =>
+      Select(
+        mapExp0(c.e1),
+        mapExp0(c.e2) match { case Name(n) => n; case _ => "ExpectedName" })
+
+    case c: rp.BlockContext =>
+      Block(asScalaBuffer(c.es).map(mapExp2).toList)
 
     case n: rp.Exp10Context =>
       mapExp0(n.exp0)

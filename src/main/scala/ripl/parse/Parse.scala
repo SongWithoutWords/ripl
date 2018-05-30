@@ -7,14 +7,14 @@ import ripl.parser.antlr._
 
 case object Parse {
 
-  private def getRiplParser(input: String): riplParser = {
+  private def getParser(input: String): RiplParser = {
     val charStream = new ANTLRInputStream(input)
-    val lexer = new riplLexer(charStream)
+    val lexer = new RiplLexer(charStream)
     val tokens = new CommonTokenStream(lexer)
-    new riplParser(tokens)
+    new RiplParser(tokens)
   }
 
   def exp(input: String): Node =
-    ParseTreeToAst(getRiplParser(input).exp2())
+    ParseTreeToAst(getParser(input).exp2())
 }
 
