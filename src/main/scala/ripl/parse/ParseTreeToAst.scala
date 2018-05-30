@@ -4,7 +4,7 @@ import scala.collection.JavaConverters.asScalaBuffer
 
 import org.antlr.v4.runtime.ParserRuleContext
 
-import ripl.parser.antlr.{riplParser => rp}
+import ripl.parser.antlr.{RiplParser => rp}
 import ripl.ast.common._
 import ripl.ast.untyped._
 
@@ -96,6 +96,9 @@ case object ParseTreeToAst {
       Select(
         mapExp0(c.e1),
         mapExp0(c.e2) match { case Name(n) => n; case _ => "ExpectedName" })
+
+    case c: rp.BlockContext =>
+      Block(asScalaBuffer(c.es).map(mapExp2).toList)
 
     case n: rp.Exp10Context =>
       mapExp0(n.exp0)

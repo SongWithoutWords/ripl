@@ -356,6 +356,129 @@ class TestParser extends FreeSpec with Matchers {
                     Name("n"),
                     VInt(1)))))))
       }
+      "blocks" - {
+        "delimited by punctuation" - {
+          test("{}"){
+            Block()
+          }
+          test("{{}}"){
+            Block(Block())
+          }
+          test("{a}"){
+            Block(Name("a"))
+          }
+          test("{ a }"){
+            Block(Name("a"))
+          }
+          test("{ a; }"){
+            Block(Name("a"))
+          }
+          test("{ a; b }"){
+            Block(Name("a"), Name("b"))
+          }
+          test("{ a; b; { i; j; k }; x; y }"){
+            Block(
+              Name("a"),
+              Name("b"),
+              Block(
+                Name("i"),
+                Name("j"),
+                Name("k")),
+              Name("x"),
+              Name("y"),
+            )
+          }
+        }
+        "delimited by whitespace" - {
+          test(
+"""
+  a
+"""
+          )(Block(Name("a")))
+          test(
+"""
+  a
+  b
+"""
+          )(Block(Name("a"), Name("b")))
+
+          test(
+"""
+  a
+    i
+"""
+          )(Block(
+              Name("a"),
+              Block(
+                Name("i"))))
+
+          test(
+"""
+  a
+  b
+    i
+    j
+    k
+"""
+          )(Block(
+              Name("a"),
+              Name("b"),
+              Block(
+                Name("i"),
+                Name("j"),
+                Name("k"))))
+
+          test(
+"""
+  a
+
+  b
+  c
+    i
+  d
+  e
+
+    j
+  f
+"""
+          )(Block(
+              Name("a"),
+              Name("b"),
+              Name("c"),
+              Block(
+                Name("i")),
+              Name("d"),
+              Name("e"),
+              Block(
+                Name("j")),
+              Name("f")))
+
+          test(
+"""
+  a
+    i
+      x
+      y
+    j
+      z
+
+  b
+  c
+"""
+          )(Block(
+              Name("a"),
+              Block(
+                Name("i"),
+                Block(
+                  Name("x"),
+                  Name("y")),
+                Name("j"),
+                Block(
+                  Name("z"))),
+              Name("b"),
+              Name("c")))
+        }
+      }
     }
   }
 }
