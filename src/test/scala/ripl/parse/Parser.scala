@@ -390,41 +390,93 @@ class TestParser extends FreeSpec with Matchers {
           }
         }
         "delimited by whitespace" - {
-          test{
+          test(
 """
   a
 """
-          }(Block(Name("a")))
-          test{
+          )(Block(Name("a")))
+          test(
 """
   a
   b
 """
-          }(Block(Name("a"), Name("b")))
-          test{
+          )(Block(Name("a"), Name("b")))
+
+          test(
 """
   a
-    b
+    i
 """
-          }(Block(
+          )(Block(
               Name("a"),
               Block(
-                Name("b"))))
-          test{
+                Name("i"))))
+
+          test(
 """
   a
   b
-    c
-    d
-    e
+    i
+    j
+    k
 """
-          }(Block(
+          )(Block(
               Name("a"),
               Name("b"),
               Block(
-                Name("c"),
-                Name("d"),
-                Name("e"))))
+                Name("i"),
+                Name("j"),
+                Name("k"))))
+
+          test(
+"""
+  a
+
+  b
+  c
+    i
+  d
+  e
+
+    j
+  f
+"""
+          )(Block(
+              Name("a"),
+              Name("b"),
+              Name("c"),
+              Block(
+                Name("i")),
+              Name("d"),
+              Name("e"),
+              Block(
+                Name("j")),
+              Name("f")))
+
+          test(
+"""
+  a
+    i
+      x
+      y
+    j
+      z
+
+  b
+  c
+"""
+          )(Block(
+              Name("a"),
+              Block(
+                Name("i"),
+                Block(
+                  Name("x"),
+                  Name("y")),
+                Name("j"),
+                Block(
+                  Name("z"))),
+              Name("b"),
+              Name("c")))
         }
       }
     }
