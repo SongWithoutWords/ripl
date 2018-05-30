@@ -481,7 +481,8 @@ class TestParser extends FreeSpec with Matchers {
         }
       }
       "user-defined types" - {
-        "data" - {
+        "data syntax" - {
+          test("data Empty")(Struct("Empty"))
           test("data Empty {}")(Struct("Empty"))
           test("data Vector { f32 x; f32 y }")(
             Struct(
@@ -522,6 +523,18 @@ data Colour
               "red" -> Name("i8"),
               "green" -> Name("i8"),
               "blue" -> Name("i8")))
+        }
+        "union syntax" - {
+          test("union Empty")(
+            Union("empty", Nil))
+          test("union Empty {}")(
+            Union("empty", Nil))
+          test("union A_or_B { A; B }")(
+            Union(
+              "A_or_B",
+              List(
+                Name("A"),
+                Name("B"))))
         }
       }
     }
