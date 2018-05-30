@@ -481,16 +481,16 @@ class TestParser extends FreeSpec with Matchers {
         }
       }
       "user-defined types" - {
-        "structs" - {
-          test("struct Empty {}")(Struct("Empty"))
-          test("struct Vector { f32 x; f32 y }")(
+        "data" - {
+          test("data Empty {}")(Struct("Empty"))
+          test("data Vector { f32 x; f32 y }")(
             Struct(
               "Vector",
               "x" -> Name("f32"),
               "y" -> Name("f32")))
           test(
 """
-struct Vector
+data Vector
   f32 x; f32 y
 """
           )(
@@ -500,7 +500,7 @@ struct Vector
               "y" -> Name("f32")))
           test(
 """
-struct Vector
+data Vector
   f32 x
   f32 y
 """
@@ -511,7 +511,7 @@ struct Vector
               "y" -> Name("f32")))
           test(
 """
-struct Colour
+data Colour
   i8 red
   i8 green
   i8 blue
