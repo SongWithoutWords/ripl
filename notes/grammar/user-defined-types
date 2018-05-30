@@ -1,0 +1,76 @@
+
+
+-- Could look like this
+struct Colour
+  i8 Red
+  i8 Blue
+  i8 Green
+
+-- Or could look like this
+struct Colour { i8 Red; i8 Blue; i8 Green }
+
+-- Could look like this
+struct Vector
+  f32 x
+  f32 y
+  f32 z
+
+-- Or could look like this
+struct Vector { f32 x; f32 y; f32 z }
+
+-- Could look like this
+union Exp
+  Float
+  struct Add
+    Exp e1
+    Exp e2
+  struct Sub
+    Exp e1
+    Exp e2
+  struct Mul
+    Exp e1
+    Exp e2
+  struct Div
+    Exp e1
+    Exp e2
+
+-- Or could look like this
+union Exp
+  Float
+  struct Add { Exp e1; Exp e2 }
+  struct Sub { Exp e1; Exp e2 }
+  struct Mul { Exp e1; Exp e2 }
+  struct Div { Exp e1; Exp e2 }
+
+
+-- In general, do I prefer 'T t' or 't: T'?
+
+-- Consider vector:
+
+struct Vector
+  x: f32
+  y: f32
+  z: f32
+
+or
+
+struct Vector
+  f32 x
+  f32 y
+  f32 z
+
+
+How about for colour?
+
+struct Colour
+  Red: i8
+  Blue: i8
+  Green: i8
+
+or
+
+struct Colour
+  i8 Red
+  i8 Blue
+  i8 Green
+
