@@ -18,6 +18,8 @@ struct Vector
 -- Or could look like this
 struct Vector { f32 x; f32 y; f32 z }
 
+record Vector
+
 -- Could look like this
 union Exp
   Float
@@ -73,4 +75,66 @@ struct Colour
   i8 Red
   i8 Blue
   i8 Green
+
+data Colour
+  i8 Red
+  i8 Blue
+  i8 Green
+
+is the following okay?
+
+Colour = struct { i8 Red; i8 Blue; i8 Green }
+
+Exp = union
+  Float
+  Add = struct { Exp e1; Exp e2 }
+  Sub = struct { Exp e1; Exp e2 }
+  Mul = struct { Exp e1; Exp e2 }
+  Div = struct { Exp e1; Exp e2 }
+
+
+-- How do I feel about the following two things?
+
+Vector = struct { f32 x; f32 y }
+
++ = (Vector a, Vector b) -> Vector =>
+  Vector(a.x + b.x, a.y + b.y)
+
+or:
+
+struct Vector { f32 x; f32 y }
+
++(Vector a, Vector b) => Vector(a.x + b.x, a.y + b.y)
+
++(Vector a, Vector b) = Vector(a.x + b.x, a.y + b.y)
+
+
+
+-- Or could look like this
+union Exp
+  Float
+  data Add { Exp e1; Exp e2 }
+  data Sub { Exp e1; Exp e2 }
+  data Mul { Exp e1; Exp e2 }
+  data Div { Exp e1; Exp e2 }
+
+-- Or this:
+data Exp
+  | Float
+  | data Add { Exp e1; Exp e2 }
+  | data Sub { Exp e1; Exp e2 }
+  | data Mul { Exp e1; Exp e2 }
+  | data Div { Exp e1; Exp e2 }
+
+data Option[A]
+  | data Some { A value; }
+  | data None {}
+
+union Option[A]
+  data Some { A value; }
+  data None {}
+
+
+
+
 
