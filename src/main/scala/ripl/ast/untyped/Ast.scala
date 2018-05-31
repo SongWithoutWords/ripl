@@ -46,3 +46,4 @@ object Struct {
     = Struct(name, MultiMap(fields: _*))
 }
 case class Struct(name: String, fields: MultiMap[String, Node]) extends Type
+case class Union(name: String, alternatives: List[Node]) extends Type
