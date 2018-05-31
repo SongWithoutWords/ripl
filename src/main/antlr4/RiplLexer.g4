@@ -189,6 +189,10 @@ Then
     : 'then';
 Else
     : 'else';
+Data
+    : 'data';
+Union
+    : 'union';
 
 
 // punctuation

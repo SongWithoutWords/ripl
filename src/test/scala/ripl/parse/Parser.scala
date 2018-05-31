@@ -5,6 +5,7 @@ import org.scalatest._
 import ripl.ast.common._
 import ripl.ast.untyped._
 import ripl.parser._
+import ripl.util.MultiMap
 
 import ripl.reduce.CustomMatchers.matchAst
 
@@ -477,6 +478,155 @@ class TestParser extends FreeSpec with Matchers {
                   Name("z"))),
               Name("b"),
               Name("c")))
+        }
+      }
+      "user-defined types" - {
+        "data syntax" - {
+          test("data Empty")(Struct("Empty"))
+          test("data Empty {}")(Struct("Empty"))
+          test("data Vector { f32 x; f32 y }")(
+            Struct(
+              "Vector",
+              "x" -> Name("f32"),
+              "y" -> Name("f32")))
+          test(
+"""
+data Vector
+  f32 x; f32 y
+"""
+          )(
+            Struct(
+              "Vector",
+              "x" -> Name("f32"),
+              "y" -> Name("f32")))
+          test(
+"""
+data Vector
+  f32 x
+  f32 y
+"""
+          )(
+            Struct(
+              "Vector",
+              "x" -> Name("f32"),
+              "y" -> Name("f32")))
+          test(
+"""
+data Colour
+  i8 red
+  i8 green
+  i8 blue
+"""
+          )(
+            Struct(
+              "Colour",
+              "red" -> Name("i8"),
+              "green" -> Name("i8"),
+              "blue" -> Name("i8")))
+        }
+        "union syntax" - {
+          test("union Empty")(
+            Union("Empty", Nil))
+          test("union Empty {}")(
+            Union("Empty", Nil))
+          test("union A_or_B { A; B }")(
+            Union(
+              "A_or_B",
+              List(
+                Name("A"),
+                Name("B"))))
+        }
+        "combined union and data syntax" - {
+          test(
+          "union MaybeI32 { data Some { i32 value }; data None }"
+          )(
+            Union(
+              "MaybeI32",
+              List(
+                Struct(
+                  "Some",
+                  "value" -> Name("i32")),
+                Struct("None"))))
+          test(
+"""
+union MaybeI32
+  data Some { i32 value }
+  data None
+"""
+          )(
+            Union(
+              "MaybeI32",
+              List(
+                Struct(
+                  "Some",
+                  "value" -> Name("i32")),
+                Struct("None"))))
+
+          val expUserType =
+            Union(
+              "Exp",
+              List(
+                Name("f32"),
+                Struct(
+                  "Add",
+                  "e1" -> Name("Exp"),
+                  "e2" -> Name("Exp")),
+                Struct(
+                  "Sub",
+                  "e1" -> Name("Exp"),
+                  "e2" -> Name("Exp")),
+                Struct(
+                  "Mul",
+                  "e1" -> Name("Exp"),
+                  "e2" -> Name("Exp")),
+                Struct(
+                  "Div",
+                  "e1" -> Name("Exp"),
+                  "e2" -> Name("Exp"))))
+          test(
+"""
+union Exp
+  f32
+  data Add { Exp e1; Exp e2 }
+  data Sub { Exp e1; Exp e2 }
+  data Mul { Exp e1; Exp e2 }
+  data Div { Exp e1; Exp e2 }
+"""
+          )(expUserType)
+
+          test(
+"""
+union Exp
+  f32
+  data Add { Exp e1; Exp e2; }
+  data Sub { Exp e1; Exp e2 }
+  data Mul
+    Exp e1; Exp e2
+  data Div
+    Exp e1
+    Exp e2
+"""
+          )(expUserType)
+
+          test(
+"""
+union Exp
+  f32
+  data Add
+    Exp e1
+    Exp e2
+  data Sub
+    Exp e1
+    Exp e2
+  data Mul
+    Exp e1
+    Exp e2
+  data Div
+    Exp e1
+    Exp e2
+"""
+          )(expUserType)
+
         }
       }
     }
