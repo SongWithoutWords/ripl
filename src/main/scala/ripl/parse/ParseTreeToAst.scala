@@ -7,8 +7,18 @@ import org.antlr.v4.runtime.ParserRuleContext
 import ripl.parser.antlr.{RiplParser => rp}
 import ripl.ast.common._
 import ripl.ast.untyped._
+import ripl.util.MultiMap
 
 case object ParseTreeToAst {
+
+  private object Util {
+    def expToNameString(e: Exp): String = e match {
+      case Name(n) => n;
+      case _ => "ExpectedName" }
+
+    def pairToParam(pair: (String, Exp)) = Param(pair._1, pair._2)
+  }
+  import Util._
 
   def apply(context: ParserRuleContext): Node = context match {
     case c: rp.Exp0Context => mapExp0(c)
@@ -79,7 +89,7 @@ case object ParseTreeToAst {
     case c: rp.FunContext =>
       Fun(
         asScalaBuffer(c.params)
-          .map(mapParam)
+          .map(pair => pairToParam(mapPair(pair)))
           .toList,
         c.returnType match {
           case null => None
@@ -95,10 +105,15 @@ case object ParseTreeToAst {
     case c: rp.SelectContext =>
       Select(
         mapExp0(c.e1),
-        mapExp0(c.e2) match { case Name(n) => n; case _ => "ExpectedName" })
+        expToNameString(mapExp0(c.e2)))
 
     case c: rp.BlockContext =>
       Block(asScalaBuffer(c.es).map(mapExp2).toList)
+
+    case c: rp.DataContext =>
+      Struct(
+        expToNameString(mapExp0(c.name)),
+        MultiMap(asScalaBuffer(c.fields).map(mapPair): _*))
 
     case n: rp.Exp10Context =>
       mapExp0(n.exp0)
@@ -122,11 +137,8 @@ case object ParseTreeToAst {
       case c: rp.FunTypeParamExpsContext => mapExps(c.exps())
     }
 
-  def mapParam(c: rp.ParamContext): Param = c match {
-    case c: rp.ParamDoubleContext =>
-      Param(
-        mapExp0(c.exp0(1)) match { case Name(n) => n; case _ => "ExpectedName" },
-        mapExp0(c.exp0(0)))
-  }
+  def mapPair(c: rp.PairContext): (String, Exp) =
+    ( expToNameString(mapExp0(c.exp0(1)))
+    , mapExp0(c.exp0(0)))
 }
 

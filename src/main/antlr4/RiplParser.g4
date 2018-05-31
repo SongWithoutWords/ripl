@@ -57,7 +57,7 @@ exp1
     | paramTypes=funTypeParams ThinArrow returnType=exp1
         #funType
 
-    | LParen ( params += param (Comma params += param)* )? RParen
+    | LParen ( params += pair (Comma params += pair)* )? RParen
         (ThinArrow returnType = exp1)?
         FatArrow exp = exp2
         #fun
@@ -70,6 +70,9 @@ exp1
 
     | blockBegin (es+=exp2 lineSep)* es+=exp2? blockEnd
         #block
+
+    | Data name=exp0 lineSep? (blockBegin (fields+=pair lineSep)* fields+=pair blockEnd)?
+        #data
 
     | e=exp0
         #exp10
@@ -114,10 +117,9 @@ exps
 // Would this be better as:
 //  : (exp2 Comma)* exp2?
 
-param
+pair
     // : exp0
         // #paramSingle // will be used for purity, e.g. getInput(~@) -> String
     : exp0 exp0
-        #paramDouble
     ;
 
