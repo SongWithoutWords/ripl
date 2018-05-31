@@ -5,6 +5,7 @@ import org.scalatest._
 import ripl.ast.common._
 import ripl.ast.untyped._
 import ripl.parser._
+import ripl.parse.StringExtensions._
 import ripl.util.MultiMap
 
 import ripl.reduce.CustomMatchers.matchAst
@@ -392,35 +393,27 @@ class TestParser extends FreeSpec with Matchers {
         }
         "delimited by whitespace" - {
           test(
-"""
-  a
-"""
+            "  a"
           )(Block(Name("a")))
           test(
-"""
-  a
-  b
-"""
+            "  a" nl
+            "  b"
           )(Block(Name("a"), Name("b")))
 
           test(
-"""
-  a
-    i
-"""
+            "  a" nl
+            "    i"
           )(Block(
               Name("a"),
               Block(
                 Name("i"))))
 
           test(
-"""
-  a
-  b
-    i
-    j
-    k
-"""
+            "  a" nl
+            "  b" nl
+            "    i" nl
+            "    j" nl
+            "    k"
           )(Block(
               Name("a"),
               Name("b"),
@@ -430,18 +423,16 @@ class TestParser extends FreeSpec with Matchers {
                 Name("k"))))
 
           test(
-"""
-  a
-
-  b
-  c
-    i
-  d
-  e
-
-    j
-  f
-"""
+            "  a" nl
+            "" nl
+            "  b" nl
+            "  c" nl
+            "    i" nl
+            "  d" nl
+            "  e" nl
+            "" nl
+            "    j" nl
+            "  f"
           )(Block(
               Name("a"),
               Name("b"),
@@ -455,17 +446,15 @@ class TestParser extends FreeSpec with Matchers {
               Name("f")))
 
           test(
-"""
-  a
-    i
-      x
-      y
-    j
-      z
-
-  b
-  c
-"""
+            "  a" nl
+            "    i" nl
+            "      x" nl
+            "      y" nl
+            "    j" nl
+            "      z" nl
+            "" nl
+            "  b" nl
+            "  c"
           )(Block(
               Name("a"),
               Block(
@@ -490,33 +479,27 @@ class TestParser extends FreeSpec with Matchers {
               "x" -> Name("f32"),
               "y" -> Name("f32")))
           test(
-"""
-data Vector
-  f32 x; f32 y
-"""
+            "data Vector" nl
+            "  f32 x; f32 y"
           )(
             Struct(
               "Vector",
               "x" -> Name("f32"),
               "y" -> Name("f32")))
           test(
-"""
-data Vector
-  f32 x
-  f32 y
-"""
+            "data Vector" nl
+            "  f32 x" nl
+            "  f32 y"
           )(
             Struct(
               "Vector",
               "x" -> Name("f32"),
               "y" -> Name("f32")))
           test(
-"""
-data Colour
-  i8 red
-  i8 green
-  i8 blue
-"""
+            "data Colour" nl
+            "  i8 red" nl
+            "  i8 green" nl
+            "  i8 blue"
           )(
             Struct(
               "Colour",
@@ -548,11 +531,9 @@ data Colour
                   "value" -> Name("i32")),
                 Struct("None"))))
           test(
-"""
-union MaybeI32
-  data Some { i32 value }
-  data None
-"""
+            "union MaybeI32" nl
+            "  data Some { i32 value }" nl
+            "  data None"
           )(
             Union(
               "MaybeI32",
@@ -584,52 +565,47 @@ union MaybeI32
                   "e1" -> Name("Exp"),
                   "e2" -> Name("Exp"))))
           test(
-"""
-union Exp
-  f32
-  data Add { Exp e1; Exp e2 }
-  data Sub { Exp e1; Exp e2 }
-  data Mul { Exp e1; Exp e2 }
-  data Div { Exp e1; Exp e2 }
-"""
+            "union Exp" nl
+            "  f32" nl
+            "  data Add { Exp e1; Exp e2 }" nl
+            "  data Sub { Exp e1; Exp e2 }" nl
+            "  data Mul { Exp e1; Exp e2 }" nl
+            "  data Div { Exp e1; Exp e2 }"
           )(expUserType)
 
           test(
-"""
-union Exp
-  f32
-  data Add { Exp e1; Exp e2; }
-  data Sub { Exp e1; Exp e2 }
-  data Mul
-    Exp e1; Exp e2
-  data Div
-    Exp e1
-    Exp e2
-"""
+            "union Exp" nl
+            "  f32" nl
+            "  data Add { Exp e1; Exp e2; }" nl
+            "  data Sub { Exp e1; Exp e2 }" nl
+            "  data Mul" nl
+            "    Exp e1; Exp e2" nl
+            "  data Div" nl
+            "    Exp e1" nl
+            "    Exp e2"
           )(expUserType)
 
           test(
-"""
-union Exp
-  f32
-  data Add
-    Exp e1
-    Exp e2
-  data Sub
-    Exp e1
-    Exp e2
-  data Mul
-    Exp e1
-    Exp e2
-  data Div
-    Exp e1
-    Exp e2
-"""
+            "union Exp" nl
+            "  f32" nl
+            "  data Add" nl
+            "     Exp e1" nl
+            "     Exp e2" nl
+            "   data Sub" nl
+            "     Exp e1" nl
+            "     Exp e2" nl
+            "   data Mul" nl
+            "     Exp e1" nl
+            "     Exp e2" nl
+            "   data Div" nl
+            "     Exp e1" nl
+            "     Exp e2"
           )(expUserType)
-
         }
       }
     }
   }
 }
+
+
 
