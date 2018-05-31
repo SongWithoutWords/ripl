@@ -115,6 +115,11 @@ case object ParseTreeToAst {
         expToNameString(mapExp0(c.name)),
         MultiMap(asScalaBuffer(c.fields).map(mapPair): _*))
 
+    case c: rp.UnionContext =>
+      Union(
+        expToNameString(mapExp0(c.name)),
+        asScalaBuffer(c.alternatives).map(mapExp2).toList)
+
     case n: rp.Exp10Context =>
       mapExp0(n.exp0)
   }
