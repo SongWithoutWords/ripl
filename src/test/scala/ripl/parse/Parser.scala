@@ -526,9 +526,9 @@ data Colour
         }
         "union syntax" - {
           test("union Empty")(
-            Union("empty", Nil))
+            Union("Empty", Nil))
           test("union Empty {}")(
-            Union("empty", Nil))
+            Union("Empty", Nil))
           test("union A_or_B { A; B }")(
             Union(
               "A_or_B",
