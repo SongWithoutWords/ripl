@@ -12,5 +12,7 @@ enablePlugins(Antlr4Plugin)
 antlr4GenListener in Antlr4 := false
 antlr4GenVisitor in Antlr4 := false
 
+// suppress successful test messages
+testOptions in Test += Tests.Argument("-oC")
 logBuffered in Test := false
 
