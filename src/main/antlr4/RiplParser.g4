@@ -85,17 +85,20 @@ exp1
         blockEnd)?
         #union
 
-    ;
+    | lhs=pair Equal rhs=exp2
+        #define
 
-exp2
-    : If e1=exp1 Then e2=exp1 Else e3=exp2
-        #if
-
-    | a=exp1 Equal b=exp1
+    | lhs=exp1 Equal rhs=exp2
         #assign
 
-    | exp1
+    ;
+
+exp2 // exp2s prevent if-exps from being used in the middle of an if-exp without parens
+    : exp1
         #exp21
+
+    | If e1=exp1 Then e2=exp1 Else e3=exp2
+        #if
     ;
 
 funTypeParams
