@@ -639,7 +639,7 @@ class TestParser extends FreeSpec with Matchers {
   "units" - {
     "variables" - {
       testAst("$ x = 0")(
-        "x" -> VInt(0)
+        "x" -> Cons(Name("$"), VInt(0))
       )
     }
     "functions" - {
