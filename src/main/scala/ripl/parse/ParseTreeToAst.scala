@@ -123,6 +123,17 @@ case object ParseTreeToAst {
         expToNameString(mapExp0(c.name)),
         asScalaBuffer(c.alternatives).map(mapExp2).toList)
 
+    case c: rp.DefineContext =>
+      val pair = mapPair(c.lhs)
+      Define(
+        pair._2,
+        Cons(pair._1, mapExp2(c.rhs)))
+
+    case c: rp.AssignContext =>
+      Assign(
+        mapExp1(c.lhs),
+        mapExp2(c.rhs))
+
     case n: rp.Exp10Context =>
       mapExp0(n.exp0)
   }
