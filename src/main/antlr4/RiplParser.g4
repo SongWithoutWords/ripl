@@ -136,6 +136,6 @@ exps
 pair
     // : exp0
         // #paramSingle // will be used for purity, e.g. getInput(~@) -> String
-    : exp0 exp0
+    : e1=exp0 e2=exp0
     ;
 
