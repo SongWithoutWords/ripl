@@ -5,8 +5,7 @@ options { tokenVocab = RiplLexer; }
 @header { package ripl.parser.antlr; }
 
 
-// grammar
-exp0
+exp0 // exp0s are atomic, tightly bound expressions
     : Name                  #name
     | VBln                  #bln
     | VInt                  #int
@@ -17,7 +16,16 @@ exp0
 
     | At                    #impure
 
-    // Recover names of operator tokens to enable reference outside of binops
+    | e1=exp0 Period e2=exp0
+        #select
+
+    | f=exp0 LParen args=exps? RParen
+        #apply
+
+    | op=(Tilda | Minus | Not) e=exp0
+        #unaryOp
+
+    // Recover names of operator tokens to enable reference outside of operations
     | Plus                  #plus
     | Minus                 #minus
     | Star                  #star
@@ -33,8 +41,8 @@ exp1
 
     // Another thought: should selection be treated as another operator?
 
-    : op=(Tilda | Minus | Not) e=exp1
-        #unaryOp
+    : e=exp0
+        #exp10
 
     | e1=exp1 op=(Star | Slash | Percent) e2=exp1
         #binOpMulDivMod
@@ -62,12 +70,6 @@ exp1
         FatArrow exp = exp2
         #fun
 
-    | f=exp0 LParen args=exps? RParen
-        #apply
-
-    | e1=exp0 Period e2=exp0
-        #select
-
     | blockBegin (es+=exp2 lineSep)* es+=exp2? blockEnd
         #block
 
@@ -83,19 +85,20 @@ exp1
         blockEnd)?
         #union
 
-    | e=exp0
-        #exp10
-    ;
+    | lhs=pair Equal rhs=exp2
+        #define
 
-exp2
-    : If e1=exp1 Then e2=exp1 Else e3=exp2
-        #if
-
-    | a=exp1 Equal b=exp1
+    | lhs=exp1 Equal rhs=exp2
         #assign
 
-    | exp1
+    ;
+
+exp2 // exp2s prevent if-exps from being used in the middle of an if-exp without parens
+    : exp1
         #exp21
+
+    | If e1=exp1 Then e2=exp1 Else e3=exp2
+        #if
     ;
 
 funTypeParams
@@ -133,6 +136,6 @@ exps
 pair
     // : exp0
         // #paramSingle // will be used for purity, e.g. getInput(~@) -> String
-    : exp0 exp0
+    : e1=exp0 e2=exp0
     ;
 

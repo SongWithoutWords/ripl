@@ -34,16 +34,27 @@ case object ParseTreeToAst {
     case c: rp.StrContext => VStr(c.getText.stripPrefix("\"").stripSuffix("\""))
     case c: rp.BracketExpContext => mapExp2(c.e)
 
+    case c: rp.ApplyContext =>
+      App(
+        mapExp0(c.f),
+        mapExps(c.args))
+
+    case c: rp.SelectContext =>
+      Select(
+        mapExp0(c.e1),
+        expToNameString(mapExp0(c.e2)))
+
+    case c: rp.UnaryOpContext =>
+      App(
+        Name(c.op.getText()),
+        mapExp0(c.e))
+
     // Use operator token text as the names of the operators
     case _ => Name(c.getText())
   }
 
   def mapExp1(c: rp.Exp1Context): Exp = c match {
 
-    case c: rp.UnaryOpContext =>
-      App(
-        Name(c.op.getText()),
-        mapExp1(c.e))
 
     case c: rp.BinOpMulDivModContext =>
       App(
@@ -89,7 +100,7 @@ case object ParseTreeToAst {
     case c: rp.FunContext =>
       Fun(
         asScalaBuffer(c.params)
-          .map(pair => pairToParam(mapPair(pair)))
+          .map(pair => pairToParam(mapPairToNamedExp(pair)))
           .toList,
         c.returnType match {
           case null => None
@@ -97,15 +108,7 @@ case object ParseTreeToAst {
         },
         mapExp2(c.exp))
 
-    case c: rp.ApplyContext =>
-      App(
-        mapExp0(c.f),
-        mapExps(c.args))
 
-    case c: rp.SelectContext =>
-      Select(
-        mapExp0(c.e1),
-        expToNameString(mapExp0(c.e2)))
 
     case c: rp.BlockContext =>
       Block(asScalaBuffer(c.es).map(mapExp2).toList)
@@ -113,12 +116,23 @@ case object ParseTreeToAst {
     case c: rp.DataContext =>
       Struct(
         expToNameString(mapExp0(c.name)),
-        MultiMap(asScalaBuffer(c.fields).map(mapPair): _*))
+        MultiMap(asScalaBuffer(c.fields).map(mapPairToNamedExp): _*))
 
     case c: rp.UnionContext =>
       Union(
         expToNameString(mapExp0(c.name)),
         asScalaBuffer(c.alternatives).map(mapExp2).toList)
+
+    case c: rp.DefineContext =>
+      val pair = mapPair(c.lhs)
+      Define(
+        pair._2,
+        Cons(pair._1, mapExp2(c.rhs)))
+
+    case c: rp.AssignContext =>
+      Assign(
+        mapExp1(c.lhs),
+        mapExp2(c.rhs))
 
     case n: rp.Exp10Context =>
       mapExp0(n.exp0)
@@ -142,8 +156,12 @@ case object ParseTreeToAst {
       case c: rp.FunTypeParamExpsContext => mapExps(c.exps())
     }
 
-  def mapPair(c: rp.PairContext): (String, Exp) =
-    ( expToNameString(mapExp0(c.exp0(1)))
-    , mapExp0(c.exp0(0)))
+  def mapPair(c: rp.PairContext) =
+    ( mapExp0(c.e1)
+    , mapExp0(c.e2))
+
+  def mapPairToNamedExp(c: rp.PairContext): (String, Exp) =
+    ( expToNameString(mapExp0(c.e2))
+    , mapExp0(c.e1))
 }
 

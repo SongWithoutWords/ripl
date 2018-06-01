@@ -603,6 +603,33 @@ class TestParser extends FreeSpec with Matchers {
           )(expUserType)
         }
       }
+      "variable definition" - {
+        test("$ x = 0")(
+          Define(Name("x"), Cons(Name("$"), VInt(0)))
+        )
+        test("~$ x = 0")(
+          Define(Name("x"), Cons(App(Name("~"), Name("$")), VInt(0)))
+        )
+        test("$ pi = 3.14159265")(
+          Define(Name("pi"), Cons(Name("$"), VFlt(3.14159265f)))
+        )
+        test("$ myClothing = if isRaining then rainGear else normalClothes")(
+          Define(
+            Name("myClothing"),
+            Cons(
+              Name("$"),
+              If(
+                Name("isRaining"),
+                Name("rainGear"),
+                Name("normalClothes"))))
+        )
+      }
+      "assignment" - {
+        test("x = 0")(
+          Assign(Name("x"), VInt(0)))
+        test("x = x + 1")(
+          Assign(Name("x"), App(Name("+"), Name("x"), VInt(1))))
+      }
     }
   }
 }
