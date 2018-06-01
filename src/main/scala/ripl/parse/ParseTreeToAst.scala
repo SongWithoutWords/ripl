@@ -100,7 +100,7 @@ case object ParseTreeToAst {
     case c: rp.FunContext =>
       Fun(
         asScalaBuffer(c.params)
-          .map(pair => pairToParam(mapPair(pair)))
+          .map(pair => pairToParam(mapPairToNamedExp(pair)))
           .toList,
         c.returnType match {
           case null => None
@@ -116,7 +116,7 @@ case object ParseTreeToAst {
     case c: rp.DataContext =>
       Struct(
         expToNameString(mapExp0(c.name)),
-        MultiMap(asScalaBuffer(c.fields).map(mapPair): _*))
+        MultiMap(asScalaBuffer(c.fields).map(mapPairToNamedExp): _*))
 
     case c: rp.UnionContext =>
       Union(
@@ -145,8 +145,12 @@ case object ParseTreeToAst {
       case c: rp.FunTypeParamExpsContext => mapExps(c.exps())
     }
 
-  def mapPair(c: rp.PairContext): (String, Exp) =
-    ( expToNameString(mapExp0(c.exp0(1)))
-    , mapExp0(c.exp0(0)))
+  def mapPair(c: rp.PairContext) =
+    ( mapExp0(c.e1)
+    , mapExp0(c.e2))
+
+  def mapPairToNamedExp(c: rp.PairContext): (String, Exp) =
+    ( expToNameString(mapExp0(c.e2))
+    , mapExp0(c.e1))
 }
 
