@@ -15,6 +15,9 @@ case object Parse {
   }
 
   def exp(input: String): Node =
-    ParseTreeToAst(getParser(input).exp2())
+    ParseTreeToAst.mapExp2(getParser(input).exp2())
+
+  def ast(input: String): List[(String, Node)] =
+    ParseTreeToAst.mapAst(getParser(input).ast())
 }
 
