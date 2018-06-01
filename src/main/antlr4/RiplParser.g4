@@ -167,9 +167,15 @@ unit
         #unitFunction
     | userType
         #unitUserType
+    | Namespace name=Name lineSep?
+        (blockBegin
+            (members+=exp2 lineSep)* members+=exp2?
+        blockEnd)?
+        #unitNamespace
     ;
 
 ast
     : lineSep* (units+=unit lineSep+)* units+=unit?
+
     ;
 
