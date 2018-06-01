@@ -4,11 +4,15 @@ import ripl.util.MultiMap
 
 sealed trait Node
 sealed trait Exp extends Node
+
+trait Type extends Exp
+trait Named { val name: String } // should probably be a Name eventually
+
+
 object Namespace {
   def apply(nodes: (String, Node)*): Namespace = Namespace(MultiMap(nodes: _*))
 }
 case class Namespace(nodes: Nodes) extends Node
-trait Type extends Exp
 
 // Expressions
 object App {
@@ -29,7 +33,8 @@ case class Fun(params: List[Param], retType: Option[Node], body: Exp) extends Ex
 case class Name(n: String) extends Exp
 case class Param(n: String, t: Node) extends Exp
 case class Select(e: Exp, n: String) extends Exp
-case class Var(n: String, e: Exp) extends Exp
+
+case class Var(n: String, e: Exp) extends Exp // seems to have been replaced with "define"
 
 // Values
 trait Val extends Exp
@@ -46,5 +51,6 @@ object Struct {
   def apply(name: String, fields: (String, Node)*): Struct
     = Struct(name, MultiMap(fields: _*))
 }
-case class Struct(name: String, fields: MultiMap[String, Node]) extends Type
-case class Union(name: String, alternatives: List[Node]) extends Type
+
+case class Struct(name: String, fields: MultiMap[String, Node]) extends Type with Named
+case class Union(name: String, alternatives: List[Node]) extends Type with Named

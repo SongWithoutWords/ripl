@@ -193,7 +193,8 @@ Data
     : 'data';
 Union
     : 'union';
-
+Namespace
+    : 'namespace';
 
 // punctuation
 LParen

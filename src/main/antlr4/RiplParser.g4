@@ -22,7 +22,7 @@ exp0 // exp0s are atomic, tightly bound expressions
     | f=exp0 LParen args=exps? RParen
         #apply
 
-    | op=(Tilda | Minus | Not) e=exp0
+    | op=(Tilda | Chevron | Minus | Not) e=exp0
         #unaryOp
 
     // Recover names of operator tokens to enable reference outside of operations
@@ -65,15 +65,42 @@ exp1
     | paramTypes=funTypeParams ThinArrow returnType=exp1
         #funType
 
-    | LParen ( params += pair (Comma params += pair)* )? RParen
-        (ThinArrow returnType = exp1)?
-        FatArrow exp = exp2
-        #fun
-
     | blockBegin (es+=exp2 lineSep)* es+=exp2? blockEnd
         #block
 
-    | Data name=exp0 lineSep?
+    | define
+        #e1Define
+
+    | lambda
+        #e1Lambda
+
+    | function
+        #e1Function
+
+    | userType
+        #e1UserType
+
+    | lhs=exp1 Equal rhs=exp2
+        #assign
+    ;
+
+define
+    : lhs=pair Equal rhs=exp2
+        // #define
+    ;
+
+lambda // a nameless function
+    : LParen ( params += pair (Comma params += pair)* )? RParen
+        (ThinArrow returnType = exp1)?
+        FatArrow exp = exp2
+    ;
+
+function
+    : name=exp0 lambda
+    ;
+
+userType
+    : Data name=exp0 lineSep?
         (blockBegin
             (fields+=pair lineSep)* fields+=pair?
         blockEnd)?
@@ -83,14 +110,7 @@ exp1
         (blockBegin
             (alternatives+=exp2 lineSep)* alternatives+=exp2?
         blockEnd)?
-        #union
-
-    | lhs=pair Equal rhs=exp2
-        #define
-
-    | lhs=exp1 Equal rhs=exp2
-        #assign
-
+    #union
     ;
 
 exp2 // exp2s prevent if-exps from being used in the middle of an if-exp without parens
@@ -126,6 +146,7 @@ lineSep
 exps
     : exp2 (Comma exp2)*
     ;
+
 // Would this be better as:
 //  : (exp2 Comma)* exp2?
 
@@ -137,5 +158,18 @@ pair
     // : exp0
         // #paramSingle // will be used for purity, e.g. getInput(~@) -> String
     : e1=exp0 e2=exp0
+    ;
+
+unit
+    : define
+        #unitDefine
+    | function
+        #unitFunction
+    | userType
+        #unitUserType
+    ;
+
+ast
+    : lineSep* (units+=unit lineSep+)* units+=unit?
     ;
 
