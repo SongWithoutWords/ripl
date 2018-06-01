@@ -15,6 +15,10 @@ class TestParser extends FreeSpec with Matchers {
   // `name in { block }` is ScalaTest's free-spec syntax
   def test(input: String)(out: Node): Unit
     = input in { Parse.exp(input) should matchAst(out) }
+
+  def testAst(input: String)(out: (String, Node)*): Unit
+    = input in {Parse.ast(input) should matchAst(out.toList)}
+
   def testName(input: String): Unit
     = input in { Parse.exp(input) should matchAst(Name(input)) }
 
@@ -630,6 +634,44 @@ class TestParser extends FreeSpec with Matchers {
         test("x = x + 1")(
           Assign(Name("x"), App(Name("+"), Name("x"), VInt(1))))
       }
+    }
+  }
+  "units" - {
+    "variables" - {
+      testAst("$ x = 0")(
+        "x" -> VInt(0)
+      )
+    }
+    "functions" - {
+
+      testAst("inc(^~Int x) => x = x + 1")(
+        "inc" ->
+          Fun(
+            List(
+              Param(
+                "x",
+                App(
+                  Name("^"),
+                  App(
+                    Name("~"),
+                    Name("Int"))))),
+            None,
+            Assign(
+              Name("x"),
+              App(
+                Name("+"),
+                Name("x"),
+                VInt(1)))))
+
+    }
+    "user-defined types" - {
+      testAst("data Vector { f32 x; f32 y }")(
+        "Vector" ->
+          Struct(
+            "Vector",
+            "x" -> Name("f32"),
+            "y" -> Name("f32"))
+      )
     }
   }
 }
