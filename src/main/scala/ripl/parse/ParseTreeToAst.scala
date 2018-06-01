@@ -20,12 +20,6 @@ case object ParseTreeToAst {
   }
   import Util._
 
-  def apply(context: ParserRuleContext): Node = context match {
-    case c: rp.Exp0Context => mapExp0(c)
-    case c: rp.Exp1Context => mapExp1(c)
-    case c: rp.Exp2Context => mapExp2(c)
-  }
-
   def mapExp0(c: rp.Exp0Context): Exp = c match {
     case c: rp.NameContext => Name(c.Name().getText)
     case c: rp.BlnContext => VBln(c.VBln().getText.toBoolean)
@@ -97,22 +91,49 @@ case object ParseTreeToAst {
         mapFunParamTypes(c.funTypeParams()),
         mapExp1(c.exp1()))
 
-    case c: rp.FunContext =>
-      Fun(
-        asScalaBuffer(c.params)
-          .map(pair => pairToParam(mapPairToNamedExp(pair)))
-          .toList,
-        c.returnType match {
-          case null => None
-          case rt => Some(mapExp1(rt))
-        },
-        mapExp2(c.exp))
-
-
-
     case c: rp.BlockContext =>
       Block(asScalaBuffer(c.es).map(mapExp2).toList)
 
+    case c: rp.E1DefineContext =>
+      mapDefine(c.define())
+
+    case c: rp.E1LambdaContext =>
+      mapLambda(c.lambda())
+
+    case c: rp.E1UserTypeContext =>
+      mapUserType(c.userType())
+
+    case c: rp.AssignContext =>
+      Assign(
+        mapExp1(c.lhs),
+        mapExp2(c.rhs))
+
+    case n: rp.Exp10Context =>
+      mapExp0(n.exp0)
+  }
+
+  def mapDefine(c: rp.DefineContext) = {
+    val pair = mapPair(c.lhs)
+    Define(
+      pair._2,
+      Cons(pair._1, mapExp2(c.rhs)))
+  }
+
+  def mapLambda(c: rp.LambdaContext) =
+    Fun(
+      asScalaBuffer(c.params)
+        .map(pair => pairToParam(mapPairToNamedExp(pair)))
+        .toList,
+      c.returnType match {
+        case null => None
+        case rt => Some(mapExp1(rt))
+      },
+      mapExp2(c.exp))
+
+  def mapFunction(c: rp.FunctionContext) =
+    Define(mapExp0(c.name), mapLambda(c.lambda()))
+
+  def mapUserType(c: rp.UserTypeContext) = c match {
     case c: rp.DataContext =>
       Struct(
         expToNameString(mapExp0(c.name)),
@@ -122,20 +143,6 @@ case object ParseTreeToAst {
       Union(
         expToNameString(mapExp0(c.name)),
         asScalaBuffer(c.alternatives).map(mapExp2).toList)
-
-    case c: rp.DefineContext =>
-      val pair = mapPair(c.lhs)
-      Define(
-        pair._2,
-        Cons(pair._1, mapExp2(c.rhs)))
-
-    case c: rp.AssignContext =>
-      Assign(
-        mapExp1(c.lhs),
-        mapExp2(c.rhs))
-
-    case n: rp.Exp10Context =>
-      mapExp0(n.exp0)
   }
 
   def mapExp2(c: rp.Exp2Context): Exp = c match {
@@ -163,5 +170,23 @@ case object ParseTreeToAst {
   def mapPairToNamedExp(c: rp.PairContext): (String, Exp) =
     ( expToNameString(mapExp0(c.e2))
     , mapExp0(c.e1))
+
+  def mapUnit(c: rp.UnitContext): (String, Node) = c match {
+
+    case c: rp.UnitDefineContext =>
+      val (name, typ) = mapPairToNamedExp(c.define().lhs)
+      (name, Cons(typ, mapExp2(c.define().rhs)))
+
+    case c: rp.UnitFunctionContext =>
+      val Define(name, lambda) = mapFunction(c.function())
+      (expToNameString(name), lambda)
+
+    case c: rp.UnitUserTypeContext =>
+      val userType = mapUserType(c.userType())
+      (userType.name, userType)
+  }
+
+  def mapAst(c: rp.AstContext): List[(String, Node)] =
+    asScalaBuffer(c.units).map(mapUnit).toList
 }
 
