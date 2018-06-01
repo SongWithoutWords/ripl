@@ -34,16 +34,27 @@ case object ParseTreeToAst {
     case c: rp.StrContext => VStr(c.getText.stripPrefix("\"").stripSuffix("\""))
     case c: rp.BracketExpContext => mapExp2(c.e)
 
+    case c: rp.ApplyContext =>
+      App(
+        mapExp0(c.f),
+        mapExps(c.args))
+
+    case c: rp.SelectContext =>
+      Select(
+        mapExp0(c.e1),
+        expToNameString(mapExp0(c.e2)))
+
+    case c: rp.UnaryOpContext =>
+      App(
+        Name(c.op.getText()),
+        mapExp0(c.e))
+
     // Use operator token text as the names of the operators
     case _ => Name(c.getText())
   }
 
   def mapExp1(c: rp.Exp1Context): Exp = c match {
 
-    case c: rp.UnaryOpContext =>
-      App(
-        Name(c.op.getText()),
-        mapExp1(c.e))
 
     case c: rp.BinOpMulDivModContext =>
       App(
@@ -97,15 +108,7 @@ case object ParseTreeToAst {
         },
         mapExp2(c.exp))
 
-    case c: rp.ApplyContext =>
-      App(
-        mapExp0(c.f),
-        mapExps(c.args))
 
-    case c: rp.SelectContext =>
-      Select(
-        mapExp0(c.e1),
-        expToNameString(mapExp0(c.e2)))
 
     case c: rp.BlockContext =>
       Block(asScalaBuffer(c.es).map(mapExp2).toList)
