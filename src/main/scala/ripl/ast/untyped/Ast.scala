@@ -19,7 +19,7 @@ case class Assign(a: Exp, b: Exp) extends Exp
 case class Define(a: Exp, b: Exp) extends Exp
 object Block { def apply(exps: Exp*): Block = Block(exps.toList) }
 case class Block(exps: List[Exp]) extends Exp
-case class Cons(t: Type, e: Exp) extends Exp
+case class Cons(t: Exp, e: Exp) extends Exp
 case class If(a: Exp, b: Exp, c: Exp) extends Exp
 object Fun {
   def apply(params: Param*)(retType: Option[Node])(body: Exp): Fun
