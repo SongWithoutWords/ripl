@@ -22,7 +22,7 @@ exp0 // exp0s are atomic, tightly bound expressions
     | f=exp0 LParen args=exps? RParen
         #apply
 
-    | op=(Tilda | Minus | Not) e=exp0
+    | op=(Tilda | Chevron | Minus | Not) e=exp0
         #unaryOp
 
     // Recover names of operator tokens to enable reference outside of operations
