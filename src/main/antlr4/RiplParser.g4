@@ -167,7 +167,7 @@ unit
         #unitFunction
     | userType
         #unitUserType
-    | Namespace name=Name lineSep?
+    | Namespace name=exp0 lineSep?
         (blockBegin
             units
         blockEnd)?

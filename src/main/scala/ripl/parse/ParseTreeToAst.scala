@@ -186,8 +186,15 @@ case object ParseTreeToAst {
       (userType.name, userType)
 
     case c: rp.UnitNamespaceContext =>
-      val name = c.name.getText()
-      (name, Namespace(mapUnits(c.units()): _*))
+      def nestedNamespacesFromSelection(name: Exp, units: List[(String, Node)])
+          : (String, Namespace)
+        = name match {
+          case Select(root, last) =>
+            nestedNamespacesFromSelection(root, List(last -> Namespace(units: _*)))
+          case Name(n) =>
+            n -> Namespace(units: _*)
+        }
+      nestedNamespacesFromSelection(mapExp0(c.name), mapUnits(c.units()))
   }
 
   def mapUnits(c: rp.UnitsContext): List[(String, Node)] = c match {
