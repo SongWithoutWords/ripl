@@ -190,7 +190,9 @@ case object ParseTreeToAst {
       (name, Namespace(mapUnits(c.units()): _*))
   }
 
-  def mapUnits(c: rp.UnitsContext): List[(String, Node)] =
-    asScalaBuffer(c.members).map(mapUnit).toList
+  def mapUnits(c: rp.UnitsContext): List[(String, Node)] = c match {
+    case null => Nil
+    case _ => asScalaBuffer(c.members).map(mapUnit).toList
+  }
 }
 
