@@ -17,7 +17,7 @@ class TestParser extends FreeSpec with Matchers {
     = input in { Parse.exp(input) should matchAst(out) }
 
   def testAst(input: String)(out: (String, Node)*): Unit
-    = input in {Parse.ast(input) should matchAst(out.toList)}
+    = input in {Parse.units(input) should matchAst(out.toList)}
 
   def testName(input: String): Unit
     = input in { Parse.exp(input) should matchAst(Name(input)) }
@@ -671,6 +671,43 @@ class TestParser extends FreeSpec with Matchers {
             "Vector",
             "x" -> Name("f32"),
             "y" -> Name("f32"))
+      )
+    }
+    "namespaces" - {
+      testAst("namespace empty")(
+        "empty" -> Namespace())
+
+      testAst(
+        "namespace ripl" nl
+        "  namespace math" nl
+        "    $ pi = 3.14159265")(
+        "ripl" -> Namespace(
+          "math" -> Namespace(
+            "pi" -> Cons(Name("$"), VFlt(3.14159265f))))
+      )
+      testAst(
+        "namespace ripl.math" nl
+        "  $ pi = 3.14159265")(
+        "ripl" -> Namespace(
+          "math" -> Namespace(
+            "pi" -> Cons(Name("$"), VFlt(3.14159265f))))
+      )
+      testAst(
+        "namespace ripl.math.constants" nl
+        "  $ pi = 3.14159265")(
+        "ripl" -> Namespace(
+          "math" -> Namespace(
+            "constants" -> Namespace(
+              "pi" -> Cons(Name("$"), VFlt(3.14159265f)))))
+      )
+      testAst(
+        "namespace ripl.math" nl
+        "  namespace constants" nl
+        "    $ pi = 3.14159265")(
+        "ripl" -> Namespace(
+          "math" -> Namespace(
+            "constants" -> Namespace(
+              "pi" -> Cons(Name("$"), VFlt(3.14159265f)))))
       )
     }
   }

@@ -167,9 +167,14 @@ unit
         #unitFunction
     | userType
         #unitUserType
+    | Namespace name=exp0 lineSep?
+        (blockBegin
+            units
+        blockEnd)?
+        #unitNamespace
     ;
 
-ast
-    : lineSep* (units+=unit lineSep+)* units+=unit?
+units
+    : lineSep* (members+=unit lineSep+)* members+=unit?
     ;
 
