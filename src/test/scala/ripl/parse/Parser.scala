@@ -673,6 +673,22 @@ class TestParser extends FreeSpec with Matchers {
             "y" -> Name("f32"))
       )
     }
+    "namespaces" - {
+      testAst("namespace empty")(
+        "empty" -> Namespace())
+
+      testAst(
+        "namespace ripl" nl
+        "  namespace math" nl
+        "    $ pi = 3.14159265")(
+        "ripl" -> Namespace(
+          "math" -> Namespace(
+            "pi" -> Cons(Name("$"), VFlt(3.14159265f))))
+      )
+      // testAst(
+      //   "namespace ripl.math" nl
+      //   "  $ pi = 3.14159265")(???)
+    }
   }
 }
 
