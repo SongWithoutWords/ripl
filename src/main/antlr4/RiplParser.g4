@@ -169,13 +169,12 @@ unit
         #unitUserType
     | Namespace name=Name lineSep?
         (blockBegin
-            (members+=exp2 lineSep)* members+=exp2?
+            units
         blockEnd)?
         #unitNamespace
     ;
 
-ast
-    : lineSep* (units+=unit lineSep+)* units+=unit?
-
+units
+    : lineSep* (members+=unit lineSep+)* members+=unit?
     ;
 
