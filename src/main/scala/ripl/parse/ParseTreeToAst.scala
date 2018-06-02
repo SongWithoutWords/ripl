@@ -184,9 +184,13 @@ case object ParseTreeToAst {
     case c: rp.UnitUserTypeContext =>
       val userType = mapUserType(c.userType())
       (userType.name, userType)
+
+    case c: rp.UnitNamespaceContext =>
+      val name = c.name.getText()
+      (name, Namespace(mapUnits(c.units()): _*))
   }
 
-  def mapAst(c: rp.AstContext): List[(String, Node)] =
-    asScalaBuffer(c.units).map(mapUnit).toList
+  def mapUnits(c: rp.UnitsContext): List[(String, Node)] =
+    asScalaBuffer(c.members).map(mapUnit).toList
 }
 
