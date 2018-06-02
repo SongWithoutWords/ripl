@@ -685,9 +685,13 @@ class TestParser extends FreeSpec with Matchers {
           "math" -> Namespace(
             "pi" -> Cons(Name("$"), VFlt(3.14159265f))))
       )
-      // testAst(
-      //   "namespace ripl.math" nl
-      //   "  $ pi = 3.14159265")(???)
+      testAst(
+        "namespace ripl.math" nl
+        "  $ pi = 3.14159265")(
+        "ripl" -> Namespace(
+          "math" -> Namespace(
+            "pi" -> Cons(Name("$"), VFlt(3.14159265f))))
+      )
     }
   }
 }
