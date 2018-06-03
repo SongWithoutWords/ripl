@@ -21,3 +21,6 @@ antlr4GenVisitor in Antlr4 := false
 testOptions in Test += Tests.Argument("-oC")
 logBuffered in Test := false
 
+// val llvmBindings = RootProject(file("../scala-llvm-bindings"))
+// dependsOn(llvmBindings)
+
