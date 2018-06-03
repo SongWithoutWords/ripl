@@ -7,6 +7,7 @@ import org.scalatest._
 import ripl.util.{MultiMap => Multi}
 
 import ripl.ast.common._
+import ripl.ast.common.TypeAtom._
 import ripl.ast.common.ImplicitConversions._
 import ripl.ast.{untyped => a0, typed => a1}
 
@@ -100,7 +101,7 @@ class TestReduce extends FreeSpec with Matchers {
     "are traversed during reduction" in {
       test(
         "n" -> a0.Namespace(
-          "a" -> a0.Cons(TBln, 4)))(
+          "a" -> a0.Cons(a0.Name("Bln"), 4)))(
         "n" -> a1.Namespace(
           "a" -> a1.Cons(TBln, 4)))(
         TypeConflict(TBln, TInt))
@@ -158,25 +159,25 @@ class TestReduce extends FreeSpec with Matchers {
         "c" -> 7)()
     }
   }
-  "type" - {
+  "types" - {
     "are mapped correctly" - {
-      "TBln" in {
-        test("bool" -> TBln)("bool" -> TBln)()
+      "Bln" in {
+        test("bool" -> a0.Name("Bln"))("bool" -> TBln)()
       }
-      "(TInt, TInt) -> TBln" in {
-        test("f" -> a0.TFun(TInt, TInt)(TBln))("f" -> a1.TFun(TInt, TInt)(TBln))()
+      "(Int, Int) -> Bln" in {
+        test("f" -> a0.TFun(a0.Name("Int"), a0.Name("Int"))(a0.Name("Bln")))("f" -> a1.TFun(TInt, TInt)(TBln))()
       }
     }
   }
   "type constraints" - {
     "produce no errors when they are met" in {
       test(
-        "x" -> a0.Cons(TInt, 3))(
+        "x" -> a0.Cons(a0.Name("Int"), 3))(
         "x" -> a1.Cons(TInt, 3))()
     }
     "produce errors when they are not met" in {
       test(
-        "x" -> a0.Cons(TInt, true))(
+        "x" -> a0.Cons(a0.Name("Int"), true))(
         "x" -> a1.Cons(TInt, true))(
         TypeConflict(TInt, TBln))
     }
@@ -189,7 +190,7 @@ class TestReduce extends FreeSpec with Matchers {
       "bind parameter in body" in {
         test(
           "identity" -> a0.Fun(
-            a0.Param("a", TInt))(Some(TInt))(
+            a0.Param("a", a0.Name("Int")))(Some(a0.Name("Int")))(
             a0.Name("a")))(
           "identity" -> a1.Fun(
             a1.Param("a", TInt))(TInt)(
@@ -197,7 +198,7 @@ class TestReduce extends FreeSpec with Matchers {
       }
       "bind parameter in deep exp in body" in {
         test(
-          "inc" -> a0.Fun(a0.Param("a", TInt))(Some(TInt))(
+          "inc" -> a0.Fun(a0.Param("a", a0.Name("Int")))(Some(a0.Name("Int")))(
             a0.App(
               a0.Name("+"),
               a0.Name("a"),
@@ -211,7 +212,7 @@ class TestReduce extends FreeSpec with Matchers {
     }
 
     "with two parameters" - {
-      val add = a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TInt))(
+      val add = a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(Some(a0.Name("Int")))(
         a0.App(
           a0.Name("+"),
           a0.Name("a"),
@@ -264,15 +265,15 @@ class TestReduce extends FreeSpec with Matchers {
 
     "enforce known return types" - {
 
-      val _vector = a0.Struct("Vector", "x" -> TFlt, "y" -> TFlt)
+      val _vector = a0.Struct("Vector", "x" -> a0.Name("Flt"), "y" -> a0.Name("Flt"))
       val vector = a1.Struct("Vector", "x" -> TFlt, "y" -> TFlt)
 
-      val _point = a0.Struct("Point", "x" -> TInt, "y" -> TInt)
+      val _point = a0.Struct("Point", "x" -> a0.Name("Int"), "y" -> a0.Name("Int"))
       val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
 
       "produce errors when Bln is required and Int is returned" in {
         test(
-          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TBln)){
+          "f" -> a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(Some(a0.Name("Bln"))){
             a0.App(a0.Name("+"),
                    a0.Name("a"),
                    a0.Name("b"))
@@ -288,7 +289,7 @@ class TestReduce extends FreeSpec with Matchers {
       "produce errors when Bln is required and Vector is returned" in {
         test(
           "Vector" -> _vector,
-          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TBln)){
+          "f" -> a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(Some(a0.Name("Bln"))){
             a0.VObj(a0.Name("Vector"), "x" -> 1.f, "b" -> 2.f)
           }
         )(
@@ -301,7 +302,7 @@ class TestReduce extends FreeSpec with Matchers {
       "produce errors when Point is required and Int is returned" in {
         test(
           "Point" -> _point,
-          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(a0.Name("Point"))){
+          "f" -> a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(Some(a0.Name("Point"))){
             a0.App(a0.Name("+"),
                    a0.Name("a"),
                    a0.Name("b"))
@@ -319,7 +320,7 @@ class TestReduce extends FreeSpec with Matchers {
         test(
           "Point" -> _point,
           "Vector" -> _vector,
-          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(a0.Name("Point"))){
+          "f" -> a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(Some(a0.Name("Point"))){
             a0.VObj(a0.Name("Vector"), "x" -> 1.f, "b" -> 2.f)
           }
         )(
@@ -335,7 +336,7 @@ class TestReduce extends FreeSpec with Matchers {
     "infer return type when no excplicit type is provided" - {
       "f(Int a, Int b) => a + b has return type Int" in {
         test(
-          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(None){
+          "f" -> a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(None){
             a0.App(a0.Name("+"), a0.Name("a"), a0.Name("b"))
           }
         )(
@@ -348,7 +349,7 @@ class TestReduce extends FreeSpec with Matchers {
       }
       "f(Flt a, Flt b) => a + b has return type Flt" in {
         test(
-          "f" -> a0.Fun(a0.Param("a", TFlt), a0.Param("b", TFlt))(None){
+          "f" -> a0.Fun(a0.Param("a", a0.Name("Flt")), a0.Param("b", a0.Name("Flt")))(None){
             a0.App(a0.Name("+"), a0.Name("a"), a0.Name("b"))
           }
         )(
@@ -361,7 +362,7 @@ class TestReduce extends FreeSpec with Matchers {
       }
       "f(Int a, Flt b) => a + b has return type Flt" in {
         test(
-          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TFlt))(None){
+          "f" -> a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Flt")))(None){
             a0.App(a0.Name("+"), a0.Name("a"), a0.Name("b"))
           }
         )(
@@ -375,7 +376,7 @@ class TestReduce extends FreeSpec with Matchers {
       }
       "f(Int a, Int b) => a == b has return type Bln" in {
         test(
-          "f" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(None){
+          "f" -> a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(None){
             a0.App(a0.Name("=="), a0.Name("a"), a0.Name("b"))
           }
         )(
@@ -391,7 +392,7 @@ class TestReduce extends FreeSpec with Matchers {
 
     "can be defined recursively" - {
       "with explicit return type" in {
-        val _fact = a0.Fun(a0.Param("n", TInt))(Some(TInt))(
+        val _fact = a0.Fun(a0.Param("n", a0.Name("Int")))(Some(a0.Name("Int")))(
           a0.If(
             a0.App(
               a0.Name("<="),
@@ -431,7 +432,7 @@ class TestReduce extends FreeSpec with Matchers {
         test("fact" -> _fact)("fact" -> fact)()
       }
       "will raise an error without an explicit return type" in {
-        val _fact = a0.Fun(a0.Param("n", TInt))(None)(
+        val _fact = a0.Fun(a0.Param("n", a0.Name("Int")))(None)(
           a0.If(
             a0.App(
               a0.Name("<="),
@@ -476,8 +477,8 @@ class TestReduce extends FreeSpec with Matchers {
   }
   "if exps" - {
     "produce no errors with correct types" in {
-      val select = a0.Fun(a0.Param("a", TBln), a0.Param("b", TInt), a0.Param("c", TInt))(
-        Some(TInt))(
+      val select = a0.Fun(a0.Param("a", a0.Name("Bln")), a0.Param("b", a0.Name("Int")), a0.Param("c", a0.Name("Int")))(
+        Some(a0.Name("Int")))(
         a0.If(a0.Name("a"), a0.Name("b"), a0.Name("c")))
       val selectPrime = a1.Fun(a1.Param("a", TBln), a1.Param("b", TInt), a1.Param("c", TInt))(
         TInt)(
@@ -488,8 +489,8 @@ class TestReduce extends FreeSpec with Matchers {
       test("select" -> select)("select" -> selectPrime)()
     }
     "produces error with non-boolean condition" in {
-      val select = a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt), a0.Param("c", TInt))(
-        Some(TInt))(
+      val select = a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")), a0.Param("c", a0.Name("Int")))(
+        Some(a0.Name("Int")))(
           a0.If(a0.Name("a"), a0.Name("b"), a0.Name("c")))
       val selectPrime = a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt), a1.Param("c", TInt))(
         TInt)(
@@ -501,8 +502,8 @@ class TestReduce extends FreeSpec with Matchers {
       test("select" -> select)("select" -> selectPrime)(TypeConflict(TBln, TInt))
     }
     "branches must yield compatible types" in {
-      val select = a0.Fun(a0.Param("a", TBln), a0.Param("b", TInt), a0.Param("c", TBln))(
-        Some(TInt))(
+      val select = a0.Fun(a0.Param("a", a0.Name("Bln")), a0.Param("b", a0.Name("Int")), a0.Param("c", a0.Name("Bln")))(
+        Some(a0.Name("Int")))(
           a0.If(a0.Name("a"), a0.Name("b"), a0.Name("c")))
       val selectPrime = a1.Fun(a1.Param("a", TBln), a1.Param("b", TInt), a1.Param("c", TBln))(
         TInt)(
@@ -533,7 +534,7 @@ class TestReduce extends FreeSpec with Matchers {
       }
     }
     "in functions" - {
-      val _inc = a0.Fun(a0.Param("a", TInt))(Some(TInt))(
+      val _inc = a0.Fun(a0.Param("a", a0.Name("Int")))(Some(a0.Name("Int")))(
         a0.Block(
           a0.Var("result", a0.App(a0.Name("+"), a0.Name("a"), 1)),
           a0.Name("result")))
@@ -557,7 +558,7 @@ class TestReduce extends FreeSpec with Matchers {
   }
   "selection" - {
     "members can be selected from struct values" in {
-      val _point = a0.Struct("Point", "x" -> TInt, "y" -> TInt)
+      val _point = a0.Struct("Point", "x" -> a0.Name("Int"), "y" -> a0.Name("Int"))
       val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
       test(
         "Point" -> _point,
@@ -570,8 +571,8 @@ class TestReduce extends FreeSpec with Matchers {
       )()
     }
     "members can be selected from struct variables" in {
-      val _point = a0.Struct("Point", "x" -> TInt, "y" -> TInt)
-      val _getX = a0.Fun(a0.Param("point", a0.Name("Point")))(Some(TInt))(
+      val _point = a0.Struct("Point", "x" -> a0.Name("Int"), "y" -> a0.Name("Int"))
+      val _getX = a0.Fun(a0.Param("point", a0.Name("Point")))(Some(a0.Name("Int")))(
         a0.Select(a0.Name("point"), "x"))
 
       val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
@@ -588,7 +589,7 @@ class TestReduce extends FreeSpec with Matchers {
   "overloads" - {
     "integer addition selected for ints" in {
       test(
-        "add" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TInt))(
+        "add" -> a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(Some(a0.Name("Int")))(
           a0.App(a0.Name("+"),
                  a0.Name("a"),
                  a0.Name("b"))))(
@@ -599,7 +600,7 @@ class TestReduce extends FreeSpec with Matchers {
     }
     "integer subtraction selected for ints" in {
       test(
-        "sub" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TInt))(
+        "sub" -> a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(Some(a0.Name("Int")))(
           a0.App(a0.Name("-"),
                  a0.Name("a"),
                  a0.Name("b"))))(
@@ -610,7 +611,7 @@ class TestReduce extends FreeSpec with Matchers {
     }
     "integer multiplication selected for ints" in {
       test(
-        "mul" -> a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TInt))(
+        "mul" -> a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(Some(a0.Name("Int")))(
           a0.App(a0.Name("*"),
                  a0.Name("a"),
                  a0.Name("b"))))(
@@ -621,7 +622,7 @@ class TestReduce extends FreeSpec with Matchers {
     }
     "floating point addition selected for floats" in {
       test(
-        "add" -> a0.Fun(a0.Param("a", TFlt), a0.Param("b", TFlt))(Some(TFlt))(
+        "add" -> a0.Fun(a0.Param("a", a0.Name("Flt")), a0.Param("b", a0.Name("Flt")))(Some(a0.Name("Flt")))(
           a0.App(a0.Name("+"),
                  a0.Name("a"),
                  a0.Name("b"))))(
@@ -632,7 +633,7 @@ class TestReduce extends FreeSpec with Matchers {
     }
     "floating point subtraction selected for floats" in {
       test(
-        "sub" -> a0.Fun(a0.Param("a", TFlt), a0.Param("b", TFlt))(Some(TFlt))(
+        "sub" -> a0.Fun(a0.Param("a", a0.Name("Flt")), a0.Param("b", a0.Name("Flt")))(Some(a0.Name("Flt")))(
           a0.App(a0.Name("-"),
                  a0.Name("a"),
                  a0.Name("b"))))(
@@ -643,7 +644,7 @@ class TestReduce extends FreeSpec with Matchers {
     }
     "floating point multiplication selected for floats" in {
       test(
-        "mul" -> a0.Fun(a0.Param("a", TFlt), a0.Param("b", TFlt))(Some(TFlt))(
+        "mul" -> a0.Fun(a0.Param("a", a0.Name("Flt")), a0.Param("b", a0.Name("Flt")))(Some(a0.Name("Flt")))(
           a0.App(a0.Name("*"),
                  a0.Name("a"),
                  a0.Name("b"))))(
@@ -659,14 +660,14 @@ class TestReduce extends FreeSpec with Matchers {
 
       "integers can be assigned to floats" in {
         test(
-          "x" -> a0.Cons(TFlt, 4)
+          "x" -> a0.Cons(a0.Name("Flt"), 4)
         )(
           "x" -> a1.Cons(TFlt, 4.f)
         )()
       }
       "floats cannot be assigned to ints" in {
         test(
-          "x" -> a0.Cons(TInt, 4.f)
+          "x" -> a0.Cons(a0.Name("Int"), 4.f)
         )(
           "x" -> a1.Cons(TInt, 4.f)
         )(TypeConflict(TInt, TFlt))
@@ -709,12 +710,12 @@ class TestReduce extends FreeSpec with Matchers {
       }
 
       "vector length squared" in {
-        val _vector = a0.Struct("Vector", "x" -> TFlt, "y" -> TFlt)
+        val _vector = a0.Struct("Vector", "x" -> a0.Name("Flt"), "y" -> a0.Name("Flt"))
 
         val _vSelectX = a0.Select(a0.Name("v"), "x")
         val _vSelectY = a0.Select(a0.Name("v"), "y")
 
-        val _lengthSquared = a0.Fun(a0.Param("v", a0.Name("Vector")))(Some(TFlt))(
+        val _lengthSquared = a0.Fun(a0.Param("v", a0.Name("Vector")))(Some(a0.Name("Flt")))(
           a0.App(a0.Name("+"),
                 a0.App(a0.Name("*"), _vSelectX, _vSelectX),
                 a0.App(a0.Name("*"), _vSelectY, _vSelectY)))
@@ -746,7 +747,7 @@ class TestReduce extends FreeSpec with Matchers {
     "application syntax" - {
 
       "5(4)" in {
-        val _apply = a0.Fun(a0.Param("a", TInt), a0.Param("b", TInt))(Some(TInt))(
+        val _apply = a0.Fun(a0.Param("a", a0.Name("Int")), a0.Param("b", a0.Name("Int")))(Some(a0.Name("Int")))(
           a0.App(a0.Name("*"), a0.Name("a"), a0.Name("b")))
 
         val apply = a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt))(TInt)(
@@ -759,7 +760,7 @@ class TestReduce extends FreeSpec with Matchers {
 
       "f(x) = a * x + b" in {
 
-        val _line = a0.Struct("Line", "a" -> TFlt, "b" -> TFlt)
+        val _line = a0.Struct("Line", "a" -> a0.Name("Flt"), "b" -> a0.Name("Flt"))
         val line = a1.Struct("Line", "a" -> TFlt, "b" -> TFlt)
 
         val _lSelectA = a0.Select(a0.Name("l"), "a")
@@ -768,7 +769,7 @@ class TestReduce extends FreeSpec with Matchers {
         val lSelectA = a1.Select(a1.Name("l", a1.Param("l", line)), "a", TFlt)
         val lSelectB = a1.Select(a1.Name("l", a1.Param("l", line)), "b", TFlt)
 
-        val _apply = a0.Fun(a0.Param("l", a0.Name("Line")), a0.Param("x", TFlt))(Some(TFlt))(
+        val _apply = a0.Fun(a0.Param("l", a0.Name("Line")), a0.Param("x", a0.Name("Flt")))(Some(a0.Name("Flt")))(
           a0.App(a0.Name("+"),
                 a0.App(a0.Name("*"), _lSelectA, a0.Name("x")),
                 _lSelectB))

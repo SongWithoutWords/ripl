@@ -1,7 +1,8 @@
 package ripl.ast.common
 
-import ripl.ast.{untyped => a0, typed => a1}
 import ripl.ast.common._
+import ripl.ast.common.TypeAtom._
+import ripl.ast.{untyped => a0, typed => a1}
 
 object ImplicitConversions {
   implicit def ImplicitBln(b: Boolean): VBln = VBln(b)

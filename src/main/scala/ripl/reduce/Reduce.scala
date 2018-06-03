@@ -4,8 +4,10 @@ import scala.collection.immutable.Set
 import scala.collection.mutable.Stack
 
 import ripl.ast.common._
+import ripl.ast.common.TypeAtom._
 import ripl.ast.{untyped => a0}
 import ripl.ast.{typed => a1}
+import a1.{TError}
 import ripl.util.IdentityMap
 import ripl.util.MultiMap
 import ripl.util.Ordering
@@ -120,6 +122,7 @@ class Reduce(val astIn: a0.Ast) {
 
   val astOut = astIn.mapValues(mapNamespaceMember(_))
   val intrinsics = MultiMap(a1.Intrinsic.values.map(i => (i.n, i)): _*)
+  val builtInTypes = MultiMap(TypeAtom.values.map(t => (t.n, t)): _*)
 
   type Scope = MultiMap[String, a1.Node]
   var scopes: List[Scope] = Nil
@@ -134,6 +137,7 @@ class Reduce(val astIn: a0.Ast) {
   def lookupName(n: String): List[a1.Node] =
     astOut.get(n).toList ++
       intrinsics.get(n) ++
+      builtInTypes.get(n) ++
       scopes.flatMap(_.get(n))
 
   def lookupImplicitConversions(t: a1.Type): List[a1.Exp] = BuiltInConversions.entries(t)

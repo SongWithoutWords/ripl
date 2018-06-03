@@ -3,6 +3,7 @@ package ripl.ast.typed
 import enumeratum._
 
 import ripl.ast.common._
+import ripl.ast.common.TypeAtom._
 import ripl.ast.{untyped => a0}
 import ripl.reduce.ReduceM
 import ripl.util.MultiMap
@@ -113,8 +114,9 @@ case class Var(n: String, e: Exp) extends Exp {
 // Intrinsics
 sealed trait Intrinsic extends EnumEntry with Exp { val n: String; val t: TFun }
 case object Intrinsic extends Enum[Intrinsic] {
+
   val values = findValues
-  val valuesByName = values.map(v => v.n -> v).toMap
+
   case object IAdd extends Intrinsic { val n = "+"; val t = TFun(TInt, TInt)(TInt) }
   case object ISub extends Intrinsic { val n = "-"; val t = TFun(TInt, TInt)(TInt) }
   case object IMul extends Intrinsic { val n = "*"; val t = TFun(TInt, TInt)(TInt) }
@@ -149,7 +151,9 @@ object VObj {
 }
 case class VObj(t: Type, fields: MultiMap[String, Val]) extends Val
 
-// Composite types
+// Types
+case object TError extends Type
+
 object TFun { def apply(params: Type*)(ret: Type): TFun = TFun(params.toList, ret) }
 case class TFun(params: List[Type], ret: Type) extends Type
 object Struct {
