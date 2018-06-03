@@ -150,7 +150,9 @@ object VObj {
 }
 case class VObj(t: Type, fields: MultiMap[String, Val]) extends Val
 
-// Composite types
+// Types
+case object TError extends Type
+
 object TFun { def apply(params: Type*)(ret: Type): TFun = TFun(params.toList, ret) }
 case class TFun(params: List[Type], ret: Type) extends Type
 object Struct {
