@@ -357,8 +357,7 @@ class TestParser extends FreeSpec with Matchers {
           )
           test(
             """data Vector
-              |  f32 x; f32 y
-              """.stripMargin
+              |  f32 x; f32 y""".stripMargin
           )(Struct("Vector", "x" -> Name("f32"), "y" -> Name("f32")))
           test(
             """data Vector
