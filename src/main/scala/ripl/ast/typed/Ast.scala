@@ -113,8 +113,9 @@ case class Var(n: String, e: Exp) extends Exp {
 // Intrinsics
 sealed trait Intrinsic extends EnumEntry with Exp { val n: String; val t: TFun }
 case object Intrinsic extends Enum[Intrinsic] {
+
   val values = findValues
-  val valuesByName = values.map(v => v.n -> v).toMap
+
   case object IAdd extends Intrinsic { val n = "+"; val t = TFun(TInt, TInt)(TInt) }
   case object ISub extends Intrinsic { val n = "-"; val t = TFun(TInt, TInt)(TInt) }
   case object IMul extends Intrinsic { val n = "*"; val t = TFun(TInt, TInt)(TInt) }
