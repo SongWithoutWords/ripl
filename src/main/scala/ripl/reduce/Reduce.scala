@@ -4,6 +4,7 @@ import scala.collection.immutable.Set
 import scala.collection.mutable.Stack
 
 import ripl.ast.common._
+import ripl.ast.common.TypeAtom._
 import ripl.ast.{untyped => a0}
 import ripl.ast.{typed => a1}
 import ripl.util.IdentityMap

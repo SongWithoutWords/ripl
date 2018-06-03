@@ -3,6 +3,7 @@ package ripl.ast.typed
 import enumeratum._
 
 import ripl.ast.common._
+import ripl.ast.common.TypeAtom._
 import ripl.ast.{untyped => a0}
 import ripl.reduce.ReduceM
 import ripl.util.MultiMap

@@ -7,6 +7,7 @@ import org.scalatest._
 import ripl.util.{MultiMap => Multi}
 
 import ripl.ast.common._
+import ripl.ast.common.TypeAtom._
 import ripl.ast.common.ImplicitConversions._
 import ripl.ast.{untyped => a0, typed => a1}
 
