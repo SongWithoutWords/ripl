@@ -15,5 +15,3 @@ case object TypeAtom extends Enum[TypeAtom] {
   case object TNone extends TypeAtom { val n = "None" }
   case object TStr extends TypeAtom { val n = "Str" }
 }
-
-

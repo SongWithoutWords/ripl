@@ -7,7 +7,6 @@ import sys.process._
 import org.scalatest._
 import matchers._
 
-
 import ripl.ast.typed._
 import ripl.util.PrettyPrint
 
@@ -35,9 +34,9 @@ object CustomMatchers {
       //     "--eval", s"""(ediff "${resultPath.toString}" "${expectedPath.toString}")"""
       //   )
 
-        // println("Invoking: " + command)
+      // println("Invoking: " + command)
 
-        // command.!
+      // command.!
       // }
 
       // Could consider trying to get git-diff to work in future
@@ -46,7 +45,16 @@ object CustomMatchers {
       MatchResult(
         success,
         if (!success) {
-          val process = Process(Seq("git", "diff", "--no-index", "--histogram", expectedPath.toString, resultPath.toString))
+          val process = Process(
+            Seq(
+              "git",
+              "diff",
+              "--no-index",
+              "--histogram",
+              expectedPath.toString,
+              resultPath.toString
+            )
+          )
           process.lines_!.mkString("\n")
         } else "",
         ""
@@ -56,4 +64,3 @@ object CustomMatchers {
 
   def matchAst(expected: Any) = new AstMatcher(expected)
 }
-

@@ -21,4 +21,3 @@ case object Ordering {
 sealed trait Ordering {
   def <>(rhs: Ordering): Ordering
 }
-

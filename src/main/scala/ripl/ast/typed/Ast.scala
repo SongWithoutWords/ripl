@@ -26,7 +26,6 @@ object Namespace {
 }
 case class Namespace(nodes: Nodes) extends Node
 
-
 trait Type extends Node
 
 // Expressions
@@ -36,7 +35,7 @@ object App {
 case class App(f: Exp, args: List[Exp]) extends Exp {
   def t = f.t match {
     case TFun(_, r) => r
-    case _ => TError
+    case _          => TError
   }
 }
 case class Assign(a: Exp, b: Exp) extends Exp {
@@ -69,24 +68,25 @@ case object InvalidExp extends Exp {
 //   implicit def apply(node: a0.Node) = Node(node)
 // }
 
-// case class 
+// case class
 
 object Cycle {
   sealed trait Component { def node: a0.Node }
-  case class Fun(node: a0.Fun, params: List[Type], ret: Option[Type]) extends Component
+  case class Fun(node: a0.Fun, params: List[Type], ret: Option[Type])
+      extends Component
   case class Node(node: a0.Node) extends Component
 }
 
 case class Cycle(cycle: List[Cycle.Component]) extends Exp {
   def t = cycle match {
-    case Cycle.Fun(_, paramTypes, Some(t))::_ => TFun(paramTypes, t)
-    case _ => TError
+    case Cycle.Fun(_, paramTypes, Some(t)) :: _ => TFun(paramTypes, t)
+    case _                                      => TError
   }
 }
 
 object Fun {
-  def apply(params: Param*)(retType: Type)(body: Exp): Fun
-    = Fun(params.toList, retType, body)
+  def apply(params: Param*)(retType: Type)(body: Exp): Fun =
+    Fun(params.toList, retType, body)
 }
 case class Fun(params: List[Param], retType: Type, body: Exp) extends Exp {
   def t = TFun(params.map(_.t), retType)
@@ -97,8 +97,8 @@ case class Fun(params: List[Param], retType: Type, body: Exp) extends Exp {
 object Name { def apply(n: String, exps: Exp*): Name = Name(n, exps.toList) }
 case class Name(n: String, exps: List[Exp]) extends Exp {
   def t = exps match {
-    case (e: Exp)::Nil => e.t
-    case _ => TError
+    case (e: Exp) :: Nil => e.t
+    case _               => TError
   }
 }
 
@@ -117,49 +117,84 @@ case object Intrinsic extends Enum[Intrinsic] {
 
   val values = findValues
 
-  case object IAdd extends Intrinsic { val n = "+"; val t = TFun(TInt, TInt)(TInt) }
-  case object ISub extends Intrinsic { val n = "-"; val t = TFun(TInt, TInt)(TInt) }
-  case object IMul extends Intrinsic { val n = "*"; val t = TFun(TInt, TInt)(TInt) }
-  case object IDiv extends Intrinsic { val n = "//"; val t = TFun(TInt, TInt)(TInt) }
-  case object IMod extends Intrinsic { val n = "%"; val t = TFun(TInt, TInt)(TInt) }
+  case object IAdd extends Intrinsic {
+    val n = "+"; val t = TFun(TInt, TInt)(TInt)
+  }
+  case object ISub extends Intrinsic {
+    val n = "-"; val t = TFun(TInt, TInt)(TInt)
+  }
+  case object IMul extends Intrinsic {
+    val n = "*"; val t = TFun(TInt, TInt)(TInt)
+  }
+  case object IDiv extends Intrinsic {
+    val n = "//"; val t = TFun(TInt, TInt)(TInt)
+  }
+  case object IMod extends Intrinsic {
+    val n = "%"; val t = TFun(TInt, TInt)(TInt)
+  }
 
-  case object IEql extends Intrinsic { val n = "=="; val t = TFun(TInt, TInt)(TBln) }
-  case object INeq extends Intrinsic { val n = "/="; val t = TFun(TInt, TInt)(TBln) }
-  case object ILeq extends Intrinsic { val n = "<="; val t = TFun(TInt, TInt)(TBln) }
-  case object IGeq extends Intrinsic { val n = ">="; val t = TFun(TInt, TInt)(TBln) }
+  case object IEql extends Intrinsic {
+    val n = "=="; val t = TFun(TInt, TInt)(TBln)
+  }
+  case object INeq extends Intrinsic {
+    val n = "/="; val t = TFun(TInt, TInt)(TBln)
+  }
+  case object ILeq extends Intrinsic {
+    val n = "<="; val t = TFun(TInt, TInt)(TBln)
+  }
+  case object IGeq extends Intrinsic {
+    val n = ">="; val t = TFun(TInt, TInt)(TBln)
+  }
 
-  case object FAdd extends Intrinsic { val n = "+"; val t = TFun(TFlt, TFlt)(TFlt) }
-  case object FSub extends Intrinsic { val n = "-"; val t = TFun(TFlt, TFlt)(TFlt) }
-  case object FMul extends Intrinsic { val n = "*"; val t = TFun(TFlt, TFlt)(TFlt) }
-  case object FDiv extends Intrinsic { val n = "/"; val t = TFun(TFlt, TFlt)(TFlt) }
-  case object FMod extends Intrinsic { val n = "%"; val t = TFun(TFlt, TFlt)(TFlt) }
+  case object FAdd extends Intrinsic {
+    val n = "+"; val t = TFun(TFlt, TFlt)(TFlt)
+  }
+  case object FSub extends Intrinsic {
+    val n = "-"; val t = TFun(TFlt, TFlt)(TFlt)
+  }
+  case object FMul extends Intrinsic {
+    val n = "*"; val t = TFun(TFlt, TFlt)(TFlt)
+  }
+  case object FDiv extends Intrinsic {
+    val n = "/"; val t = TFun(TFlt, TFlt)(TFlt)
+  }
+  case object FMod extends Intrinsic {
+    val n = "%"; val t = TFun(TFlt, TFlt)(TFlt)
+  }
 
-  case object FEql extends Intrinsic { val n = "=="; val t = TFun(TFlt, TFlt)(TBln) }
-  case object FNeq extends Intrinsic { val n = "/="; val t = TFun(TFlt, TFlt)(TBln) }
+  case object FEql extends Intrinsic {
+    val n = "=="; val t = TFun(TFlt, TFlt)(TBln)
+  }
+  case object FNeq extends Intrinsic {
+    val n = "/="; val t = TFun(TFlt, TFlt)(TBln)
+  }
 
   // Conversions
-  case object ItoF extends Intrinsic { val n = "toFloat"; val t = TFun(TInt)(TFlt) }
-  case object FtoI extends Intrinsic { val n = "truncateToInteger"; val t = TFun(TFlt)(TInt) }
+  case object ItoF extends Intrinsic {
+    val n = "toFloat"; val t = TFun(TInt)(TFlt)
+  }
+  case object FtoI extends Intrinsic {
+    val n = "truncateToInteger"; val t = TFun(TFlt)(TInt)
+  }
 }
-
 
 // Values
 trait Val extends Exp
 object VObj {
-  def apply(t: Type, fields: (String, Val)*): VObj
-    = VObj(t, MultiMap(fields: _*))
+  def apply(t: Type, fields: (String, Val)*): VObj =
+    VObj(t, MultiMap(fields: _*))
 }
 case class VObj(t: Type, fields: MultiMap[String, Val]) extends Val
 
 // Types
 case object TError extends Type
 
-object TFun { def apply(params: Type*)(ret: Type): TFun = TFun(params.toList, ret) }
+object TFun {
+  def apply(params: Type*)(ret: Type): TFun = TFun(params.toList, ret)
+}
 case class TFun(params: List[Type], ret: Type) extends Type
 object Struct {
-  def apply(name: String, fields: (String, Type)*): Struct
-    = Struct(name, MultiMap(fields: _*))
+  def apply(name: String, fields: (String, Type)*): Struct =
+    Struct(name, MultiMap(fields: _*))
 }
 case class Struct(name: String, fields: MultiMap[String, Type]) extends Type
-
-
