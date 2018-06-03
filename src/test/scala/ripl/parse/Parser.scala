@@ -282,34 +282,34 @@ class TestParser extends FreeSpec with Matchers {
             "  a"
           )(Block(Name("a")))
           test(
-            "  a" nl
-              "  b"
+            """  a
+              |  b""".stripMargin
           )(Block(Name("a"), Name("b")))
 
           test(
-            "  a" nl
-              "    i"
+            """  a
+              |    i""".stripMargin
           )(Block(Name("a"), Block(Name("i"))))
 
           test(
-            "  a" nl
-              "  b" nl
-              "    i" nl
-              "    j" nl
-              "    k"
+            """  a
+              |  b
+              |    i
+              |    j
+              |    k""".stripMargin
           )(Block(Name("a"), Name("b"), Block(Name("i"), Name("j"), Name("k"))))
 
           test(
-            "  a" nl
-              "" nl
-              "  b" nl
-              "  c" nl
-              "    i" nl
-              "  d" nl
-              "  e" nl
-              "" nl
-              "    j" nl
-              "  f"
+            """  a
+              |
+              |  b
+              |  c
+              |    i
+              |  d
+              |  e
+              |
+              |    j
+              |  f""".stripMargin
           )(
             Block(
               Name("a"),
@@ -324,15 +324,15 @@ class TestParser extends FreeSpec with Matchers {
           )
 
           test(
-            "  a" nl
-              "    i" nl
-              "      x" nl
-              "      y" nl
-              "    j" nl
-              "      z" nl
-              "" nl
-              "  b" nl
-              "  c"
+            """  a
+              |    i
+              |      x
+              |      y
+              |    j
+              |      z
+              |
+              |  b
+              |  c""".stripMargin
           )(
             Block(
               Name("a"),
@@ -356,19 +356,20 @@ class TestParser extends FreeSpec with Matchers {
             Struct("Vector", "x" -> Name("f32"), "y" -> Name("f32"))
           )
           test(
-            "data Vector" nl
-              "  f32 x; f32 y"
+            """data Vector
+              |  f32 x; f32 y
+              """.stripMargin
           )(Struct("Vector", "x" -> Name("f32"), "y" -> Name("f32")))
           test(
-            "data Vector" nl
-              "  f32 x" nl
-              "  f32 y"
+            """data Vector
+              |  f32 x
+              |  f32 y""".stripMargin
           )(Struct("Vector", "x" -> Name("f32"), "y" -> Name("f32")))
           test(
-            "data Colour" nl
-              "  i8 red" nl
-              "  i8 green" nl
-              "  i8 blue"
+            """data Colour
+              |  i8 red
+              |  i8 green
+              |  i8 blue""".stripMargin
           )(
             Struct(
               "Colour",
@@ -395,9 +396,9 @@ class TestParser extends FreeSpec with Matchers {
             )
           )
           test(
-            "union MaybeI32" nl
-              "  data Some { i32 value }" nl
-              "  data None"
+            """union MaybeI32
+              |  data Some { i32 value }
+              |  data None""".stripMargin
           )(
             Union(
               "MaybeI32",
@@ -417,41 +418,41 @@ class TestParser extends FreeSpec with Matchers {
               )
             )
           test(
-            "union Exp" nl
-              "  f32" nl
-              "  data Add { Exp e1; Exp e2 }" nl
-              "  data Sub { Exp e1; Exp e2 }" nl
-              "  data Mul { Exp e1; Exp e2 }" nl
-              "  data Div { Exp e1; Exp e2 }"
+            """union Exp
+              |  f32
+              |  data Add { Exp e1; Exp e2 }
+              |  data Sub { Exp e1; Exp e2 }
+              |  data Mul { Exp e1; Exp e2 }
+              |  data Div { Exp e1; Exp e2 }""".stripMargin
           )(expUserType)
 
           test(
-            "union Exp" nl
-              "  f32" nl
-              "  data Add { Exp e1; Exp e2; }" nl
-              "  data Sub { Exp e1; Exp e2 }" nl
-              "  data Mul" nl
-              "    Exp e1; Exp e2" nl
-              "  data Div" nl
-              "    Exp e1" nl
-              "    Exp e2"
+            """union Exp
+              |  f32
+              |  data Add { Exp e1; Exp e2; }
+              |  data Sub { Exp e1; Exp e2 }
+              |  data Mul
+              |    Exp e1; Exp e2
+              |  data Div
+              |    Exp e1
+              |    Exp e2""".stripMargin
           )(expUserType)
 
           test(
-            "union Exp" nl
-              "  f32" nl
-              "  data Add" nl
-              "     Exp e1" nl
-              "     Exp e2" nl
-              "   data Sub" nl
-              "     Exp e1" nl
-              "     Exp e2" nl
-              "   data Mul" nl
-              "     Exp e1" nl
-              "     Exp e2" nl
-              "   data Div" nl
-              "     Exp e1" nl
-              "     Exp e2"
+            """union Exp
+              |  f32
+              |  data Add
+              |     Exp e1
+              |     Exp e2
+              |   data Sub
+              |     Exp e1
+              |     Exp e2
+              |   data Mul
+              |     Exp e1
+              |     Exp e2
+              |   data Div
+              |     Exp e1
+              |     Exp e2""".stripMargin
           )(expUserType)
         }
       }
@@ -509,25 +510,25 @@ class TestParser extends FreeSpec with Matchers {
       testAst("namespace empty")("empty" -> Namespace())
 
       testAst(
-        "namespace ripl" nl
-          "  namespace math" nl
-          "    $ pi = 3.14159265"
+        """namespace ripl
+          |  namespace math
+          |    $ pi = 3.14159265""".stripMargin
       )(
         "ripl" -> Namespace(
           "math" -> Namespace("pi" -> Cons(Name("$"), VFlt(3.14159265f)))
         )
       )
       testAst(
-        "namespace ripl.math" nl
-          "  $ pi = 3.14159265"
+        """namespace ripl.math
+          |  $ pi = 3.14159265""".stripMargin
       )(
         "ripl" -> Namespace(
           "math" -> Namespace("pi" -> Cons(Name("$"), VFlt(3.14159265f)))
         )
       )
       testAst(
-        "namespace ripl.math.constants" nl
-          "  $ pi = 3.14159265"
+        """namespace ripl.math.constants
+          |  $ pi = 3.14159265""".stripMargin
       )(
         "ripl" -> Namespace(
           "math" -> Namespace(
@@ -536,9 +537,9 @@ class TestParser extends FreeSpec with Matchers {
         )
       )
       testAst(
-        "namespace ripl.math" nl
-          "  namespace constants" nl
-          "    $ pi = 3.14159265"
+        """namespace ripl.math
+          |  namespace constants
+          |    $ pi = 3.14159265""".stripMargin
       )(
         "ripl" -> Namespace(
           "math" -> Namespace(
