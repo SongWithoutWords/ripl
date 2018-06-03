@@ -9,6 +9,7 @@ libraryDependencies ++= Seq(
 )
 
 ensimeScalaVersion in ThisBuild := "2.12.6"
+ensimeIgnoreMissingDirectories := true;
 
 scalafmtOnCompile := true
 
