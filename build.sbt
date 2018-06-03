@@ -8,6 +8,8 @@ libraryDependencies ++= Seq(
   "com.beachape" %% "enumeratum" % "1.5.12"
 )
 
+ensimeScalaVersion in ThisBuild := "2.12.6"
+
 scalafmtOnCompile := true
 
 enablePlugins(Antlr4Plugin)
