@@ -20,4 +20,3 @@ case object Parse {
   def units(input: String): List[(String, Node)] =
     ParseTreeToAst.mapUnits(getParser(input).units())
 }
-
