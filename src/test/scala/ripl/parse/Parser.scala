@@ -5,7 +5,6 @@ import org.scalatest._
 import ripl.ast.common._
 import ripl.ast.untyped._
 import ripl.parser._
-import ripl.parse.StringExtensions._
 import ripl.util.MultiMap
 
 import ripl.reduce.CustomMatchers.matchAst
