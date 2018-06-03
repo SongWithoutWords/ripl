@@ -1,9 +1,9 @@
 package ripl.ast.common
 
-import ripl.ast.{untyped => a0, typed => a1}
+import ripl.ast.typed.Type
 
 
-sealed trait TypeAtom extends a0.Type with a1.Type
+sealed trait TypeAtom extends Type
 case object TBln extends TypeAtom
 case object TError extends TypeAtom
 case object TFlt extends TypeAtom
