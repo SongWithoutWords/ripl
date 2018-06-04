@@ -177,11 +177,11 @@ case class AddrSpaceCast(
     operand0: Constant,
     t: Type
 )
-// case class ICmp(
-//     iPredicate: IntegerPredicate,
-//     operand0: Constant,
-//     operand1: Constant
-// )
+case class ICmp(
+    iPredicate: IntegerPredicate,
+    operand0: Constant,
+    operand1: Constant
+)
 case class FCmp(
     fpPredicate: FloatingPointPredicate,
     operand0: Constant,
