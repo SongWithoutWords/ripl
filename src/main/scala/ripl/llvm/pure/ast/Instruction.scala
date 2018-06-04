@@ -3,6 +3,8 @@
 
 package ripl.llvm.pure.ast
 
+import OperandAliases._
+
 // import Data.List.NonEmpty
 
 sealed trait NonEmpty[A]
@@ -45,7 +47,7 @@ case object Terminator {
   case class Invoke(
       callingConvention: CallingConvention,
       returnAttributes: List[ParameterAttribute],
-      function: Aliases.CallableOperand,
+      function: CallableOperand,
       arguments: List[(Operand, List[ParameterAttribute])],
       functionAttributes: List[Either[GroupID, FunctionAttribute]],
       returnDest: Name,
@@ -371,7 +373,7 @@ case object Instruction {
       tailCallKind: Option[TailCallKind],
       callingConvention: CallingConvention,
       returnAttributes: List[ParameterAttribute],
-      function: Aliases.CallableOperand,
+      function: CallableOperand,
       arguments: List[(Operand, List[ParameterAttribute])],
       functionAttributes: List[Either[GroupID, FunctionAttribute]],
       metadata: InstructionMetadata

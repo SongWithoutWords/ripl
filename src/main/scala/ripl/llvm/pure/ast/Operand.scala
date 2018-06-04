@@ -30,6 +30,6 @@ case class ConstantOperand(constant: Constant) extends Operand
 case class MetadataOperand(metadata: Metadata) extends Operand
 
 // The 'LLVM.AST.Instruction.Call' instruction is special: the callee can be inline assembly
-object Aliases {
+object OperandAliases {
   type CallableOperand = Either[InlineAssembly, Operand]
 }
