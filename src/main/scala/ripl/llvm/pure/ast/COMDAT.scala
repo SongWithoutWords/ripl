@@ -1,13 +1,13 @@
--- | Module to allow importing 'COMDAT.SelectionKind' distinctly qualified.
-module LLVM.AST.COMDAT where
+// Module to allow importing 'COMDAT.SelectionKind' distinctly qualified.
+package ripl.llvm.pure.ast
 
-import LLVM.Prelude
+// <http://llvm.org/docs/LangRef.html#comdats>
 
--- | <http://llvm.org/docs/LangRef.html#comdats>
-data SelectionKind
-  = Any
-  | ExactMatch
-  | Largest
-  | NoDuplicates
-  | SameSize
-  deriving (Eq, Read, Show, Typeable, Data, Generic)
+sealed trait SelectionKind
+case object SelectionKind {
+  case object Any
+  case object ExactMatch
+  case object Largest
+  case object NoDuplicates
+  case object SameSize
+}
