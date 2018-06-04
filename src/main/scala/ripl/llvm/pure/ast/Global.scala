@@ -3,53 +3,53 @@ package ripl.llvm.pure.ast
 
 // <http://llvm.org/doxygen/classllvm_1_1GlobalValue.html>
 sealed trait Global
-    // <http://llvm.org/docs/LangRef.html#global-variables>
+// <http://llvm.org/docs/LangRef.html#global-variables>
 case class GlobalVariable(
-        name: Name,
-        linkage: L.Linkage,
-        visibility: V.Visibility,
-        dllStorageClass: Option[DLL.StorageClass],
-        threadLocalMode: Option[TLS.Model],
-        unnamedAddr: Option[UnnamedAddr],
-        isConstant: Bool,
-        t: Type,
-        addrSpace: AddrSpace,
-        initializer: Option[Constant],
-        section: Option[String],
-        comdat: Option[String],
-        alignment: Word32
-      )
-    // <http://llvm.org/docs/LangRef.html#aliases>
+    name: Name,
+    linkage: Linkage,
+    visibility: Visibility,
+    dllStorageClass: Option[StorageClass],
+    threadLocalMode: Option[ThreadLocalStorageModel],
+    unnamedAddr: Option[UnnamedAddr],
+    isConstant: Boolean,
+    t: Type,
+    addrSpace: AddrSpace,
+    initializer: Option[Constant],
+    section: Option[String],
+    comdat: Option[String],
+    alignment: Int
+)
+// <http://llvm.org/docs/LangRef.html#aliases>
 case class GlobalAlias(
-        name: Name,
-        linkage: L.Linkage,
-        visibility: V.Visibility,
-        dllStorageClass: Option[DLL.StorageClass],
-        threadLocalMode: Option[TLS.Model],
-        unnamedAddr: Option[UnnamedAddr],
-        t: Type,
-        addrSpace: AddrSpace,
-        aliasee: Constant
-      )
-    // <http://llvm.org/docs/LangRef.html#functions>
+    name: Name,
+    linkage: Linkage,
+    visibility: Visibility,
+    dllStorageClass: Option[StorageClass],
+    threadLocalMode: Option[ThreadLocalStorageModel],
+    unnamedAddr: Option[UnnamedAddr],
+    t: Type,
+    addrSpace: AddrSpace,
+    aliasee: Constant
+)
+// <http://llvm.org/docs/LangRef.html#functions>
 case class Function(
-        linkage: L.Linkage,
-        visibility: V.Visibility,
-        dllStorageClass: Option[DLL.StorageClass],
-        callingConvention: CC.CallingConvention,
-        returnAttributes: List[ParameterAttribute],
-        returnType: Type,
-        name: Name,
-        parameters: (List[Parameter],Bool), // ^ snd indicates varargs
-        functionAttributes: List[Either[A.GroupID, A.FunctionAttribute]],
-        section: Option[String],
-        comdat: Option[String],
-        alignment: Word32,
-        garbageCollectorName: Option[String],
-        prefix: Option[Constant],
-        basicBlocks: List[BasicBlock],
-        personalityFunction: Option[Constant]
-      )
+    linkage: Linkage,
+    visibility: Visibility,
+    dllStorageClass: Option[StorageClass],
+    callingConvention: CallingConvention,
+    returnAttributes: List[ParameterAttribute],
+    returnType: Type,
+    name: Name,
+    parameters: (List[Parameter], Boolean), // ^ snd indicates varargs
+    functionAttributes: List[Either[GroupID, FunctionAttribute]],
+    section: Option[String],
+    comdat: Option[String],
+    alignment: Int,
+    garbageCollectorName: Option[String],
+    prefix: Option[Constant],
+    basicBlocks: List[BasicBlock],
+    personalityFunction: Option[Constant]
+)
 
 // 'Parameter's for 'Function's
 case class Parameter(t: Type, name: Name, attributes: List[ParameterAttribute])
@@ -57,7 +57,11 @@ case class Parameter(t: Type, name: Name, attributes: List[ParameterAttribute])
 // <http://llvm.org/doxygen/classllvm_1_1BasicBlock.html>
 // LLVM code in a function is a sequence of 'BasicBlock's each with a label,
 // some instructions, and a terminator.
-case class BasicBlock(name: Name, instructions: List[Named[Instruction]], terminator: Named[Terminator])
+case class BasicBlock(
+    name: Name,
+    instructions: List[Named[Instruction]],
+    terminator: Named[Terminator]
+)
 
 sealed trait UnnamedAddr
 case object LocalAddr extends UnnamedAddr
@@ -65,7 +69,7 @@ case object GlobalAddr extends UnnamedAddr
 
 // // helper for making 'GlobalVariable's
 // globalVariableDefaults: Global
-// globalVariableDefaults = 
+// globalVariableDefaults =
 //   GlobalVariable(
 //   name = error "global variable name not defined",
 //   linkage = L.External,
