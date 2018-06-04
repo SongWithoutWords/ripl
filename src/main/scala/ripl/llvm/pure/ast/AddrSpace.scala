@@ -1,8 +1,7 @@
--- | Pointers exist in Address Spaces 
-module LLVM.AST.AddrSpace where
+// Pointers exist in Address Spaces
 
-import LLVM.Prelude
+package ripl.llvm.pure.ast
 
--- | See <http://llvm.org/docs/LangRef.html#pointer-type>
-data AddrSpace = AddrSpace Word32
-   deriving (Eq, Ord, Read, Show, Typeable, Data, Generic)
+// See <http://llvm.org/docs/LangRef.html#pointer-type>
+
+case class AddrSpace(value: Int)
