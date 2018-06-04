@@ -1,76 +1,70 @@
--- | <http://llvm.org/docs/LangRef.html#data-layout>
-module LLVM.AST.DataLayout where
+// <http://llvm.org/docs/LangRef.html#data-layout>
+package ripl.llvm.pure.ast
 
-import LLVM.Prelude
+// Little Endian is the one true way :-). Sadly, we must support the infidels.
+sealed trait Endianness
+case object Endianness {
+  case object LittleEndian extends Endianness
+  case object BigEndian extends Endianness
+}
 
-import Data.Map (Map)
-import qualified Data.Map as Map
-import Data.Set (Set)
+// An AlignmentInfo(describes, how) a given type must and would best be aligned
+case class AlignmentInfo(
+    abiAlignment: Int,
+    preferredAlignment: Int
+)
 
-import LLVM.AST.AddrSpace
+// A type of type for which 'AlignmentInfo' may be specified
+sealed trait AlignType
+case object AlignType {
+  case object Integer extends AlignType
+  case object Vector extends AlignType
+  case object Float extends AlignType
+}
 
--- | Little Endian is the one true way :-). Sadly, we must support the infidels.
-data Endianness = LittleEndian | BigEndian
-  deriving (Eq, Ord, Read, Show, Typeable, Data, Generic)
+// A style of name mangling
+sealed trait Mangling
+case object Mangling {
+  case object ELFMangling extends Mangling
+  case object MIPSMangling extends Mangling
+  case object MachOMangling extends Mangling
+  case object WindowsCOFFMangling extends Mangling
+}
 
--- | An AlignmentInfo describes how a given type must and would best be aligned
-data AlignmentInfo = AlignmentInfo {
-    abiAlignment :: Word32,
-    preferredAlignment :: Word32
-  }
-  deriving (Eq, Ord, Read, Show, Typeable, Data, Generic)
+// a description of the various data layout properties which may be used during
+// optimization
+case class DataLayout(
+    endianness: Endianness,
+    mangling: Option[Mangling],
+    stackAlignment: Option[Int],
+    pointerLayouts: Map[AddrSpace, (Int, AlignmentInfo)],
+    typeLayouts: Map[(AlignType, Int), AlignmentInfo],
+    aggregateLayout: AlignmentInfo,
+    nativeSizes: Option[Set[Int]]
+)
 
--- | A type of type for which 'AlignmentInfo' may be specified
-data AlignType
-  = IntegerAlign
-  | VectorAlign
-  | FloatAlign
-  deriving (Eq, Ord, Read, Show, Typeable, Data, Generic)
-
--- | A style of name mangling
-data Mangling
-  = ELFMangling
-  | MIPSMangling
-  | MachOMangling
-  | WindowsCOFFMangling
-  deriving (Eq, Ord, Read, Show, Typeable, Data, Generic)
-
--- | a description of the various data layout properties which may be used during
--- optimization
-data DataLayout = DataLayout {
-    endianness :: Endianness,
-    mangling :: Maybe Mangling,
-    stackAlignment :: Maybe Word32,
-    pointerLayouts :: Map AddrSpace (Word32, AlignmentInfo),
-    typeLayouts :: Map (AlignType, Word32) AlignmentInfo,
-    aggregateLayout :: AlignmentInfo,
-    nativeSizes :: Maybe (Set Word32)
-  }
-  deriving (Eq, Ord, Read, Show, Typeable, Data, Generic)
-
--- | a default 'DataLayout'
-defaultDataLayout :: Endianness -> DataLayout
-defaultDataLayout defaultEndianness = DataLayout {
-  endianness = defaultEndianness,
-  mangling = Nothing,
-  stackAlignment = Nothing,
-  pointerLayouts = Map.fromList [
-    (AddrSpace 0, (64, AlignmentInfo 64 64))
-   ],
-  typeLayouts = Map.fromList [
-    ((IntegerAlign, 1), AlignmentInfo 8 8),
-    ((IntegerAlign, 8), AlignmentInfo 8 8),
-    ((IntegerAlign, 16), AlignmentInfo 16 16),
-    ((IntegerAlign, 32), AlignmentInfo 32 32),
-    ((IntegerAlign, 64), AlignmentInfo 32 64),
-    ((FloatAlign, 16), AlignmentInfo 16 16),
-    ((FloatAlign, 32), AlignmentInfo 32 32),
-    ((FloatAlign, 64), AlignmentInfo 64 64),
-    ((FloatAlign, 128), AlignmentInfo 128 128),
-    ((VectorAlign, 64), AlignmentInfo 64 64),
-    ((VectorAlign, 128), AlignmentInfo 128 128)
-   ],
-  aggregateLayout = AlignmentInfo 0 64,
-  nativeSizes = Nothing
- }
-
+case object DataLayout {
+  def default(endianness: Endianness) = DataLayout(
+    endianness,
+    None,
+    None,
+    Map(
+      (AddrSpace(0), (64, AlignmentInfo(64, 64)))
+    ),
+    Map(
+      ((AlignType.Integer, 1), AlignmentInfo(8, 8)),
+      ((AlignType.Integer, 8), AlignmentInfo(8, 8)),
+      ((AlignType.Integer, 16), AlignmentInfo(16, 16)),
+      ((AlignType.Integer, 32), AlignmentInfo(32, 32)),
+      ((AlignType.Integer, 64), AlignmentInfo(32, 64)),
+      ((AlignType.Float, 16), AlignmentInfo(16, 16)),
+      ((AlignType.Float, 32), AlignmentInfo(32, 32)),
+      ((AlignType.Float, 64), AlignmentInfo(64, 64)),
+      ((AlignType.Float, 128), AlignmentInfo(128, 128)),
+      ((AlignType.Vector, 64), AlignmentInfo(64, 64)),
+      ((AlignType.Vector, 128), AlignmentInfo(128, 128))
+    ),
+    AlignmentInfo(0, 64),
+    None
+  )
+}
