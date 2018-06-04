@@ -43,58 +43,33 @@ case object LabelType // only to be used as the type of block names
 case object TokenType
 // deriving (Eq, Ord, Read, Show, Typeable, Data, Generic)
 
-// // An abbreviation for 'VoidType'
-// void: Type
-// void = VoidType
+case object TypeAliases {
 
-// // An abbreviation for 'IntegerType' 1
-// i1: Type
-// i1 = IntegerType 1
+  val void = VoidType
 
-// // An abbreviation for 'IntegerType' 8
-// i8: Type
-// i8 = IntegerType 8
+  val i1 = IntegerType(1)
 
-// // An abbreviation for 'IntegerType' 16
-// i16: Type
-// i16 = IntegerType 16
+  val i8 = IntegerType(8)
 
-// // An abbreviation for 'IntegerType' 32
-// i32: Type
-// i32 = IntegerType 32
+  val i16 = IntegerType(16)
 
-// // An abbreviation for 'IntegerType' 64
-// i64: Type
-// i64 = IntegerType 64
+  val i32 = IntegerType(32)
 
-// // An abbreviation for 'IntegerType' 128
-// i128: Type
-// i128 = IntegerType 128
+  val i64 = IntegerType(64)
 
-// // An abbreviation for 'PointerType' t ('AddrSpace' 0)
-// ptr: Type -> Type
-// ptr t = PointerType t (AddrSpace 0)
+  val i128 = IntegerType(128)
 
-// // An abbreviation for 'FloatingPointType' 'HalfFP'
-// half: Type
-// half = FloatingPointType HalfFP
+  def ptr(t: Type) = PointerType(t, AddrSpace(0))
 
-// // An abbreviation for 'FloatingPointType' 'FloatFP'
-// float: Type
-// float = FloatingPointType FloatFP
+  val half = HalfFP
 
-// // An abbreviation for 'FloatingPointType' 'DoubleFP'
-// double: Type
-// double = FloatingPointType DoubleFP
+  val float = FloatFP
 
-// // An abbreviation for 'FloatingPointType' 'FP128FP'
-// fp128: Type
-// fp128 = FloatingPointType FP128FP
+  val double = DoubleFP
 
-// // An abbreviation for 'FloatingPointType' 'X86_FP80FP'
-// x86_fp80: Type
-// x86_fp80 = FloatingPointType X86_FP80FP
+  val fp128 = FP128FP
 
-// // An abbreviation for 'FloatingPointType' 'PPC_FP128FP'
-// ppc_fp128: Type
-// ppc_fp128 = FloatingPointType PPC_FP128FP
+  val x86_fp80 = X86_FP80FP
+
+  val ppc_fp128 = PPC_FP128FP
+}
