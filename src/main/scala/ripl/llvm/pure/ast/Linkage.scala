@@ -17,5 +17,3 @@ case object Linkage {
   case object WeakODR extends Linkage
   case object External extends Linkage
 }
-
-
