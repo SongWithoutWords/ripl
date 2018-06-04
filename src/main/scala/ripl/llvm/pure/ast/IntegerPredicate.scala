@@ -1,21 +1,18 @@
--- | Predicates for the 'LLVM.AST.Instruction.ICmp' instruction
-module LLVM.AST.IntegerPredicate where
+// Predicates for the 'LLVM.AST.Instruction.ICmp' instruction
+package ripl.llvm.pure.ast
 
-import LLVM.Prelude
+// <http://llvm.org/docs/LangRef.html#icmp-instruction>
+sealed trait IntegerPredicate
 
--- | <http://llvm.org/docs/LangRef.html#icmp-instruction>
-data IntegerPredicate
-  = EQ
-  | NE
-  | UGT
-  | UGE
-  | ULT
-  | ULE
-  | SGT
-  | SGE
-  | SLT
-  | SLE
-  deriving (Eq, Ord, Read, Show, Data, Typeable, Generic)
-
-
-
+case object IntegerPredicate {
+  case object EQ
+  case object NE
+  case object UGT
+  case object UGE
+  case object ULT
+  case object ULE
+  case object SGT
+  case object SGE
+  case object SLT
+  case object SLE
+}
