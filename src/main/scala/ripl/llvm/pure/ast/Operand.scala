@@ -5,7 +5,6 @@ package ripl.llvm.pure.ast
 // A 'MetadataNodeID' is a number for identifying a metadata node.
 // Note this is different from "named metadata", which are represented with
 // 'LLVM.AST.NamedMetadataDefinition'.
-// newtype MetadataNodeID = MetadataNodeID Word
 case class MetadataNodeID(id: Int)
 
 // <http://llvm.org/docs/LangRef.html#metadata>
@@ -31,4 +30,6 @@ case class ConstantOperand(constant: Constant) extends Operand
 case class MetadataOperand(metadata: Metadata) extends Operand
 
 // The 'LLVM.AST.Instruction.Call' instruction is special: the callee can be inline assembly
-// type CallableOperand = Either[InlineAssembly, Operand]
+object Aliases {
+  type CallableOperand = Either[InlineAssembly, Operand]
+}
