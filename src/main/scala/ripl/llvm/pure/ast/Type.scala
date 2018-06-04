@@ -16,7 +16,7 @@ sealed trait Type
 // <http://llvm.org/docs/LangRef.html#void-type>
 case object VoidType extends Type
 // <http://llvm.org/docs/LangRef.html#integer-type>
-case class IntegerType(typeBits: Int) extends Type
+case class IntegerType(typeBits: scala.Int) extends Type
 // <http://llvm.org/docs/LangRef.html#pointer-type>
 case class PointerType(pointerReferent: Type, pointerAddrSpace: AddrSpace)
     extends Type
