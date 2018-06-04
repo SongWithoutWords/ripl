@@ -1,10 +1,9 @@
--- | Module to allow importing 'DLL.StorageClass' distinctly qualified.
-module LLVM.AST.DLL where
+// Module to allow importing 'DLL.StorageClass' distinctly qualified.
+package ripl.llvm.pure.ast
 
-import LLVM.Prelude
-
--- | <http://llvm.org/docs/LangRef.html#dll-storage-classes>
-data StorageClass
-    = Import
-    | Export
-  deriving (Eq, Read, Show, Typeable, Data, Generic)
+// <http://llvm.org/docs/LangRef.html#dll-storage-classes>
+sealed trait StorageClass
+case object StorageClass {
+  case object Import extends StorageClass
+  case object Export extends StorageClass
+}
