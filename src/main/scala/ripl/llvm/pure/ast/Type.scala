@@ -3,7 +3,7 @@ package ripl.llvm.pure.ast
 
 // LLVM supports some special formats floating point format. This type is to distinguish those format. Also see  <http://llvm.org/docs/LangRef.html#floating-point-types>
 
-sealed trait FloatingPointType
+sealed trait FloatingPointType extends Type
 case object HalfFP extends FloatingPointType // ^ 16-bit floating point value
 case object FloatFP extends FloatingPointType // ^ 32-bit floating point value
 case object DoubleFP extends FloatingPointType // ^ 64-bit floating point value
@@ -20,8 +20,6 @@ case class IntegerType(typeBits: Int) extends Type
 // <http://llvm.org/docs/LangRef.html#pointer-type>
 case class PointerType(pointerReferent: Type, pointerAddrSpace: AddrSpace)
     extends Type
-// <http://llvm.org/docs/LangRef.html#floating-point-types>
-// case class FloatingPointType(floatingPointType: FloatingPointType) extends Type
 // <http://llvm.org/docs/LangRef.html#function-type>
 case class FunctionType(
     resultType: Type,
