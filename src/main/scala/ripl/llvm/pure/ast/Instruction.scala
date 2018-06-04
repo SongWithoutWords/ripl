@@ -3,17 +3,6 @@
 
 package ripl.llvm.pure.ast
 
-// import LLVM.AST.Type
-// import LLVM.AST.Name
-// import LLVM.AST.Constant
-// import LLVM.AST.Operand
-// import LLVM.AST.IntegerPredicate (IntegerPredicate)
-// import LLVM.AST.FloatingPointPredicate (FloatingPointPredicate)
-// import LLVM.AST.RMWOperation (RMWOperation)
-// import LLVM.AST.CallingConvention (CallingConvention)
-// import qualified LLVM.AST.ParameterAttribute as PA (ParameterAttribute)
-// import qualified LLVM.AST.FunctionAttribute as FA (FunctionAttribute, GroupID)
-
 // import Data.List.NonEmpty
 
 sealed trait NonEmpty[A]
