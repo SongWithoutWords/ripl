@@ -1,8 +1,6 @@
 // Module to allow importing 'Visibility' distinctly qualified.
 package ripl.llvm.pure.ast
 
-import LLVM.Prelude
-
 // <http://llvm.org/docs/LangRef.html#visibility>
 
 sealed trait Visibility
