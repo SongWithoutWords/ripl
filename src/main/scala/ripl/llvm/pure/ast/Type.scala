@@ -36,11 +36,11 @@ case class ArrayType(nArrayElements: Long, elementType: Type) extends Type
 // <http://llvm.org/docs/LangRef.html#opaque-structure-types>
 case class NamedTypeReference(name: Name) extends Type
 // <http://llvm.org/docs/LangRef.html#metadata-type>
-case object MetadataType // only to be used as a parameter type for a few intrinsics
+case object MetadataType extends Type // only to be used as a parameter type for a few intrinsics
 // <http://llvm.org/docs/LangRef.html#token-type>
-case object LabelType // only to be used as the type of block names
+case object LabelType extends Type // only to be used as the type of block names
 // <http://llvm.org/docs/LangRef.html#label-type>
-case object TokenType
+case object TokenType extends Type
 // deriving (Eq, Ord, Read, Show, Typeable, Data, Generic)
 
 case object TypeAliases {
