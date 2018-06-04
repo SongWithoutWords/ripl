@@ -1,4 +1,4 @@
-{-# LANGUAGE RecordWildCards #-}
+// {-# LANGUAGE RecordWildCards #-}
 
 -- | Querying the type of LLVM expressions
 module LLVM.AST.Typed (
