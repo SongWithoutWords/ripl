@@ -1,27 +1,17 @@
-{-# LANGUAGE CPP #-}
-module LLVM.IRBuilder.Internal.SnocList where
+package ripl.llvm.pure.IRBuilder.Internal
 
-#if MIN_VERSION_base(4,11,0)
-import LLVM.Prelude
-#else
-import Data.Semigroup (Semigroup(..))
-import LLVM.Prelude hiding ((<>))
-#endif
+case class SnocList[A](unSnocList: List[A]) {
+  def snoc(a: A) = SnocList(a :: unSnocList)
 
-newtype SnocList a = SnocList { unSnocList :: [a] }
-  deriving (Eq, Show)
+  def getSnocList() = unSnocList.reverse
+}
 
-instance Semigroup (SnocList a) where
-  SnocList xs <> SnocList ys = SnocList $ ys ++ xs
+// instance Semigroup (SnocList a) where
+//   SnocList xs <> SnocList ys = SnocList $ ys ++ xs
 
-instance Monoid (SnocList a) where
-#if !(MIN_VERSION_base(4,11,0))
-  mappend = (<>)
-#endif
-  mempty = SnocList []
+// instance Monoid (SnocList a) where
+// #if !(MIN_VERSION_base(4,11,0))
+//   mappend = (<>)
+// #endif
+//   mempty = SnocList []
 
-snoc :: SnocList a -> a -> SnocList a
-snoc (SnocList xs) x = SnocList $ x : xs
-
-getSnocList :: SnocList a -> [a]
-getSnocList = reverse . unSnocList
