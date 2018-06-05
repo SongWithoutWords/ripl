@@ -1,35 +1,34 @@
-module LLVM.IRBuilder.Constant where
-import           Data.Word
-import           LLVM.Prelude
-import           LLVM.AST             hiding (args, dests)
-import qualified LLVM.AST.Constant    as C
-import           LLVM.AST.Type        as AST
-import           LLVM.AST.Typed
-import           LLVM.IRBuilder.Monad
+package ripl.llvm.pure.IRBuilder
 
-import           LLVM.AST.Constant
-import           LLVM.AST.Float
+import ripl.llvm.pure.ast._
 
-int64 :: Applicative f => Integer -> f Operand
-int64 = pure . ConstantOperand . Int 64
+case object Constant {
+  // def int64[F[_]](i: Long): F[Operand] =
+  //   pure(ConstantOperand(Integral(64, i)))
 
-int32 :: Applicative f => Integer -> f Operand
-int32 = pure . ConstantOperand . Int 32
+  // def int32[F[_]](i: Long): F[Operand] =
+  //   pure(ConstantOperand(Integral(32, i)))
 
-bit :: Applicative f => Integer -> f Operand
-bit = pure . ConstantOperand . Int 1
+  // def bit[F[_]](b: Boolean): F[Operand] =
+  //   pure(ConstantOperand(Integral(1, if (b) 1 else 0)))
 
-double :: Applicative f => Double -> f Operand
-double = pure . ConstantOperand . Float . Double
+  // def double[F[_]](f: scala.Double): F[Operand] =
+  //   pure(ConstantOperand(Float(Double(f))))
 
-single :: Applicative f => Float -> f Operand
-single = pure . ConstantOperand . Float . Single
+  // def single[F[_]](f: scala.Float): F[Operand] =
+  //   pure(ConstantOperand(Float(Single(f))))
 
-half :: Applicative f => Word16 -> f Operand
-half = pure . ConstantOperand . Float . Half
+  // def half[f <: Applicative[_]](f: Float): f[Operand] =
+  //   pure(ConstantOperand(Single(1, i)))
 
-struct :: Applicative f => Maybe Name -> Bool -> [Constant] -> f Operand
-struct nm packing members = pure . ConstantOperand $ Struct nm packing members
+  // def struct[F[_] <: Applicative](
+  //     name: Option[Name],
+  //     packed: Boolean,
+  //     members: List[Constant],
+  //     pure: Pure[A]
+  // ): F[Operand] =
+  //   pure(ConstantOperand(Struct(name, packed, members)))
 
-array :: Applicative f => [Constant] -> f Operand
-array members = pure . ConstantOperand $ Array (typeOf $ head members) members
+  // def struct[F[_]](members: List[Constant]): F[Operand] =
+  //   pure(ConstantOperand(Array(typeOf(members.head), members)))
+}
