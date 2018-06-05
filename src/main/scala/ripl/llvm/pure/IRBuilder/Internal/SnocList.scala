@@ -14,4 +14,3 @@ case class SnocList[A](unSnocList: List[A]) {
 //   mappend = (<>)
 // #endif
 //   mempty = SnocList []
-
