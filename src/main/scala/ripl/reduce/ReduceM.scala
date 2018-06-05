@@ -1,5 +1,9 @@
 package ripl.reduce
 
+import cats._
+import cats.data._
+import cats.implicits._
+
 import ripl.ast.{untyped => a0}
 import ripl.ast.{typed => a1}
 
@@ -9,20 +13,22 @@ import ripl.util.Ordering
 object Types {
   type Errors = Set[Error]
 }
-
 import Types._
 
 case object ReduceInfo {
   def apply(): ReduceInfo = ReduceInfo(Set(), 0)
+
+  implicit object semigroup extends Semigroup[ReduceInfo] {
+    def combine(x: ReduceInfo, y: ReduceInfo): ReduceInfo =
+      ReduceInfo(
+        x.errors union y.errors,
+        x.implicitConversionCount + y.implicitConversionCount
+      )
+  }
 }
+import ReduceInfo.semigroup
 
 case class ReduceInfo(errors: Set[Error], implicitConversionCount: Int) {
-  def <>(rhs: ReduceInfo) =
-    ReduceInfo(
-      errors union rhs.errors,
-      implicitConversionCount + rhs.implicitConversionCount
-    )
-
   def compare(rhs: ReduceInfo): Ordering =
     Ordering(errors.size, rhs.errors.size) <>
       Ordering(implicitConversionCount, rhs.implicitConversionCount)
@@ -32,11 +38,11 @@ case class ReduceM[+A](value: A, info: ReduceInfo) {
 
   def map[B](f: A => B) = ReduceM(f(value), info)
 
-  def >>[B](rhs: ReduceM[B]) = ReduceM(rhs.value, info <> rhs.info)
+  def >>[B](rhs: ReduceM[B]) = ReduceM(rhs.value, info |+| rhs.info)
 
   def >>=[B](f: A => ReduceM[B]): ReduceM[B] = {
     val rhs = f(value)
-    ReduceM(rhs.value, info <> rhs.info)
+    ReduceM(rhs.value, info |+| rhs.info)
   }
 
   def flatMap[B](f: A => ReduceM[B]): ReduceM[B] = >>=(f)
