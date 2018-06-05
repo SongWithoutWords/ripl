@@ -1,5 +1,6 @@
 package ripl.util
 
+sealed trait Ordering
 case object Ordering {
   def apply(a: Int, b: Int): Ordering = {
     if (a < b) Ordering.LT
@@ -7,17 +8,14 @@ case object Ordering {
     else Ordering.EQ
   }
 
-  case object LT extends Ordering {
-    def <>(rhs: Ordering) = LT
+  implicit object semigroup extends cats.Semigroup[Ordering] {
+    def combine(x: Ordering, y: Ordering): Ordering = x match {
+      case EQ => y
+      case _  => x
+    }
   }
-  case object GT extends Ordering {
-    def <>(rhs: Ordering) = GT
-  }
-  case object EQ extends Ordering {
-    def <>(rhs: Ordering) = rhs
-  }
+  case object LT extends Ordering
+  case object GT extends Ordering
+  case object EQ extends Ordering
 }
-
-sealed trait Ordering {
-  def <>(rhs: Ordering): Ordering
-}
+import Ordering.semigroup

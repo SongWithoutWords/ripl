@@ -30,7 +30,7 @@ import ReduceInfo.semigroup
 
 case class ReduceInfo(errors: Set[Error], implicitConversionCount: Int) {
   def compare(rhs: ReduceInfo): Ordering =
-    Ordering(errors.size, rhs.errors.size) <>
+    Ordering(errors.size, rhs.errors.size) |+|
       Ordering(implicitConversionCount, rhs.implicitConversionCount)
 }
 
