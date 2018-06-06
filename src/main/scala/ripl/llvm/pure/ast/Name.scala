@@ -24,6 +24,9 @@ package ripl.llvm.pure.ast
 // Original Haskell bindings had more complexity, can revisit if necessary
 case class Name(s: String)
 
+// Is it even necessary to have "UnName"? Couldn't I just encode that in the string?
+// I'd need to have a look at llvm-pretty
+
 // data Name
 //     = Name ShortByteString -- ^ a string name
 //     | UnName Word -- ^ a number for a nameless thing
