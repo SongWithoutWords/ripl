@@ -22,28 +22,28 @@ case object Terminator {
   case class Ret(
       returnOperand: Option[Operand],
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
   case class CondBr(
       condition: Operand,
       trueDest: Name,
       falseDest: Name,
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
   case class Br(
       dest: Name,
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
   case class Switch(
       operand0: Operand,
       defaultDest: Name,
       dests: List[(Constant, Name)],
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
   case class IndirectBr(
       operand0: Operand,
       possibleDests: List[Name],
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
   case class Invoke(
       callingConvention: CallingConvention,
       returnAttributes: List[ParameterAttribute],
@@ -53,30 +53,30 @@ case object Terminator {
       returnDest: Name,
       exceptionDest: Name,
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
   case class Resume(
       operand0: Operand,
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
   case class Unreachable(
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
   case class CleanupRet(
       cleanupPad: Operand,
       unwindDest: Option[Name],
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
   case class CatchRet(
       catchPad: Operand,
       successor: Name,
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
   case class CatchSwitch(
       parentPad: Operand,
       catchHandlers: NonEmpty[Name],
       defaultUnwindDest: Option[Name],
       metadata: InstructionMetadata
-  )
+  ) extends Terminator
 }
 
 // <http://llvm.org/docs/LangRef.html#fast-math-flags>
