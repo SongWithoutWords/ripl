@@ -3,6 +3,10 @@ package ripl.reduce
 import scala.collection.immutable.Set
 import scala.collection.mutable.Stack
 
+import cats._
+import cats.data._
+import cats.implicits._
+
 import ripl.ast.common._
 import ripl.ast.common.TypeAtom._
 import ripl.ast.{untyped => a0}
@@ -100,8 +104,8 @@ class Reduce(val astIn: a0.Ast) {
       case f @ a0.Fun(params, retTypeOpt, _) =>
         a1.Cycle.Fun(
           f,
-          mapM(params) { case a0.Param(_, t) => mapAsType(t) }.value,
-          mapM(retTypeOpt) { mapAsType }.value
+          params.traverse { case a0.Param(_, t) => mapAsType(t) }.value,
+          retTypeOpt.traverse { mapAsType }.value
         )
       case _ => a1.Cycle.Node(input)
     }
@@ -215,7 +219,7 @@ class Reduce(val astIn: a0.Ast) {
     case a0.Namespace(_nodes) =>
       val nodes = _nodes.mapValues(mapNamespaceMember(_))
       pushScope(nodes)
-      nodes.map.view.force
+      nodes.underlyingMap.view.force
       popScope()
       List(pure(a1.Namespace(nodes)))
   }
@@ -255,7 +259,7 @@ class Reduce(val astIn: a0.Ast) {
             } >> {
               for {
                 f <- _f
-                args <- mapM((params, argOverloads).zipped.toList) {
+                args <- (params, argOverloads).zipped.toList.traverse {
                   case (param: a1.Type, overloads: List[ReduceM[a1.Exp]]) =>
                     chooseOverload(param, overloads)
                 }
@@ -303,7 +307,7 @@ class Reduce(val astIn: a0.Ast) {
         // TODO: reduce to single exp if is single exp
         pushScope()
         for {
-          exps <- mapM(_exps) { mapAsExp(None, _) }
+          exps <- _exps.traverse { mapAsExp(None, _) }
         } yield {
           popScope()
           a1.Block(exps)
@@ -342,11 +346,11 @@ class Reduce(val astIn: a0.Ast) {
 
     case a0.Fun(_params, _retType, _body) =>
       List(for {
-        params <- mapM(_params) { p =>
+        params <- _params.traverse { p =>
           for { t <- mapAsType(p.t) } yield a1.Param(p.n, t)
         }
 
-        retType <- mapM(_retType) { mapAsType }
+        retType <- _retType.traverse { mapAsType(_) }
         _ <- impure(pushScope(MultiMap(params.map(p => (p.n, p)): _*)))
         body <- mapAsExp(retType, _body)
         _ <- impure(popScope())
@@ -419,7 +423,8 @@ class Reduce(val astIn: a0.Ast) {
     case a0.VObj(_t, _members) =>
       for {
         t <- mapAsType(_t)
-        members <- mapM(_members) { mapVal }
+        // members <- _members.traverse { mapVal(_) }
+        members <- MultiMap.instances[String]().traverse(_members)(mapVal)
       } yield a1.VObj(t, members)
     case v: ValAtom => pure(v)
   }
@@ -429,14 +434,16 @@ class Reduce(val astIn: a0.Ast) {
       case t: TypeAtom => pure(t)
       case a0.TFun(_params, _ret) =>
         for {
-          params <- mapM(_params) { mapAsType }
+          params <- _params.traverse { (n: a0.Node) =>
+            mapAsType(n)
+          }
           ret <- mapAsType(_ret)
         } yield a1.TFun(params, ret)
       case a0.Struct(name, _fields) =>
         for {
-          fields <- mapM(_fields) { mapAsType }
+          fields <- MultiMap.instances().traverse(_fields)(mapAsType)
         } yield a1.Struct(name, fields)
     })
 
-  astOut.map.view.force
+  astOut.underlyingMap.view.force
 }
