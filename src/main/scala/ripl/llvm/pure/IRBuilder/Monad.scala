@@ -271,6 +271,13 @@ case object emitInstr {
 //     }
 //   pure (LocalReference retty nm)
 
+case object emitInstrVoid {
+  def apply(instruction: Instruction): IRBuilder[Unit] =
+    modifyBlock { p: PartialBlock =>
+      p.copy(partialBlockInstrs = p.partialBlockInstrs.snoc(Do(instruction)))
+    }
+}
+
 // Emit instruction that returns void
 // emitInstrVoid
 //   :: MonadIRBuilder m
