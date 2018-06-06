@@ -2,6 +2,8 @@
 
 package ripl.llvm.pure.IRBuilder
 
+import ripl.llvm.pure.ast._
+
 // module LLVM.IRBuilder.Instruction where
 
 // import Prelude hiding (and, or, pred)
@@ -20,59 +22,123 @@ package ripl.llvm.pure.IRBuilder
 
 // import LLVM.IRBuilder.Monad
 
-// fadd :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// fadd a b = emitInstr (typeOf a) $ FAdd NoFastMathFlags a b []
+import ripl.llvm.pure.IRBuilder.IRBuilderAliases._
 
-// fmul :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// fmul a b = emitInstr (typeOf a) $ FMul NoFastMathFlags a b []
+case object IRBuilderInstruction {
 
-// fsub :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// fsub a b = emitInstr (typeOf a) $ FSub NoFastMathFlags a b []
+  def fadd(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.FAdd(FastMathFlags.NoFastMathFlags, a, b, Nil)
+    )
 
-// fdiv :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// fdiv a b = emitInstr (typeOf a) $ FDiv NoFastMathFlags a b []
+  def fsub(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.FSub(FastMathFlags.NoFastMathFlags, a, b, Nil)
+    )
 
-// frem :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// frem a b = emitInstr (typeOf a) $ FRem NoFastMathFlags a b []
+  def fmul(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.FMul(FastMathFlags.NoFastMathFlags, a, b, Nil)
+    )
 
-// add :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// add a b = emitInstr (typeOf a) $ Add False False a b []
+  def fdiv(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.FDiv(FastMathFlags.NoFastMathFlags, a, b, Nil)
+    )
 
-// mul :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// mul a b = emitInstr (typeOf a) $ Mul False False a b []
+  def frem(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.FRem(FastMathFlags.NoFastMathFlags, a, b, Nil)
+    )
 
-// sub :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// sub a b = emitInstr (typeOf a) $ Sub False False a b []
+  def add(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.Add(false, false, a, b, Nil)
+    )
 
-// udiv :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// udiv a b = emitInstr (typeOf a) $ UDiv False a b []
+  def sub(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.Sub(false, false, a, b, Nil)
+    )
 
-// sdiv :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// sdiv a b = emitInstr (typeOf a) $ SDiv False a b []
+  def mul(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.Mul(false, false, a, b, Nil)
+    )
 
-// urem :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// urem a b = emitInstr (typeOf a) $ URem a b []
+  def udiv(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.UDiv(false, a, b, Nil)
+    )
 
-// shl :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// shl a b = emitInstr (typeOf a) $ Shl False False a b []
+  def sdiv(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.SDiv(false, a, b, Nil)
+    )
 
-// lshr :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// lshr a b = emitInstr (typeOf a) $ LShr True a b []
+  def urem(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.URem(a, b, Nil)
+    )
 
-// ashr :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// ashr a b = emitInstr (typeOf a) $ AShr True a b []
+  def srem(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.SRem(a, b, Nil)
+    )
 
-// and :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// and a b = emitInstr (typeOf a) $ And a b []
+  def shl(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.Shl(false, false, a, b, Nil)
+    )
 
-// or :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// or a b = emitInstr (typeOf a) $ Or a b []
+  def lshr(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.LShr(false, a, b, Nil)
+    )
 
-// xor :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// xor a b = emitInstr (typeOf a) $ Xor a b []
+  def ashr(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.AShr(true, a, b, Nil)
+    )
 
-// alloca :: MonadIRBuilder m => Type -> Maybe Operand -> Word32 -> m Operand
-// alloca ty count align = emitInstr (ptr ty) $ Alloca ty count align []
+  def and(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.And(a, b, Nil)
+    )
+
+  def or(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.Or(a, b, Nil)
+    )
+
+  def xor(a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(a),
+      Instruction.Xor(a, b, Nil)
+    )
+
+  def alloca(t: Type, count: Option[Operand], align: Int): IRBuilder[Operand] =
+    emitInstr(
+      TypeAliases.ptr(t),
+      Instruction.Alloca(t, count, align, Nil)
+    )
 
 // load :: MonadIRBuilder m => Operand -> Word32 -> m Operand
 // load a align = emitInstr retty $ Load False a Nothing align []
@@ -202,3 +268,4 @@ package ripl.llvm.pure.IRBuilder
 
 // unreachable :: MonadIRBuilder m => m ()
 // unreachable = emitTerm $ Unreachable []
+}
