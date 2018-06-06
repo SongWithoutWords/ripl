@@ -305,6 +305,23 @@ case object emitTerm {
 //   { partialBlockTerm = Just (Do term)
 //   }
 
+case object emitBlockStart {
+  def apply(nm: Name): IRBuilder[Unit] = for {
+    mbb <- State.inspect { s: IRBuilderState => s.builderBlock }
+    _ <- mbb match {
+      case Some(partialBlock) => for {
+        val instrs = partialBlock.partialBlockInstrs
+        val terminator = partialBlock.partialBlockTerm match {
+          case None => Do(Ret(None, List()))
+          case Some(term) => term
+        }
+        _ <- State.modify(s: IRBuilderState => s.copy(builderBlocks = s.builderBlocks.snoc(BasicBlock(partialBlock.partialBlockName, instrs, terminator))))
+      } yield()
+      case None => ??? // Applicative[IRBuilder].pure()
+    }
+  } yield()
+}
+
 // Starts a new block labelled using the given name and ends the previous
 // one. The name is assumed to be fresh.
 // emitBlockStart
