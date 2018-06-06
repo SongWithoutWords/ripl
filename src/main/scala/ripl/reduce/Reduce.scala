@@ -423,8 +423,7 @@ class Reduce(val astIn: a0.Ast) {
     case a0.VObj(_t, _members) =>
       for {
         t <- mapAsType(_t)
-        // members <- _members.traverse { mapVal(_) }
-        members <- MultiMap.instances[String]().traverse(_members)(mapVal)
+        members <- MultiMap.instances().traverse(_members)(mapVal)
       } yield a1.VObj(t, members)
     case v: ValAtom => pure(v)
   }
