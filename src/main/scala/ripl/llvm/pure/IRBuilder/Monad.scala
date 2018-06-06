@@ -289,6 +289,13 @@ case object emitInstrVoid {
 //     }
 //   pure ()
 
+case object emitTerm {
+  def apply(t: Terminator): IRBuilder[Unit] =
+    modifyBlock { p: PartialBlock =>
+      p.copy(partialBlockTerm = Some(Do(t)))
+    }
+}
+
 // Emit terminator
 // emitTerm
 //   :: MonadIRBuilder m
