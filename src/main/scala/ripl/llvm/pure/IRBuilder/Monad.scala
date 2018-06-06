@@ -249,9 +249,13 @@ case object freshName {
 case object emitInstr {
   def apply(returnType: Type, instruction: Instruction): IRBuilder[Operand] =
     for {
-      _ <- modifyBlock { ??? }
-
-    } yield (???)
+      nm <- fresh()
+      _ <- modifyBlock { p: PartialBlock =>
+        p.copy(
+          partialBlockInstrs = p.partialBlockInstrs.snoc(:=(nm, instruction))
+        )
+      }
+    } yield (LocalReference(returnType, nm))
 }
 
 // Emit instruction
