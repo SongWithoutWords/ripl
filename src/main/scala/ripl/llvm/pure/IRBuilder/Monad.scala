@@ -382,18 +382,19 @@ case object block {
 //   emitBlockStart nm
 //   return nm
 
-// Starts a new block and ends the previous one
-// block
-//   :: MonadIRBuilder m
-//   => m Name
-// block = do
-//   nm <- fresh
-//   emitBlockStart nm
-//   return nm
-
 // @ir `named` name@ executes the 'IRBuilder' @ir@ using @name@ as the base
 // name whenever a fresh local name is generated. Collisions are avoided by
 // appending numbers (first @"name"@, then @"name1"@, @"name2"@, and so on).
+
+case object named{
+  def apply[A](ir: IRBuilder[A], name: String): IRBuilder[A] = for {
+    before <- State.inspect{s: IRBuilderState => s.builderNameSuggestion}
+    _ <- State.modify{s: IRBuilderState => s.copy(builderNameSuggestion = Some(name))}
+    result <- ir
+    _ <- State.modify { s: IRBuilderState => s.copy(builderNameSuggestion = before) }
+  } yield(result)
+}
+
 // named
 //   :: MonadIRBuilder m
 //   => m r
