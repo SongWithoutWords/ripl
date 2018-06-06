@@ -367,6 +367,22 @@ case object emitBlockStart {
 //////////////////////////////////////////////////////////////////////////////-
 
 // Starts a new block and ends the previous one
+case object block {
+  def apply(): IRBuilder[Name] =
+    for {
+      nm <- fresh()
+      _ <- emitBlockStart(nm)
+    } yield (nm)
+}
+// block
+//   :: MonadIRBuilder m
+//   => m Name
+// block = do
+//   nm <- fresh
+//   emitBlockStart nm
+//   return nm
+
+// Starts a new block and ends the previous one
 // block
 //   :: MonadIRBuilder m
 //   => m Name
