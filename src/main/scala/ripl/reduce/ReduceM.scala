@@ -62,8 +62,8 @@ case object ReduceM {
 
   def impure(impureAction: => Unit) = { impureAction; pure() }
 
-  def pure[A](a: A): ReduceM[A] = Applicative[ReduceM].pure(a)
-  def pure(): ReduceM[Unit] = Applicative[ReduceM].pure()
+  def pure[A](a: A): ReduceM[A] = instances.pure(a)
+  def pure(): ReduceM[Unit] = instances.pure()
 
   def raise(info: ReduceInfo): ReduceM[Unit] = ReduceM((), info)
   def raise(errors: Errors): ReduceM[Unit] = raise(ReduceInfo(errors, 0))
