@@ -5,8 +5,12 @@ organization := "org.ripl"
 scalaVersion := "2.12.6"
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.3" % Test,
-  "com.beachape" %% "enumeratum" % "1.5.12"
+  "com.beachape" %% "enumeratum" % "1.5.12",
+  "org.typelevel" %% "cats-core" % "1.1.0"
 )
+
+// required by cats
+scalacOptions += "-Ypartial-unification"
 
 ensimeScalaVersion in ThisBuild := "2.12.6"
 ensimeIgnoreMissingDirectories := true;

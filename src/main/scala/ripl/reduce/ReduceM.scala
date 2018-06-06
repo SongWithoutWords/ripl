@@ -1,5 +1,9 @@
 package ripl.reduce
 
+import cats._
+import cats.data._
+import cats.implicits._
+
 import ripl.ast.{untyped => a0}
 import ripl.ast.{typed => a1}
 
@@ -9,45 +13,57 @@ import ripl.util.Ordering
 object Types {
   type Errors = Set[Error]
 }
-
 import Types._
 
 case object ReduceInfo {
   def apply(): ReduceInfo = ReduceInfo(Set(), 0)
+
+  implicit object semigroup extends Semigroup[ReduceInfo] {
+    def combine(x: ReduceInfo, y: ReduceInfo): ReduceInfo =
+      ReduceInfo(
+        x.errors union y.errors,
+        x.implicitConversionCount + y.implicitConversionCount
+      )
+  }
 }
 
 case class ReduceInfo(errors: Set[Error], implicitConversionCount: Int) {
-  def <>(rhs: ReduceInfo) =
-    ReduceInfo(
-      errors union rhs.errors,
-      implicitConversionCount + rhs.implicitConversionCount
-    )
-
   def compare(rhs: ReduceInfo): Ordering =
-    Ordering(errors.size, rhs.errors.size) <>
+    Ordering(errors.size, rhs.errors.size) |+|
       Ordering(implicitConversionCount, rhs.implicitConversionCount)
 }
 
-case class ReduceM[+A](value: A, info: ReduceInfo) {
-
-  def map[B](f: A => B) = ReduceM(f(value), info)
-
-  def >>[B](rhs: ReduceM[B]) = ReduceM(rhs.value, info <> rhs.info)
-
-  def >>=[B](f: A => ReduceM[B]): ReduceM[B] = {
-    val rhs = f(value)
-    ReduceM(rhs.value, info <> rhs.info)
-  }
-
-  def flatMap[B](f: A => ReduceM[B]): ReduceM[B] = >>=(f)
-}
+case class ReduceM[+A](value: A, info: ReduceInfo)
 
 case object ReduceM {
 
+  implicit object instances extends Monad[ReduceM] {
+
+    def pure[A](a: A) = ReduceM(a, ReduceInfo())
+
+    def flatMap[A, B](
+        ma: ReduceM[A]
+    )(f: A => ReduceM[B]): ReduceM[B] = {
+      val mb = f(ma.value)
+      ReduceM(mb.value, ma.info |+| mb.info)
+    }
+
+    def tailRecM[A, B](
+        a: A
+    )(f: A => ReduceM[Either[A, B]]): ReduceM[B] =
+      f(a) match {
+        case ReduceM(Left(nextA), info) =>
+          val ReduceM(nextValue, nextInfo) = tailRecM(nextA)(f)
+          ReduceM(nextValue, info |+| nextInfo)
+
+        case ReduceM(Right(b), info) => ReduceM(b, info)
+      }
+  }
+
   def impure(impureAction: => Unit) = { impureAction; pure() }
 
-  def pure[A](a: A): ReduceM[A] = ReduceM(a, ReduceInfo())
-  def pure(): ReduceM[Unit] = ReduceM((), ReduceInfo())
+  def pure[A](a: A): ReduceM[A] = instances.pure(a)
+  def pure(): ReduceM[Unit] = instances.pure()
 
   def raise(info: ReduceInfo): ReduceM[Unit] = ReduceM((), info)
   def raise(errors: Errors): ReduceM[Unit] = raise(ReduceInfo(errors, 0))
@@ -55,42 +71,6 @@ case object ReduceM {
 
   def raiseImplicitConversion(): ReduceM[Unit] = raise(ReduceInfo(Set(), 1))
 
-  def when[A](condition: Boolean)(action: ReduceM[Unit]): ReduceM[Unit] =
+  def when(condition: Boolean)(action: ReduceM[Unit]): ReduceM[Unit] =
     if (condition) action else pure()
-
-  def mapM[A, B](ma: Option[A])(f: A => ReduceM[B]): ReduceM[Option[B]] =
-    ma match {
-      case None    => pure(None)
-      case Some(a) => f(a).map(Some(_))
-    }
-
-  def mapM[A, B](as: List[A])(f: A => ReduceM[B]): ReduceM[List[B]] = as match {
-    case Nil => pure(Nil)
-    case a :: rem =>
-      f(a) >>= { b =>
-        mapM(rem)(f) >>= { bs =>
-          pure(b :: bs)
-        }
-      }
-  }
-
-  def mapM[K, A, B](as: Map[K, A])(f: A => ReduceM[B]): ReduceM[Map[K, B]] = {
-    mapM(as.toList) { case (k, a) => for { b <- f(a) } yield (k, b) }
-      .map(_.toMap)
-  }
-
-  def mapM[K, A, B](
-      as: MultiMap[K, A]
-  )(f: A => ReduceM[B]): ReduceM[MultiMap[K, B]] = {
-    mapM(as.map) { as =>
-      mapM(as) { f }
-    }.map(MultiMap(_))
-  }
-
-  def zipWithM[A, B](as: List[A], bs: List[B])(
-      f: (A, B) => ReduceM[Unit]
-  ): ReduceM[Unit] = {
-    val zip: List[(A, B)] = (as, bs).zipped.map((a, b) => (a, b))
-    mapM(zip) { case (a, b) => f(a, b) } >> pure()
-  }
 }
