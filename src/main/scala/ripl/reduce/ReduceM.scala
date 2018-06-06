@@ -37,31 +37,18 @@ case class ReduceM[+A](value: A, info: ReduceInfo)
 
 case object ReduceM {
 
-  // Possible to implement both applicative and monad in one go?
-
-  implicit val applicative = new Applicative[ReduceM] {
-
-    def ap[A, B](ff: ReduceM[A => B])(fa: ReduceM[A]): ReduceM[B] = ???
+  implicit object instances extends Monad[ReduceM] {
 
     def pure[A](a: A) = ReduceM(a, ReduceInfo())
 
-    override def map[A, B](ma: ReduceM[A])(f: A => B) =
-      ReduceM(f(ma.value), ma.info)
-  }
-
-  implicit val monad = new Monad[ReduceM] {
-    // implicit def monad() = new Monad[ReduceM] {
-
-    override def pure[A](a: A): ReduceM[A] = applicative.pure(a)
-
-    override def flatMap[A, B](
+    def flatMap[A, B](
         ma: ReduceM[A]
     )(f: A => ReduceM[B]): ReduceM[B] = {
       val mb = f(ma.value)
       ReduceM(mb.value, ma.info |+| mb.info)
     }
 
-    override def tailRecM[A, B](
+    def tailRecM[A, B](
         a: A
     )(f: A => ReduceM[Either[A, B]]): ReduceM[B] =
       f(a) match {
