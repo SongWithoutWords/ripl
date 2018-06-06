@@ -136,7 +136,7 @@ case object getElementPtrType {
     case (ty, Nil)                          => ptr(ty)
     case (PointerType(ty, _), _ :: indices) => getElementPtrType(ty, indices)
     case (StructureType(_, elementTypes), Integral(32, index) :: indices) =>
-      getElementPtrType(elementTypes(index), indices)
+      getElementPtrType(elementTypes(index.toInt), indices)
     case (VectorType(_, elementType), _ :: indices) =>
       getElementPtrType(elementType, indices)
     case (ArrayType(_, elementType), _ :: indices) =>

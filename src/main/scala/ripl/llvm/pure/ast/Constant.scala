@@ -22,8 +22,7 @@ package ripl.llvm.pure.ast
 
 sealed trait Constant
 
-case class Integral(integerBits: scala.Int, integerValue: Integer)
-    extends Constant
+case class Integral(bitWidth: Int, value: BigInt) extends Constant
 case class Float(floatValue: SomeFloat) extends Constant
 case class Null(constantType: Type) extends Constant
 case class Struct(
