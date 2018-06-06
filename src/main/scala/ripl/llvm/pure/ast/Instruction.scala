@@ -82,14 +82,14 @@ case object Terminator {
 // <http://llvm.org/docs/LangRef.html#fast-math-flags>
 sealed trait FastMathFlags
 case object FastMathFlags {
-  case object NoFastMathFlags
-  case object UnsafeAlgebra
+  case object NoFastMathFlags extends FastMathFlags
+  case object UnsafeAlgebra extends FastMathFlags
   case class Flags(
       noNaNs: Boolean,
       noInfs: Boolean,
       noSignedZeros: Boolean,
       allowReciprocal: Boolean
-  )
+  ) extends FastMathFlags
 }
 
 // <http://llvm.org/docs/LangRef.html#atomic-memory-ordering-constraints>
