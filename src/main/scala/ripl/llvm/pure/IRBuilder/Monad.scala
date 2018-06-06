@@ -306,20 +306,39 @@ case object emitTerm {
 //   }
 
 case object emitBlockStart {
-  def apply(nm: Name): IRBuilder[Unit] = for {
-    mbb <- State.inspect { s: IRBuilderState => s.builderBlock }
-    _ <- mbb match {
-      case Some(partialBlock) => for {
-        val instrs = partialBlock.partialBlockInstrs
-        val terminator = partialBlock.partialBlockTerm match {
-          case None => Do(Ret(None, List()))
-          case Some(term) => term
-        }
-        _ <- State.modify(s: IRBuilderState => s.copy(builderBlocks = s.builderBlocks.snoc(BasicBlock(partialBlock.partialBlockName, instrs, terminator))))
-      } yield()
-      case None => ??? // Applicative[IRBuilder].pure()
-    }
-  } yield()
+  def apply(nm: Name): IRBuilder[Unit] =
+    for {
+      mbb <- State.inspect { s: IRBuilderState =>
+        s.builderBlock
+      }
+      _ <- mbb match {
+        case Some(partialBlock) =>
+          val instrs = partialBlock.partialBlockInstrs
+          val terminator: Named[Terminator] =
+            partialBlock.partialBlockTerm match {
+              case None       => Do(Terminator.Ret(None, List()))
+              case Some(term) => term
+            }
+          for {
+            _ <- State.modify { s: IRBuilderState =>
+              s.copy(
+                builderBlocks = s.builderBlocks.snoc(
+                  BasicBlock(
+                    partialBlock.partialBlockName,
+                    instrs.getSnocList,
+                    terminator
+                  )
+                )
+              )
+            }
+          } yield ()
+        case None => //State.modify(s: IRBuilderState => s)
+          Monad[IRBuilder].pure()
+      }
+      _ <- State.modify { s: IRBuilderState =>
+        s.copy(builderBlock = Some(PartialBlock.empty(nm)))
+      }
+    } yield ()
 }
 
 // Starts a new block labelled using the given name and ends the previous
