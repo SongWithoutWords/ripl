@@ -50,10 +50,46 @@ case class ReduceM[+A](value: A, info: ReduceInfo) {
 
 case object ReduceM {
 
+  // Possible to implement both applicative and monad in one go?
+
+  implicit val applicative = new Applicative[ReduceM] {
+
+    def ap[A, B](ff: ReduceM[A => B])(fa: ReduceM[A]): ReduceM[B] = ???
+
+    def pure[A](a: A) = ReduceM(a, ReduceInfo())
+
+    override def map[A, B](ma: ReduceM[A])(f: A => B) =
+      ReduceM(f(ma.value), ma.info)
+  }
+
+  implicit val monad = new Monad[ReduceM] {
+    // implicit def monad() = new Monad[ReduceM] {
+
+    override def pure[A](a: A): ReduceM[A] = applicative.pure(a)
+
+    override def flatMap[A, B](
+        ma: ReduceM[A]
+    )(f: A => ReduceM[B]): ReduceM[B] = {
+      val mb = f(ma.value)
+      ReduceM(mb.value, ma.info |+| mb.info)
+    }
+
+    override def tailRecM[A, B](
+        a: A
+    )(f: A => ReduceM[Either[A, B]]): ReduceM[B] =
+      f(a) match {
+        case ReduceM(Left(nextA), info) =>
+          val ReduceM(nextValue, nextInfo) = tailRecM(nextA)(f)
+          ReduceM(nextValue, info |+| nextInfo)
+
+        case ReduceM(Right(b), info) => ReduceM(b, info)
+      }
+  }
+
   def impure(impureAction: => Unit) = { impureAction; pure() }
 
-  def pure[A](a: A): ReduceM[A] = ReduceM(a, ReduceInfo())
-  def pure(): ReduceM[Unit] = ReduceM((), ReduceInfo())
+  def pure[A](a: A): ReduceM[A] = Applicative[ReduceM].pure(a)
+  def pure(): ReduceM[Unit] = Applicative[ReduceM].pure()
 
   def raise(info: ReduceInfo): ReduceM[Unit] = ReduceM((), info)
   def raise(errors: Errors): ReduceM[Unit] = raise(ReduceInfo(errors, 0))
@@ -61,42 +97,6 @@ case object ReduceM {
 
   def raiseImplicitConversion(): ReduceM[Unit] = raise(ReduceInfo(Set(), 1))
 
-  def when[A](condition: Boolean)(action: ReduceM[Unit]): ReduceM[Unit] =
+  def when(condition: Boolean)(action: ReduceM[Unit]): ReduceM[Unit] =
     if (condition) action else pure()
-
-  def mapM[A, B](ma: Option[A])(f: A => ReduceM[B]): ReduceM[Option[B]] =
-    ma match {
-      case None    => pure(None)
-      case Some(a) => f(a).map(Some(_))
-    }
-
-  def mapM[A, B](as: List[A])(f: A => ReduceM[B]): ReduceM[List[B]] = as match {
-    case Nil => pure(Nil)
-    case a :: rem =>
-      f(a) >>= { b =>
-        mapM(rem)(f) >>= { bs =>
-          pure(b :: bs)
-        }
-      }
-  }
-
-  def mapM[K, A, B](as: Map[K, A])(f: A => ReduceM[B]): ReduceM[Map[K, B]] = {
-    mapM(as.toList) { case (k, a) => for { b <- f(a) } yield (k, b) }
-      .map(_.toMap)
-  }
-
-  def mapM[K, A, B](
-      as: MultiMap[K, A]
-  )(f: A => ReduceM[B]): ReduceM[MultiMap[K, B]] = {
-    mapM(as.map) { as =>
-      mapM(as) { f }
-    }.map(MultiMap(_))
-  }
-
-  def zipWithM[A, B](as: List[A], bs: List[B])(
-      f: (A, B) => ReduceM[Unit]
-  ): ReduceM[Unit] = {
-    val zip: List[(A, B)] = (as, bs).zipped.map((a, b) => (a, b))
-    mapM(zip) { case (a, b) => f(a, b) } >> pure()
-  }
 }
