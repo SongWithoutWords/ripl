@@ -386,13 +386,20 @@ case object block {
 // name whenever a fresh local name is generated. Collisions are avoided by
 // appending numbers (first @"name"@, then @"name1"@, @"name2"@, and so on).
 
-case object named{
-  def apply[A](ir: IRBuilder[A], name: String): IRBuilder[A] = for {
-    before <- State.inspect{s: IRBuilderState => s.builderNameSuggestion}
-    _ <- State.modify{s: IRBuilderState => s.copy(builderNameSuggestion = Some(name))}
-    result <- ir
-    _ <- State.modify { s: IRBuilderState => s.copy(builderNameSuggestion = before) }
-  } yield(result)
+case object named {
+  def apply[A](ir: IRBuilder[A], name: String): IRBuilder[A] =
+    for {
+      before <- State.inspect { s: IRBuilderState =>
+        s.builderNameSuggestion
+      }
+      _ <- State.modify { s: IRBuilderState =>
+        s.copy(builderNameSuggestion = Some(name))
+      }
+      result <- ir
+      _ <- State.modify { s: IRBuilderState =>
+        s.copy(builderNameSuggestion = before)
+      }
+    } yield (result)
 }
 
 // named
