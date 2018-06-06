@@ -33,19 +33,7 @@ case class ReduceInfo(errors: Set[Error], implicitConversionCount: Int) {
       Ordering(implicitConversionCount, rhs.implicitConversionCount)
 }
 
-case class ReduceM[+A](value: A, info: ReduceInfo) {
-
-  def map[B](f: A => B) = ReduceM(f(value), info)
-
-  def >>[B](rhs: ReduceM[B]) = ReduceM(rhs.value, info |+| rhs.info)
-
-  def >>=[B](f: A => ReduceM[B]): ReduceM[B] = {
-    val rhs = f(value)
-    ReduceM(rhs.value, info |+| rhs.info)
-  }
-
-  def flatMap[B](f: A => ReduceM[B]): ReduceM[B] = >>=(f)
-}
+case class ReduceM[+A](value: A, info: ReduceInfo)
 
 case object ReduceM {
 
