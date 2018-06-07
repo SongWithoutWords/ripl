@@ -140,35 +140,34 @@ case object IRBuilderInstruction {
       Instruction.Alloca(t, count, align, Nil)
     )
 
-// load :: MonadIRBuilder m => Operand -> Word32 -> m Operand
-// load a align = emitInstr retty $ Load False a Nothing align []
-//   where
-//     retty = case typeOf a of
-//       PointerType ty _ -> ty
-//       _ -> error "Cannot load non-pointer (Malformed AST)."
+  def load(addr: Operand, align: Int): IRBuilder[Operand] = {
+    val typ = typeOf(addr) match {
+      case PointerType(t, _) => t
+      case _ =>
+        throw new Exception("Cannot load non-pointer (Malformed AST).")
+    }
+    emitInstr(typ, Instruction.Load(false, addr, None, align, Nil))
+  }
 
-// store :: MonadIRBuilder m => Operand -> Word32 -> Operand -> m ()
-// store addr align val = emitInstrVoid $ Store False addr val Nothing align []
+  def store(addr: Operand, align: Int, value: Operand): IRBuilder[Unit] =
+    emitInstrVoid(Instruction.Store(false, addr, value, None, align, Nil))
 
-// gep :: MonadIRBuilder m => Operand -> [Operand] -> m Operand
-// gep addr is = emitInstr (gepType (typeOf addr) is) (GetElementPtr False addr is [])
-//   where
-//     -- TODO: Perhaps use the function from llvm-hs-pretty (https://github.com/llvm-hs/llvm-hs-pretty/blob/master/src/LLVM/Typed.hs)
-//     gepType :: Type -> [Operand] -> Type
-//     gepType ty [] = ptr ty
-//     gepType (PointerType ty _) (_:is') = gepType ty is'
-//     gepType (StructureType _ elTys) (ConstantOperand (C.Int 32 val):is') =
-//       gepType (elTys !! fromIntegral val) is'
-//     gepType (StructureType _ _) (i:_) = error $ "gep: Indices into structures should be 32-bit constants. " ++ show i
-//     gepType (VectorType _ elTy) (_:is') = gepType elTy is'
-//     gepType (ArrayType _ elTy) (_:is') = gepType elTy is'
-//     gepType t (_:_) = error $ "gep: Can't index into a " ++ show t
+  def gep(addr: Operand, offsets: List[Operand]): IRBuilder[Operand] = {
+    val constantOperands: List[Constant] = offsets.collect {
+      case ConstantOperand(c) => c;
+      case _                  => throw new Exception()
+    }
+    val gepType = getElementType(typeOf(addr))
+    emitInstr(gepType, Instruction.GetElementPtr(false, addr, offsets, Nil))
 
-// trunc :: MonadIRBuilder m => Operand -> Type -> m Operand
-// trunc a to = emitInstr to $ Trunc a to []
+    // TODO: Make same change in llvm-hs code-base
+  }
 
-// fptrunc :: MonadIRBuilder m => Operand -> Type -> m Operand
-// fptrunc a to = emitInstr to $ FPTrunc a to []
+  def trunc(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.Trunc(a, to, Nil))
+
+  def fpTrunc(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.FPTrunc(a, to, Nil))
 
 // zext :: MonadIRBuilder m => Operand -> Type -> m Operand
 // zext a to = emitInstr to $ ZExt a to []
