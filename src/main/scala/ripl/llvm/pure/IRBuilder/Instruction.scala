@@ -153,14 +153,16 @@ case object IRBuilderInstruction {
     emitInstrVoid(Instruction.Store(false, addr, value, None, align, Nil))
 
   def gep(addr: Operand, offsets: List[Operand]): IRBuilder[Operand] = {
+
+    // TODO: This is not quite as forgiving as the equivalent in the llvm code-base,
+    // because theirs allows the use of non-const indices within arrays
+
     val constantOperands: List[Constant] = offsets.collect {
       case ConstantOperand(c) => c;
       case _                  => throw new Exception()
     }
     val gepType = getElementType(typeOf(addr))
     emitInstr(gepType, Instruction.GetElementPtr(false, addr, offsets, Nil))
-
-    // TODO: Make same change in llvm-hs code-base
   }
 
   def trunc(a: Operand, to: Type): IRBuilder[Operand] =
