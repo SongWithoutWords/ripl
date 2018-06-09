@@ -116,10 +116,10 @@ case object prettyPrint {
       case false => commas(ps.map(prettyPrint(_)))
     }
 
-}
+  def apply(op: Operand, attributes: List[ParameterAttribute]): String =
+    prettyPrint(typeOf(op)) <+> prettyPrint(attributes) <+> prettyPrint(op)
 
-instance PP (Operand, [ParameterAttribute]) where
-  pp (op, attrs) = pp (typeOf op) <+> pp attrs <+> pp op
+}
 
 instance PP UnnamedAddr where
   pp LocalAddr = "local_unnamed_addr"
