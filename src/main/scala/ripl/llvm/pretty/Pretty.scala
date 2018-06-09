@@ -107,7 +107,7 @@ case object prettyPrint {
   }
 
   def apply(p: Parameter): String =
-    s"${prettyPrint(p.t)} ${prettyPrint(p.attributes)} ${local(prettyPrint(p.name))}"
+    prettyPrint(p.t) <+> prettyPrint(p.attributes) <+> local(prettyPrint(p.name))
 
   def apply(ps: List[ParameterAttribute]): String = hsep(ps.map(prettyPrint(_)))
 
