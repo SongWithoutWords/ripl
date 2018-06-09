@@ -35,6 +35,11 @@ case object Util {
   def label(x: String): String = s"label %$x"
 
   def comma(a: String, b: String) = s"$a, $b"
+
+  implicit class StringExtensions(lhs: String) {
+    def <+>(rhs: String) = lhs + " " + rhs
+    def </>(rhs: String) = lhs + "\n" + rhs
+  }
 }
 
 import Util._
