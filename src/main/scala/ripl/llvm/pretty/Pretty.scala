@@ -99,6 +99,9 @@ case object prettyPrint {
     }
   }
 
+  def apply(p: Parameter): String =
+    s"${prettyPrint(p.t)} ${prettyPrint(p.attributes)} ${local(prettyPrint(p.name))}"
+
 }
 
 instance PP Parameter where
