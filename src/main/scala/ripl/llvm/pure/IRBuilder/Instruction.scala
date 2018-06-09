@@ -169,102 +169,142 @@ case object IRBuilderInstruction {
   def fpTrunc(a: Operand, to: Type): IRBuilder[Operand] =
     emitInstr(to, Instruction.FPTrunc(a, to, Nil))
 
-// zext :: MonadIRBuilder m => Operand -> Type -> m Operand
-// zext a to = emitInstr to $ ZExt a to []
+  def zext(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.ZExt(a, to, Nil))
 
-// sext :: MonadIRBuilder m => Operand -> Type -> m Operand
-// sext a to = emitInstr to $ SExt a to []
+  def sext(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.SExt(a, to, Nil))
 
-// fptoui :: MonadIRBuilder m => Operand -> Type -> m Operand
-// fptoui a to = emitInstr to $ FPToUI a to []
+  def fptoui(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.FPToUI(a, to, Nil))
 
-// fptosi :: MonadIRBuilder m => Operand -> Type -> m Operand
-// fptosi a to = emitInstr to $ FPToSI a to []
+  def fptosi(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.FPToSI(a, to, Nil))
 
-// fpext :: MonadIRBuilder m => Operand -> Type -> m Operand
-// fpext a to = emitInstr to $ FPExt a to []
+  def fpext(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.FPExt(a, to, Nil))
 
-// uitofp :: MonadIRBuilder m => Operand -> Type -> m Operand
-// uitofp a to = emitInstr to $ UIToFP a to []
+  def uitofp(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.UIToFP(a, to, Nil))
 
-// sitofp :: MonadIRBuilder m => Operand -> Type -> m Operand
-// sitofp a to = emitInstr to $ SIToFP a to []
+  def sitofp(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.SIToFP(a, to, Nil))
 
-// ptrtoint :: MonadIRBuilder m => Operand -> Type -> m Operand
-// ptrtoint a to = emitInstr to $ PtrToInt a to []
+  def ptrtoint(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.PtrToInt(a, to, Nil))
 
-// inttoptr :: MonadIRBuilder m => Operand -> Type -> m Operand
-// inttoptr a to = emitInstr to $ IntToPtr a to []
+  def inttoptr(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.IntToPtr(a, to, Nil))
 
-// bitcast :: MonadIRBuilder m => Operand -> Type -> m Operand
-// bitcast a to = emitInstr to $ BitCast a to []
+  def bitcast(a: Operand, to: Type): IRBuilder[Operand] =
+    emitInstr(to, Instruction.BitCast(a, to, Nil))
 
-// extractElement :: MonadIRBuilder m => Operand -> Operand -> m Operand
-// extractElement v i = emitInstr (typeOf v) $ ExtractElement v i []
+  def extractElement(vector: Operand, index: Operand): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(vector) match {
+        case VectorType(_, elementType) =>
+          elementType;
+        case _ => throw new Exception("Extract element expects vector type")
+      },
+      Instruction.ExtractElement(vector, index, Nil)
+    )
 
-// insertElement :: MonadIRBuilder m => Operand -> Operand -> Operand -> m Operand
-// insertElement v e i = emitInstr (typeOf v) $ InsertElement v e i []
+  def insertElement(
+      vector: Operand,
+      element: Operand,
+      index: Operand
+  ): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(vector),
+      Instruction.InsertElement(vector, element, index, Nil)
+    )
 
-// shuffleVector :: MonadIRBuilder m => Operand -> Operand -> C.Constant -> m Operand
-// shuffleVector a b m = emitInstr (typeOf a) $ ShuffleVector a b m []
+  def shuffleVector(
+      vectorA: Operand,
+      vectorB: Operand,
+      mask: Constant
+  ): IRBuilder[Operand] =
+    // TODO: This return type is WRONG
+    emitInstr(
+      typeOf(vectorA),
+      Instruction.ShuffleVector(vectorA, vectorB, mask, Nil)
+    )
 
-// extractValue :: MonadIRBuilder m => Operand -> [Word32] -> m Operand
-// extractValue a i = emitInstr (typeOf a) $ ExtractValue a i []
+  def extractValue(aggregate: Operand, indices: List[Int]): IRBuilder[Operand] =
+    emitInstr(
+      extractValueType(indices, typeOf(aggregate)),
+      Instruction.ExtractValue(aggregate, indices, Nil)
+    )
 
-// insertValue :: MonadIRBuilder m => Operand -> Operand -> [Word32] -> m Operand
-// insertValue a e i = emitInstr (typeOf a) $ InsertValue a e i []
+  def insertValue(
+      aggregate: Operand,
+      element: Operand,
+      indices: List[Int]
+  ): IRBuilder[Operand] =
+    emitInstr(
+      typeOf(aggregate),
+      Instruction.InsertValue(aggregate, element, indices, Nil)
+    )
 
-// icmp :: MonadIRBuilder m => IP.IntegerPredicate -> Operand -> Operand -> m Operand
-// icmp pred a b = emitInstr i1 $ ICmp pred a b []
+  def icmp(pred: IntegerPredicate, a: Operand, b: Operand): IRBuilder[Operand] =
+    emitInstr(TypeAliases.i1, Instruction.ICmp(pred, a, b, Nil))
 
-// fcmp :: MonadIRBuilder m => FP.FloatingPointPredicate -> Operand -> Operand -> m Operand
-// fcmp pred a b = emitInstr i1 $ FCmp pred a b []
+  def fcmp(
+      pred: FloatingPointPredicate,
+      a: Operand,
+      b: Operand
+  ): IRBuilder[Operand] =
+    emitInstr(TypeAliases.i1, Instruction.FCmp(pred, a, b, Nil))
 
-// -- | Unconditional branch
-// br :: MonadIRBuilder m => Name -> m ()
-// br val = emitTerm (Br val [])
+  def phi(incoming: List[(Operand, Name)]): IRBuilder[Operand] = {
+    val ty = typeOf(incoming.head._1)
+    emitInstr(ty, Instruction.Phi(ty, incoming, Nil))
+  }
 
-// phi :: MonadIRBuilder m => [(Operand, Name)] -> m Operand
-// phi [] = emitInstr AST.void $ Phi AST.void [] []
-// phi incoming@(i:_) = emitInstr ty $ Phi ty incoming []
-//   where
-//     ty = typeOf (fst i) -- result type
+  def defaultCallInstruction(
+      f: Operand,
+      args: List[(Operand, List[ParameterAttribute])]
+  ) = Instruction.Call(
+    None, // tailCallKind
+    CallingConvention.Fast,
+    Nil, // returnAttributes
+    Right(f), // callableOperand
+    args,
+    Nil, // functionAttributes
+    Nil // metadata
+  )
 
-// retVoid :: MonadIRBuilder m => m ()
-// retVoid = emitTerm (Ret Nothing [])
+  def call(
+      f: Operand,
+      args: List[(Operand, List[ParameterAttribute])]
+  ): IRBuilder[Option[Operand]] = {
+    val instr = defaultCallInstruction(f, args)
+    typeOf(f) match {
+      case FunctionType(VoidType, _, _) =>
+        for { _ <- emitInstrVoid(instr) } yield (None)
+      case FunctionType(resType, _, _) =>
+        emitInstr(resType, instr).map(Some(_))
+    }
+  }
 
-// call :: MonadIRBuilder m => Operand -> [(Operand, [ParameterAttribute])] -> m Operand
-// call fun args = do
-//   let instr = Call {
-//     AST.tailCallKind = Nothing
-//   , AST.callingConvention = CC.C
-//   , AST.returnAttributes = []
-//   , AST.function = Right fun
-//   , AST.arguments = args
-//   , AST.functionAttributes = []
-//   , AST.metadata = []
-//   }
-//   case typeOf fun of
-//       FunctionType r _ _ -> case r of
-//         VoidType -> emitInstrVoid instr >> (pure (ConstantOperand (C.Undef void)))
-//         _        -> emitInstr r instr
-//       PointerType (FunctionType r _ _) _ -> case r of
-//         VoidType -> emitInstrVoid instr >> (pure (ConstantOperand (C.Undef void)))
-//         _        -> emitInstr r instr
-//       _ -> error "Cannot call non-function (Malformed AST)."
+  def select(cond: Operand, t: Operand, f: Operand): IRBuilder[Operand] =
+    emitInstr(typeOf(t), Instruction.Select(cond, t, f, Nil))
 
-// ret :: MonadIRBuilder m => Operand -> m ()
-// ret val = emitTerm (Ret (Just val) [])
+  def retVoid(): IRBuilder[Unit] =
+    emitTerm(Terminator.Ret(None, Nil))
 
-// switch :: MonadIRBuilder m => Operand -> Name -> [(C.Constant, Name)] -> m ()
-// switch val def dests = emitTerm $ Switch val def dests []
+  def ret(ret: Operand): IRBuilder[Unit] =
+    emitTerm(Terminator.Ret(Some(ret), Nil))
 
-// select :: MonadIRBuilder m => Operand -> Operand -> Operand -> m Operand
-// select cond t f = emitInstr (typeOf t) $ Select cond t f []
+  def condBr(cond: Operand, trueDest: Name, falseDest: Name): IRBuilder[Unit] =
+    emitTerm(Terminator.CondBr(cond, trueDest, falseDest, Nil))
 
-// condBr :: MonadIRBuilder m => Operand -> Name -> Name -> m ()
-// condBr cond tdest fdest = emitTerm $ CondBr cond tdest fdest []
+  def br(target: Name): IRBuilder[Unit] =
+    emitTerm(Terminator.Br(target, Nil))
 
-// unreachable :: MonadIRBuilder m => m ()
-// unreachable = emitTerm $ Unreachable []
+  def switch(op: Operand, default: Name, destinations: List[(Constant, Name)]) =
+    emitTerm(Terminator.Switch(op, default, destinations, Nil))
+
+  def unreachable() =
+    emitTerm(Terminator.Unreachable(Nil))
 }
