@@ -1,10 +1,14 @@
 package ripl.llvm.pretty
 
+import ripl.llvm.pure.ast._
+
 // -------------------------------------------------------------------------------
-// -- Utils
+// // Utils
 // -------------------------------------------------------------------------------
 
 case object Util {
+
+  def dquotes(s: String) = "\"" + s + "\""
 
   def parens(s: String) = s"($s)"
 
@@ -31,66 +35,71 @@ case object Util {
   def comma(a: String, b: String) = s"$a, $b"
 }
 
+import Util._
+
 // -------------------------------------------------------------------------------
-// -- Classes
+// Classes
 // -------------------------------------------------------------------------------
 
-case object PrettyPrint {
+case object prettyPrint {
+
   def apply(s: String, b: Boolean) = if(b) s else ""
+
+// XXX: horrible hack
+// unShort :: BS.ShortByteString -> [Char]
+// unShort xs = fmap (toEnum . fromIntegral) $ BS.unpack xs
+
+// short :: BS.ShortByteString -> Doc
+// short x = string (pack (unShort x))
+
+// decodeShortUtf8 :: SBF.ShortByteString -> Text
+// decodeShortUtf8 = decodeUtf8 . fromStrict . SBF.fromShort
+
+// instance PP Word8 where
+//   pp x = int (fromIntegral x)
+
+// instance PP Word16 where
+//   pp x = int (fromIntegral x)
+
+// instance PP Word32 where
+//   pp x = int (fromIntegral x)
+
+// instance PP Word64 where
+//   pp x = int (fromIntegral x)
+
+// instance PP Int32 where
+//   pp x = int (fromIntegral x)
+
+// instance PP Int64 where
+//   pp x = int (fromIntegral x)
+
+// instance PP Integer where
+//   pp = integer
+
+// instance PP BS.ShortByteString where
+//   pp = pp . unShort
+
+// instance PP [Char] where
+//   pp = text . pack
+
+// instance PP Bool where
+//   pp True = "true"
+//   pp False = "false"
+
+
+  def apply(b: Boolean) = b match {case true => "true"; case false => "false"}
+
+  def apply(n: Name) = {
+    def isFirst(c: Char) = c.isLetter || c == "-" || c == "_" || c == "$" || c == "."
+    def isRest(c: Char) = c.isDigit || isFirst(c)
+    n match {
+      case Name("") => "\"\""
+      case Name(n) if isFirst(n.head) && n.forall(isRest) => n
+      case _ => dquotes(n.s)
+    }
+  }
+
 }
-
--- XXX: horrible hack
-unShort :: BS.ShortByteString -> [Char]
-unShort xs = fmap (toEnum . fromIntegral) $ BS.unpack xs
-
-short :: BS.ShortByteString -> Doc
-short x = string (pack (unShort x))
-
-decodeShortUtf8 :: SBF.ShortByteString -> Text
-decodeShortUtf8 = decodeUtf8 . fromStrict . SBF.fromShort
-
-instance PP Word8 where
-  pp x = int (fromIntegral x)
-
-instance PP Word16 where
-  pp x = int (fromIntegral x)
-
-instance PP Word32 where
-  pp x = int (fromIntegral x)
-
-instance PP Word64 where
-  pp x = int (fromIntegral x)
-
-instance PP Int32 where
-  pp x = int (fromIntegral x)
-
-instance PP Int64 where
-  pp x = int (fromIntegral x)
-
-instance PP Integer where
-  pp = integer
-
-instance PP BS.ShortByteString where
-  pp = pp . unShort
-
-instance PP [Char] where
-  pp = text . pack
-
-instance PP Bool where
-  pp True = "true"
-  pp False = "false"
-
-instance PP Name where
-  pp (Name nm)
-   | BS.null nm = dquotes empty
-    | isFirst first && all isRest name = text (pack name)
-    | otherwise = dquotes . hcat . map escape $ name
-    where
-        name = unShort nm
-        first = head name
-        isFirst c = isLetter c || c == '-' || c == '_' || c == '$' || c == '.'
-        isRest c = isDigit c || isFirst c
-  pp (UnName x) = int (fromIntegral x)
 
 instance PP Parameter where
   pp (Parameter ty (UnName _) attrs) = pp ty <+> pp attrs
@@ -101,7 +110,7 @@ instance PP [ParameterAttribute] where
 
 instance PP ([Parameter], Bool) where
   pp (params, False) = commas (fmap pp params)
-  pp (params, True) = "TODO" -- XXX: variadic case
+  pp (params, True) = "TODO" // XXX: variadic case
 
 instance PP (Operand, [ParameterAttribute]) where
   pp (op, attrs) = pp (typeOf op) <+> pp attrs <+> pp op
@@ -142,7 +151,7 @@ instance PP Global where
             <+> pp returnAttributes <+> pp returnType <+> global (pp name)
             <> ppParams (pp . typeOf) parameters <+> pp functionAttributes <+> align <+> gcName <+> pre)
 
-        -- single unnamed block is special cased, and won't parse otherwise... yeah good times
+        // single unnamed block is special cased, and won't parse otherwise... yeah good times
         [b@(BasicBlock (UnName _) _ _)] ->
             ("define" <+> pp linkage <+> pp callingConvention
               <+> pp returnAttributes <+> pp returnType <+> global (pp name)
@@ -1068,7 +1077,7 @@ instance PP DataLayout where
   pp x = pp (BL.unpack (dataLayoutToString x))
 
 -------------------------------------------------------------------------------
--- Special Case Hacks
+// Special Case Hacks
 -------------------------------------------------------------------------------
 
 escape :: Char -> Doc
@@ -1096,7 +1105,7 @@ ppAlign :: Word32 -> Doc
 ppAlign x | x == 0    = empty
           | otherwise = ", align" <+> pp x
 
--- print an operand and its type
+// print an operand and its type
 ppTyped :: (PP a, Typed a) => a -> Doc
 ppTyped a = pp (typeOf a) <+> pp a
 
@@ -1149,16 +1158,16 @@ ppCall Call { function = Left (IA.InlineAssembly {..}), ..}
         Just MustTail -> "musttail"
         Just NoTail -> "notail"
         Nothing -> empty
-      -- If multiple keywords appear the ‘sideeffect‘ keyword must come first,
-      -- the ‘alignstack‘ keyword second and the ‘inteldialect‘ keyword last.
+      // If multiple keywords appear the ‘sideeffect‘ keyword must come first,
+      // the ‘alignstack‘ keyword second and the ‘inteldialect‘ keyword last.
       sideeffect' = if hasSideEffects then "sideeffect" else ""
       align' = if alignStack then "alignstack" else ""
-      -- ATTDialect is assumed if not specified
+      // ATTDialect is assumed if not specified
       dialect' = case dialect of IA.ATTDialect -> ""; IA.IntelDialect -> "inteldialect"
 ppCall x = error "Non-callable argument. (Malformed AST)"
 
--- Differs from Call in record name conventions only so needs a seperate almost
--- identical function. :(
+// Differs from Call in record name conventions only so needs a seperate almost
+// identical function. :(
 ppInvoke :: Terminator -> Doc
 ppInvoke Invoke { function' = Right f,..}
   = "invoke" <+> pp callingConvention' <+> pp resultType <+> ftype
@@ -1175,8 +1184,8 @@ ppInvoke x = error "Non-callable argument. (Malformed AST)"
 ppSingleBlock :: BasicBlock -> Doc
 ppSingleBlock (BasicBlock nm instrs term) = (vcat $ (fmap pp instrs) ++ [pp term])
 
--- According to <https://stackoverflow.com/a/7002812/3877993> this is
--- the best way to cast floats to words.
+// According to <https://stackoverflow.com/a/7002812/3877993> this is
+// the best way to cast floats to words.
 
 cast :: (MArray (STUArray s) a (ST s),
          MArray (STUArray s) b (ST s)) => a -> ST s b
@@ -1196,13 +1205,13 @@ ppInstrMeta [] = mempty
 ppInstrMeta xs = "," <> pp xs
 
 -------------------------------------------------------------------------------
--- Toplevel
+// Toplevel
 -------------------------------------------------------------------------------
 
--- | Pretty print a LLVM module
+// | Pretty print a LLVM module
 ppllvm :: Module -> Text
 ppllvm = displayT . renderPretty 0.4 100 . pp
 
--- | Pretty print a printable LLVM expression
+// | Pretty print a printable LLVM expression
 ppll :: PP a => a -> Text
 ppll = displayT . renderPretty 0.4 100 . pp
