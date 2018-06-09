@@ -37,6 +37,7 @@ case object Util {
   def comma(a: String, b: String) = s"$a, $b"
 
   implicit class StringExtensions(lhs: String) {
+    def <>(rhs: String) = lhs + rhs
     def <+>(rhs: String) = lhs + " " + rhs
     def </>(rhs: String) = lhs + "\n" + rhs
   }
