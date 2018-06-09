@@ -1,111 +1,35 @@
-{-# LANGUAGE CPP #-}
-{-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE TypeSynonymInstances #-}
-{-# OPTIONS_GHC -fwarn-incomplete-patterns #-}
-{-# OPTIONS_GHC -fwarn-incomplete-uni-patterns #-}
+package ripl.llvm.pretty
 
-module LLVM.Pretty (
-  PP(..),
-  ppllvm,
-  ppll,
-) where
+// -------------------------------------------------------------------------------
+// -- Utils
+// -------------------------------------------------------------------------------
 
-import Prelude hiding ((<$>))
-import GHC.Word
+case object Util {
 
-import LLVM.AST.Typed
+  def parens(s: String) = s"($s)"
 
-import LLVM.AST
-import LLVM.AST.Global
-import LLVM.AST.Type
+  def parensIf(b: Boolean, s: String): String = if(b) parens(s) else s
 
-import LLVM.DataLayout
-import LLVM.AST.Attribute
-import LLVM.AST.DataLayout
-import LLVM.AST.COMDAT
-import qualified LLVM.AST.Linkage as L
-import qualified LLVM.AST.Visibility as V
-import qualified LLVM.AST.CallingConvention as CC
-import qualified LLVM.AST.Constant as C
-import qualified LLVM.AST.FloatingPointPredicate as FP
-import qualified LLVM.AST.IntegerPredicate as IP
-import qualified LLVM.AST.InlineAssembly as IA
-import qualified LLVM.AST.AddrSpace as AS
-import qualified LLVM.AST.Float as F
-import qualified LLVM.AST.RMWOperation as RMW
-import LLVM.AST.Operand hiding (DIGLobalVariable(..), GlobalVariable, Module, NoReturn, PointerType)
-import qualified LLVM.AST.Operand as O
-import LLVM.AST.ParameterAttribute as PA
-import LLVM.AST.FunctionAttribute as FA
+  def commas(in: List[String]): String = in.mkString("", ", ", "")
 
-import Data.String
+  def colons(in: List[String]): String = in.mkString("", ":", "")
 
-import Text.Printf
-import Data.Text.Lazy.Encoding
-import Data.Text.Lazy (Text, pack, unpack)
-import qualified Data.ByteString.Short as SBF
-import qualified Data.ByteString.Lazy.Char8 as BF
-import Data.ByteString.Lazy (fromStrict)
-import Data.ByteString.Internal (w2c)
-import Text.PrettyPrint.Leijen.Text hiding (column, line, (<>))
+  def hlinecat(in: List[String]): String = in.mkString("", "\n", "")
 
-import qualified Data.ByteString.Char8 as BL
-import qualified Data.ByteString.Short as BS
-import Data.Char (chr, ord, isAscii, isControl, isLetter, isDigit)
-import Data.Foldable (toList)
-import Data.Int
-import Data.List (intersperse)
-import Data.Maybe (isJust, mapMaybe)
-import Data.Monoid ((<>))
-import Numeric (showHex)
+  def wrapbraces(leadIn: String, x: String): String = s"$leadIn {\n${x}\n}"
 
-import Data.Array.Unsafe
-import Data.Array.MArray
-import Data.Array.ST
-import Control.Monad.ST
+  def angleBrackets(x: String): String = s"<$x>"
 
--------------------------------------------------------------------------------
--- Utils
--------------------------------------------------------------------------------
+  def spaceBraces(x: String): String = s"{ $x }"
 
-parensIf ::  Bool -> Doc -> Doc
-parensIf True = parens
-parensIf False = id
+  def local(x: String): String = s"%$x"
 
-commas :: [Doc] -> Doc
-commas  = hsep . punctuate (char ',')
+  def global(x: String): String = s"@$x"
 
-colons :: [Doc] -> Doc
-colons  = hcat . intersperse (char ':')
+  def label(x: String): String = s"label %$x"
 
-hlinecat :: [Doc] -> Doc
-hlinecat = vcat . intersperse softbreak
-
-wrapbraces :: Doc -> Doc -> Doc
-wrapbraces leadIn x = (leadIn <> char '{') <$> x <$> char '}'
-
-angleBrackets :: Doc -> Doc
-angleBrackets x = char '<' <> x <> char '>'
-
-spacedbraces :: Doc -> Doc
-spacedbraces x = char '{' <+> x <+> char '}'
-
-local' :: Doc -> Doc
-local' a = "%" <> a
-
-global :: Doc -> Doc
-global a = "@" <> a
-
-label :: Doc -> Doc
-label a = "label" <+> "%" <> a
-
-cma :: Doc -> Doc -> Doc -- <,> does not work :(
-a `cma` b = a <> "," <+> b
+  def comma(a: String, b: String) = s"$a, $b"
+}
 
 -------------------------------------------------------------------------------
 -- Classes
