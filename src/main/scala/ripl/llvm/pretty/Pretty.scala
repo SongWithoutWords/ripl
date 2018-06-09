@@ -119,11 +119,13 @@ case object prettyPrint {
   def apply(op: Operand, attributes: List[ParameterAttribute]): String =
     prettyPrint(typeOf(op)) <+> prettyPrint(attributes) <+> prettyPrint(op)
 
-}
+  def apply(addr: UnnamedAddr): String =
+    addr match {
+      case LocalAddr => "local_unnamed_addr"
+      case GlobalAddr => "unnamed_addr"
+    }
 
-instance PP UnnamedAddr where
-  pp LocalAddr = "local_unnamed_addr"
-  pp GlobalAddr = "unnamed_addr"
+}
 
 instance PP Type where
   pp (IntegerType width) = "i" <> pp width
