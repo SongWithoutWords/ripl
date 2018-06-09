@@ -108,13 +108,6 @@ case object prettyPrint {
 
 }
 
-instance PP Parameter where
-  pp (Parameter ty (UnName _) attrs) = pp ty <+> pp attrs
-  pp (Parameter ty name attrs) = pp ty <+> pp attrs <+> local' (pp name)
-
-instance PP [ParameterAttribute] where
-  pp x = hsep $ fmap pp x
-
 instance PP ([Parameter], Bool) where
   pp (params, False) = commas (fmap pp params)
   pp (params, True) = "TODO" // XXX: variadic case
