@@ -43,7 +43,7 @@ import Util._
 
 case object prettyPrint {
 
-  def apply(s: String, b: Boolean) = if(b) s else ""
+  def apply(s: String, b: Boolean): String = if(b) s else ""
 
 // XXX: horrible hack
 // unShort :: BS.ShortByteString -> [Char]
@@ -87,9 +87,9 @@ case object prettyPrint {
 //   pp False = "false"
 
 
-  def apply(b: Boolean) = b match {case true => "true"; case false => "false"}
+  def apply(b: Boolean): String = b match {case true => "true"; case false => "false"}
 
-  def apply(n: Name) = {
+  def apply(n: Name): String = {
     def isFirst(c: Char) = c.isLetter || c == "-" || c == "_" || c == "$" || c == "."
     def isRest(c: Char) = c.isDigit || isFirst(c)
     n match {
