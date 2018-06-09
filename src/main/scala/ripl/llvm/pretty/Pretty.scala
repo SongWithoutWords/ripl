@@ -31,20 +31,13 @@ case object Util {
   def comma(a: String, b: String) = s"$a, $b"
 }
 
--------------------------------------------------------------------------------
--- Classes
--------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
+// -- Classes
+// -------------------------------------------------------------------------------
 
-class PP p where
-  pp :: p -> Doc
-
-ppMaybe :: PP a => Maybe a -> Doc
-ppMaybe (Just x) = pp x
-ppMaybe Nothing = empty
-
-ppBool :: Doc -> Bool -> Doc
-ppBool x True = x
-ppBool x False = empty
+case object PrettyPrint {
+  def apply(s: String, b: Boolean) = if(b) s else ""
+}
 
 -- XXX: horrible hack
 unShort :: BS.ShortByteString -> [Char]
