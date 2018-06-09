@@ -14,6 +14,8 @@ case object Util {
 
   def parensIf(b: Boolean, s: String): String = if(b) parens(s) else s
 
+  def hsep(in: List[String]): String = in.mkString("", " ", "")
+
   def commas(in: List[String]): String = in.mkString("", ", ", "")
 
   def colons(in: List[String]): String = in.mkString("", ":", "")
@@ -101,6 +103,8 @@ case object prettyPrint {
 
   def apply(p: Parameter): String =
     s"${prettyPrint(p.t)} ${prettyPrint(p.attributes)} ${local(prettyPrint(p.name))}"
+
+  def apply(ps: List[ParameterAttribute]): String = hsep(ps.map(prettyPrint(_)))
 
 }
 
