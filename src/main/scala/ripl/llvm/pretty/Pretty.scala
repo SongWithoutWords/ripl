@@ -106,11 +106,12 @@ case object prettyPrint {
 
   def apply(ps: List[ParameterAttribute]): String = hsep(ps.map(prettyPrint(_)))
 
-}
+  def apply(ps: List[Parameter], variadic: Boolean): String =
+    variadic match {
+      case false => commas(ps.map(prettyPrint(_)))
+    }
 
-instance PP ([Parameter], Bool) where
-  pp (params, False) = commas (fmap pp params)
-  pp (params, True) = "TODO" // XXX: variadic case
+}
 
 instance PP (Operand, [ParameterAttribute]) where
   pp (op, attrs) = pp (typeOf op) <+> pp attrs <+> pp op
