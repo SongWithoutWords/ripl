@@ -24,9 +24,11 @@ case object Util {
 
   def wrapbraces(leadIn: String, x: String): String = s"$leadIn {\n${x}\n}"
 
+  def brackets(x: String): String = s"[$x]"
+
   def angleBrackets(x: String): String = s"<$x>"
 
-  def spaceBraces(x: String): String = s"{ $x }"
+  def spacedBraces(x: String): String = s"{ $x }"
 
   def local(x: String): String = s"%$x"
 
@@ -40,6 +42,7 @@ case object Util {
     def <>(rhs: String) = lhs + rhs
     def <+>(rhs: String) = lhs + " " + rhs
     def </>(rhs: String) = lhs + "\n" + rhs
+    def comma(rhs: String) = lhs + ", " + rhs
   }
 }
 
@@ -126,31 +129,41 @@ case object prettyPrint {
       case GlobalAddr => "unnamed_addr"
     }
 
+  def apply(t: Type): String =
+    t match {
+      case IntegerType(width) => "i" <> width.toString
+      case HalfFP => "half"
+      case FloatFP => "float"
+      case DoubleFP => "double"
+      case FP128FP => "fp128"
+      case X86_FP80FP => "x86_fp80"
+      case PPC_FP128FP => "ppc_fp128"
+
+      case VoidType => "void"
+      case PointerType(t, AddrSpace(addr)) =>
+        addr match {
+          case 0 => prettyPrint(t) <> "*"
+          case _ => prettyPrint(t) <+> "addrspace" <> parens(addr.toString) <> "*"
+        }
+
+      case f@FunctionType(resultType, argumentTypes, isVarArg) =>
+        prettyPrint(resultType) <+> prettyPrintFunctionArgumentTypes(f)
+      case VectorType(elCount, elType) =>
+        angleBrackets(elCount.toString() <+> "x" <+> prettyPrint(elType))
+      case StructureType(isPacked, elementTypes) =>
+        val contents = commas(elementTypes.map(prettyPrint(_)))
+        isPacked match {
+          case true => "<{" <> contents <> "}>"
+          case false => "{" <> contents <> "}"
+        }
+      case ArrayType(elCount, elType) =>
+        brackets(elCount.toString <+> "x" <+> prettyPrint(elType))
+      case NamedTypeReference(name) => "%" <> prettyPrint(name)
+      case MetadataType => "metadata"
+      case TokenType => "token"
+      case LabelType => "label"
+    }
 }
-
-instance PP Type where
-  pp (IntegerType width) = "i" <> pp width
-  pp (FloatingPointType HalfFP)      = "half"
-  pp (FloatingPointType FloatFP )    = "float"
-  pp (FloatingPointType DoubleFP)    = "double"
-  pp (FloatingPointType FP128FP)     = "fp128"
-  pp (FloatingPointType X86_FP80FP)  = "x86_fp80"
-  pp (FloatingPointType PPC_FP128FP) = "ppc_fp128"
-
-  pp VoidType = "void"
-  pp (PointerType ref (AS.AddrSpace addr))
-    | addr == 0 = pp ref <> "*"
-    | otherwise = pp ref <+> "addrspace" <> parens (pp addr) <> "*"
-  pp ft@(FunctionType {..}) = pp resultType <+> ppFunctionArgumentTypes ft
-  pp (VectorType {..}) = "<" <> pp nVectorElements <+> "x" <+> pp elementType <> ">"
-  pp (StructureType {..}) = if isPacked
-                               then "<{" <> (commas $ fmap pp elementTypes ) <> "}>"
-                               else  "{" <> (commas $ fmap pp elementTypes ) <> "}"
-  pp (ArrayType {..}) = brackets $ pp nArrayElements <+> "x" <+> pp elementType
-  pp (NamedTypeReference name) = "%" <> pp name
-  pp MetadataType = "metadata"
-  pp TokenType = "token"
-  pp LabelType = "label"
 
 instance PP Global where
   pp Function {..} =
