@@ -56,6 +56,8 @@ import Util._
 
 case object prettyPrint {
 
+  def pp = prettyPrint.apply _
+
   def apply(s: String, b: Boolean): String = if(b) s else ""
 
 // XXX: horrible hack
@@ -113,17 +115,17 @@ case object prettyPrint {
   }
 
   def apply(p: Parameter): String =
-    prettyPrint(p.t) <+> prettyPrint(p.attributes) <+> local(prettyPrint(p.name))
+    pp(p.t) <+> pp(p.attributes) <+> local(pp(p.name))
 
-  def apply(ps: List[ParameterAttribute]): String = hsep(ps.map(prettyPrint(_)))
+  def apply(ps: List[ParameterAttribute]): String = hsep(ps.map(pp))
 
   def apply(ps: List[Parameter], variadic: Boolean): String =
     variadic match {
-      case false => commas(ps.map(prettyPrint(_)))
+      case false => commas(ps.map(pp))
     }
 
   def apply(op: Operand, attributes: List[ParameterAttribute]): String =
-    prettyPrint(typeOf(op)) <+> prettyPrint(attributes) <+> prettyPrint(op)
+    pp(typeOf(op)) <+> pp(attributes) <+> pp(op)
 
   def apply(addr: UnnamedAddr): String =
     addr match {
@@ -144,23 +146,23 @@ case object prettyPrint {
       case VoidType => "void"
       case PointerType(t, AddrSpace(addr)) =>
         addr match {
-          case 0 => prettyPrint(t) <> "*"
-          case _ => prettyPrint(t) <+> "addrspace" <> parens(addr.toString) <> "*"
+          case 0 => pp(t) <> "*"
+          case _ => pp(t) <+> "addrspace" <> parens(addr.toString) <> "*"
         }
 
       case f@FunctionType(resultType, argumentTypes, isVarArg) =>
-        prettyPrint(resultType) <+> prettyPrintFunctionArgumentTypes(f)
+        pp(resultType) <+> pp(f)
       case VectorType(elCount, elType) =>
-        angleBrackets(elCount.toString() <+> "x" <+> prettyPrint(elType))
+        angleBrackets(elCount.toString() <+> "x" <+> pp(elType))
       case StructureType(isPacked, elementTypes) =>
-        val contents = commas(elementTypes.map(prettyPrint(_)))
+        val contents = commas(elementTypes.map(pp))
         isPacked match {
           case true => "<{" <> contents <> "}>"
           case false => "{" <> contents <> "}"
         }
       case ArrayType(elCount, elType) =>
-        brackets(elCount.toString <+> "x" <+> prettyPrint(elType))
-      case NamedTypeReference(name) => "%" <> prettyPrint(name)
+        brackets(elCount.toString <+> "x" <+> pp(elType))
+      case NamedTypeReference(name) => "%" <> pp(name)
       case MetadataType => "metadata"
       case TokenType => "token"
       case LabelType => "label"
