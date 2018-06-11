@@ -167,51 +167,71 @@ case object prettyPrint {
       case TokenType => "token"
       case LabelType => "label"
     }
+
+  def apply(g: Global): String = {
+    g match {
+      case f: Function =>
+        val infoBeforeParams = spaces(
+          pp(f.linkage),
+          pp(f.callingConvention),
+          pp(f.returnAttributes),
+          pp(f.returnType),
+          global(pp(f.name))
+        )
+        val infoAfterParams = spaces(
+          pp(f.functionAttributes),
+          f.alignment match {
+            case 0 => ""
+            case align => "align" <+> align.toString
+          },
+          f.garbageCollectorName match {
+            case None => ""
+            case Some(n) => "gc" <+> dquotes(n)
+          },
+          f.prefix match {
+            case None => ""
+            case Some(p) => "prefix" <+> ppTyped(p)
+          }
+        )
+        f.basicBlocks match {
+          case Nil =>
+            "declare" <+>
+              infoBeforeParams <>
+              ppParams(p => pp(typeOf(p)), f.parameters) <+>
+              infoAfterParams
+
+          // TODO: special case for single unnamed block
+
+          case bs =>
+            "define" <+>
+              infoBeforeParams <>
+              ppParams(pp, f.parameters) <+>
+              infoAfterParams
+        }
+
+      case g: GlobalVariable => ???
+
+      case g: GlobalAlias => ???
+
+    }
+  }
 }
 
-instance PP Global where
-  pp Function {..} =
-      case basicBlocks of
-        [] ->
-          ("declare" <+> pp linkage <+> pp callingConvention
-            <+> pp returnAttributes <+> pp returnType <+> global (pp name)
-            <> ppParams (pp . typeOf) parameters <+> pp functionAttributes <+> align <+> gcName <+> pre)
+//   pp GlobalVariable {..} = global (pp name) <+> "=" <+> ppLinkage hasInitializer linkage <+> ppMaybe unnamedAddr
+//                              <+> addrSpace' <+> kind <+> pp type' <+> ppMaybe initializer <> ppAlign alignment
+//     where
+//       hasInitializer = isJust initializer
+//       addrSpace' =
+//         case addrSpace of
+//           AS.AddrSpace addr
+//             | addr == 0 -> mempty
+//             | otherwise -> "addrspace" <> parens (pp addr)
+//       kind | isConstant = "constant"
+//            | otherwise  = "global"
 
-        // single unnamed block is special cased, and won't parse otherwise... yeah good times
-        [b@(BasicBlock (UnName _) _ _)] ->
-            ("define" <+> pp linkage <+> pp callingConvention
-              <+> pp returnAttributes <+> pp returnType <+> global (pp name)
-              <> ppParams pp parameters <+> pp functionAttributes <+> align <+> gcName <+> pre)
-            `wrapbraces` (indent 2 $ ppSingleBlock b)
-
-        bs ->
-          ("define" <+> pp linkage <+> pp callingConvention
-            <+> pp returnAttributes <+> pp returnType <+> global (pp name)
-            <> ppParams pp parameters <+> pp functionAttributes <+> align <+> gcName <+> pre)
-          `wrapbraces` (vcat $ fmap pp bs)
-    where
-      pre = case prefix of
-              Nothing  -> empty
-              Just con -> "prefix" <+> ppTyped con
-      align | alignment == 0    = empty
-            | otherwise = "align" <+> pp alignment
-      gcName = maybe empty (\n -> "gc" <+> dquotes (text $ pack n)) (fmap unShort garbageCollectorName)
-
-  pp GlobalVariable {..} = global (pp name) <+> "=" <+> ppLinkage hasInitializer linkage <+> ppMaybe unnamedAddr
-                             <+> addrSpace' <+> kind <+> pp type' <+> ppMaybe initializer <> ppAlign alignment
-    where
-      hasInitializer = isJust initializer
-      addrSpace' =
-        case addrSpace of
-          AS.AddrSpace addr
-            | addr == 0 -> mempty
-            | otherwise -> "addrspace" <> parens (pp addr)
-      kind | isConstant = "constant"
-           | otherwise  = "global"
-
-  pp GlobalAlias {..} = global (pp name) <+> "=" <+> pp linkage <+> ppMaybe unnamedAddr <+> "alias" <+> pp typ `cma` ppTyped aliasee
-    where
-      typ = getElementType type'
+//   pp GlobalAlias {..} = global (pp name) <+> "=" <+> pp linkage <+> ppMaybe unnamedAddr <+> "alias" <+> pp typ `cma` ppTyped aliasee
+//     where
+//       typ = getElementType type'
 
 ppMetadata :: Maybe Metadata -> Doc
 ppMetadata Nothing = "null"
