@@ -9,7 +9,7 @@ import OperandAliases._
 sealed trait NonEmpty[A]
 
 // <http://llvm.org/docs/LangRef.html#metadata-nodes-and-metadata-strings>
-// Metasealed trait can be attached to an instruction
+// Metadata can be attached to an instruction
 object InstructionAliases {
   // An 'Atomicity' describes constraints on the visibility of effects of an atomic instruction
   type Atomicity = (SynchronizationScope, MemoryOrdering)
