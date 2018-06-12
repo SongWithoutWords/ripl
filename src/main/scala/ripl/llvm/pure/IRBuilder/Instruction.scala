@@ -270,7 +270,7 @@ case object IRBuilderInstruction {
     None, // tailCallKind
     CallingConvention.Fast,
     Nil, // returnAttributes
-    Right(f), // callableOperand
+    f, // callableOperand
     args,
     Nil, // functionAttributes
     Nil // metadata

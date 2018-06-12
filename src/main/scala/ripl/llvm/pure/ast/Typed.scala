@@ -2,7 +2,6 @@
 package ripl.llvm.pure.ast
 
 import InstructionAliases._
-import OperandAliases._
 import TypeAliases._
 
 case object typeOf {
@@ -14,8 +13,8 @@ case object typeOf {
   }
 
   def apply(op: CallableOperand): Type = op match {
-    case Right(op) => typeOf(op)
-    case Left(_) =>
+    case op: Operand => typeOf(op)
+    case _: InlineAssembly =>
       throw new Exception(
         "typeOf inline assembler is not defined (Malformed AST)"
       )
@@ -123,9 +122,13 @@ case object typeOf {
   def apply(g: Global): Type = g match {
     case g: GlobalVariable => g.t
     case g: GlobalAlias    => g.t
-    case g: Function =>
-      val (params, isVarArg: Boolean) = g.parameters
-      FunctionType(g.returnType, params.map(typeOf(_)), isVarArg)
+    case g: Function       =>
+      // val (params, isVarArg: Boolean) = g.parameters
+      FunctionType(
+        g.returnType,
+        g.parameters.params.map(typeOf(_)),
+        g.parameters.isVarArg
+      )
   }
 
   def apply(p: Parameter): Type = p.t

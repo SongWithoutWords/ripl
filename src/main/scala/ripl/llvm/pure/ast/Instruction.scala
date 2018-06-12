@@ -3,8 +3,6 @@
 
 package ripl.llvm.pure.ast
 
-import OperandAliases._
-
 // import Data.List.NonEmpty
 sealed trait NonEmpty[A]
 
