@@ -1,6 +1,8 @@
 package ripl.llvm.pretty
 
 import ripl.llvm.pure.ast._
+import ripl.llvm.pure.ast.InstructionAliases._
+import ripl.llvm.pure.ast.OperandAliases._
 
 // -------------------------------------------------------------------------------
 // // Utils
