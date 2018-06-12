@@ -14,7 +14,7 @@ case object Util {
 
   def parens(s: String) = s"($s)"
 
-  def parensIf(b: Boolean, s: String): String = if(b) parens(s) else s
+  def parensIf(b: Boolean, s: String): String = if (b) parens(s) else s
 
   def hsep(in: List[String]): String = in.mkString("", " ", "")
   def spaces(in: List[String]): String = in.mkString("", " ", "")
@@ -60,7 +60,7 @@ case object prettyPrint {
 
   val pp = this
 
-  def apply(s: String, b: Boolean): String = if(b) s else ""
+  def apply(s: String, b: Boolean): String = if (b) s else ""
 
 // XXX: horrible hack
 // unShort :: BS.ShortByteString -> [Char]
@@ -103,16 +103,19 @@ case object prettyPrint {
 //   pp True = "true"
 //   pp False = "false"
 
-
-  def apply(b: Boolean): String = b match {case true => "true"; case false => "false"}
+  def apply(b: Boolean): String = b match {
+    case true  => "true"
+    case false => "false"
+  }
 
   def apply(n: Name): String = {
-    def isFirst(c: Char) = c.isLetter || c == "-" || c == "_" || c == "$" || c == "."
+    def isFirst(c: Char) =
+      c.isLetter || c == "-" || c == "_" || c == "$" || c == "."
     def isRest(c: Char) = c.isDigit || isFirst(c)
     n match {
-      case Name("") => "\"\""
+      case Name("")                                       => "\"\""
       case Name(n) if isFirst(n.head) && n.forall(isRest) => n
-      case _ => dquotes(n.s)
+      case _                                              => dquotes(n.s)
     }
   }
 
@@ -131,19 +134,19 @@ case object prettyPrint {
 
   def apply(addr: UnnamedAddr): String =
     addr match {
-      case LocalAddr => "local_unnamed_addr"
+      case LocalAddr  => "local_unnamed_addr"
       case GlobalAddr => "unnamed_addr"
     }
 
   def apply(t: Type): String =
     t match {
       case IntegerType(width) => "i" <> width.toString
-      case HalfFP => "half"
-      case FloatFP => "float"
-      case DoubleFP => "double"
-      case FP128FP => "fp128"
-      case X86_FP80FP => "x86_fp80"
-      case PPC_FP128FP => "ppc_fp128"
+      case HalfFP             => "half"
+      case FloatFP            => "float"
+      case DoubleFP           => "double"
+      case FP128FP            => "fp128"
+      case X86_FP80FP         => "x86_fp80"
+      case PPC_FP128FP        => "ppc_fp128"
 
       case VoidType => "void"
       case PointerType(t, AddrSpace(addr)) =>
@@ -152,22 +155,22 @@ case object prettyPrint {
           case _ => pp(t) <+> "addrspace" <> parens(addr.toString) <> "*"
         }
 
-      case f@FunctionType(resultType, argumentTypes, isVarArg) =>
+      case f @ FunctionType(resultType, argumentTypes, isVarArg) =>
         pp(resultType) <+> pp(f)
       case VectorType(elCount, elType) =>
         angleBrackets(elCount.toString() <+> "x" <+> pp(elType))
       case StructureType(isPacked, elementTypes) =>
         val contents = commas(elementTypes.map(pp))
         isPacked match {
-          case true => "<{" <> contents <> "}>"
+          case true  => "<{" <> contents <> "}>"
           case false => "{" <> contents <> "}"
         }
       case ArrayType(elCount, elType) =>
         brackets(elCount.toString <+> "x" <+> pp(elType))
       case NamedTypeReference(name) => "%" <> pp(name)
-      case MetadataType => "metadata"
-      case TokenType => "token"
-      case LabelType => "label"
+      case MetadataType             => "metadata"
+      case TokenType                => "token"
+      case LabelType                => "label"
     }
 
   def apply(g: Global): String = {
@@ -183,15 +186,15 @@ case object prettyPrint {
         val infoAfterParams = spaces(
           pp(f.functionAttributes),
           f.alignment match {
-            case 0 => ""
+            case 0     => ""
             case align => "align" <+> align.toString
           },
           f.garbageCollectorName match {
-            case None => ""
+            case None    => ""
             case Some(n) => "gc" <+> dquotes(n)
           },
           f.prefix match {
-            case None => ""
+            case None    => ""
             case Some(p) => "prefix" <+> ppTyped(p)
           }
         )
