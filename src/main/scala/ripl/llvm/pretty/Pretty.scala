@@ -58,7 +58,7 @@ import Util._
 
 case object prettyPrint {
 
-  def pp = prettyPrint.apply _
+  val pp = this
 
   def apply(s: String, b: Boolean): String = if(b) s else ""
 
