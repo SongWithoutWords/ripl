@@ -6,12 +6,14 @@ package ripl.llvm.pure.ast
 import OperandAliases._
 
 // import Data.List.NonEmpty
-
 sealed trait NonEmpty[A]
 
 // <http://llvm.org/docs/LangRef.html#metadata-nodes-and-metadata-strings>
 // Metasealed trait can be attached to an instruction
 object InstructionAliases {
+  // An 'Atomicity' describes constraints on the visibility of effects of an atomic instruction
+  type Atomicity = (SynchronizationScope, MemoryOrdering)
+
   type InstructionMetadata = List[(String, MetadataNode)]
 }
 import InstructionAliases._
@@ -106,12 +108,6 @@ case object SequentiallyConsistent extends MemoryOrdering
 sealed trait SynchronizationScope
 case object SingleThread extends SynchronizationScope
 case object System extends SynchronizationScope
-
-object AtomicityAlias {
-  // An 'Atomicity' describes constraints on the visibility of effects of an atomic instruction
-  type Atomicity = (SynchronizationScope, MemoryOrdering)
-}
-import AtomicityAlias._
 
 // For the redoubtably complex 'LandingPad' instruction
 sealed trait LandingPadClause
