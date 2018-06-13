@@ -17,6 +17,8 @@ case object Util {
 
   def parensIf(b: Boolean, s: String): String = if (b) parens(s) else s
 
+  def lines(in: List[String]): String = in.mkString("", "\n", "")
+
   def spaces(in: List[String]): String = in.mkString("", " ", "")
   def spaces(in: String*): String = spaces(in: _*)
 
