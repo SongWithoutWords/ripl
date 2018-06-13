@@ -109,7 +109,7 @@ case object prettyPrint {
 
   def apply(n: Name): String = {
     def isFirst(c: Char) =
-      c.isLetter || c == "-" || c == "_" || c == "$" || c == "."
+      c.isLetter || c == '-' || c == '_' || c == '$' || c == '.'
     def isRest(c: Char) = c.isDigit || isFirst(c)
     n match {
       case Name("")                                       => "\"\""
