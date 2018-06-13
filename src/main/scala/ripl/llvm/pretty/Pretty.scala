@@ -31,6 +31,7 @@ case object Util {
 
   def angleBrackets(x: String): String = s"<$x>"
 
+  def braces(x: String): String = s"{$x}"
   def spacedBraces(x: String): String = s"{ $x }"
 
   def local(x: String): String = s"%$x"
@@ -417,17 +418,18 @@ case object prettyPrint {
     }
   }
 
-  def apply(m: InstructionMetadata): String = ???
-// instance PP InstructionMetadata where
-//   pp meta = commas ["!" <> pp x <+> pp y | (x,y) <- meta]
+  def apply(m: InstructionMetadata): String =
+    commas(m.map { case (x, y) => "!" <> x <+> pp(y) })
 
-  def apply(m: MetadataNodeID): String = ???
-// instance PP MetadataNodeID where
-//   pp (MetadataNodeID x) = "!" <> int (fromIntegral x)
+  def apply(m: MetadataNodeID): String = {
+    val MetadataNodeID(id) = m
+    "!" <> id.toString
+  }
 
-  def apply(gid: GroupID): String = ???
-// instance PP GroupID where
-//   pp (GroupID x) = "#" <> int (fromIntegral x)
+  def apply(gid: GroupID): String = {
+    val GroupID(id) = gid
+    "#" <> gid.toString
+  }
 
   def apply(b: BasicBlock): String = ???
 // instance PP BasicBlock where
@@ -587,11 +589,18 @@ case object prettyPrint {
 //   pp (ConstantOperand con) = pp con
 //   pp (MetadataOperand mdata) = pp mdata
 
-  def apply(m: Metadata): String = ???
-// instance PP Metadata where
-//   pp (MDString str) = "!" <> dquotes (text (decodeShortUtf8 str))
-//   pp (MDNode node) = pp node
-//   pp (MDValue operand) = ppTyped operand
+  def apply(m: Metadata): String =
+    m match {
+      case MDString(str)    => "!" <> dquotes(str)
+      case MDNode(node)     => pp(node)
+      case MDValue(operand) => pp(operand)
+    }
+
+  def apply(m: MetadataNode): String =
+    m match {
+      case MetadataNodeData(xs)       => "!" <> braces(commas(xs.map(pp(_))))
+      case MetadataNodeReference(ref) => pp(ref)
+    }
 
   // def ppDINode(name: String, attrs: List[(String, Option[String])]): String =
   // ???
