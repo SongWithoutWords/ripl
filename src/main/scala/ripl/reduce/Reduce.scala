@@ -372,6 +372,7 @@ class Reduce(val astIn: a0.Ast) {
               case v: a1.Val       => pure(v)
               case t: a1.Type      => pure(t)
               case e: a1.Exp       => pure(a1.Name(n, e))
+              case a1.InvalidNode  => pure(a1.InvalidNode)
             }
           }
       }
@@ -382,28 +383,29 @@ class Reduce(val astIn: a0.Ast) {
         case ReduceM(e, info) => {
           e match {
 
-            // TODO: Filter to the required kind
+            // TODO: raise non-existent unit when no units are found
             case a1.Namespace(units) => units.get(memberName).map(pure(_))
 
-            // TODO: Filter to the required kind
+            // TODO: raise non-existent member when no field is found
             case a1.VObj(typ, members) => members.get(memberName).map(pure(_))
-            // match {
-            //   case Nil => raise(NonExistentMember(memberName)) >> pure(List(a1.InvalidExp))
-            //   case xs => pure(xs)
-            // }
 
-            // TODO: Filter to the required kind
             case e: a1.Exp =>
               e.t match {
                 case a1.Struct(_, memberTypes) =>
+                  // TODO: raise non-existent member when no field is found
                   memberTypes.get(memberName).map { t =>
                     pure(a1.Select(e, memberName, t))
                   }
                 case t =>
                   List(
-                    raise(SelectionFromNonStructType(t)) >> pure(a1.InvalidExp)
+                    raise(SelectionFromNonStructType(t)) >> pure(
+                      a1.InvalidExp
+                    )
                   )
               }
+            case a1.InvalidNode => List(pure(a1.InvalidExp))
+            case x =>
+              List(raise(SelectionFromNonSelectable(x)) >> pure(a1.InvalidExp))
           }
         }.map(raise(info) >> _)
       }

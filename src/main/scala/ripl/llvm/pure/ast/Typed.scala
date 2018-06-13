@@ -175,5 +175,7 @@ case object extractValueType {
           "Expecting valid index into structure type. (Malformed AST)"
         )
       }
+    case (_, _) =>
+      throw new Exception("Expecting aggregate type. (Malformed AST)")
   }
 }

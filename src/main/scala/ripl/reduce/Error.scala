@@ -17,6 +17,7 @@ case class RecursiveVariableDef(cycle: a1.Cycle) extends Error
 case class RequiredExp(found: a1.Node) extends Error
 case class RequiredType(input: a0.Node) extends Error
 case class SelectionFromNonStructType(t: a1.Type) extends Error
+case class SelectionFromNonSelectable(n: a1.Node) extends Error
 case class TypeConflict(expected: a1.Type, found: a1.Type) extends Error // Should be no-implicitConversion?
 case class UnknownName(n: String) extends Error
 case object UseOfInvalidExp extends Error

@@ -217,7 +217,7 @@ case object freshName {
       usedNames <- State.inspect { s: IRBuilderState =>
         s.builderUsedNames
       }
-      val nameUsedCount = usedNames.get(hint) match {
+      nameUsedCount = usedNames.get(hint) match {
         case None    => 0
         case Some(n) => n + 1
       }
@@ -333,7 +333,7 @@ case object emitBlockStart {
             }
           } yield ()
         case None => //State.modify(s: IRBuilderState => s)
-          Monad[IRBuilder].pure()
+          Monad[IRBuilder].pure(())
       }
       _ <- State.modify { s: IRBuilderState =>
         s.copy(builderBlock = Some(PartialBlock.empty(nm)))
