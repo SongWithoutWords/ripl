@@ -219,28 +219,29 @@ case object prettyPrint {
         global(pp(g.name)) <+>
           "=" <+>
           ppLinkage(g.initializer.nonEmpty, g.linkage) <+>
-          (g.initializer match {
+          (g.unnamedAddr match {
             case None       => ""
-            case Some(init) => pp(init)
-          }) <>
+            case Some(addr) => pp(addr)
+          }) <+>
+          (g.addrSpace match {
+            case AddrSpace(0) => ""
+            case AddrSpace(n) => "addrspace" <> parens(n.toString)
+          }) <+>
+          (g.isConstant match {
+            case true  => "constant"
+            case false => "global"
+          }) <+>
+          pp(g.t)
+        (g.initializer match {
+          case None       => ""
+          case Some(init) => pp(init)
+        }) <>
           ppAlign(g.alignment)
 
       case g: GlobalAlias => ???
 
     }
   }
-
-//   pp GlobalVariable {..} = global (pp name) <+> "=" <+> ppLinkage hasInitializer linkage <+> ppMaybe unnamedAddr
-//                              <+> addrSpace' <+> kind <+> pp type' <+> ppMaybe initializer <> ppAlign alignment
-//     where
-//       hasInitializer = isJust initializer
-//       addrSpace' =
-//         case addrSpace of
-//           AS.AddrSpace addr
-//             | addr == 0 -> mempty
-//             | otherwise -> "addrspace" <> parens (pp addr)
-//       kind | isConstant = "constant"
-//            | otherwise  = "global"
 
 //   pp GlobalAlias {..} = global (pp name) <+> "=" <+> pp linkage <+> ppMaybe unnamedAddr <+> "alias" <+> pp typ `cma` ppTyped aliasee
 //     where
@@ -859,7 +860,6 @@ case object prettyPrint {
 //       flagName VirtualFlag = "Virtual"
 //       flagName f = show f
 
-
 // ppEither :: (PP a, PP b) => MDRef (Either a b) -> Doc
 // ppEither (MDRef r) = pp r
 // ppEither (MDInline e) = either pp pp e
@@ -1318,6 +1318,4 @@ case object prettyPrint {
 // ppll :: PP a => a -> Text
 // ppll = displayT . renderPretty 0.4 100 . pp
 
-
 }
-
