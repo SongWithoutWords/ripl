@@ -333,7 +333,7 @@ case object emitBlockStart {
             }
           } yield ()
         case None => //State.modify(s: IRBuilderState => s)
-          Monad[IRBuilder].pure()
+          Monad[IRBuilder].pure(())
       }
       _ <- State.modify { s: IRBuilderState =>
         s.copy(builderBlock = Some(PartialBlock.empty(nm)))
