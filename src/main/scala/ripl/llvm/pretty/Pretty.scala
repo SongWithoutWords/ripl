@@ -125,7 +125,7 @@ case object prettyPrint {
 
   def apply(ps: List[Parameter], variadic: Boolean): String =
     variadic match {
-      case false => commas(ps.map(pp))
+      case false => commas(ps.map(pp(_)))
     }
 
   def apply(op: Operand, attributes: List[ParameterAttribute]): String =
@@ -159,7 +159,7 @@ case object prettyPrint {
       case VectorType(elCount, elType) =>
         angleBrackets(elCount.toString() <+> "x" <+> pp(elType))
       case StructureType(isPacked, elementTypes) =>
-        val contents = commas(elementTypes.map(pp))
+        val contents = commas(elementTypes.map(pp(_)))
         isPacked match {
           case true  => "<{" <> contents <> "}>"
           case false => "{" <> contents <> "}"
@@ -183,7 +183,7 @@ case object prettyPrint {
           global(pp(f.name))
         )
         val infoAfterParams = spaces(
-          pp(f.functionAttributes),
+          spaces(f.functionAttributes.map(pp(_))),
           f.alignment match {
             case 0     => ""
             case align => "align" <+> align.toString
