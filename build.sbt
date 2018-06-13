@@ -9,15 +9,18 @@ libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % "1.1.0"
 )
 
-// get all warnings
-scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked")
+scalacOptions ++= Seq(
+                                    //
+  "-deprecation",                   // warnings for deprecated api usage
+  "-feature",                       // warnings for language features not enabled
 
-// enable higher kinded types
-scalacOptions += "-language:higherKinds"
-scalacOptions += "-language:implicitConversions"
+  "-language:higherKinds",          // enable higher-kinded types
+  "-language:implicitConversions",  // enable implicitConversions
 
-// required by cats
-scalacOptions += "-Ypartial-unification"
+  "-unchecked",                     // detailed unchecked warnings
+
+  "-Ypartial-unification"           // partial unification, required by cats
+)
 
 ensimeScalaVersion in ThisBuild := "2.12.6"
 ensimeIgnoreMissingDirectories := true;
