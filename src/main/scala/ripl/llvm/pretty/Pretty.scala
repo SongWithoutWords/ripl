@@ -232,11 +232,11 @@ case object prettyPrint {
             case true  => "constant"
             case false => "global"
           }) <+>
-          pp(g.t)
-        (g.initializer match {
-          case None       => ""
-          case Some(init) => pp(init)
-        }) <>
+          pp(g.t) <+>
+          (g.initializer match {
+            case None       => ""
+            case Some(init) => pp(init)
+          }) <>
           ppAlign(g.alignment)
 
       case g: GlobalAlias => ???
