@@ -217,7 +217,7 @@ case object freshName {
       usedNames <- State.inspect { s: IRBuilderState =>
         s.builderUsedNames
       }
-      val nameUsedCount = usedNames.get(hint) match {
+      nameUsedCount = usedNames.get(hint) match {
         case None    => 0
         case Some(n) => n + 1
       }
