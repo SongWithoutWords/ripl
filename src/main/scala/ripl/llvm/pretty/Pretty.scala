@@ -276,55 +276,53 @@ case object prettyPrint {
 //   StackAlignment n -> "alignstack=" <> pp n
 //   attr -> pp attr
 
-  def apply(fa: FunctionAttribute): String =
+  def apply(fa: FunctionAttribute): String = {
+    import FunctionAttribute._
     fa match {
-      case FunctionAttribute.NoReturn           => "noreturn"
-      case FunctionAttribute.NoUnwind           => "nounwind"
-      case FunctionAttribute.ReadNone           => "readnone"
-      case FunctionAttribute.ReadOnly           => "readonly"
-      case FunctionAttribute.WriteOnly          => "writeonly"
-      case FunctionAttribute.NoInline           => "noinline"
-      case FunctionAttribute.AlwaysInline       => "alwaysinline"
-      case FunctionAttribute.MinimizeSize       => "minsize"
-      case FunctionAttribute.OptimizeForSize    => "optsize"
-      case FunctionAttribute.OptimizeNone       => "optnone"
-      case FunctionAttribute.SafeStack          => "safestack"
-      case FunctionAttribute.StackProtect       => "ssp"
-      case FunctionAttribute.StackProtectReq    => "sspreq"
-      case FunctionAttribute.StackProtectStrong => "sspstrong"
-      case FunctionAttribute.NoRedZone          => "noredzone"
-      case FunctionAttribute.NoImplicitFloat    => "noimplicitfloat"
-      case FunctionAttribute.Naked              => "naked"
-      case FunctionAttribute.InlineHint         => "inlinehint"
-      case FunctionAttribute.StackAlignment(n) =>
-        "alignstack" <> parens(n.toString)
-      case FunctionAttribute.ReturnsTwice        => "returns_twice"
-      case FunctionAttribute.UWTable             => "uwtable"
-      case FunctionAttribute.NonLazyBind         => "nonlazybind"
-      case FunctionAttribute.Builtin             => "builtin"
-      case FunctionAttribute.NoBuiltin           => "nobuiltin"
-      case FunctionAttribute.Cold                => "cold"
-      case FunctionAttribute.JumpTable           => "jumptable"
-      case FunctionAttribute.NoDuplicate         => "noduplicate"
-      case FunctionAttribute.SanitizeAddress     => "sanitize_address"
-      case FunctionAttribute.SanitizeThread      => "sanitize_thread"
-      case FunctionAttribute.SanitizeMemory      => "sanitize_memory"
-      case FunctionAttribute.SanitizeHWAddress   => "sanitize_hwaddress"
-      case FunctionAttribute.NoRecurse           => "norecurse"
-      case FunctionAttribute.Convergent          => "convergent"
-      case FunctionAttribute.ArgMemOnly          => "argmemonly"
-      case FunctionAttribute.InaccessibleMemOnly => "inaccessiblememonly"
-      case FunctionAttribute.AllocSize(a, None) =>
-        "allocsize" <> parens(a.toString)
-      case FunctionAttribute.AllocSize(a, Some(b)) =>
+      case NoReturn            => "noreturn"
+      case NoUnwind            => "nounwind"
+      case ReadNone            => "readnone"
+      case ReadOnly            => "readonly"
+      case WriteOnly           => "writeonly"
+      case NoInline            => "noinline"
+      case AlwaysInline        => "alwaysinline"
+      case MinimizeSize        => "minsize"
+      case OptimizeForSize     => "optsize"
+      case OptimizeNone        => "optnone"
+      case SafeStack           => "safestack"
+      case StackProtect        => "ssp"
+      case StackProtectReq     => "sspreq"
+      case StackProtectStrong  => "sspstrong"
+      case NoRedZone           => "noredzone"
+      case NoImplicitFloat     => "noimplicitfloat"
+      case Naked               => "naked"
+      case InlineHint          => "inlinehint"
+      case StackAlignment(n)   => "alignstack" <> parens(n.toString)
+      case ReturnsTwice        => "returns_twice"
+      case UWTable             => "uwtable"
+      case NonLazyBind         => "nonlazybind"
+      case Builtin             => "builtin"
+      case NoBuiltin           => "nobuiltin"
+      case Cold                => "cold"
+      case JumpTable           => "jumptable"
+      case NoDuplicate         => "noduplicate"
+      case SanitizeAddress     => "sanitize_address"
+      case SanitizeThread      => "sanitize_thread"
+      case SanitizeMemory      => "sanitize_memory"
+      case SanitizeHWAddress   => "sanitize_hwaddress"
+      case NoRecurse           => "norecurse"
+      case Convergent          => "convergent"
+      case ArgMemOnly          => "argmemonly"
+      case InaccessibleMemOnly => "inaccessiblememonly"
+      case AllocSize(a, None)  => "allocsize" <> parens(a.toString)
+      case AllocSize(a, Some(b)) =>
         "allocsize" <> parens(a.toString comma b.toString)
-      case FunctionAttribute.InaccessibleMemOrArgMemOnly =>
-        "inaccessiblemem_or_argmemonly"
-      case FunctionAttribute.StringAttribute(k, v) =>
-        dquotes(k) <> "=" <> dquotes(v)
-      case FunctionAttribute.Speculatable => "speculatable"
-      case FunctionAttribute.StrictFP     => "strictfp"
+      case InaccessibleMemOrArgMemOnly => "inaccessiblemem_or_argmemonly"
+      case StringAttribute(k, v)       => dquotes(k) <> "=" <> dquotes(v)
+      case Speculatable                => "speculatable"
+      case StrictFP                    => "strictfp"
     }
+  }
 
   def apply(a: ParameterAttribute): String = ???
 // instance PP ParameterAttribute where
