@@ -262,13 +262,13 @@ case object prettyPrint {
 //   pp (ModuleInlineAssembly asm) = "module asm" <+> dquotes (text (pack (BL.unpack asm)))
 //   pp (COMDAT name selKind) = "$" <> short name <+> "=" <+> "comdat" <+> pp selKind
 
-  def apply(s: SelectionKind): String = ???
-// instance PP SelectionKind where
-//   pp Any = "any"
-//   pp ExactMatch = "exactmatch"
-//   pp Largest = "largest"
-//   pp NoDuplicates = "noduplicates"
-//   pp SameSize = "samesize"
+  def apply(s: SelectionKind): String = s match {
+    case SelectionKind.Any          => "any"
+    case SelectionKind.ExactMatch   => "exactmatch"
+    case SelectionKind.Largest      => "largest"
+    case SelectionKind.NoDuplicates => "noduplicates"
+    case SelectionKind.SameSize     => "samesize"
+  }
 
   def ppAttrInGroup(a: FunctionAttribute): String = ???
 // ppAttrInGroup :: FunctionAttribute -> Doc
