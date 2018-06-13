@@ -258,15 +258,28 @@ case object prettyPrint {
     case Some(m) => pp(m)
   }
 
-  def apply(d: Definition): String = ???
-// instance PP Definition where
-//   pp (GlobalDefinition x) = pp x
-//   pp (TypeDefinition nm ty) = local' (pp nm) <+> "=" <+> "type" <+> maybe "opaque" pp ty
-//   pp (FunctionAttributes gid attrs) = "attributes" <+> pp gid <+> "=" <+> braces (hsep (fmap ppAttrInGroup attrs))
-//   pp (NamedMetadataDefinition nm meta) = "!" <> short nm <+> "=" <+> "!" <> braces (commas (fmap pp meta))
-//   pp (MetadataNodeDefinition node meta) = pp node <+> "=" <+> pp meta
-//   pp (ModuleInlineAssembly asm) = "module asm" <+> dquotes (text (pack (BL.unpack asm)))
-//   pp (COMDAT name selKind) = "$" <> short name <+> "=" <+> "comdat" <+> pp selKind
+  def apply(d: Definition): String = d match {
+
+    case GlobalDefinition(x) => pp(x)
+
+    case TypeDefinition(nm, ty) =>
+      local(pp(nm)) <+> "=" <+> "type" <+> ty.map(pp(_)).getOrElse("opaque")
+
+    case FunctionAttributes(gid, attrs) =>
+      "attributes" <+> pp(gid) <+> "=" <+> braces(
+        spaces(attrs.map(ppAttrInGroup))
+      )
+    case NamedMetadataDefinition(nm, meta) =>
+      "!" <> nm <+> "=" <+> "!" <> braces(commas(meta.map(pp(_))))
+
+    case MetadataNodeDefinition(node, meta) =>
+      pp(node) <+> "=" <+> "!" <> braces(commas(meta.map(pp(_))))
+
+    case ModuleInlineAssembly(asm) => "module asm" <+> dquotes(asm)
+
+    case COMDAT(name, selKind) =>
+      "$" <> name <+> "=" <+> "comdat" <+> pp(selKind)
+  }
 
   def apply(s: SelectionKind): String = s match {
     case SelectionKind.Any          => "any"
