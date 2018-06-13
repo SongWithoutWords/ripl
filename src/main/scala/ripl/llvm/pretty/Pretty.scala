@@ -1167,6 +1167,9 @@ case object prettyPrint {
 // phiIncoming :: (Operand, Name) -> Doc
 // phiIncoming (op, nm) = brackets (pp op `cma` (local' (pp nm)))
 
+  def ppParams[A](params: List[String], isVarArg: Boolean): String =
+    commas(params ++ (if (isVarArg) List("...") else Nil))
+
 // ppParams :: (a -> Doc) -> ([a], Bool) -> Doc
 // ppParams ppParam (ps, varrg) = parens . commas $ fmap ppParam ps ++ vargs
 //     where
