@@ -9,8 +9,12 @@ libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % "1.1.0"
 )
 
-// to get all warnings
+// get all warnings
 scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked")
+
+// enable higher kinded types
+scalacOptions += "-language:higherKinds"
+scalacOptions += "-language:implicitConversions"
 
 // required by cats
 scalacOptions += "-Ypartial-unification"
