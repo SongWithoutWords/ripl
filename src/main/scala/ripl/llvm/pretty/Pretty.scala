@@ -324,29 +324,32 @@ case object prettyPrint {
     }
   }
 
-  def apply(a: ParameterAttribute): String = ???
-// instance PP ParameterAttribute where
-//   pp = \case
-//     ZeroExt                    -> "zeroext"
-//     SignExt                    -> "signext"
-//     InReg                      -> "inreg"
-//     SRet                       -> "sret"
-//     Alignment word             -> "align" <+> pp word
-//     NoAlias                    -> "noalias"
-//     ByVal                      -> "byval"
-//     NoCapture                  -> "nocapture"
-//     Nest                       -> "nest"
-//     PA.ReadNone                -> "readnone"
-//     PA.ReadOnly                -> "readonly"
-//     PA.WriteOnly               -> "writeonly"
-//     InAlloca                   -> "inalloca"
-//     NonNull                    -> "nonnull"
-//     Dereferenceable word       -> "dereferenceable" <> parens (pp word)
-//     DereferenceableOrNull word -> "dereferenceable_or_null" <> parens (pp word)
-//     Returned                   -> "returned"
-//     SwiftSelf                  -> "swiftself"
-//     SwiftError                 -> "swifterror"
-//     PA.StringAttribute k v -> dquotes (short k) <> "=" <> dquotes (short v)
+  def apply(a: ParameterAttribute): String = {
+    import ParameterAttribute._
+    a match {
+      case ZeroExt            => "zeroext"
+      case SignExt            => "signext"
+      case InReg              => "inreg"
+      case SRet               => "sret"
+      case Alignment(n)       => "align" <+> n.toString
+      case NoAlias            => "noalias"
+      case ByVal              => "byval"
+      case NoCapture          => "nocapture"
+      case Nest               => "nest"
+      case ReadNone           => "readnone"
+      case ReadOnly           => "readonly"
+      case WriteOnly          => "writeonly"
+      case InAlloca           => "inalloca"
+      case NonNull            => "nonnull"
+      case Dereferenceable(n) => "dereferenceable" <> parens(n.toString)
+      case DereferenceableOrNull(n) =>
+        "dereferenceable_or_null" <> parens(n.toString)
+      case Returned              => "returned"
+      case SwiftSelf             => "swiftself"
+      case SwiftError            => "swifterror"
+      case StringAttribute(k, v) => dquotes(k) <> "=" <> dquotes(v)
+    }
+  }
 
   def apply(c: CallingConvention): String = ???
 // instance PP CC.CallingConvention where
