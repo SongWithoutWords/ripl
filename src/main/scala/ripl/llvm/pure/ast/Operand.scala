@@ -2,6 +2,14 @@
 
 package ripl.llvm.pure.ast
 
+// An 'Operand' is roughly that which is an argument to an 'LLVM.AST.Instruction.Instruction'
+sealed trait Operand extends CallableOperand
+// %foo
+case class LocalReference(t: Type, name: Name) extends Operand
+// 'Constant's include 'LLVM.AST.Constant.GlobalReference', for \@foo
+case class ConstantOperand(constant: Constant) extends Operand
+case class MetadataOperand(metadata: Metadata) extends Operand
+
 // A 'MetadataNodeID' is a number for identifying a metadata node.
 // Note this is different from "named metadata", which are represented with
 // 'LLVM.AST.NamedMetadataDefinition'.
@@ -20,14 +28,6 @@ case class MDString(string: String) extends Metadata
 case class MDNode(node: MetadataNode) extends Metadata
 // ^ <http://llvm.org/docs/doxygen/html/classllvm_1_1ValueAsMetadata.html>
 case class MDValue(operand: Operand) extends Metadata
-
-// An 'Operand' is roughly that which is an argument to an 'LLVM.AST.Instruction.Instruction'
-sealed trait Operand extends CallableOperand
-// %foo
-case class LocalReference(t: Type, name: Name) extends Operand
-// 'Constant's include 'LLVM.AST.Constant.GlobalReference', for \@foo
-case class ConstantOperand(constant: Constant) extends Operand
-case class MetadataOperand(metadata: Metadata) extends Operand
 
 // The 'LLVM.AST.Instruction.Call' instruction is special: the callee can be inline assembly
 trait CallableOperand
