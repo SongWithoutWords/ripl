@@ -215,7 +215,15 @@ case object prettyPrint {
               infoAfterParams
         }
 
-      case g: GlobalVariable => ???
+      case g: GlobalVariable =>
+        global(pp(g.name)) <+>
+          "=" <+>
+          ppLinkage(g.initializer.nonEmpty, g.linkage) <+>
+          (g.initializer match {
+            case None       => ""
+            case Some(init) => pp(init)
+          }) <>
+          ppAlign(g.alignment)
 
       case g: GlobalAlias => ???
 
