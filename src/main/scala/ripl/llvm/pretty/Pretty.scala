@@ -289,11 +289,10 @@ case object prettyPrint {
     case SelectionKind.SameSize     => "samesize"
   }
 
-  def ppAttrInGroup(a: FunctionAttribute): String = ???
-// ppAttrInGroup :: FunctionAttribute -> Doc
-// ppAttrInGroup = \case
-//   StackAlignment n -> "alignstack=" <> pp n
-//   attr -> pp attr
+  def ppAttrInGroup(a: FunctionAttribute): String = a match {
+    case FunctionAttribute.StackAlignment(n) => "alignstack=" <> pp(a)
+    case attr                                => pp(attr)
+  }
 
   def apply(fa: FunctionAttribute): String = {
     import FunctionAttribute._
