@@ -1,5 +1,7 @@
 package ripl.llvm.pretty
 
+import scala.util.matching.Regex
+
 import ripl.llvm.pure.ast._
 import ripl.llvm.pure.ast.InstructionAliases._
 
@@ -26,6 +28,11 @@ case object Util {
   def hlinecat(in: List[String]): String = in.mkString("", "\n", "")
 
   def wrapbraces(leadIn: String, x: String): String = s"$leadIn {\n${x}\n}"
+
+  def indent(n: Int, s: String) = {
+    val beginningOfLine = "^".r
+    beginningOfLine.replaceAllIn(s, " " * n)
+  }
 
   def brackets(x: String): String = s"[$x]"
 
