@@ -248,10 +248,10 @@ case object prettyPrint {
 //     where
 //       typ = getElementType type'
 
-  def apply(m: Option[Metadata]): String = ???
-// ppMetadata :: Maybe Metadata -> Doc
-// ppMetadata Nothing = "null"
-// ppMetadata (Just m) = pp m
+  def apply(om: Option[Metadata]): String = om match {
+    case None    => "null"
+    case Some(m) => pp(m)
+  }
 
   def apply(d: Definition): String = ???
 // instance PP Definition where
