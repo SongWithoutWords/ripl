@@ -5,9 +5,9 @@ package ripl.llvm.pure.ast
 
 sealed trait SelectionKind
 case object SelectionKind {
-  case object Any
-  case object ExactMatch
-  case object Largest
-  case object NoDuplicates
-  case object SameSize
+  case object Any extends SelectionKind
+  case object ExactMatch extends SelectionKind
+  case object Largest extends SelectionKind
+  case object NoDuplicates extends SelectionKind
+  case object SameSize extends SelectionKind
 }
