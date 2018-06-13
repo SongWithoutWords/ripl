@@ -18,7 +18,7 @@ case class GlobalVariable(
     section: Option[String],
     comdat: Option[String],
     alignment: Int
-)
+) extends Global
 // <http://llvm.org/docs/LangRef.html#aliases>
 case class GlobalAlias(
     name: Name,
@@ -30,7 +30,7 @@ case class GlobalAlias(
     t: Type,
     addrSpace: AddrSpace,
     aliasee: Constant
-)
+) extends Global
 // <http://llvm.org/docs/LangRef.html#functions>
 case class Function(
     linkage: Linkage,
@@ -49,7 +49,7 @@ case class Function(
     prefix: Option[Constant],
     basicBlocks: List[BasicBlock],
     personalityFunction: Option[Constant]
-)
+) extends Global
 
 // 'Parameter's for 'Function's
 case class Parameter(t: Type, name: Name, attributes: List[ParameterAttribute])
