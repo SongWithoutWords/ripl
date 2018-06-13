@@ -239,14 +239,19 @@ case object prettyPrint {
           }) <>
           ppAlign(g.alignment)
 
-      case g: GlobalAlias => ???
-
+      case g: GlobalAlias =>
+        global(pp(g.name)) <+>
+          "=" <+>
+          pp(g.linkage) <+>
+          (g.unnamedAddr match {
+            case None       => ""
+            case Some(addr) => pp(addr)
+          }) <+>
+          "alias" <+>
+          pp(g.t) comma
+          ppTyped(g.aliasee)
     }
   }
-
-//   pp GlobalAlias {..} = global (pp name) <+> "=" <+> pp linkage <+> ppMaybe unnamedAddr <+> "alias" <+> pp typ `cma` ppTyped aliasee
-//     where
-//       typ = getElementType type'
 
   def apply(om: Option[Metadata]): String = om match {
     case None    => "null"
