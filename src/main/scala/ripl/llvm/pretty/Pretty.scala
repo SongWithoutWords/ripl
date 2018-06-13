@@ -119,9 +119,9 @@ case object prettyPrint {
   }
 
   def apply(p: Parameter): String =
-    pp(p.t) <+> pp(p.attributes) <+> local(pp(p.name))
+    pp(p.t) <+> ppParamAttrs(p.attributes) <+> local(pp(p.name))
 
-  def apply(ps: List[ParameterAttribute]): String = hsep(ps.map(pp))
+  def ppParamAttrs(ps: List[ParameterAttribute]): String = hsep(ps.map(pp(_)))
 
   def apply(ps: List[Parameter], variadic: Boolean): String =
     variadic match {
@@ -129,7 +129,7 @@ case object prettyPrint {
     }
 
   def apply(op: Operand, attributes: List[ParameterAttribute]): String =
-    pp(typeOf(op)) <+> pp(attributes) <+> pp(op)
+    pp(typeOf(op)) <+> ppParamAttrs(attributes) <+> pp(op)
 
   def apply(addr: UnnamedAddr): String =
     addr match {
@@ -178,7 +178,7 @@ case object prettyPrint {
         val infoBeforeParams = spaces(
           pp(f.linkage),
           pp(f.callingConvention),
-          pp(f.returnAttributes),
+          ppParamAttrs(f.returnAttributes),
           pp(f.returnType),
           global(pp(f.name))
         )
