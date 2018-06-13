@@ -398,25 +398,24 @@ case object prettyPrint {
     }
   }
 
-  def apply(l: Linkage): String = ???
-// instance PP L.Linkage where
-//     pp = ppLinkage False
+  def apply(l: Linkage): String = ppLinkage(false, l)
 
-  def ppLinkage(omitExternal: Boolean, l: Linkage): String = ???
-// ppLinkage :: Bool -> L.Linkage -> Doc
-// ppLinkage omitExternal = \case
-//    L.External | omitExternal -> empty
-//               | otherwise    -> "external"
-//    L.Private                 -> "private"
-//    L.Internal                -> "internal"
-//    L.ExternWeak              -> "extern_weak"
-//    L.AvailableExternally     -> "available_externally"
-//    L.LinkOnce                -> "linkonce"
-//    L.Weak                    -> "weak"
-//    L.Common                  -> "common"
-//    L.Appending               -> "appending"
-//    L.LinkOnceODR             -> "linkonce_odr"
-//    L.WeakODR                 -> "weak_odr"
+  def ppLinkage(omitExternal: Boolean, l: Linkage): String = {
+    import Linkage._
+    l match {
+      case External            => if (omitExternal) "" else "external"
+      case Private             => "private"
+      case Internal            => "internal"
+      case ExternWeak          => "extern_weak"
+      case AvailableExternally => "available_externally"
+      case LinkOnce            => "linkonce"
+      case Weak                => "weak"
+      case Common              => "common"
+      case Appending           => "appending"
+      case LinkOnceODR         => "linkonce_odr"
+      case WeakODR             => "weak_odr"
+    }
+  }
 
   def apply(m: InstructionMetadata): String = ???
 // instance PP InstructionMetadata where
