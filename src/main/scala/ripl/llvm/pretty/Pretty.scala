@@ -17,7 +17,6 @@ case object Util {
 
   def parensIf(b: Boolean, s: String): String = if (b) parens(s) else s
 
-  def hsep(in: List[String]): String = in.mkString("", " ", "")
   def spaces(in: List[String]): String = in.mkString("", " ", "")
   def spaces(in: String*): String = spaces(in: _*)
 
@@ -127,7 +126,7 @@ case object prettyPrint {
   def pp(p: Parameter): String =
     pp(p.t) <+> ppParamAttrs(p.attributes) <+> local(pp(p.name))
 
-  def ppParamAttrs(ps: List[ParameterAttribute]): String = hsep(ps.map(pp))
+  def ppParamAttrs(ps: List[ParameterAttribute]): String = spaces(ps.map(pp))
 
   def pp(ps: List[Parameter], variadic: Boolean): String =
     variadic match {
