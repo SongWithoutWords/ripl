@@ -201,7 +201,9 @@ case object prettyPrint {
           case Nil =>
             "declare" <+>
               infoBeforeParams <>
-              ppParams(p => pp(typeOf(p)), f.parameters) <+>
+              ppParams(f.parameters.params.map { p: Parameter =>
+                pp(typeOf(p))
+              }, f.parameters.isVarArg) <+>
               infoAfterParams
 
           // TODO: special case for single unnamed block
@@ -209,7 +211,7 @@ case object prettyPrint {
           case bs =>
             "define" <+>
               infoBeforeParams <>
-              ppParams(pp, f.parameters) <+>
+              ppParams(f.parameters.params.map(pp(_)), f.parameters.isVarArg) <+>
               infoAfterParams
         }
 
