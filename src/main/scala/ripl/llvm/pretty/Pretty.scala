@@ -246,11 +246,12 @@ case object prettyPrint {
 //     where
 //       typ = getElementType type'
 
-
+  def apply(m: Option[Metadata]): String = ???
 // ppMetadata :: Maybe Metadata -> Doc
 // ppMetadata Nothing = "null"
 // ppMetadata (Just m) = pp m
 
+  def apply(d: Definition): String = ???
 // instance PP Definition where
 //   pp (GlobalDefinition x) = pp x
 //   pp (TypeDefinition nm ty) = local' (pp nm) <+> "=" <+> "type" <+> maybe "opaque" pp ty
@@ -260,8 +261,7 @@ case object prettyPrint {
 //   pp (ModuleInlineAssembly asm) = "module asm" <+> dquotes (text (pack (BL.unpack asm)))
 //   pp (COMDAT name selKind) = "$" <> short name <+> "=" <+> "comdat" <+> pp selKind
 
-
-
+  def apply(s: SelectionKind): String = ???
 // instance PP SelectionKind where
 //   pp Any = "any"
 //   pp ExactMatch = "exactmatch"
@@ -269,11 +269,13 @@ case object prettyPrint {
 //   pp NoDuplicates = "noduplicates"
 //   pp SameSize = "samesize"
 
+  def ppAttrInGroup(a: FunctionAttribute): String = ???
 // ppAttrInGroup :: FunctionAttribute -> Doc
 // ppAttrInGroup = \case
 //   StackAlignment n -> "alignstack=" <> pp n
 //   attr -> pp attr
 
+  def apply(f: FunctionAttribute): String = ???
 // instance PP FunctionAttribute where
 //   pp = \case
 //    NoReturn            -> "noreturn"
@@ -318,6 +320,7 @@ case object prettyPrint {
 //    Speculatable        -> "speculatable"
 //    StrictFP            -> "strictfp"
 
+  def apply(a: ParameterAttribute): String = ???
 // instance PP ParameterAttribute where
 //   pp = \case
 //     ZeroExt                    -> "zeroext"
@@ -341,6 +344,7 @@ case object prettyPrint {
 //     SwiftError                 -> "swifterror"
 //     PA.StringAttribute k v -> dquotes (short k) <> "=" <> dquotes (short v)
 
+  def apply(c: CallingConvention): String = ???
 // instance PP CC.CallingConvention where
 //   pp = \case
 //    CC.Numbered word -> "cc" <+> pp word
@@ -385,9 +389,11 @@ case object prettyPrint {
 //    CC.AMDGPU_Kernel -> "amdgpu_kernel"
 //    CC.MSP430_Builtin -> "msp430"
 
+  def apply(l: Linkage): String = ???
 // instance PP L.Linkage where
 //     pp = ppLinkage False
 
+  def ppLinkage(omitExternal: Boolean, l: Linkage): String = ???
 // ppLinkage :: Bool -> L.Linkage -> Doc
 // ppLinkage omitExternal = \case
 //    L.External | omitExternal -> empty
@@ -403,15 +409,19 @@ case object prettyPrint {
 //    L.LinkOnceODR             -> "linkonce_odr"
 //    L.WeakODR                 -> "weak_odr"
 
+  def apply(m: InstructionMetadata): String = ???
 // instance PP InstructionMetadata where
 //   pp meta = commas ["!" <> pp x <+> pp y | (x,y) <- meta]
 
+  def apply(m: MetadataNodeID): String = ???
 // instance PP MetadataNodeID where
 //   pp (MetadataNodeID x) = "!" <> int (fromIntegral x)
 
+  def apply(gid: GroupID): String = ???
 // instance PP GroupID where
 //   pp (GroupID x) = "#" <> int (fromIntegral x)
 
+  def apply(b: BasicBlock): String = ???
 // instance PP BasicBlock where
 //   pp (BasicBlock nm instrs term) =
 //     label <$> indent 2 (vcat $ (fmap pp instrs) ++ [pp term])
@@ -420,6 +430,7 @@ case object prettyPrint {
 //         UnName _ -> "; <label>:" <> pp nm <> ":"
 //         _ -> pp nm <> ":"
 
+  def apply(t: Terminator): String = ???
 // instance PP Terminator where
 //   pp = \case
 //     Br dest meta -> "br" <+> label (pp dest) <+> ppInstrMeta meta
@@ -465,6 +476,7 @@ case object prettyPrint {
 //       "unwind" <+> "to" <+> maybe "caller" pp defaultUnwindDest
 //       <+> ppInstrMeta metadata'
 
+  def apply(i: Instruction): String = ???
 // instance PP Instruction where
 //   pp = \case
 //     Add {..}    -> "add"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
@@ -541,27 +553,33 @@ case object prettyPrint {
 //       bounds True = "inbounds"
 //       bounds False = empty
 
+  def apply(c: CallableOperand): String = ???
 // instance PP CallableOperand where
 //   pp (Left asm) = error "CallableOperand"
 //   pp (Right op) = pp op
 
+  def apply(l: LandingPadClause): String = ???
 // instance PP LandingPadClause where
 //   pp = \case
 //     Catch c  -> "catch" <+> ppTyped c
 //     Filter c -> "filter" <+> ppTyped c
 
+  // def apply(e: List[Either[GroupID, FunctionAttribute]]): String = ???
 // instance PP [Either GroupID FunctionAttribute] where
 //   pp x = hsep $ fmap pp x
 
+  def apply(e: Either[GroupID, FunctionAttribute]): String = ???
 // instance PP (Either GroupID FunctionAttribute) where
 //   pp (Left gid) = pp gid
 //   pp (Right fattr) = pp fattr
 
+  def apply(op: Operand): String = ???
 // instance PP Operand where
 //   pp (LocalReference _ nm) = local' (pp nm)
 //   pp (ConstantOperand con) = pp con
 //   pp (MetadataOperand mdata) = pp mdata
 
+  def apply(m: Metadata): String = ???
 // instance PP Metadata where
 //   pp (MDString str) = "!" <> dquotes (text (decodeShortUtf8 str))
 //   pp (MDNode node) = pp node
@@ -972,6 +990,7 @@ case object prettyPrint {
 //     , ("align", Just (pp alignInBits))
 //     ]
 
+  def apply(c: Constant): String = ???
 // instance PP C.Constant where
 //   pp (C.Int width val) = pp val
 //   pp (C.Float (F.Double val))      =
@@ -1060,6 +1079,7 @@ case object prettyPrint {
 //   pp (nm := a) = "%" <> pp nm <+> "=" <+> pp a
 //   pp (Do a) = pp a
 
+  def apply(m: Module): String = ???
 // instance PP Module where
 //   pp Module {..} =
 //     let header = printf "; ModuleID = '%s'" (unShort moduleName) in
@@ -1071,6 +1091,7 @@ case object prettyPrint {
 //                       Just layout -> "target datalayout =" <+> dquotes (pp layout) in
 //     hlinecat (fromString header : (layout </> target) : (fmap pp moduleDefinitions))
 
+  def apply(fp: FloatingPointPredicate): String = ???
 // instance PP FP.FloatingPointPredicate where
 //   pp op = case op of
 //    FP.False -> "false"
@@ -1090,6 +1111,7 @@ case object prettyPrint {
 //    FP.UNO   -> "uno"
 //    FP.True  -> "true"
 
+  def apply(ip: IntegerPredicate): String = ???
 // instance PP IP.IntegerPredicate where
 //   pp op = case op of
 //    IP.EQ  -> "eq"
@@ -1103,15 +1125,18 @@ case object prettyPrint {
 //    IP.SLT -> "slt"
 //    IP.SLE -> "sle"
 
+  def apply(a: Atomicity): String = ???
 // instance PP Atomicity where
 //   pp (scope, order) =
 //     pp scope <+> pp order
 
+  def apply(s: SynchronizationScope): String = ???
 // instance PP SynchronizationScope where
 //   pp = \case
 //     SingleThread -> "syncscope(\"singlethread\")"
 //     System -> mempty
 
+  def apply(mo: MemoryOrdering): String = ???
 // instance PP MemoryOrdering where
 //   pp = \case
 //     Unordered              -> "unordered"
@@ -1121,6 +1146,7 @@ case object prettyPrint {
 //     AcquireRelease         -> "acq_rel"
 //     SequentiallyConsistent -> "seq_cst"
 
+  def apply(op: RMWOperation): String = ???
 // instance PP RMW.RMWOperation where
 //   pp = \case
 //     RMW.Xchg -> "xchg"
@@ -1135,6 +1161,7 @@ case object prettyPrint {
 //     RMW.UMax -> "umax"
 //     RMW.UMin -> "umin"
 
+  def apply(d: DataLayout): String = ???
 // instance PP DataLayout where
 //   pp x = pp (BL.unpack (dataLayoutToString x))
 
@@ -1142,6 +1169,7 @@ case object prettyPrint {
 // // Special Case Hacks
 // //-----------------------------------------------------------------------------
 
+  def escape(c: Char): String = ???
 // escape :: Char -> Doc
 // escape '"'  = "\\22"
 // escape '\\' = "\\\\"
@@ -1156,6 +1184,7 @@ case object prettyPrint {
 //         pad0 [x] = "0" <> char x
 //         pad0 xs = text (pack xs)
 
+  def ppVolatile(b: Boolean): String = ???
 // ppVolatile :: Bool -> Doc
 // ppVolatile True = "volatile"
 // ppVolatile False = mempty
@@ -1163,9 +1192,13 @@ case object prettyPrint {
 // ppIntAsChar :: Integral a => a -> Doc
 // ppIntAsChar = escape . chr . fromIntegral
 
+  def ppAlign(a: Int): String = ???
 // ppAlign :: Word32 -> Doc
 // ppAlign x | x == 0    = empty
 //           | otherwise = ", align" <+> pp x
+
+  def ppTyped(a: Operand): String = ???
+  def ppTyped(c: Constant): String = ???
 
 // // print an operand and its type
 // ppTyped :: (PP a, Typed a) => a -> Doc
