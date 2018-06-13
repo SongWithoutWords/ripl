@@ -585,9 +585,12 @@ case object prettyPrint {
 //   pp (MDNode node) = pp node
 //   pp (MDValue operand) = ppTyped operand
 
+  // def ppDINode(name: String, attrs: List[(String, Option[String])]): String =
+  // ???
 // ppDINode :: [Char] -> [([Char], Maybe Doc)] -> Doc
 // ppDINode name attrs = "!" <> pp name <> parens (commas (mapMaybe (\(k, mayV) -> fmap (\v -> pp k <> ":" <+> v) mayV) attrs))
 
+  // def ppDIArray(diArray: List[String]): Option[String] = ???
 // ppDIArray :: [Doc] -> Maybe Doc
 // ppDIArray [] = Nothing
 // ppDIArray xs = Just ("!" <> braces (commas xs))
@@ -596,6 +599,7 @@ case object prettyPrint {
 //   pp (MDInline a) = pp a
 //   pp (MDRef ref) = pp ref
 
+  // def ppDIArray(n: MDNode): String = ???
 // instance PP MDNode where
 //   pp (MDTuple xs) = "!" <> braces (commas (map ppMetadata xs))
 //   pp (DIExpression e) = pp e
