@@ -22,6 +22,7 @@ case object Util {
   def spaces(in: String*): String = spaces(in: _*)
 
   def commas(in: List[String]): String = in.mkString("", ", ", "")
+  def commas(in: String*): String = commas(in: _*)
 
   def colons(in: List[String]): String = in.mkString("", ":", "")
 
