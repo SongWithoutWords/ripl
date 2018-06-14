@@ -3,8 +3,9 @@
 
 package ripl.llvm.pure.ast
 
-// import Data.List.NonEmpty
-sealed trait NonEmpty[A]
+case class NonEmpty[A](head: A, tail: List[A]) {
+  def toList(): List[A] = head :: tail
+}
 
 // <http://llvm.org/docs/LangRef.html#metadata-nodes-and-metadata-strings>
 // Metadata can be attached to an instruction
