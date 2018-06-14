@@ -882,8 +882,8 @@ case object prettyPrint {
 // ppCommaTyped :: (PP a, Typed a) => a -> Doc
 // ppCommaTyped a = pp (typeOf a) `cma` pp a
 
-// phiIncoming :: (Operand, Name) -> Doc
-// phiIncoming (op, nm) = brackets (pp op `cma` (local' (pp nm)))
+  def ppPhiIncoming(op: Operand, nm: Name): String =
+    brackets(pp(op) comma (local(pp(nm))))
 
   def ppParams[A](params: List[String], isVarArg: Boolean): String =
     commas(params ++ (if (isVarArg) List("...") else Nil))
