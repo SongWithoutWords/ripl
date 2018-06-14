@@ -431,6 +431,12 @@ case object Instruction {
 
 // Instances of instructions may be given a name, allowing their results to be referenced as 'Operand's.
 // Sometimes instructions - e.g. a call to a function returning void - don't need names.
-sealed trait Named[a]
-case class :=[A](name: Name, value: A) extends Named[A]
-case class Do[A](a: A) extends Named[A]
+sealed trait Named[A] {
+  def map[B](f: A => B): Named[B]
+}
+case class :=[A](name: Name, a: A) extends Named[A] {
+  def map[B](f: A => B) = name := f(a)
+}
+case class Do[A](a: A) extends Named[A] {
+  def map[B](f: A => B) = Do(f(a))
+}
