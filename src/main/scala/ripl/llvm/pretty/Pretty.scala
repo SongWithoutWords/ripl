@@ -454,14 +454,18 @@ case object prettyPrint {
     "#" <> gid.toString
   }
 
-  def pp(b: BasicBlock): String = ???
-// instance PP BasicBlock where
-//   pp (BasicBlock nm instrs term) =
-//     label <$> indent 2 (vcat $ (fmap pp instrs) ++ [pp term])
-//     where
-//       label = case nm of
-//         UnName _ -> "; <label>:" <> pp nm <> ":"
-//         _ -> pp nm <> ":"
+  def pp(b: BasicBlock): String =
+    (b.name match {
+      case Name(n) => n <> ":"
+    }) </>
+      indent(
+        2,
+        lines(
+          b.instructions.map { i: Named[Instruction] =>
+            pp(i.map(pp))
+          } ++ List(pp(b.terminator.map(pp)))
+        )
+      )
 
   def pp(t: Terminator): String = ???
 // instance PP Terminator where
