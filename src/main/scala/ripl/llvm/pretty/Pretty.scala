@@ -66,7 +66,7 @@ import Util._
 
 case object prettyPrint {
 
-  def pp(s: String, b: Boolean): String = if (b) s else ""
+  def ppIf(b: Boolean, s: String): String = if (b) s else ""
 
 // XXX: horrible hack
 // unShort :: BS.ShortByteString -> [Char]
