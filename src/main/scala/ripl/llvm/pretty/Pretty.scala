@@ -710,6 +710,11 @@ case object prettyPrint {
 //   pp C.AddrSpaceCast {..} = "addrspacecast" <+> parens (ppTyped operand0 <+> "to" <+> pp type')
 //   pp _ = error "Non-function argument. (Malformed AST)"
 
+  def pp(n: Named[String]): String = n match {
+    case n := s => "%" <> pp(n) <+> "=" <+> s
+    case Do(s)  => s
+  }
+
 // instance PP a => PP (Named a) where
 //   pp (nm := a) = "%" <> pp nm <+> "=" <+> pp a
 //   pp (Do a) = pp a
