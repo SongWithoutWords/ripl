@@ -466,51 +466,82 @@ case object prettyPrint {
         )
       )
 
-  def pp(t: Terminator): String = ???
-// instance PP Terminator where
-//   pp = \case
-//     Br dest meta -> "br" <+> label (pp dest) <+> ppInstrMeta meta
+  def pp(t: Terminator): String = {
+    import Terminator._
+    t match {
+      case Br(dest, meta) => "br" <+> label(pp(dest)) <+> pp(meta)
 
-//     Ret val meta -> "ret" <+> maybe "void" ppTyped val <+> ppInstrMeta meta
+      case Ret(value, meta) => "ret" <+> value.map(ppTyped).getOrElse("void")
 
-//     CondBr cond tdest fdest meta ->
-//      "br" <+> ppTyped cond
-//      `cma` label (pp tdest)
-//      `cma` label (pp fdest)
-//      <+> ppInstrMeta meta
+      case CondBr(cond, tdest, fdest, meta) =>
+        "br" <+>
+          ppTyped(cond) comma
+          label(pp(tdest)) comma
+          label(pp(fdest)) <+>
+            pp(meta)
 
-//     Switch {..} -> "switch" <+> ppTyped operand0'
-//                  `cma` label (pp defaultDest)
-//                  <+> brackets (hsep [ ppTyped v `cma` label (pp l) | (v,l) <- dests ])
-//                  <+> ppInstrMeta metadata'
+      case Switch(op, defaultDest, dests, meta) =>
+        "switch" <+>
+          ppTyped(op) comma
+          label(pp(defaultDest)) <+>
+            brackets(spaces(dests.map {
+              case (v, l) => ppTyped(v) comma label(pp(l))
+            })) <+>
+            pp(meta)
 
-//     Unreachable {..} -> "unreachable" <+> ppInstrMeta metadata'
+      case Unreachable(meta) => "unreachable" <+> pp(meta)
 
-//     IndirectBr op dests meta -> "indirectbr" <+> ppTyped op `cma`
-//      brackets (hsep [ label (pp l) | l <- dests ])
-//      <+> ppInstrMeta meta
+      case IndirectBr(op, dests, meta) =>
+        "indirectbr" <+>
+          ppTyped(op) comma
+          brackets(spaces(dests.map { n: Name =>
+            label(pp(n))
+          })) <+>
+            pp(meta)
 
-//     e @ Invoke {..} ->
-//      ppInvoke e
-//      <+> "to" <+> label (pp returnDest)
-//      <+> "unwind" <+> label (pp exceptionDest)
-//      <+> ppInstrMeta metadata'
+      case i: Invoke =>
+        val ftype = typeOf(i.function) match {
+          case PointerType(ft: FunctionType, _) => ft
+          case _ =>
+            throw new Exception("Invoke requires function type")
+        }
+        "invoke" <+>
+          pp(i.callingConvention) <+>
+          pp(ftype.resultType) <+>
+          (if (ftype.isVarArg) ppFunctionArgumentTypes(ftype) else "") <+>
+          pp(i.function) <+>
+          parens(commas(i.arguments.map(pp))) <+>
+          pp(i.functionAttributes) <+>
+          "to" <+> label(pp(i.returnDest)) <+>
+          "unwind" <+> label(pp(i.exceptionDest)) <+>
+          pp(i.metadata)
 
-//     Resume op meta -> "resume "<+> ppTyped op <+> ppInstrMeta meta
+      case Resume(op, meta) => "resume" <+> ppTyped(op) <+> pp(meta)
 
-//     CleanupRet pad dest meta ->
-//       "cleanupret" <+> "from" <+> pp pad <+> "unwind" <+> maybe "to caller" (label . pp) dest
-//       <+> ppInstrMeta meta
+      case CleanupRet(pad, dest, meta) =>
+        "cleanupret" <+> "from" <+> pp(pad) <+> "unwind" <+> dest
+          .map { n: Name =>
+            label(pp(n))
+          }
+          .getOrElse("to caller")
 
-//     CatchRet catchPad succ meta ->
-//       "catchret" <+> "from" <+> pp catchPad <+> "to" <+> label (pp succ)
-//       <+> ppInstrMeta meta
+      case CatchRet(pad, successor, meta) =>
+        "catchret" <+> "from" <+> pp(pad) <+> "to" <+> label(pp(successor)) <+>
+          pp(meta)
 
-//     CatchSwitch {..} ->
-//       "catchswitch" <+> "within" <+> pp parentPad' <+>
-//       brackets (commas (map (label . pp) (toList catchHandlers))) <+>
-//       "unwind" <+> "to" <+> maybe "caller" pp defaultUnwindDest
-//       <+> ppInstrMeta metadata'
+      case CatchSwitch(parentPad, catchHandlers, defaultUnwindDest, metadata) =>
+        "catchswitch" <+>
+          "within" <+>
+          pp(parentPad) <+>
+          brackets(commas(catchHandlers.toList.map { n: Name =>
+            label(pp(n))
+          })) <+>
+          "unwind" <+> "to" <+> defaultUnwindDest
+          .map(pp)
+          .getOrElse("caller") <+>
+          pp(metadata)
+    }
+  }
 
   def pp(i: Instruction): String = ???
 // instance PP Instruction where
@@ -600,7 +631,7 @@ case object prettyPrint {
 //     Catch c  -> "catch" <+> ppTyped c
 //     Filter c -> "filter" <+> ppTyped c
 
-  // def apply(e: List[Either[GroupID, FunctionAttribute]]): String = ???
+  def pp(e: List[Either[GroupID, FunctionAttribute]]): String = ???
 // instance PP [Either GroupID FunctionAttribute] where
 //   pp x = hsep $ fmap pp x
 
@@ -856,10 +887,14 @@ case object prettyPrint {
   def ppParams[A](params: List[String], isVarArg: Boolean): String =
     commas(params ++ (if (isVarArg) List("...") else Nil))
 
+  // arguments: List[(Operand, List[ParameterAttribute])]
 // ppParams :: (a -> Doc) -> ([a], Bool) -> Doc
 // ppParams ppParam (ps, varrg) = parens . commas $ fmap ppParam ps ++ vargs
 //     where
 //         vargs = if varrg then ["..."] else []
+
+  def ppFunctionArgumentTypes(ft: FunctionType): String =
+    ppParams(ft.argumentTypes.map(pp), ft.isVarArg)
 
 // ppFunctionArgumentTypes :: Type -> Doc
 // ppFunctionArgumentTypes FunctionType {..} = ppParams pp (argumentTypes, isVarArg)
