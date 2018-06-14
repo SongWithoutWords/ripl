@@ -22,7 +22,9 @@ package ripl.llvm.pure.ast
 // which they are used.
 
 // Original Haskell bindings had more complexity, can revisit if necessary
-case class Name(s: String)
+case class Name(s: String) {
+  def :=[A](a: A) = ripl.llvm.pure.ast.:=[A](this, a)
+}
 
 // Is it even necessary to have "UnName"? Couldn't I just encode that in the string?
 // I'd need to have a look at llvm-pretty
