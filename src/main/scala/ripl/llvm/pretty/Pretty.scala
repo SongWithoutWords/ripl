@@ -3,7 +3,6 @@ package ripl.llvm.pretty
 import scala.util.matching.Regex
 
 import ripl.llvm.pure.ast._
-import ripl.llvm.pure.ast.InstructionAliases._
 
 // -------------------------------------------------------------------------------
 // // Utils
@@ -135,8 +134,8 @@ case object prettyPrint {
       case false => commas(ps.map(pp))
     }
 
-  def pp(op: Operand, attributes: List[ParameterAttribute]): String =
-    pp(typeOf(op)) <+> ppParamAttrs(attributes) <+> pp(op)
+  def pp(arg: Argument): String =
+    pp(typeOf(arg.op)) <+> ppParamAttrs(arg.attrs) <+> pp(arg.op)
 
   def pp(addr: UnnamedAddr): String =
     addr match {
@@ -442,7 +441,7 @@ case object prettyPrint {
   }
 
   def pp(m: InstructionMetadata): String =
-    commas(m.map { case (x, y) => "!" <> x <+> pp(y) })
+    commas(m.data.map { case (x, y) => "!" <> x <+> pp(y) })
 
   def pp(m: MetadataNodeID): String = {
     val MetadataNodeID(id) = m

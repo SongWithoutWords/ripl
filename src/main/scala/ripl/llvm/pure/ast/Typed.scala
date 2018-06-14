@@ -1,7 +1,6 @@
 // Querying the type of LLVM expressions
 package ripl.llvm.pure.ast
 
-import InstructionAliases._
 import TypeAliases._
 
 case object typeOf {

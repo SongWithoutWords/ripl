@@ -8,13 +8,21 @@ sealed trait NonEmpty[A]
 
 // <http://llvm.org/docs/LangRef.html#metadata-nodes-and-metadata-strings>
 // Metadata can be attached to an instruction
-object InstructionAliases {
-  // An 'Atomicity' describes constraints on the visibility of effects of an atomic instruction
-  type Atomicity = (SynchronizationScope, MemoryOrdering)
+// object InstructionAliases {
+// An 'Atomicity' describes constraints on the visibility of effects of an atomic instruction
+//   type Atomicity = (SynchronizationScope, MemoryOrdering)
 
-  type InstructionMetadata = List[(String, MetadataNode)]
+//   type InstructionMetadata = List[(String, MetadataNode)]
+// }
+// import InstructionAliases._
+
+case class Argument(op: Operand, attrs: List[ParameterAttribute])
+case class Atomicity(scope: SynchronizationScope, order: MemoryOrdering)
+case object InstructionMetadata {
+  def apply(data: (String, MetadataNode)*): InstructionMetadata =
+    InstructionMetadata(data.toList)
 }
-import InstructionAliases._
+case class InstructionMetadata(data: List[(String, MetadataNode)])
 
 // <http://llvm.org/docs/LangRef.html#terminators>
 sealed trait Terminator
@@ -48,7 +56,7 @@ case object Terminator {
       callingConvention: CallingConvention,
       returnAttributes: List[ParameterAttribute],
       function: CallableOperand,
-      arguments: List[(Operand, List[ParameterAttribute])],
+      arguments: List[Argument],
       functionAttributes: List[Either[GroupID, FunctionAttribute]],
       returnDest: Name,
       exceptionDest: Name,
@@ -368,7 +376,7 @@ case object Instruction {
       callingConvention: CallingConvention,
       returnAttributes: List[ParameterAttribute],
       function: CallableOperand,
-      arguments: List[(Operand, List[ParameterAttribute])],
+      arguments: List[Argument],
       functionAttributes: List[Either[GroupID, FunctionAttribute]],
       metadata: InstructionMetadata
   ) extends Instruction

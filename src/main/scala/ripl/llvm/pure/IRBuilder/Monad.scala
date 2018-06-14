@@ -316,7 +316,7 @@ case object emitBlockStart {
           val instrs = partialBlock.partialBlockInstrs
           val terminator: Named[Terminator] =
             partialBlock.partialBlockTerm match {
-              case None       => Do(Terminator.Ret(None, List()))
+              case None       => Do(Terminator.Ret(None, InstructionMetadata()))
               case Some(term) => term
             }
           for {
