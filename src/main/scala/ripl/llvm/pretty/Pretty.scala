@@ -930,15 +930,14 @@ case object prettyPrint {
     case System       => ""
   }
 
-  def pp(mo: MemoryOrdering): String = ???
-// instance PP MemoryOrdering where
-//   pp = \case
-//     Unordered              -> "unordered"
-//     Monotonic              -> "monotonic"
-//     Acquire                -> "acquire"
-//     Release                -> "release"
-//     AcquireRelease         -> "acq_rel"
-//     SequentiallyConsistent -> "seq_cst"
+  def pp(mo: MemoryOrdering): String = mo match {
+    case Unordered              => "unordered"
+    case Monotonic              => "monotonic"
+    case Acquire                => "acquire"
+    case Release                => "release"
+    case AcquireRelease         => "acq_rel"
+    case SequentiallyConsistent => "seq_cst"
+  }
 
   def pp(op: RMWOperation): String = ???
 // instance PP RMW.RMWOperation where
