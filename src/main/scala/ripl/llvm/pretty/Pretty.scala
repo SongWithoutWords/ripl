@@ -979,10 +979,7 @@ case object prettyPrint {
 //         pad0 [x] = "0" <> char x
 //         pad0 xs = text (pack xs)
 
-  def ppVolatile(b: Boolean): String = ???
-// ppVolatile :: Bool -> Doc
-// ppVolatile True = "volatile"
-// ppVolatile False = mempty
+  def ppVolatile(volatile: Boolean): String = ppIf(volatile, "volatile")
 
   def ppIntAsChar(i: BigInt): String = escape(i.toChar)
 
