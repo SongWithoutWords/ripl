@@ -1000,10 +1000,6 @@ case object prettyPrint {
   def ppFunctionArgumentTypes(ft: FunctionType): String =
     ppParams(ft.argumentTypes.map(pp), ft.isVarArg)
 
-// ppFunctionArgumentTypes :: Type -> Doc
-// ppFunctionArgumentTypes FunctionType {..} = ppParams pp (argumentTypes, isVarArg)
-// ppFunctionArgumentTypes _ = error "Non-function argument. (Malformed AST)"
-
   def ppNullInitializer(t: Type): String = t match {
     case _: PointerType   => "zeroinitializer"
     case _: StructureType => "zeroinitializer"
