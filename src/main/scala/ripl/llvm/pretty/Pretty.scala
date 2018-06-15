@@ -773,90 +773,98 @@ case object prettyPrint {
       case MetadataNodeReference(ref) => pp(ref)
     }
 
-  def pp(c: Constant): String = ???
-// instance PP C.Constant where
-//   pp (C.Int width val) = pp val
-//   pp (C.Float (F.Double val))      =
-//     if specialFP val
-//       then "0x" <> (text . pack) (showHex (doubleToWord val) "")
-//       else text $ pack $ printf "%6.6e" val
-//   pp (C.Float (F.Single val))      =
-//     if specialFP val
-//       then "0x" <> (text . pack) (showHex (floatToWord val) "")
-//       else text $ pack $ printf "%6.6e" val
-//   pp (C.Float (F.Half val))        = text $ pack $ printf "%6.6e" val
-//   pp (C.Float (F.Quadruple val _)) = text $ pack $ printf "%6.6e" val
-//   pp (C.Float (F.X86_FP80 val _))  = text $ pack $ printf "%6.6e" val
-//   pp (C.Float (F.PPC_FP128 val _)) = text $ pack $ printf "%6.6e" val
+  def pp(c: Constant): String = {
+    import Constant._
+    c match {
+      case Integral(_, value) => value.toString
 
-//   pp (C.GlobalReference ty nm) = "@" <> pp nm
-//   pp (C.Vector args) = "<" <+> commas (fmap ppTyped args) <+> ">"
+      case F32(value) => "%6.6e".format(value)
+      case F64(value) => "%6.6e".format(value)
 
-//   pp (C.Add {..})    = "add"  <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.Sub {..})    = "sub"  <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.Mul {..})    = "mul"  <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.Shl {..})    = "shl"  <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.AShr {..})   = "ashr" <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.LShr {..})   = "lshr" <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.And {..})    = "and"  <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.Or {..})     = "or"   <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.Xor {..})    = "xor"  <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.SDiv {..})   = "sdiv"  <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.UDiv {..})   = "udiv"  <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.SRem {..})   = "srem"  <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.URem {..})   = "urem"  <+> ppTyped operand0 `cma` pp operand1
+      case GlobalReference(_, nm) => global(pp(nm))
+      case Vector(members)        => angleBrackets(commas(members.map(ppTyped)))
 
-//   pp (C.FAdd {..})   = "fadd" <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.FSub {..})   = "fsub" <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.FMul {..})   = "fmul" <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.FDiv {..})   = "fdiv" <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.FRem {..})   = "frem" <+> ppTyped operand0 `cma` pp operand1
-//   pp (C.FCmp {..})   = "fcmp" <+> pp fpPredicate <+> ppTyped operand0 `cma` pp operand1
-//   pp C.ICmp {..}     = "icmp" <+> pp iPredicate <+> ppTyped operand0 `cma` pp operand1
+      case Add(nuw, nsw, op0, op1) => "add" <+> ppTyped(op0) comma pp(op1)
+      case Sub(nuw, nsw, op0, op1) => "sub" <+> ppTyped(op0) comma pp(op1)
+      case Mul(nuw, nsw, op0, op1) => "mul" <+> ppTyped(op0) comma pp(op1)
+      case Shl(nuw, nsw, op0, op1) => "shl" <+> ppTyped(op0) comma pp(op1)
+      case AShr(exact, op0, op1)   => "ashr" <+> ppTyped(op0) comma pp(op1)
+      case LShr(exact, op0, op1)   => "lshr" <+> ppTyped(op0) comma pp(op1)
+      case And(op0, op1)           => "and" <+> ppTyped(op0) comma pp(op1)
+      case Or(op0, op1)            => "or" <+> ppTyped(op0) comma pp(op1)
+      case Xor(op0, op1)           => "xor" <+> ppTyped(op0) comma pp(op1)
+      case SDiv(exact, op0, op1)   => "sdiv" <+> ppTyped(op0) comma pp(op1)
+      case UDiv(exact, op0, op1)   => "udiv" <+> ppTyped(op0) comma pp(op1)
+      case SRem(op0, op1)          => "srem" <+> ppTyped(op0) comma pp(op1)
+      case URem(op0, op1)          => "urem" <+> ppTyped(op0) comma pp(op1)
 
-//   pp (C.Select {..})  = "select" <+> commas [ppTyped condition', ppTyped trueValue, ppTyped falseValue]
-//   pp (C.SExt {..})    = "sext" <+> ppTyped operand0 <+> "to" <+> pp type'
-//   pp (C.ZExt {..})    = "zext" <+> ppTyped operand0 <+> "to" <+> pp type'
-//   pp (C.FPExt {..})   = "fpext" <+> ppTyped operand0 <+> "to" <+> pp type'
-//   pp (C.Trunc {..})   = "trunc" <+> ppTyped operand0 <+> "to" <+> pp type'
-//   pp (C.FPTrunc {..}) = "fptrunc" <+> ppTyped operand0 <+> "to" <+> pp type'
+      case FAdd(op0, op1) => "fadd" <+> ppTyped(op0) comma pp(op1)
+      case FSub(op0, op1) => "fsub" <+> ppTyped(op0) comma pp(op1)
+      case FMul(op0, op1) => "fmul" <+> ppTyped(op0) comma pp(op1)
+      case FDiv(op0, op1) => "fdiv" <+> ppTyped(op0) comma pp(op1)
+      case FRem(op0, op1) => "frem" <+> ppTyped(op0) comma pp(op1)
 
-//   pp C.FPToUI {..} = "fptoui" <+> ppTyped operand0 <+> "to" <+> pp type'
-//   pp C.FPToSI {..} = "fptosi" <+> ppTyped operand0 <+> "to" <+> pp type'
-//   pp C.UIToFP {..} = "uitofp" <+> ppTyped operand0 <+> "to" <+> pp type'
-//   pp C.SIToFP {..} = "sitofp" <+> ppTyped operand0 <+> "to" <+> pp type'
+      case FCmp(pred, op0, op1) =>
+        "fcmp" <+> pp(pred) <+> ppTyped(op0) comma pp(op1)
+      case ICmp(pred, op0, op1) =>
+        "icmp" <+> pp(pred) <+> ppTyped(op0) comma pp(op1)
 
-//   pp (C.Struct _ packed elems) =
-//     let struct = spacedbraces $ commas $ fmap ppTyped elems
-//     in if packed
-//          then angleBrackets struct
-//          else struct
+      case c: Select =>
+        "select" <+> commas(
+          ppTyped(c.condition),
+          ppTyped(c.trueValue),
+          ppTyped(c.falseValue)
+        )
+      case c: SExt    => "sext" <+> ppTyped(c.operand0) <+> "to" <+> pp(c.t)
+      case c: ZExt    => "zext" <+> ppTyped(c.operand0) <+> "to" <+> pp(c.t)
+      case c: FPExt   => "fpext" <+> ppTyped(c.operand0) <+> "to" <+> pp(c.t)
+      case c: Trunc   => "trunc" <+> ppTyped(c.operand0) <+> "to" <+> pp(c.t)
+      case c: FPTrunc => "fptrunc" <+> ppTyped(c.operand0) <+> "to" <+> pp(c.t)
 
-//   pp (C.Null constantType) = ppNullInitializer constantType
+      case c: FPToUI => "fptoui" <+> ppTyped(c.operand0) <+> "to" <+> pp(c.t)
+      case c: FPToSI => "fptosi" <+> ppTyped(c.operand0) <+> "to" <+> pp(c.t)
+      case c: UIToFP => "uitofp" <+> ppTyped(c.operand0) <+> "to" <+> pp(c.t)
+      case c: SIToFP => "sitofp" <+> ppTyped(c.operand0) <+> "to" <+> pp(c.t)
 
-// #if MIN_VERSION_llvm_hs_pure(5,1,3)
-//   pp (C.AggregateZero constantType) = "zeroinitializer"
-// #endif
+      case c: Struct =>
+        val struct = spacedBraces(commas(c.memberValues.map(ppTyped)))
+        if (c.isPacked) angleBrackets(struct) else struct
 
-//   pp (C.Undef {}) = "undef"
-//   pp (C.TokenNone {}) = "none"
-//   pp (C.BlockAddress fn blk) = "blockaddress" <> parens (commas (fmap pp [fn, blk]))
+      case Null(t)          => ppNullInitializer(t)
+      case AggregateZero(t) => "zeroinitializer"
 
-//   pp C.Array {..}
-//     | memberType == (IntegerType 8) = "c" <> (dquotes $ hcat [ppIntAsChar val | C.Int _ val <- memberValues])
-//     | otherwise = brackets $ commas $ fmap ppTyped memberValues
+      case Undef(_)  => "undef"
+      case TokenNone => "none"
+      case BlockAddress(fn, blk) =>
+        "blockaddress" <> parens(commas(List(fn, blk).map(pp)))
 
-//   pp C.GetElementPtr {..} = "getelementptr" <+> bounds inBounds <+> parens (commas (pp argTy : fmap ppTyped (address:indices)))
-//     where
-//       PointerType argTy _ = typeOf address
-//       bounds True = "inbounds"
-//       bounds False = empty
+      case Array(t, values) =>
+        t match {
+          case IntegerType(8) =>
+            "c" <> dquotes(values.map {
+              case Integral(8, char) => ppIntAsChar(char)
+            }.mkString)
+          case _ => brackets(commas(values.map(ppTyped)))
+        }
 
-//   pp C.BitCast {..} = "bitcast" <+> parens (ppTyped operand0 <+> "to" <+> pp type')
-//   pp C.PtrToInt {..} = "ptrtoint" <+> parens (ppTyped operand0 <+> "to" <+> pp type')
-//   pp C.IntToPtr {..} = "inttoptr" <+> parens (ppTyped operand0 <+> "to" <+> pp type')
-//   pp C.AddrSpaceCast {..} = "addrspacecast" <+> parens (ppTyped operand0 <+> "to" <+> pp type')
-//   pp _ = error "Non-function argument. (Malformed AST)"
+      case c: GetElementPtr =>
+        "getelementptr" <+> ppIf(c.inBounds, "inbounds") <+> parens(
+          commas(
+            pp(typeOf(c.address)) :: (c.address :: c.indices).map(ppTyped)
+          )
+        )
+
+      case c: BitCast =>
+        "bitcast" <+> parens(ppTyped(c.operand0) <+> "to" <+> pp(c.t))
+      case c: PtrToInt =>
+        "ptrtoint" <+> parens(ppTyped(c.operand0) <+> "to" <+> pp(c.t))
+      case c: IntToPtr =>
+        "inttoptr" <+> parens(ppTyped(c.operand0) <+> "to" <+> pp(c.t))
+      case c: AddrSpaceCast =>
+        "addrspacecast" <+> parens(ppTyped(c.operand0) <+> "to" <+> pp(c.t))
+      case _ => throw new Exception("Non-function argument. (Malformed AST)")
+    }
+  }
 
   def pp(n: Named[String]): String = n match {
     case n := s => "%" <> pp(n) <+> "=" <+> s
