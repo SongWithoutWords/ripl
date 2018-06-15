@@ -741,11 +741,10 @@ case object prettyPrint {
     case ia: InlineAssembly => ???
   }
 
-  def pp(l: LandingPadClause): String = ???
-// instance PP LandingPadClause where
-//   pp = \case
-//     Catch c  -> "catch" <+> ppTyped c
-//     Filter c -> "filter" <+> ppTyped c
+  def pp(l: LandingPadClause): String = l match {
+    case Catch(c)  => "catch" <+> ppTyped(c)
+    case Filter(c) => "filter" <+> ppTyped(c)
+  }
 
   def pp(e: List[Either[GroupID, FunctionAttribute]]): String = ???
 // instance PP [Either GroupID FunctionAttribute] where
