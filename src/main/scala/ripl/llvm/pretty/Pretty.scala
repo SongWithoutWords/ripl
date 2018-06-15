@@ -991,15 +991,8 @@ case object prettyPrint {
 // ppAlign x | x == 0    = empty
 //           | otherwise = ", align" <+> pp x
 
-  def ppTyped(a: Operand): String = ???
-  def ppTyped(c: Constant): String = ???
-
-// // print an operand and its type
-// ppTyped :: (PP a, Typed a) => a -> Doc
-// ppTyped a = pp (typeOf a) <+> pp a
-
-// ppCommaTyped :: (PP a, Typed a) => a -> Doc
-// ppCommaTyped a = pp (typeOf a) `cma` pp a
+  def ppTyped(a: Operand): String = pp(typeOf(a)) <+> pp(a)
+  def ppTyped(a: Constant): String = pp(typeOf(a)) <+> pp(a)
 
   def ppPhiIncoming(op: Operand, nm: Name): String =
     brackets(pp(op) comma (local(pp(nm))))
