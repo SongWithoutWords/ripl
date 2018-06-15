@@ -435,7 +435,7 @@ case object Instruction {
       parentPad: Operand,
       args: List[Operand],
       metadata: InstructionMetadata
-  )
+  ) extends Instruction
 }
 
 // Instances of instructions may be given a name, allowing their results to be referenced as 'Operand's.
