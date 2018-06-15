@@ -736,10 +736,10 @@ case object prettyPrint {
     }
   }
 
-  def pp(c: CallableOperand): String = ???
-// instance PP CallableOperand where
-//   pp (Left asm) = error "CallableOperand"
-//   pp (Right op) = pp op
+  def pp(c: CallableOperand): String = c match {
+    case op: Operand        => pp(op)
+    case ia: InlineAssembly => ???
+  }
 
   def pp(l: LandingPadClause): String = ???
 // instance PP LandingPadClause where
