@@ -983,10 +983,10 @@ case object prettyPrint {
 
   def ppIntAsChar(i: BigInt): String = escape(i.toChar)
 
-  def ppAlign(a: Int): String = ???
-// ppAlign :: Word32 -> Doc
-// ppAlign x | x == 0    = empty
-//           | otherwise = ", align" <+> pp x
+  def ppAlign(a: Int): String = a match {
+    case 0 => ""
+    case x => ", align" <+> x.toString
+  }
 
   def ppTyped(a: Operand): String = pp(typeOf(a)) <+> pp(a)
   def ppTyped(a: Constant): String = pp(typeOf(a)) <+> pp(a)
