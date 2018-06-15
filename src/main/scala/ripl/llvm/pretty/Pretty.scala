@@ -12,6 +12,8 @@ case object Util {
 
   def dquotes(s: String) = "\"" + s + "\""
 
+  def singleQuotes(s: String) = "\'" + s + "\'"
+
   def parens(s: String) = s"($s)"
 
   def parensIf(b: Boolean, s: String): String = if (b) parens(s) else s
@@ -871,17 +873,17 @@ case object prettyPrint {
     case Do(s)  => s
   }
 
-  def pp(m: Module): String = ???
-// instance PP Module where
-//   pp Module {..} =
-//     let header = printf "; ModuleID = '%s'" (unShort moduleName) in
-//     let target = case moduleTargetTriple of
-//                       Nothing -> mempty
-//                       Just target -> "target triple =" <+> dquotes (pp target) in
-//     let layout = case moduleDataLayout of
-//                       Nothing     -> mempty
-//                       Just layout -> "target datalayout =" <+> dquotes (pp layout) in
-//     hlinecat (fromString header : (layout </> target) : (fmap pp moduleDefinitions))
+  def pp(m: Module): String =
+    "; ModuleID =" <+> singleQuotes(m.moduleName) </>
+      (m.moduleDataLayout match {
+        case None         => ""
+        case Some(layout) => "target datalayout =" <+> dquotes(pp(layout))
+      }) </>
+      (m.moduleTargetTriple match {
+        case None         => ""
+        case Some(target) => "target triple =" <+> dquotes(target)
+      }) </>
+      lines(m.moduleDefinitions.map(pp))
 
   def pp(fp: FloatingPointPredicate): String = ???
 // instance PP FP.FloatingPointPredicate where
