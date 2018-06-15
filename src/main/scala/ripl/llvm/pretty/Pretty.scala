@@ -939,20 +939,22 @@ case object prettyPrint {
     case SequentiallyConsistent => "seq_cst"
   }
 
-  def pp(op: RMWOperation): String = ???
-// instance PP RMW.RMWOperation where
-//   pp = \case
-//     RMW.Xchg -> "xchg"
-//     RMW.Add -> "add"
-//     RMW.Sub -> "sub"
-//     RMW.And -> "and"
-//     RMW.Nand -> "nand"
-//     RMW.Or -> "or"
-//     RMW.Xor -> "xor"
-//     RMW.Max -> "max"
-//     RMW.Min -> "min"
-//     RMW.UMax -> "umax"
-//     RMW.UMin -> "umin"
+  def pp(op: RMWOperation): String = {
+    import RMWOperation._
+    op match {
+      case Xchg => "xchg"
+      case Add  => "add"
+      case Sub  => "sub"
+      case And  => "and"
+      case Nand => "nand"
+      case Or   => "or"
+      case Xor  => "xor"
+      case Max  => "max"
+      case Min  => "min"
+      case UMax => "umax"
+      case UMin => "umin"
+    }
+  }
 
   def pp(d: DataLayout): String = ???
 // instance PP DataLayout where
