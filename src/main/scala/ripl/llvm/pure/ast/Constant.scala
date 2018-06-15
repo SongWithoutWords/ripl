@@ -33,6 +33,7 @@ case object Constant {
   // case class PPC_FP128(high: Word64, low: Word64)
 
   case class Null(constantType: Type) extends Constant
+  case class AggregateZero(constantType: Type) extends Constant
   case class Struct(
       structName: Option[Name],
       isPacked: Boolean,
