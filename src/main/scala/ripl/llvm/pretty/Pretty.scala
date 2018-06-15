@@ -907,19 +907,21 @@ case object prettyPrint {
     }
   }
 
-  def pp(ip: IntegerPredicate): String = ???
-// instance PP IP.IntegerPredicate where
-//   pp op = case op of
-//    IP.EQ  -> "eq"
-//    IP.NE  -> "ne"
-//    IP.UGT -> "ugt"
-//    IP.UGE -> "uge"
-//    IP.ULT -> "ult"
-//    IP.ULE -> "ule"
-//    IP.SGT -> "sgt"
-//    IP.SGE -> "sge"
-//    IP.SLT -> "slt"
-//    IP.SLE -> "sle"
+  def pp(ip: IntegerPredicate): String = {
+    import IntegerPredicate._
+    ip match {
+      case EQ  => "eq"
+      case NE  => "ne"
+      case UGT => "ugt"
+      case UGE => "uge"
+      case ULT => "ult"
+      case ULE => "ule"
+      case SGT => "sgt"
+      case SGE => "sge"
+      case SLT => "slt"
+      case SLE => "sle"
+    }
+  }
 
   def pp(a: Atomicity): String = ???
 // instance PP Atomicity where
