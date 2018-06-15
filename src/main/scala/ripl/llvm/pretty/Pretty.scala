@@ -754,11 +754,11 @@ case object prettyPrint {
     case Right(fattr) => pp(fattr)
   }
 
-  def pp(op: Operand): String = ???
-// instance PP Operand where
-//   pp (LocalReference _ nm) = local' (pp nm)
-//   pp (ConstantOperand con) = pp con
-//   pp (MetadataOperand mdata) = pp mdata
+  def pp(op: Operand): String = op match {
+    case LocalReference(_, nm) => local(pp(nm))
+    case ConstantOperand(c)    => pp(c)
+    case MetadataOperand(meta) => pp(meta)
+  }
 
   def pp(m: Metadata): String =
     m match {
