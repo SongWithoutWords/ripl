@@ -504,8 +504,8 @@ case object prettyPrint {
             pp(meta)
 
       case i: Invoke =>
-        val ftype = typeOf(i.function) match {
-          case PointerType(ft: FunctionType, _) => ft
+        val ftype = referencedType(typeOf(i.function)) match {
+          case ft: FunctionType => ft
           case _ =>
             throw new Exception("Invoke requires function type")
         }
@@ -1039,6 +1039,11 @@ case object prettyPrint {
 //       // ATTDialect is assumed if not specified
 //       dialect' = case dialect of IA.ATTDialect -> ""; IA.IntelDialect -> "inteldialect"
 // ppCall x = error "Non-callable argument. (Malformed AST)"
+  def referencedType(t: Type): Type = t match {
+    case PointerType(t, _) => t
+    case t                 => t
+  }
+
 
 // // Differs from Call in record name conventions only so needs a seperate almost
 // // identical function. :(
