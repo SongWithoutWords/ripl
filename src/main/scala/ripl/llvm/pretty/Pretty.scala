@@ -885,25 +885,27 @@ case object prettyPrint {
       }) </>
       lines(m.moduleDefinitions.map(pp))
 
-  def pp(fp: FloatingPointPredicate): String = ???
-// instance PP FP.FloatingPointPredicate where
-//   pp op = case op of
-//    FP.False -> "false"
-//    FP.OEQ   -> "oeq"
-//    FP.OGT   -> "ogt"
-//    FP.OGE   -> "oge"
-//    FP.OLT   -> "olt"
-//    FP.OLE   -> "ole"
-//    FP.ONE   -> "one"
-//    FP.ORD   -> "ord"
-//    FP.UEQ   -> "ueq"
-//    FP.UGT   -> "ugt"
-//    FP.UGE   -> "uge"
-//    FP.ULT   -> "ult"
-//    FP.ULE   -> "ule"
-//    FP.UNE   -> "une"
-//    FP.UNO   -> "uno"
-//    FP.True  -> "true"
+  def pp(fp: FloatingPointPredicate): String = {
+    import FloatingPointPredicate._
+    fp match {
+      case False => "false"
+      case OEQ   => "oeq"
+      case OGT   => "ogt"
+      case OGE   => "oge"
+      case OLT   => "olt"
+      case OLE   => "ole"
+      case ONE   => "one"
+      case ORD   => "ord"
+      case UEQ   => "ueq"
+      case UGT   => "ugt"
+      case UGE   => "uge"
+      case ULT   => "ult"
+      case ULE   => "ule"
+      case UNE   => "une"
+      case UNO   => "uno"
+      case True  => "true"
+    }
+  }
 
   def pp(ip: IntegerPredicate): String = ???
 // instance PP IP.IntegerPredicate where
