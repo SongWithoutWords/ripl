@@ -544,82 +544,197 @@ case object prettyPrint {
     }
   }
 
-  def pp(i: Instruction): String = ???
-// instance PP Instruction where
-//   pp = \case
-//     Add {..}    -> "add"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     Sub {..}    -> "sub"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     Mul {..}    -> "mul"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     Shl {..}    -> "shl"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     AShr {..}   -> "ashr" <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     LShr {..}   -> "lshr" <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     And {..}    -> "and"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     Or {..}     -> "or"   <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     Xor {..}    -> "xor"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     SDiv {..}   -> "sdiv"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     UDiv {..}   -> "udiv"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     SRem {..}   -> "srem"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     URem {..}   -> "urem"  <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
+  def pp(i: Instruction): String = {
+    import Instruction._
+    i match {
+      case i: Add =>
+        "add" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: Sub =>
+        "sub" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: Mul =>
+        "mul" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: Shl =>
+        "shl" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: AShr =>
+        "ashr" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: LShr =>
+        "lshr" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: And =>
+        "and" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: Or =>
+        "or" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: Xor =>
+        "xor" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: SDiv =>
+        "sdiv" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: UDiv =>
+        "udiv" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: SRem =>
+        "srem" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: URem =>
+        "urem" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
 
-//     FAdd {..}   -> "fadd" <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     FSub {..}   -> "fsub" <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     FMul {..}   -> "fmul" <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     FDiv {..}   -> "fdiv" <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     FRem {..}   -> "frem" <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
-//     FCmp {..}   -> "fcmp" <+> pp fpPredicate <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
+      case i: FAdd =>
+        "fadd" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: FSub =>
+        "fsub" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: FMul =>
+        "fmul" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: FDiv =>
+        "fdiv" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: FRem =>
+        "frem" <+> ppTyped(i.operand0) comma pp(i.operand1) <+> pp(i.metadata)
+      case i: FCmp =>
+        "fcmp" <+> pp(i.fpPredicate) <+> ppTyped(i.operand0) comma
+          pp(i.operand1) <+> pp(i.metadata)
 
-//     Alloca {..} -> "alloca" <+> pp allocatedType <> num <> ppAlign alignment <+> ppInstrMeta metadata
-//       where num   = case numElements of Nothing -> empty
-//                                         Just o -> "," <+> ppTyped o
-//     Store {..}  -> "store" <+> ppTyped value `cma` ppTyped address <> ppAlign alignment
-//     Load {..}   -> "load" <+> pp argTy `cma` ppTyped address <> ppAlign alignment <+> ppInstrMeta metadata
-//       where PointerType argTy _ = typeOf address
-//     Phi {..}    -> "phi" <+> pp type' <+> commas (fmap phiIncoming incomingValues) <+> ppInstrMeta metadata
+      case i: Alloca =>
+        "alloca" <+> pp(i.allocatedType) <>
+          (i.numElements match {
+            case None     => ""
+            case Some(op) => "," <+> ppTyped(op)
+          }) <>
+          ppAlign(i.alignment) <+>
+          pp(i.metadata)
 
-//     ICmp {..}   -> "icmp" <+> pp iPredicate <+> ppTyped operand0 `cma` pp operand1 <+> ppInstrMeta metadata
+      case i: Store =>
+        "store" <+> ppTyped(i.value) comma ppTyped(i.address) <>
+          ppAlign(i.alignment) <+>
+          pp(i.metadata)
 
-//     c@Call {..} -> ppCall c  <+> ppInstrMeta metadata
-//     Select {..} -> "select" <+> commas [ppTyped condition', ppTyped trueValue, ppTyped falseValue] <+> ppInstrMeta metadata
-//     SExt {..}   -> "sext" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata <+> ppInstrMeta metadata
-//     ZExt {..}   -> "zext" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata <+> ppInstrMeta metadata
-//     FPExt {..}   -> "fpext" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata <+> ppInstrMeta metadata
-//     Trunc {..}  -> "trunc" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata <+> ppInstrMeta metadata
-//     FPTrunc {..}  -> "fptrunc" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata <+> ppInstrMeta metadata
+      case i: Load =>
+        val PointerType(argTy, _) = typeOf(i.address)
+        "load" <+> pp(argTy) comma ppTyped(i.address) <> ppAlign(i.alignment) <+>
+          pp(i.metadata)
 
-//     GetElementPtr {..} -> "getelementptr" <+> bounds inBounds <+> commas (pp argTy : fmap ppTyped (address:indices)) <+> ppInstrMeta metadata
-//       where argTy = getElementType $ typeOf address
-//     ExtractValue {..} -> "extractvalue" <+> commas (ppTyped aggregate : fmap pp indices') <+> ppInstrMeta metadata
+      case i: Phi =>
+        "phi" <+> pp(i.t) <+> commas(i.incomingValues.map {
+          case (op, nm) => ppPhiIncoming(op, nm)
+        }) <+> pp(
+          i.metadata
+        )
 
-//     BitCast {..} -> "bitcast" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata
-//     FPToUI {..} -> "fptoui" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata
-//     FPToSI {..} -> "fptosi" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata
-//     UIToFP {..} -> "uitofp" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata
-//     SIToFP {..} -> "sitofp" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata
-//     PtrToInt {..} -> "ptrtoint" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata
-//     IntToPtr {..} -> "inttoptr" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata
+      case i: ICmp =>
+        "icmp" <+> pp(i.iPredicate) <+> ppTyped(i.operand0) comma pp(i.operand1) <+>
+          pp(i.metadata)
 
-//     InsertElement {..} -> "insertelement" <+> commas [ppTyped vector, ppTyped element, ppTyped index] <+> ppInstrMeta metadata
-//     ShuffleVector {..} -> "shufflevector" <+> commas [ppTyped operand0, ppTyped operand1, ppTyped mask] <+> ppInstrMeta metadata
-//     ExtractElement {..} -> "extractelement" <+> commas [ppTyped vector, ppTyped index] <+> ppInstrMeta metadata
-//     InsertValue {..} -> "insertvalue" <+> commas (ppTyped aggregate : ppTyped element : fmap pp indices') <+> ppInstrMeta metadata
+      case i: Call => ppCall(i) <+> pp(i.metadata)
 
-//     Fence {..} -> "fence" <+> pp atomicity <+> ppInstrMeta metadata
-//     AtomicRMW {..} -> "atomicrmw" <+> ppVolatile volatile <+> pp rmwOperation <+> ppTyped address `cma` ppTyped value <+> pp atomicity  <+> ppInstrMeta metadata
-//     CmpXchg {..} -> "cmpxchg" <+> ppVolatile volatile <+> ppTyped address `cma` ppTyped expected `cma` ppTyped replacement
-//       <+> pp atomicity <+> pp failureMemoryOrdering <+> ppInstrMeta metadata
+      case i: Select =>
+        "select" <+> commas(
+          ppTyped(i.condition),
+          ppTyped(i.trueValue),
+          ppTyped(i.falseValue)
+        ) <+> pp(i.metadata)
 
-//     AddrSpaceCast {..} -> "addrspacecast" <+> ppTyped operand0 <+> "to" <+> pp type' <+> ppInstrMeta metadata
-//     VAArg {..} -> "va_arg" <+> ppTyped argList `cma` pp type' <+> ppInstrMeta metadata
+      case i: SExt =>
+        "sext" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+> pp(i.metadata)
 
-//     LandingPad {..} ->
-//       "landingpad" <+> pp type' <+> ppBool "cleanup" cleanup <+> ppInstrMeta metadata
-//       <+> commas (fmap pp clauses)
-//     CatchPad {..} -> "catchpad" <+> "within" <+> pp catchSwitch <+> brackets (commas (map ppTyped args)) <+> ppInstrMeta metadata
-//     CleanupPad {..} -> "cleanuppad" <+> "within" <+> pp parentPad <+> brackets (commas (map ppTyped args)) <+> ppInstrMeta metadata
+      case i: ZExt =>
+        "zext" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+> pp(i.metadata)
 
-//     where
-//       bounds True = "inbounds"
-//       bounds False = empty
+      case i: FPExt =>
+        "fpext" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+> pp(i.metadata)
+
+      case i: Trunc =>
+        "trunc" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+> pp(i.metadata)
+
+      case i: FPTrunc =>
+        "fptrunc" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+>
+          pp(i.metadata)
+
+      case i: GetElementPtr =>
+        val argTy = getElementType(typeOf(i.address))
+        "getelementptr" <+> ppIf(i.inBounds, "inbounds") <+>
+          commas(pp(argTy) :: (i.address :: i.indices).map(ppTyped)) <+>
+          pp(i.metadata)
+
+      case i: ExtractValue =>
+        "extractvalue" <+>
+          commas(ppTyped(i.aggregate) :: i.indices.map(_.toString)) <+>
+          pp(i.metadata)
+
+      case i: BitCast =>
+        "bitcast" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+>
+          pp(i.metadata)
+
+      case i: FPToUI =>
+        "fptoui" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+> pp(i.metadata)
+
+      case i: FPToSI =>
+        "fptosi" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+> pp(i.metadata)
+
+      case i: UIToFP =>
+        "uitofp" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+> pp(i.metadata)
+
+      case i: SIToFP =>
+        "sitofp" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+> pp(i.metadata)
+
+      case i: PtrToInt =>
+        "ptrtoint" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+>
+          pp(i.metadata)
+
+      case i: IntToPtr =>
+        "inttoptr" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+>
+          pp(i.metadata)
+
+      case i: InsertElement =>
+        "insertelement" <+> commas(
+          ppTyped(i.vector),
+          ppTyped(i.element),
+          ppTyped(i.index)
+        ) <+> pp(i.metadata)
+
+      case i: ShuffleVector =>
+        "shufflevector" <+> commas(
+          ppTyped(i.operand0),
+          ppTyped(i.operand1),
+          ppTyped(i.mask)
+        ) <+> pp(i.metadata)
+
+      case i: ExtractElement =>
+        "extractelement" <+> commas(ppTyped(i.vector), ppTyped(i.index)) <+>
+          pp(i.metadata)
+
+      case i: InsertValue =>
+        "insertvalue" <+> commas(
+          ppTyped(i.aggregate) ::
+            ppTyped(i.element) ::
+            i.indices.map(_.toString)
+        ) <+> pp(i.metadata)
+
+      case i: Fence => "fence" <+> pp(i.atomicity) <+> pp(i.metadata)
+      case i: AtomicRMW =>
+        "atomicrmw" <+> ppVolatile(i.volatile) <+> pp(i.rmwOperation) <+>
+          ppTyped(i.address) comma ppTyped(i.value) <+> pp(i.atomicity) <+>
+          pp(i.metadata)
+
+      case i: CmpXchg =>
+        "cmpxchg" <+> ppVolatile(i.volatile) <+> ppTyped(i.address) comma
+          ppTyped(i.expected) comma ppTyped(i.replacement) <+>
+          pp(i.atomicity) <+> pp(i.failureMemoryOrdering) <+> pp(i.metadata)
+
+      case i: AddrSpaceCast =>
+        "addrspacecast" <+> ppTyped(i.operand0) <+> "to" <+> pp(i.t) <+>
+          pp(i.metadata)
+
+      case i: VAArg =>
+        "va_arg" <+> ppTyped(i.argList) comma pp(i.t) <+> pp(i.metadata)
+
+      case i: LandingPad =>
+        "landingpad" <+> pp(i.t) <+> ppIf(i.cleanup, "cleanup") <+>
+          pp(i.metadata) <+>
+          commas(i.clauses.map(pp))
+
+      case i: CatchPad =>
+        "catchpad" <+> "within" <+> pp(i.catchSwitch) <+>
+          brackets(commas(i.args.map(ppTyped))) <+> pp(i.metadata)
+
+      case i: CleanupPad =>
+        "cleanuppad" <+> "within" <+> pp(i.parentPad) <+>
+          brackets(commas(i.args.map(ppTyped))) <+> pp(i.metadata)
+    }
+  }
 
   def pp(c: CallableOperand): String = ???
 // instance PP CallableOperand where
@@ -908,6 +1023,7 @@ case object prettyPrint {
 // ppNullInitializer ArrayType {..} = "zeroinitializer"
 // ppNullInitializer _ = error "Non-pointer argument. (Malformed AST)"
 
+  def ppCall(c: Instruction.Call): String = ???
 // ppCall :: Instruction -> Doc
 // ppCall Call { function = Right f,..}
 //   = tail <+> "call" <+> pp callingConvention <+> pp returnAttributes <+> pp resultType <+> ftype
