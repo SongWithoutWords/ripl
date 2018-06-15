@@ -871,10 +871,6 @@ case object prettyPrint {
     case Do(s)  => s
   }
 
-// instance PP a => PP (Named a) where
-//   pp (nm := a) = "%" <> pp nm <+> "=" <+> pp a
-//   pp (Do a) = pp a
-
   def pp(m: Module): String = ???
 // instance PP Module where
 //   pp Module {..} =
