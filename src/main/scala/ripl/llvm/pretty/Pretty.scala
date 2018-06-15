@@ -746,9 +746,8 @@ case object prettyPrint {
     case Filter(c) => "filter" <+> ppTyped(c)
   }
 
-  def pp(e: List[Either[GroupID, FunctionAttribute]]): String = ???
-// instance PP [Either GroupID FunctionAttribute] where
-//   pp x = hsep $ fmap pp x
+  def pp(x: List[Either[GroupID, FunctionAttribute]]): String =
+    spaces(x.map(pp))
 
   def pp(e: Either[GroupID, FunctionAttribute]): String = ???
 // instance PP (Either GroupID FunctionAttribute) where
