@@ -1004,46 +1004,51 @@ case object prettyPrint {
     case _                => throw new Exception("Non-pointer argument. (Malformed AST)")
   }
 
-  def ppCall(c: Instruction.Call): String = ???
-// ppCall :: Instruction -> Doc
-// ppCall Call { function = Right f,..}
-//   = tail <+> "call" <+> pp callingConvention <+> pp returnAttributes <+> pp resultType <+> ftype
-//     <+> pp f <> parens (commas $ fmap pp arguments) <+> pp functionAttributes
-//     where
-//       (functionType@FunctionType {..}) = referencedType (typeOf f)
-//       ftype = if isVarArg
-//               then ppFunctionArgumentTypes functionType
-//               else empty
-//       referencedType (PointerType t _) = referencedType t
-//       referencedType t                 = t
+  def ppTailCall(tail: Option[TailCallKind]): String = tail match {
+    case None           => ""
+    case Some(Tail)     => "tail"
+    case Some(MustTail) => "musttail"
+    case Some(NoTail)   => "notail"
+  }
 
-//       tail = case tailCallKind of
-//         Just Tail -> "tail"
-//         Just MustTail -> "musttail"
-//         Just NoTail -> "notail"
-//         Nothing -> empty
-// ppCall Call { function = Left (IA.InlineAssembly {..}), ..}
-//   = tail <+> "call" <+> pp callingConvention <+> pp returnAttributes <+> pp type'
-//     <+> "asm" <+> sideeffect' <+> align' <+> dialect' <+> dquotes (text (pack (BL.unpack assembly))) <> ","
-//     <+> dquotes (pp constraints) <> parens (commas $ fmap pp arguments) <+> pp functionAttributes
-//     where
-//       tail = case tailCallKind of
-//         Just Tail -> "tail"
-//         Just MustTail -> "musttail"
-//         Just NoTail -> "notail"
-//         Nothing -> empty
-//       // If multiple keywords appear the ‘sideeffect‘ keyword must come first,
-//       // the ‘alignstack‘ keyword second and the ‘inteldialect‘ keyword last.
-//       sideeffect' = if hasSideEffects then "sideeffect" else ""
-//       align' = if alignStack then "alignstack" else ""
-//       // ATTDialect is assumed if not specified
-//       dialect' = case dialect of IA.ATTDialect -> ""; IA.IntelDialect -> "inteldialect"
-// ppCall x = error "Non-callable argument. (Malformed AST)"
   def referencedType(t: Type): Type = t match {
     case PointerType(t, _) => t
     case t                 => t
   }
 
+  def ppCall(i: Instruction.Call): String = {
+
+    i.function match {
+      case f: Operand =>
+        val ftype = referencedType(typeOf(f)) match {
+          case ft: FunctionType => ft
+          case _                => throw new Exception("Call requires function type")
+        }
+        ppTailCall(i.tailCallKind) <+>
+          "call" <+>
+          pp(i.callingConvention) <+>
+          ppParamAttrs(i.returnAttributes) <+>
+          pp(ftype.resultType) <+>
+          (if (ftype.isVarArg) ppFunctionArgumentTypes(ftype) else "") <+>
+          pp(f) <>
+          parens(commas(i.arguments.map(pp))) <+>
+          pp(i.functionAttributes)
+
+      case asm: InlineAssembly =>
+        ppTailCall(i.tailCallKind) <+>
+          "call" <+>
+          pp(i.callingConvention) <+>
+          ppParamAttrs(i.returnAttributes) <+>
+          pp(asm.t) <+>
+          ppIf(asm.hasSideEffects, "sideeffect") <+>
+          ppIf(asm.alignStack, "alignstack") <+>
+          ppIf(asm.dialect == Dialect.IntelDialect, "inteldialect") <+>
+          dquotes(asm.assembly) comma
+          dquotes(asm.constraints) <>
+            parens(commas(i.arguments.map(pp))) <+>
+            pp(i.functionAttributes)
+    }
+  }
 
 // // Differs from Call in record name conventions only so needs a seperate almost
 // // identical function. :(
