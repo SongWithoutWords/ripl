@@ -997,12 +997,6 @@ case object prettyPrint {
   def ppParams[A](params: List[String], isVarArg: Boolean): String =
     commas(params ++ (if (isVarArg) List("...") else Nil))
 
-  // arguments: List[(Operand, List[ParameterAttribute])]
-// ppParams :: (a -> Doc) -> ([a], Bool) -> Doc
-// ppParams ppParam (ps, varrg) = parens . commas $ fmap ppParam ps ++ vargs
-//     where
-//         vargs = if varrg then ["..."] else []
-
   def ppFunctionArgumentTypes(ft: FunctionType): String =
     ppParams(ft.argumentTypes.map(pp), ft.isVarArg)
 
