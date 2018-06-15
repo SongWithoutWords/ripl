@@ -925,11 +925,10 @@ case object prettyPrint {
 
   def pp(a: Atomicity): String = pp(a.scope) <+> pp(a.order)
 
-  def pp(s: SynchronizationScope): String = ???
-// instance PP SynchronizationScope where
-//   pp = \case
-//     SingleThread -> "syncscope(\"singlethread\")"
-//     System -> mempty
+  def pp(s: SynchronizationScope): String = s match {
+    case SingleThread => "syncscope" <> parens(dquotes("singlethread"))
+    case System       => ""
+  }
 
   def pp(mo: MemoryOrdering): String = ???
 // instance PP MemoryOrdering where
