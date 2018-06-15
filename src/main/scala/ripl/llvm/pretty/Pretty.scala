@@ -977,8 +977,7 @@ case object prettyPrint {
 // ppVolatile True = "volatile"
 // ppVolatile False = mempty
 
-// ppIntAsChar :: Integral a => a -> Doc
-// ppIntAsChar = escape . chr . fromIntegral
+  def ppIntAsChar(i: BigInt): String = escape(i.toChar)
 
   def ppAlign(a: Int): String = ???
 // ppAlign :: Word32 -> Doc
