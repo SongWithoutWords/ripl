@@ -1015,11 +1015,11 @@ case object prettyPrint {
 // ppFunctionArgumentTypes _ = error "Non-function argument. (Malformed AST)"
 
   def ppNullInitializer(t: Type): String = t match {
-    case _: PointerType => "zeroinitializer"
+    case _: PointerType   => "zeroinitializer"
     case _: StructureType => "zeroinitializer"
-    case _: FunctionType => "zeroinitializer"
-    case _: ArrayType => "zeroinitializer"
-    case _ => throw new Exception("Non-pointer argument. (Malformed AST)")
+    case _: FunctionType  => "zeroinitializer"
+    case _: ArrayType     => "zeroinitializer"
+    case _                => throw new Exception("Non-pointer argument. (Malformed AST)")
   }
 
   def ppCall(c: Instruction.Call): String = ???
