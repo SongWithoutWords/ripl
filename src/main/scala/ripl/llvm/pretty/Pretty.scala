@@ -262,6 +262,7 @@ case object prettyPrint {
   }
 
   def pp(om: Option[Metadata]): String = om match {
+  def ppMetadata(om: Option[Metadata]): String = om match {
     case None    => "null"
     case Some(m) => pp(m)
   }
@@ -281,7 +282,7 @@ case object prettyPrint {
       "!" <> nm <+> "=" <+> "!" <> braces(commas(meta.map(pp)))
 
     case MetadataNodeDefinition(node, meta) =>
-      pp(node) <+> "=" <+> "!" <> braces(commas(meta.map(pp)))
+      pp(node) <+> "=" <+> "!" <> braces(commas(meta.map(ppMetadata)))
 
     case ModuleInlineAssembly(asm) => "module asm" <+> dquotes(asm)
 
@@ -771,7 +772,7 @@ case object prettyPrint {
 
   def pp(m: MetadataNode): String =
     m match {
-      case MetadataNodeData(xs)       => "!" <> braces(commas(xs.map(pp)))
+      case MetadataNodeData(xs)       => "!" <> braces(commas(xs.map(ppMetadata)))
       case MetadataNodeReference(ref) => pp(ref)
     }
 
