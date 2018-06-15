@@ -23,7 +23,15 @@ package ripl.llvm.pure.ast
 sealed trait Constant
 case object Constant {
   case class Integral(bitWidth: Int, value: BigInt) extends Constant
-  case class Float(floatValue: SomeFloat) extends Constant
+
+  sealed trait FloatingPoint
+  // case class Half(value: Short)
+  case class F32(value: Float) extends Constant with FloatingPoint
+  case class F64(value: Double) extends Constant with FloatingPoint
+  // case class Quadruple(high: Word64, low: Word64)
+  // case class X86_FP80(high: Word16, low: Word64)
+  // case class PPC_FP128(high: Word64, low: Word64)
+
   case class Null(constantType: Type) extends Constant
   case class Struct(
       structName: Option[Name],

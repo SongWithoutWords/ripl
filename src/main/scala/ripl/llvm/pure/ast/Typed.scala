@@ -23,8 +23,15 @@ case object typeOf {
     import Constant._
     c match {
       case Integral(bits, _) => IntegerType(bits)
-      case Float(f)          => typeOf(f)
-      case Null(t)           => t
+
+      // case Half(_)     => HalfFP
+      case F32(f) => FloatFP
+      case F64(f) => DoubleFP
+      // case F.Quadruple(_, _)   => FP128FP
+      // case F.X86_FP80(_, _)    => X86_FP80FP
+      // case F.PPC_FP128(_, _)   => PPC_FP128FP
+
+      case Null(t) => t
       case Struct(_, isPacked, memberValues) =>
         StructureType(isPacked, memberValues.map(typeOf(_)))
       case Array(memberType, memberValues) =>
@@ -110,15 +117,6 @@ case object typeOf {
       case TokenNone        => TokenType
       case c: AddrSpaceCast => c.t
     }
-  }
-
-  def apply(f: SomeFloat): Type = f match {
-    // case Half(_)     => HalfFP
-    case Single(_) => FloatFP
-    case Double(_) => DoubleFP
-    // case F.Quadruple(_, _)   => FP128FP
-    // case F.X86_FP80(_, _)    => X86_FP80FP
-    // case F.PPC_FP128(_, _)   => PPC_FP128FP
   }
 
   def apply(g: Global): Type = g match {

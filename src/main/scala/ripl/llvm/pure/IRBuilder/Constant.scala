@@ -17,11 +17,11 @@ case object Constant {
   def bit[F[_]: Applicative](b: Boolean): F[Operand] =
     Applicative[F].pure(ConstantOperand(Integral(1, if (b) 1 else 0)))
 
-  def double[F[_]: Applicative](f: scala.Double): F[Operand] =
-    Applicative[F].pure(ConstantOperand(Float(Double(f))))
+  def double[F[_]: Applicative](f: Double): F[Operand] =
+    Applicative[F].pure(ConstantOperand(F64(f)))
 
-  def single[F[_]: Applicative](f: scala.Float): F[Operand] =
-    Applicative[F].pure(ConstantOperand(Float(Single(f))))
+  def single[F[_]: Applicative](f: Float): F[Operand] =
+    Applicative[F].pure(ConstantOperand(F32(f)))
 
   // def half[F[_]: Applicative](f: Short): F[Operand] =
   //   Applicative[F].pure(ConstantOperand(Single(1, i)))
