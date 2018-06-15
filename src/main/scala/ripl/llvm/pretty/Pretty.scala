@@ -1014,12 +1014,13 @@ case object prettyPrint {
 // ppFunctionArgumentTypes FunctionType {..} = ppParams pp (argumentTypes, isVarArg)
 // ppFunctionArgumentTypes _ = error "Non-function argument. (Malformed AST)"
 
-// ppNullInitializer :: Type -> Doc
-// ppNullInitializer PointerType {..} = "zeroinitializer"
-// ppNullInitializer StructureType {..} = "zeroinitializer"
-// ppNullInitializer FunctionType {..} = "zeroinitializer"
-// ppNullInitializer ArrayType {..} = "zeroinitializer"
-// ppNullInitializer _ = error "Non-pointer argument. (Malformed AST)"
+  def ppNullInitializer(t: Type): String = t match {
+    case _: PointerType => "zeroinitializer"
+    case _: StructureType => "zeroinitializer"
+    case _: FunctionType => "zeroinitializer"
+    case _: ArrayType => "zeroinitializer"
+    case _ => throw new Exception("Non-pointer argument. (Malformed AST)")
+  }
 
   def ppCall(c: Instruction.Call): String = ???
 // ppCall :: Instruction -> Doc
