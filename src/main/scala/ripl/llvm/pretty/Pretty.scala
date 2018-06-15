@@ -964,20 +964,15 @@ case object prettyPrint {
 // // Special Case Hacks
 // //-----------------------------------------------------------------------------
 
-  def escape(c: Char): String = ???
-// escape :: Char -> Doc
-// escape '"'  = "\\22"
-// escape '\\' = "\\\\"
-// escape c    = if isAscii c && not (isControl c)
-//               then char c
-//               else "\\" <> hex c
-//     where
-//         hex :: Char -> Doc
-//         hex = pad0 . ($ []) . showHex . ord
-//         pad0 :: String -> Doc
-//         pad0 [] = "00"
-//         pad0 [x] = "0" <> char x
-//         pad0 xs = text (pack xs)
+  def escape(c: Char): String = {
+    def isPrintableAscii(c: Char): Boolean = 32 <= c && c <= 126
+    c match {
+      case '"'                      => "\\22"
+      case '\\'                     => "\\\\"
+      case c if isPrintableAscii(c) => c.toString
+      case c                        => "\\" <> "%2x".format(c)
+    }
+  }
 
   def ppVolatile(volatile: Boolean): String = ppIf(volatile, "volatile")
 
