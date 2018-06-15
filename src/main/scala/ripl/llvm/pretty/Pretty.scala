@@ -923,10 +923,7 @@ case object prettyPrint {
     }
   }
 
-  def pp(a: Atomicity): String = ???
-// instance PP Atomicity where
-//   pp (scope, order) =
-//     pp scope <+> pp order
+  def pp(a: Atomicity): String = pp(a.scope) <+> pp(a.order)
 
   def pp(s: SynchronizationScope): String = ???
 // instance PP SynchronizationScope where
