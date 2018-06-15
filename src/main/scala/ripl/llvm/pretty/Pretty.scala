@@ -749,10 +749,10 @@ case object prettyPrint {
   def pp(x: List[Either[GroupID, FunctionAttribute]]): String =
     spaces(x.map(pp))
 
-  def pp(e: Either[GroupID, FunctionAttribute]): String = ???
-// instance PP (Either GroupID FunctionAttribute) where
-//   pp (Left gid) = pp gid
-//   pp (Right fattr) = pp fattr
+  def pp(e: Either[GroupID, FunctionAttribute]): String = e match {
+    case Left(gid)    => pp(gid)
+    case Right(fattr) => pp(fattr)
+  }
 
   def pp(op: Operand): String = ???
 // instance PP Operand where
