@@ -1,4 +1,4 @@
-package ripl.llvm.pure.IRBuilder
+package ripl.llvm.irBuilder
 
 import ripl.llvm.ast._
 

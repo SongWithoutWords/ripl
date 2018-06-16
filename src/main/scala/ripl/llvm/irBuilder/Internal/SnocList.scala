@@ -1,4 +1,4 @@
-package ripl.llvm.pure.IRBuilder.Internal
+package ripl.llvm.irBuilder.Internal
 
 case class SnocList[A](unSnocList: List[A]) {
   def snoc(a: A) = SnocList(a :: unSnocList)

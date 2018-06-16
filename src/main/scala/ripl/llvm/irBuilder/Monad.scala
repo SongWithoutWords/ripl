@@ -7,7 +7,7 @@
 // {-# LANGUAGE UndecidableInstances #-} // For MonadState s (ModuleBuilderT m) instance
 
 // module LLVM.IRBuilder.Monad where
-package ripl.llvm.pure.IRBuilder
+package ripl.llvm.irBuilder
 
 import cats._
 import cats.data.State
@@ -16,7 +16,7 @@ import cats.syntax.MonadOps
 import cats.instances._
 
 import ripl.llvm.ast._
-import ripl.llvm.pure.IRBuilder.Internal.SnocList
+import ripl.llvm.irBuilder.Internal.SnocList
 
 // import LLVM.Prelude
 

@@ -1,6 +1,6 @@
 // {-# LANGUAGE FlexibleContexts #-}
 
-package ripl.llvm.pure.IRBuilder
+package ripl.llvm.irBuilder
 
 import ripl.llvm.ast._
 
@@ -22,7 +22,7 @@ import ripl.llvm.ast._
 
 // import LLVM.IRBuilder.Monad
 
-import ripl.llvm.pure.IRBuilder.IRBuilderAliases._
+import ripl.llvm.irBuilder.IRBuilderAliases._
 
 case object IRBuilderInstruction {
 
