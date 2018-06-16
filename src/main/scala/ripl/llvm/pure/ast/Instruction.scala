@@ -3,18 +3,27 @@
 
 package ripl.llvm.pure.ast
 
-import OperandAliases._
-
-// import Data.List.NonEmpty
-
-sealed trait NonEmpty[A]
+case class NonEmpty[A](head: A, tail: List[A]) {
+  def toList(): List[A] = head :: tail
+}
 
 // <http://llvm.org/docs/LangRef.html#metadata-nodes-and-metadata-strings>
-// Metasealed trait can be attached to an instruction
-object InstructionAliases {
-  type InstructionMetadata = List[(String, MetadataNode)]
+// Metadata can be attached to an instruction
+// object InstructionAliases {
+// An 'Atomicity' describes constraints on the visibility of effects of an atomic instruction
+//   type Atomicity = (SynchronizationScope, MemoryOrdering)
+
+//   type InstructionMetadata = List[(String, MetadataNode)]
+// }
+// import InstructionAliases._
+
+case class Argument(op: Operand, attrs: List[ParameterAttribute])
+case class Atomicity(scope: SynchronizationScope, order: MemoryOrdering)
+case object InstructionMetadata {
+  def apply(data: (String, MetadataNode)*): InstructionMetadata =
+    InstructionMetadata(data.toList)
 }
-import InstructionAliases._
+case class InstructionMetadata(data: List[(String, MetadataNode)])
 
 // <http://llvm.org/docs/LangRef.html#terminators>
 sealed trait Terminator
@@ -48,7 +57,7 @@ case object Terminator {
       callingConvention: CallingConvention,
       returnAttributes: List[ParameterAttribute],
       function: CallableOperand,
-      arguments: List[(Operand, List[ParameterAttribute])],
+      arguments: List[Argument],
       functionAttributes: List[Either[GroupID, FunctionAttribute]],
       returnDest: Name,
       exceptionDest: Name,
@@ -106,12 +115,6 @@ case object SequentiallyConsistent extends MemoryOrdering
 sealed trait SynchronizationScope
 case object SingleThread extends SynchronizationScope
 case object System extends SynchronizationScope
-
-object AtomicityAlias {
-  // An 'Atomicity' describes constraints on the visibility of effects of an atomic instruction
-  type Atomicity = (SynchronizationScope, MemoryOrdering)
-}
-import AtomicityAlias._
 
 // For the redoubtably complex 'LandingPad' instruction
 sealed trait LandingPadClause
@@ -374,7 +377,7 @@ case object Instruction {
       callingConvention: CallingConvention,
       returnAttributes: List[ParameterAttribute],
       function: CallableOperand,
-      arguments: List[(Operand, List[ParameterAttribute])],
+      arguments: List[Argument],
       functionAttributes: List[Either[GroupID, FunctionAttribute]],
       metadata: InstructionMetadata
   ) extends Instruction
@@ -432,11 +435,17 @@ case object Instruction {
       parentPad: Operand,
       args: List[Operand],
       metadata: InstructionMetadata
-  )
+  ) extends Instruction
 }
 
 // Instances of instructions may be given a name, allowing their results to be referenced as 'Operand's.
 // Sometimes instructions - e.g. a call to a function returning void - don't need names.
-sealed trait Named[a]
-case class :=[A](name: Name, value: A) extends Named[A]
-case class Do[A](a: A) extends Named[A]
+sealed trait Named[A] {
+  def map[B](f: A => B): Named[B]
+}
+case class :=[A](name: Name, a: A) extends Named[A] {
+  def map[B](f: A => B) = name := f(a)
+}
+case class Do[A](a: A) extends Named[A] {
+  def map[B](f: A => B) = Do(f(a))
+}

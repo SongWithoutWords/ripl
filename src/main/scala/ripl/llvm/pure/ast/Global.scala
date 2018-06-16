@@ -40,7 +40,7 @@ case class Function(
     returnAttributes: List[ParameterAttribute],
     returnType: Type,
     name: Name,
-    parameters: (List[Parameter], Boolean), // ^ snd indicates varargs
+    parameters: Parameters,
     functionAttributes: List[Either[GroupID, FunctionAttribute]],
     section: Option[String],
     comdat: Option[String],
@@ -50,6 +50,8 @@ case class Function(
     basicBlocks: List[BasicBlock],
     personalityFunction: Option[Constant]
 ) extends Global
+
+case class Parameters(params: List[Parameter], isVarArg: Boolean)
 
 // 'Parameter's for 'Function's
 case class Parameter(t: Type, name: Name, attributes: List[ParameterAttribute])
