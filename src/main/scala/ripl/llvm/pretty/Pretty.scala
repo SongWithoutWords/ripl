@@ -1051,16 +1051,9 @@ case object prettyPrint {
     }
   }
 
-// //-----------------------------------------------------------------------------
-// // Toplevel
-// //-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Toplevel
+// -----------------------------------------------------------------------------
 
-// // | Pretty print a LLVM module
-// ppllvm :: Module -> Text
-// ppllvm = displayT . renderPretty 0.4 100 . pp
-
-// // | Pretty print a printable LLVM expression
-// ppll :: PP a => a -> Text
-// ppll = displayT . renderPretty 0.4 100 . pp
-
+  def ppllvm(m: Module): String = pp(m)
 }
