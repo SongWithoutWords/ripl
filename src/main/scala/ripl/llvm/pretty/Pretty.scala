@@ -71,47 +71,6 @@ case object prettyPrint {
 
   def ppIf(b: Boolean, s: String): String = if (b) s else ""
 
-// XXX: horrible hack
-// unShort :: BS.ShortByteString -> [Char]
-// unShort xs = fmap (toEnum . fromIntegral) $ BS.unpack xs
-
-// short :: BS.ShortByteString -> Doc
-// short x = string (pack (unShort x))
-
-// decodeShortUtf8 :: SBF.ShortByteString -> Text
-// decodeShortUtf8 = decodeUtf8 . fromStrict . SBF.fromShort
-
-// instance PP Word8 where
-//   pp x = int (fromIntegral x)
-
-// instance PP Word16 where
-//   pp x = int (fromIntegral x)
-
-// instance PP Word32 where
-//   pp x = int (fromIntegral x)
-
-// instance PP Word64 where
-//   pp x = int (fromIntegral x)
-
-// instance PP Int32 where
-//   pp x = int (fromIntegral x)
-
-// instance PP Int64 where
-//   pp x = int (fromIntegral x)
-
-// instance PP Integer where
-//   pp = integer
-
-// instance PP BS.ShortByteString where
-//   pp = pp . unShort
-
-// instance PP [Char] where
-//   pp = text . pack
-
-// instance PP Bool where
-//   pp True = "true"
-//   pp False = "false"
-
   def pp(b: Boolean): String = b match {
     case true  => "true"
     case false => "false"
