@@ -1,5 +1,5 @@
 // Predicates for the 'LLVM.AST.Instruction.FCmp' instruction
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // <http://llvm.org/docs/LangRef.html#fcmp-instruction>
 

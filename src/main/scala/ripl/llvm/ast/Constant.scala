@@ -1,5 +1,5 @@
 // A representation of LLVM constants
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // import LLVM.Prelude
 

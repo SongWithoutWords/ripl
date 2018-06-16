@@ -1,5 +1,5 @@
 // Querying the type of LLVM expressions
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 import TypeAliases._
 

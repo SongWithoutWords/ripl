@@ -1,5 +1,5 @@
 // Names as used in LLVM IR
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // Objects of various sorts in LLVM IR are identified by address in the LLVM C++ API, and
 // may be given a string name. When printed to (resp. read from) human-readable LLVM assembly, objects without
@@ -23,7 +23,7 @@ package ripl.llvm.pure.ast
 
 // Original Haskell bindings had more complexity, can revisit if necessary
 case class Name(s: String) {
-  def :=[A](a: A) = ripl.llvm.pure.ast.:=[A](this, a)
+  def :=[A](a: A) = ripl.llvm.ast.:=[A](this, a)
 }
 
 // Is it even necessary to have "UnName"? Couldn't I just encode that in the string?

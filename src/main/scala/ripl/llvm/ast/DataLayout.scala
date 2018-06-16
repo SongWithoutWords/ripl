@@ -1,5 +1,5 @@
 // <http://llvm.org/docs/LangRef.html#data-layout>
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // Little Endian is the one true way :-). Sadly, we must support the infidels.
 sealed trait Endianness

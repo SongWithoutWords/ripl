@@ -1,7 +1,7 @@
 // LLVM instructions
 // <http://llvm.org/docs/LangRef.html#instruction-reference>
 
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 case class NonEmpty[A](head: A, tail: List[A]) {
   def toList(): List[A] = head :: tail

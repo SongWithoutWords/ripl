@@ -1,5 +1,5 @@
 // A representation of an LLVM type
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // LLVM supports some special formats floating point format. This type is to distinguish those format. Also see  <http://llvm.org/docs/LangRef.html#floating-point-types>
 

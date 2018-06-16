@@ -1,6 +1,6 @@
 // A type to represent operands to LLVM 'LLVM.AST.Instruction.Instruction's
 
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // An 'Operand' is roughly that which is an argument to an 'LLVM.AST.Instruction.Instruction'
 sealed trait Operand extends CallableOperand

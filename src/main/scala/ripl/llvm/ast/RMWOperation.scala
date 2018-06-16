@@ -1,5 +1,5 @@
 // Operations for the 'LLVM.AST.Instruction.AtomicRMW' instruction
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // <http://llvm.org/docs/LangRef.html#atomicrmw-instruction>
 sealed trait RMWOperation

@@ -1,5 +1,5 @@
 // Predicates for the 'LLVM.AST.Instruction.ICmp' instruction
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // <http://llvm.org/docs/LangRef.html#icmp-instruction>
 sealed trait IntegerPredicate

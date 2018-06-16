@@ -1,6 +1,6 @@
 // Module to allow importing 'CallingConvention' distinctly qualified.
 
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 //  <http://llvm.org/docs/LangRef.html#callingconv>
 sealed trait CallingConvention

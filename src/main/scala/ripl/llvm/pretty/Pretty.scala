@@ -2,7 +2,7 @@ package ripl.llvm.pretty
 
 import scala.util.matching.Regex
 
-import ripl.llvm.pure.ast._
+import ripl.llvm.ast._
 
 // -------------------------------------------------------------------------------
 // Utils

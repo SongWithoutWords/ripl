@@ -1,5 +1,5 @@
 // 'Global's - top-level values in 'Module's - and supporting structures.
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // <http://llvm.org/doxygen/classllvm_1_1GlobalValue.html>
 sealed trait Global

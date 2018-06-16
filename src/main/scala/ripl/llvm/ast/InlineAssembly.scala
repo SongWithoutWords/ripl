@@ -1,5 +1,5 @@
 // A representation of an LLVM inline assembly
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // the dialect of assembly used in an inline assembly string
 // <http://en.wikipedia.org/wiki/X86_assembly_language#Syntax>

@@ -15,7 +15,7 @@ import cats.syntax.MonadOps
 // import cats.MonadState
 import cats.instances._
 
-import ripl.llvm.pure.ast._
+import ripl.llvm.ast._
 import ripl.llvm.pure.IRBuilder.Internal.SnocList
 
 // import LLVM.Prelude

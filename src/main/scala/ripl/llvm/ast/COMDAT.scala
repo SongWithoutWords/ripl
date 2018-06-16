@@ -1,5 +1,5 @@
 // Module to allow importing 'COMDAT.SelectionKind' distinctly qualified.
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // <http://llvm.org/docs/LangRef.html#comdats>
 

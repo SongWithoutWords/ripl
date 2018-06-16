@@ -1,12 +1,12 @@
 package ripl.llvm.pure.IRBuilder
 
-import ripl.llvm.pure.ast._
+import ripl.llvm.ast._
 
 import cats._
 import cats.implicits._
 
 case object Constant {
-  import ripl.llvm.pure.ast.Constant._
+  import ripl.llvm.ast.Constant._
 
   def int64[F[_]: Applicative](i: Long): F[Operand] =
     Applicative[F].pure(ConstantOperand(Integral(64, BigInt(i))))

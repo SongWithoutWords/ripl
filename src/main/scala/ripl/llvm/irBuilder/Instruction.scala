@@ -2,7 +2,7 @@
 
 package ripl.llvm.pure.IRBuilder
 
-import ripl.llvm.pure.ast._
+import ripl.llvm.ast._
 
 // module LLVM.IRBuilder.Instruction where
 

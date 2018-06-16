@@ -1,6 +1,6 @@
 // Pointers exist in Address Spaces
 
-package ripl.llvm.pure.ast
+package ripl.llvm.ast
 
 // See <http://llvm.org/docs/LangRef.html#pointer-type>
 
