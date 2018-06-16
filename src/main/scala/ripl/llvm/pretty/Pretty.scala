@@ -261,7 +261,8 @@ case object prettyPrint {
     }
   }
 
-  def pp(om: Option[Metadata]): String = om match {
+  // def pp(op: Option[String]) = op.mkString
+
   def ppMetadata(om: Option[Metadata]): String = om match {
     case None    => "null"
     case Some(m) => pp(m)
@@ -1049,26 +1050,6 @@ case object prettyPrint {
             pp(i.functionAttributes)
     }
   }
-
-// // According to <https://stackoverflow.com/a/7002812/3877993> this is
-// // the best way to cast floats to words.
-
-// cast :: (MArray (STUArray s) a (ST s),
-//          MArray (STUArray s) b (ST s)) => a -> ST s b
-// cast x = newArray (0 :: Int, 0) x >>= castSTUArray >>= flip readArray 0
-
-// doubleToWord :: Double -> Word64
-// doubleToWord x = runST (cast x)
-
-// floatToWord :: Float -> Word32
-// floatToWord x = runST (cast x)
-
-// specialFP :: RealFloat a => a -> Bool
-// specialFP f = isNaN f || f == 1 / 0 || f == - 1 / 0
-
-// ppInstrMeta :: InstructionMetadata -> Doc
-// ppInstrMeta [] = mempty
-// ppInstrMeta xs = "," <> pp xs
 
 // //-----------------------------------------------------------------------------
 // // Toplevel
