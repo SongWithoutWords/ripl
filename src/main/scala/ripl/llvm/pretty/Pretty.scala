@@ -56,6 +56,7 @@ case object Util {
     def <>(rhs: String) = lhs + rhs
     def <+>(rhs: String) = lhs + " " + rhs
     def </>(rhs: String) = lhs + "\n" + rhs
+    def <:>(rhs: String) = lhs + ":" + rhs
     def comma(rhs: String) = lhs + ", " + rhs
   }
 }
@@ -958,9 +959,57 @@ case object prettyPrint {
     }
   }
 
-  def pp(d: DataLayout): String = ???
-// instance PP DataLayout where
-//   pp x = pp (BL.unpack (dataLayoutToString x))
+  def pp(a: AlignmentInfo): String =
+    a.abiAlignment.toString <>
+      (if (a.preferredAlignment != a.abiAlignment)
+         ":" <> a.preferredAlignment.toString()
+       else "")
+
+  def pp(dl: DataLayout): String = {
+
+    def ppSizeAndAlignment(size: Int, align: AlignmentInfo): String =
+      size.toString() <:> pp(align)
+
+    List(
+      (dl.endianness match {
+        case Endianness.BigEndian    => "E"
+        case Endianness.LittleEndian => "e"
+      }) ++
+        List(
+          dl.mangling match {
+            case None => ""
+            case Some(m) =>
+              m match {
+                case Mangling.ELFMangling         => "e"
+                case Mangling.MIPSMangling        => "m"
+                case Mangling.MachOMangling       => "o"
+                case Mangling.WindowsCOFFMangling => "w"
+              }
+          }
+        ) ++
+        dl.pointerLayouts.toList.map {
+          case (AddrSpace(a), (size, align)) =>
+            "p" <> (if (a == 0) "" else a.toString) <> ":" <>
+              ppSizeAndAlignment(size, align)
+        } ++
+        dl.typeLayouts.toList.map {
+          case ((typ, size), align) =>
+            (typ match {
+              case AlignType.Integer => "i"
+              case AlignType.Vector  => "v"
+              case AlignType.Float   => "f"
+            }) <> ppSizeAndAlignment(size, align)
+        } ++ List(
+        "a:" <> pp(dl.aggregateLayout)
+      ) ++
+        (dl.nativeSizes match {
+          case None => Nil
+          case Some(sizes) =>
+            "n:" <> sizes.toList.map { _.toString }.mkString(":")
+        }) ++
+        List("S" <> dl.stackAlignment.toString)
+    ).mkString("-")
+  }
 
 // //-----------------------------------------------------------------------------
 // // Special Case Hacks
