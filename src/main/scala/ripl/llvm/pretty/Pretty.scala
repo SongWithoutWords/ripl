@@ -1050,24 +1050,6 @@ case object prettyPrint {
     }
   }
 
-// // Differs from Call in record name conventions only so needs a seperate almost
-// // identical function. :(
-// ppInvoke :: Terminator -> Doc
-// ppInvoke Invoke { function' = Right f,..}
-//   = "invoke" <+> pp callingConvention' <+> pp resultType <+> ftype
-//     <+> pp f <> parens (commas $ fmap pp arguments') <+> pp functionAttributes'
-//     where
-//       (functionType@FunctionType {..}) = referencedType (typeOf f)
-//       ftype = if isVarArg
-//               then ppFunctionArgumentTypes functionType
-//               else empty
-//       referencedType (PointerType t _) = referencedType t
-//       referencedType t                 = t
-// ppInvoke x = error "Non-callable argument. (Malformed AST)"
-
-// ppSingleBlock :: BasicBlock -> Doc
-// ppSingleBlock (BasicBlock nm instrs term) = (vcat $ (fmap pp instrs) ++ [pp term])
-
 // // According to <https://stackoverflow.com/a/7002812/3877993> this is
 // // the best way to cast floats to words.
 
