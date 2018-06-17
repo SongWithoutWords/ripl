@@ -1,5 +1,22 @@
 package ripl.llvm.irBuilder
 
+import cats._
+import cats.data.State
+import cats.syntax.MonadOps
+import cats.instances._
+
+import ripl.llvm.ast._
+import ripl.llvm.irBuilder.internal.SnocList
+
+// I'm really not sure this justifies use of a state monad. Couldn't it be just a semigroup?
+// Wouldn't it be possible to simply map over any collection of definitions?
+
+// Oh well, just port it as-is first
+
+object ModuleBuilderAliases {
+  type ModuleBuilder[A] = State[ModuleBuilderState, A]
+}
+import ModuleBuilderAliases._
 
 // newtype ModuleBuilderT m a = ModuleBuilderT { unModuleBuilderT :: StateT ModuleBuilderState m a }
 //   deriving
@@ -9,6 +26,8 @@ package ripl.llvm.irBuilder
 
 // instance MonadFail m => MonadFail (ModuleBuilderT m) where
 //   fail str = ModuleBuilderT (StateT $ \_ -> Fail.fail str)
+
+case class ModuleBuilderState(definitions: SnocList[Definition])
 
 // newtype ModuleBuilderState = ModuleBuilderState
 //   { builderDefs :: SnocList Definition
