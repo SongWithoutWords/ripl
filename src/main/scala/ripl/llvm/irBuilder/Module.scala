@@ -33,34 +33,34 @@ class Monad m => MonadModuleBuilder m where
 instance Monad m => MonadModuleBuilder (ModuleBuilderT m) where
   liftModuleState (StateT s) = ModuleBuilderT $ StateT $ pure . runIdentity . s
 
--- | Evaluate 'ModuleBuilder' to a result and a list of definitions
+// Evaluate 'ModuleBuilder' to a result and a list of definitions
 runModuleBuilder :: ModuleBuilderState -> ModuleBuilder a -> (a, [Definition])
 runModuleBuilder s m = runIdentity $ runModuleBuilderT s m
 
--- | Evaluate 'ModuleBuilderT' to a result and a list of definitions
+// Evaluate 'ModuleBuilderT' to a result and a list of definitions
 runModuleBuilderT :: Monad m => ModuleBuilderState -> ModuleBuilderT m a -> m (a, [Definition])
 runModuleBuilderT s (ModuleBuilderT m)
   = second (getSnocList . builderDefs)
   <$> runStateT m s
 
--- | Evaluate 'ModuleBuilder' to a list of definitions
+// Evaluate 'ModuleBuilder' to a list of definitions
 execModuleBuilder :: ModuleBuilderState -> ModuleBuilder a -> [Definition]
 execModuleBuilder s m = snd $ runModuleBuilder s m
 
--- | Evaluate 'ModuleBuilderT' to a list of definitions
+// Evaluate 'ModuleBuilderT' to a list of definitions
 execModuleBuilderT :: Monad m => ModuleBuilderState -> ModuleBuilderT m a -> m [Definition]
 execModuleBuilderT s m = snd <$> runModuleBuilderT s m
 
 emitDefn :: MonadModuleBuilder m => Definition -> m ()
 emitDefn def = liftModuleState $ modify $ \s -> s { builderDefs = builderDefs s `snoc` def }
 
--- | A parameter name suggestion
+// A parameter name suggestion
 data ParameterName
   = NoParameterName
   | ParameterName ShortByteString
   deriving (Eq, Ord, Read, Show, Typeable, Data, Generic)
 
--- | Using 'fromString` on non-ASCII strings will throw an error.
+// Using 'fromString` on non-ASCII strings will throw an error.
 instance IsString ParameterName where
   fromString s
     | all isAscii s = ParameterName (fromString s)
@@ -68,13 +68,13 @@ instance IsString ParameterName where
       error ("Only ASCII strings are automatically converted to LLVM parameter names. "
       <> "Other strings need to be encoded to a `ShortByteString` using an arbitrary encoding.")
 
--- | Define and emit a (non-variadic) function definition
+// Define and emit a (non-variadic) function definition
 function
   :: MonadModuleBuilder m
-  => Name  -- ^ Function name
-  -> [(Type, ParameterName)]  -- ^ Parameter types and name suggestions
-  -> Type  -- ^ Return type
-  -> ([Operand] -> IRBuilderT m ())  -- ^ Function body builder
+  => Name  // ^ Function name
+  -> [(Type, ParameterName)]  // ^ Parameter types and name suggestions
+  -> Type  // ^ Return type
+  -> ([Operand] -> IRBuilderT m ())  // ^ Function body builder
   -> m Operand
 function label argtys retty body = do
   let tys = fst <$> argtys
@@ -95,12 +95,12 @@ function label argtys retty body = do
   emitDefn def
   pure $ ConstantOperand $ C.GlobalReference funty label
 
--- | An external function definition
+// An external function definition
 extern
   :: MonadModuleBuilder m
-  => Name   -- ^ Definition name
-  -> [Type] -- ^ Parametere types
-  -> Type   -- ^ Type
+  => Name   // ^ Definition name
+  -> [Type] // ^ Parametere types
+  -> Type   // ^ Type
   -> m Operand
 extern nm argtys retty = do
   emitDefn $ GlobalDefinition functionDefaults
@@ -112,7 +112,7 @@ extern nm argtys retty = do
   let funty = ptr $ FunctionType retty argtys False
   pure $ ConstantOperand $ C.GlobalReference funty nm
 
--- | A named type definition
+// A named type definition
 typedef
   :: MonadModuleBuilder m
   => Name
@@ -122,21 +122,21 @@ typedef nm ty = do
   emitDefn $ TypeDefinition nm ty
   pure ()
 
--- | Convenience function for module construction
+// Convenience function for module construction
 buildModule :: ShortByteString -> ModuleBuilder a -> Module
 buildModule nm = mkModule . execModuleBuilder emptyModuleBuilder
   where
     mkModule ds = defaultModule { moduleName = nm, moduleDefinitions = ds }
 
--- | Convenience function for module construction (transformer version)
+// Convenience function for module construction (transformer version)
 buildModuleT :: Monad m => ShortByteString -> ModuleBuilderT m a -> m Module
 buildModuleT nm = fmap mkModule . execModuleBuilderT emptyModuleBuilder
   where
     mkModule ds = defaultModule { moduleName = nm, moduleDefinitions = ds }
 
--------------------------------------------------------------------------------
--- mtl instances
--------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+// mtl instances
+//-----------------------------------------------------------------------------
 
 instance MonadState s m => MonadState s (ModuleBuilderT m) where
   state = lift . state
