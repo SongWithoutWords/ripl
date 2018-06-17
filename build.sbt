@@ -19,7 +19,8 @@ scalacOptions ++= Seq(
 
   "-unchecked",                     // detailed unchecked warnings
 
-  "-Ypartial-unification"           // partial unification, required by cats
+  "-Ypartial-unification",          // partial unification, required by cats
+  "-Ywarn-value-discard"            // warn when non-unit expression results are unused
 )
 
 ensimeScalaVersion in ThisBuild := "2.12.6"
