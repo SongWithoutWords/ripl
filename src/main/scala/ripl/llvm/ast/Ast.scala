@@ -4,33 +4,6 @@
 
 package ripl.llvm.ast
 
-// module LLVM.AST (
-//   Module(..), defaultModule,
-//   Definition(..),
-//   Global(GlobalVariable, GlobalAlias, Function),
-//         globalVariableDefaults,
-//         globalAliasDefaults,
-//         functionDefaults,
-//   UnnamedAddr(..),
-//   Parameter(..),
-//   BasicBlock(..),
-//   module LLVM.AST.Instruction,
-//   module LLVM.AST.Name,
-//   module LLVM.AST.Operand,
-//   module LLVM.AST.Type
-//   ) where
-
-// import LLVM.Prelude
-
-// import LLVM.AST.Name
-// import LLVM.AST.Type (Type(..), FloatingPointType(..))
-// import LLVM.AST.Global
-// import LLVM.AST.Operand
-// import LLVM.AST.Instruction
-// import LLVM.AST.DataLayout
-// import qualified LLVM.AST.Attribute as A
-// import qualified LLVM.AST.COMDAT as COMDAT
-
 // Any thing which can be at the top level of a 'Module'
 sealed trait Definition
 case class GlobalDefinition(g: Global) extends Definition
@@ -49,6 +22,7 @@ case class FunctionAttributes(
 case class COMDAT(string: String, selectionKind: SelectionKind)
     extends Definition
 
+
 // <http://llvm.org/docs/LangRef.html#module-structure>
 case class Module(
     moduleName: String,
@@ -60,12 +34,7 @@ case class Module(
 )
 
 // helper for making 'Module's
-// defaultModule: Module
-// defaultModule =
-//   Module {
-//     moduleName = "<string>",
-//     moduleSourceFileName = "<string>",
-//     moduleDataLayout = Nothing,
-//     moduleTargetTriple = Nothing,
-//     moduleDefinitions = []
-//   }
+case object Module {
+  val default = Module("<string>", "<string>", None, None, Nil)
+}
+
