@@ -22,7 +22,6 @@ case class FunctionAttributes(
 case class COMDAT(string: String, selectionKind: SelectionKind)
     extends Definition
 
-
 // <http://llvm.org/docs/LangRef.html#module-structure>
 case class Module(
     moduleName: String,
@@ -37,4 +36,3 @@ case class Module(
 case object Module {
   val default = Module("<string>", "<string>", None, None, Nil)
 }
-
