@@ -70,6 +70,15 @@ case class ModuleBuilderState(definitions: SnocList[Definition])
 // execModuleBuilderT :: Monad m => ModuleBuilderState -> ModuleBuilderT m a -> m [Definition]
 // execModuleBuilderT s m = snd <$> runModuleBuilderT s m
 
+case object ModuleBuilder {
+  def emitDefn(defn: Definition): ModuleBuilder[Unit] =
+    State.modify {
+      case ModuleBuilderState(definitions) =>
+        ModuleBuilderState(definitions.snoc(defn))
+    }
+
+}
+
 // emitDefn :: MonadModuleBuilder m => Definition -> m ()
 // emitDefn def = liftModuleState $ modify $ \s -> s { builderDefs = builderDefs s `snoc` def }
 
