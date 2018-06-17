@@ -94,6 +94,13 @@ case object ModuleBuilder {
 //       error ("Only ASCII strings are automatically converted to LLVM parameter names. "
 //       <> "Other strings need to be encoded to a `ShortByteString` using an arbitrary encoding.")
 
+  def function(
+      nm: Name,
+      params: List[(Type, ParameterName)],
+      retType: Type,
+      bodyBuilder: (List[Operand] => IRBuilder[Unit])
+  ): ModuleBuilder[Operand] = ???
+
 // Define and emit a (non-variadic) function definition
 // function
 //   :: MonadModuleBuilder m
