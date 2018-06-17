@@ -76,12 +76,10 @@ case object ModuleBuilder {
       case ModuleBuilderState(definitions) =>
         ModuleBuilderState(definitions.snoc(defn))
     }
-
-}
-
 // emitDefn :: MonadModuleBuilder m => Definition -> m ()
 // emitDefn def = liftModuleState $ modify $ \s -> s { builderDefs = builderDefs s `snoc` def }
 
+  type ParameterName = String
 // A parameter name suggestion
 // data ParameterName
 //   = NoParameterName
@@ -149,6 +147,8 @@ case object ModuleBuilder {
 // typedef nm ty = do
 //   emitDefn $ TypeDefinition nm ty
 //   pure ()
+
+}
 
 // Convenience function for module construction
 // buildModule :: ShortByteString -> ModuleBuilder a -> Module
