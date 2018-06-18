@@ -213,6 +213,8 @@ Period
     : '.';
 Quote
     : '"';
+Apostrophe
+    : '\'';
 
 // operators
 Tilda
