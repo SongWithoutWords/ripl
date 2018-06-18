@@ -5,6 +5,8 @@ options { tokenVocab = RiplLexer; }
 @header { package ripl.parser.antlr; }
 
 exp
+    // atoms
+
     // should probably rename 'name' to 'symbol'
     // (it's more general now)
     : Name
@@ -20,6 +22,7 @@ exp
     | At
         #world
 
+    // composite
     | LParen (es+=exp Newline?)* RParen
         #sExp
 
