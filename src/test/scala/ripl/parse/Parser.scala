@@ -80,7 +80,7 @@ class TestParser extends FreeSpec with Matchers {
       "string literals" - {
         test("\"hello world!\"")(VStr("hello world!"))
 
-        test("if value then \"true\" else \"false\"")(
+        test("(if value \"true\" \"false\")")(
           If(Name("value"), VStr("true"), VStr("false"))
         )
       }
