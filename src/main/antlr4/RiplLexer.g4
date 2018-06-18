@@ -182,20 +182,6 @@ fragment OpChar
     // | '~' // Not sure it can be used without ambiguity
     ;
 
-// keywords
-If
-    : 'if';
-Then
-    : 'then';
-Else
-    : 'else';
-Data
-    : 'data';
-Union
-    : 'union';
-Namespace
-    : 'namespace';
-
 // punctuation
 LParen
     : '(';
