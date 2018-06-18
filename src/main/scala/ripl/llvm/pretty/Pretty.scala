@@ -832,7 +832,7 @@ case object prettyPrint {
 
   def pp(n: Named[String]): String = n match {
     case n := s => "%" <> pp(n) <+> "=" <+> s
-    case Do(s)  => s
+    case Do(s) => s
   }
 
   def pp(m: Module): String =

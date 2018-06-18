@@ -1,4 +1,4 @@
-name := "ripl"
+name    := "ripl"
 version := "0.1.0-SNAPSHOT"
 
 organization := "org.ripl"
@@ -10,37 +10,30 @@ libraryDependencies ++= Seq(
 )
 
 scalacOptions ++= Seq(
-
   // warnings for deprecated api usage
   "-deprecation",
-
   // warnings for language features not enabled
   "-feature",
-
   // enable higher-kinded types
   "-language:higherKinds",
-
   // enable implicitConversions
   "-language:implicitConversions",
-
   // detailed unchecked warnings
   "-unchecked",
-
   // partial unification, required by cats
   "-Ypartial-unification",
-
   // warn when non-unit expression results are unused
   "-Ywarn-value-discard"
 )
 
 ensimeScalaVersion in ThisBuild := "2.12.6"
-ensimeIgnoreMissingDirectories := true;
+ensimeIgnoreMissingDirectories  := true;
 
 scalafmtOnCompile := true
 
 enablePlugins(Antlr4Plugin)
 antlr4GenListener in Antlr4 := false
-antlr4GenVisitor in Antlr4 := false
+antlr4GenVisitor in Antlr4  := false
 
 // run tests in a separate JVM (avoids out-of-memory issues)
 fork in Test := true
