@@ -5,7 +5,7 @@ package ripl.llvm.ast
 sealed trait ThreadLocalStorageModel
 case object ThreadLocalStorageModel {
   case object GeneralDynamic extends ThreadLocalStorageModel
-  case object LocalDynamic extends ThreadLocalStorageModel
-  case object InitialExec extends ThreadLocalStorageModel
-  case object LocalExec extends ThreadLocalStorageModel
+  case object LocalDynamic   extends ThreadLocalStorageModel
+  case object InitialExec    extends ThreadLocalStorageModel
+  case object LocalExec      extends ThreadLocalStorageModel
 }

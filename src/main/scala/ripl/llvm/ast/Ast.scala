@@ -6,7 +6,7 @@ package ripl.llvm.ast
 
 // Any thing which can be at the top level of a 'Module'
 sealed trait Definition
-case class GlobalDefinition(g: Global) extends Definition
+case class GlobalDefinition(g: Global)                 extends Definition
 case class TypeDefinition(name: Name, t: Option[Type]) extends Definition
 case class MetadataNodeDefinition(
     nodeID: MetadataNodeID,

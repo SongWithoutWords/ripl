@@ -5,5 +5,5 @@ import ripl.util.MultiMap
 
 package object typed {
   type Nodes = MultiMap[String, Node]
-  type Ast = Nodes
+  type Ast   = Nodes
 }

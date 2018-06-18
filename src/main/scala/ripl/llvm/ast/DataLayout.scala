@@ -5,7 +5,7 @@ package ripl.llvm.ast
 sealed trait Endianness
 case object Endianness {
   case object LittleEndian extends Endianness
-  case object BigEndian extends Endianness
+  case object BigEndian    extends Endianness
 }
 
 // An AlignmentInfo(describes, how) a given type must and would best be aligned
@@ -18,16 +18,16 @@ case class AlignmentInfo(
 sealed trait AlignType
 case object AlignType {
   case object Integer extends AlignType
-  case object Vector extends AlignType
-  case object Float extends AlignType
+  case object Vector  extends AlignType
+  case object Float   extends AlignType
 }
 
 // A style of name mangling
 sealed trait Mangling
 case object Mangling {
-  case object ELFMangling extends Mangling
-  case object MIPSMangling extends Mangling
-  case object MachOMangling extends Mangling
+  case object ELFMangling         extends Mangling
+  case object MIPSMangling        extends Mangling
+  case object MachOMangling       extends Mangling
   case object WindowsCOFFMangling extends Mangling
 }
 

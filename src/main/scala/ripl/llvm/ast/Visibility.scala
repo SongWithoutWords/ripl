@@ -5,7 +5,7 @@ package ripl.llvm.ast
 
 sealed trait Visibility
 case object Visibility {
-  case object Default extends Visibility
-  case object Hidden extends Visibility
+  case object Default   extends Visibility
+  case object Hidden    extends Visibility
   case object Protected extends Visibility
 }

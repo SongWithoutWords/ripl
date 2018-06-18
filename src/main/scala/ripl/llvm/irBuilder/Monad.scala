@@ -371,7 +371,7 @@ case object block {
   def apply(): IRBuilder[Name] =
     for {
       nm <- fresh()
-      _ <- emitBlockStart(nm)
+      _  <- emitBlockStart(nm)
     } yield (nm)
 }
 // block

@@ -27,8 +27,8 @@ object Reduce {
 }
 
 class Reduce(val astIn: a0.Ast) {
-  var errors = Set[Error]()
-  def raiseImpure(e: Error) = errors = errors + e
+  var errors                    = Set[Error]()
+  def raiseImpure(e: Error)     = errors = errors + e
   def raiseImpure(errs: Errors) = errors = errors union errs
 
   def constrain(requiredType: a1.Type, exp: ReduceM[a1.Exp]): ReduceM[a1.Exp] =
@@ -143,16 +143,16 @@ class Reduce(val astIn: a0.Ast) {
 
   val nodes = new IdentityMap[a0.Node, List[ReduceM[a1.Node]]]
 
-  val astOut = astIn.mapValues(mapNamespaceMember(_))
-  val intrinsics = MultiMap(a1.Intrinsic.values.map(i => (i.n, i)): _*)
+  val astOut       = astIn.mapValues(mapNamespaceMember(_))
+  val intrinsics   = MultiMap(a1.Intrinsic.values.map(i => (i.n, i)): _*)
   val builtInTypes = MultiMap(TypeAtom.values.map(t => (t.n, t)): _*)
 
   type Scope = MultiMap[String, a1.Node]
   var scopes: List[Scope] = Nil
 
-  def pushScope() = scopes = MultiMap[String, a1.Node]() :: scopes
+  def pushScope()         = scopes = MultiMap[String, a1.Node]() :: scopes
   def pushScope(s: Scope) = scopes = s :: scopes
-  def popScope() = scopes = scopes.tail
+  def popScope()          = scopes = scopes.tail
 
   def addLocalBinding(n: String, v: a1.Node) =
     scopes = scopes.head.add(n, v) :: scopes.tail
@@ -189,8 +189,8 @@ class Reduce(val astIn: a0.Ast) {
   }
 
   sealed trait Kind
-  case object KAny extends Kind
-  case object KType extends Kind
+  case object KAny                    extends Kind
+  case object KType                   extends Kind
   case class KExp(t: Option[a1.Type]) extends Kind
   // case class KVal(t: a1.Type) extends Kind
 
@@ -253,7 +253,7 @@ class Reduce(val astIn: a0.Ast) {
         _f.value.t match {
           case a1.TFun(params, ret) =>
             val paramCount = params.length
-            val argCount = argOverloads.length
+            val argCount   = argOverloads.length
             when(paramCount != argCount) {
               raise(WrongNumArgs(paramCount, argCount))
             } >> {
@@ -270,7 +270,7 @@ class Reduce(val astIn: a0.Ast) {
         }
       }
 
-      val overloads = mapAsExp(_f)
+      val overloads    = mapAsExp(_f)
       val argOverloads = _args.map { mapAsExp(_) }
       overloads.map(chooseArgs(_, argOverloads)) ++ (_f match {
 
@@ -351,9 +351,9 @@ class Reduce(val astIn: a0.Ast) {
         }
 
         retType <- _retType.traverse { mapAsType(_) }
-        _ <- impure(pushScope(MultiMap(params.map(p => (p.n, p)): _*)))
-        body <- mapAsExp(retType, _body)
-        _ <- impure(popScope())
+        _       <- impure(pushScope(MultiMap(params.map(p => (p.n, p)): _*)))
+        body    <- mapAsExp(retType, _body)
+        _       <- impure(popScope())
       } yield a1.Fun(params, retType.getOrElse(body.t), body))
 
     // push new scope with the params
@@ -424,7 +424,7 @@ class Reduce(val astIn: a0.Ast) {
   def mapVal(v: a0.Val): ReduceM[a1.Val] = v match {
     case a0.VObj(_t, _members) =>
       for {
-        t <- mapAsType(_t)
+        t       <- mapAsType(_t)
         members <- MultiMap.instances().traverse(_members)(mapVal)
       } yield a1.VObj(t, members)
     case v: ValAtom => pure(v)

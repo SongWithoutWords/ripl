@@ -92,7 +92,7 @@ case object Terminator {
 sealed trait FastMathFlags
 case object FastMathFlags {
   case object NoFastMathFlags extends FastMathFlags
-  case object UnsafeAlgebra extends FastMathFlags
+  case object UnsafeAlgebra   extends FastMathFlags
   case class Flags(
       noNaNs: Boolean,
       noInfs: Boolean,
@@ -104,29 +104,29 @@ case object FastMathFlags {
 // <http://llvm.org/docs/LangRef.html#atomic-memory-ordering-constraints>
 // <http://llvm.org/docs/Atomics.html>
 sealed trait MemoryOrdering
-case object Unordered extends MemoryOrdering
-case object Monotonic extends MemoryOrdering
-case object Acquire extends MemoryOrdering
-case object Release extends MemoryOrdering
-case object AcquireRelease extends MemoryOrdering
+case object Unordered              extends MemoryOrdering
+case object Monotonic              extends MemoryOrdering
+case object Acquire                extends MemoryOrdering
+case object Release                extends MemoryOrdering
+case object AcquireRelease         extends MemoryOrdering
 case object SequentiallyConsistent extends MemoryOrdering
 
 // <http://llvm.org/docs/LangRef.html#singlethread>
 sealed trait SynchronizationScope
 case object SingleThread extends SynchronizationScope
-case object System extends SynchronizationScope
+case object System       extends SynchronizationScope
 
 // For the redoubtably complex 'LandingPad' instruction
 sealed trait LandingPadClause
-case class Catch(constant: Constant) extends LandingPadClause
+case class Catch(constant: Constant)  extends LandingPadClause
 case class Filter(constant: Constant) extends LandingPadClause
 
 // For the call instruction
 // <http://llvm.org/docs/LangRef.html#call-instruction>
 sealed trait TailCallKind
-case object Tail extends TailCallKind
+case object Tail     extends TailCallKind
 case object MustTail extends TailCallKind
-case object NoTail extends TailCallKind
+case object NoTail   extends TailCallKind
 
 // non-terminator instructions:
 // <http://llvm.org/docs/LangRef.html#binaryops>
