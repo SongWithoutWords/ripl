@@ -10,17 +10,27 @@ libraryDependencies ++= Seq(
 )
 
 scalacOptions ++= Seq(
-                                    //
-  "-deprecation",                   // warnings for deprecated api usage
-  "-feature",                       // warnings for language features not enabled
 
-  "-language:higherKinds",          // enable higher-kinded types
-  "-language:implicitConversions",  // enable implicitConversions
+  // warnings for deprecated api usage
+  "-deprecation",
 
-  "-unchecked",                     // detailed unchecked warnings
+  // warnings for language features not enabled
+  "-feature",
 
-  "-Ypartial-unification",          // partial unification, required by cats
-  "-Ywarn-value-discard"            // warn when non-unit expression results are unused
+  // enable higher-kinded types
+  "-language:higherKinds",
+
+  // enable implicitConversions
+  "-language:implicitConversions",
+
+  // detailed unchecked warnings
+  "-unchecked",
+
+  // partial unification, required by cats
+  "-Ypartial-unification",
+
+  // warn when non-unit expression results are unused
+  "-Ywarn-value-discard"
 )
 
 ensimeScalaVersion in ThisBuild := "2.12.6"
