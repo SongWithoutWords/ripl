@@ -17,7 +17,7 @@ class TestParser extends FreeSpec with Matchers {
   }
 
   def testAst(input: String)(out: (String, Node)*): Unit = input in {
-    Parse.units(input) should matchAst(out.toList)
+    Parse.exp(input) should matchAst(out.toList)
   }
 
   def testName(input: String): Unit = input in {
