@@ -5,8 +5,8 @@ package ripl.llvm.ast
 sealed trait IntegerPredicate
 
 case object IntegerPredicate {
-  case object EQ extends IntegerPredicate
-  case object NE extends IntegerPredicate
+  case object EQ  extends IntegerPredicate
+  case object NE  extends IntegerPredicate
   case object UGT extends IntegerPredicate
   case object UGE extends IntegerPredicate
   case object ULT extends IntegerPredicate

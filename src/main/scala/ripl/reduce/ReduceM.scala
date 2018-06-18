@@ -40,7 +40,7 @@ case object ReduceM {
   implicit object instances extends Monad[ReduceM] {
 
     def pure[A](a: A): ReduceM[A] = ReduceM(a, ReduceInfo())
-    def pure(): ReduceM[Unit] = pure(())
+    def pure(): ReduceM[Unit]     = pure(())
 
     def flatMap[A, B](
         ma: ReduceM[A]
@@ -64,11 +64,11 @@ case object ReduceM {
   def impure(impureAction: => Unit) = { impureAction; pure() }
 
   def pure[A](a: A): ReduceM[A] = instances.pure(a)
-  def pure(): ReduceM[Unit] = instances.pure()
+  def pure(): ReduceM[Unit]     = instances.pure()
 
   def raise(info: ReduceInfo): ReduceM[Unit] = ReduceM((), info)
-  def raise(errors: Errors): ReduceM[Unit] = raise(ReduceInfo(errors, 0))
-  def raise(e: Error): ReduceM[Unit] = raise(Set(e))
+  def raise(errors: Errors): ReduceM[Unit]   = raise(ReduceInfo(errors, 0))
+  def raise(e: Error): ReduceM[Unit]         = raise(Set(e))
 
   def raiseImplicitConversion(): ReduceM[Unit] = raise(ReduceInfo(Set(), 1))
 

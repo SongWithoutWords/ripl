@@ -21,10 +21,10 @@ case object Util {
   def lines(in: List[String]): String = in.mkString("", "\n", "")
 
   def spaces(in: List[String]): String = in.mkString("", " ", "")
-  def spaces(in: String*): String = spaces(in: _*)
+  def spaces(in: String*): String      = spaces(in: _*)
 
   def commas(in: List[String]): String = in.mkString("", ", ", "")
-  def commas(in: String*): String = commas(in: _*)
+  def commas(in: String*): String      = commas(in: _*)
 
   def colons(in: List[String]): String = in.mkString("", ":", "")
 
@@ -41,7 +41,7 @@ case object Util {
 
   def angleBrackets(x: String): String = s"<$x>"
 
-  def braces(x: String): String = s"{$x}"
+  def braces(x: String): String       = s"{$x}"
   def spacedBraces(x: String): String = s"{ $x }"
 
   def local(x: String): String = s"%$x"
@@ -53,10 +53,10 @@ case object Util {
   def comma(a: String, b: String) = s"$a, $b"
 
   implicit class StringExtensions(lhs: String) {
-    def <>(rhs: String) = lhs + rhs
-    def <+>(rhs: String) = lhs + " " + rhs
-    def </>(rhs: String) = lhs + "\n" + rhs
-    def <:>(rhs: String) = lhs + ":" + rhs
+    def <>(rhs: String)    = lhs + rhs
+    def <+>(rhs: String)   = lhs + " " + rhs
+    def </>(rhs: String)   = lhs + "\n" + rhs
+    def <:>(rhs: String)   = lhs + ":" + rhs
     def comma(rhs: String) = lhs + ", " + rhs
   }
 }
@@ -832,7 +832,7 @@ case object prettyPrint {
 
   def pp(n: Named[String]): String = n match {
     case n := s => "%" <> pp(n) <+> "=" <+> s
-    case Do(s)  => s
+    case Do(s) => s
   }
 
   def pp(m: Module): String =
@@ -993,7 +993,7 @@ case object prettyPrint {
     case x => ", align" <+> x.toString
   }
 
-  def ppTyped(a: Operand): String = pp(typeOf(a)) <+> pp(a)
+  def ppTyped(a: Operand): String  = pp(typeOf(a)) <+> pp(a)
   def ppTyped(a: Constant): String = pp(typeOf(a)) <+> pp(a)
 
   def ppPhiIncoming(op: Operand, nm: Name): String =

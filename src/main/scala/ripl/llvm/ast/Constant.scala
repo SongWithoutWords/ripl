@@ -26,13 +26,13 @@ case object Constant {
 
   sealed trait FloatingPoint
   // case class Half(value: Short)
-  case class F32(value: Float) extends Constant with FloatingPoint
+  case class F32(value: Float)  extends Constant with FloatingPoint
   case class F64(value: Double) extends Constant with FloatingPoint
   // case class Quadruple(high: Word64, low: Word64)
   // case class X86_FP80(high: Word16, low: Word64)
   // case class PPC_FP128(high: Word64, low: Word64)
 
-  case class Null(constantType: Type) extends Constant
+  case class Null(constantType: Type)          extends Constant
   case class AggregateZero(constantType: Type) extends Constant
   case class Struct(
       structName: Option[Name],
@@ -42,11 +42,11 @@ case object Constant {
   case class Array(memberType: Type, memberValues: List[Constant])
       extends Constant
   case class Vector(memberValues: List[Constant]) extends Constant
-  case class Undef(constantType: Type) extends Constant
+  case class Undef(constantType: Type)            extends Constant
   case class BlockAddress(blockAddressFunction: Name, blockAddressBlock: Name)
       extends Constant
   case class GlobalReference(t: Type, name: Name) extends Constant
-  case object TokenNone extends Constant
+  case object TokenNone                           extends Constant
   case class Add(
       nsw: Boolean,
       nuw: Boolean,

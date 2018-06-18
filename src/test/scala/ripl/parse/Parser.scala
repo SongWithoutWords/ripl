@@ -371,9 +371,9 @@ class TestParser extends FreeSpec with Matchers {
           )(
             Struct(
               "Colour",
-              "red" -> Name("i8"),
+              "red"   -> Name("i8"),
               "green" -> Name("i8"),
-              "blue" -> Name("i8")
+              "blue"  -> Name("i8")
             )
           )
         }

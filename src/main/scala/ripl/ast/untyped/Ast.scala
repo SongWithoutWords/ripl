@@ -18,11 +18,11 @@ object App {
   def apply(f: Exp, args: Exp*): App = App(f, args.toList)
 }
 case class App(f: Exp, args: List[Exp]) extends Exp
-case class Assign(a: Exp, b: Exp) extends Exp
-case class Define(a: Exp, b: Exp) extends Exp
+case class Assign(a: Exp, b: Exp)       extends Exp
+case class Define(a: Exp, b: Exp)       extends Exp
 object Block { def apply(exps: Exp*): Block = Block(exps.toList) }
-case class Block(exps: List[Exp]) extends Exp
-case class Cons(t: Exp, e: Exp) extends Exp
+case class Block(exps: List[Exp])     extends Exp
+case class Cons(t: Exp, e: Exp)       extends Exp
 case class If(a: Exp, b: Exp, c: Exp) extends Exp
 object Fun {
   def apply(params: Param*)(retType: Option[Node])(body: Exp): Fun =
@@ -30,7 +30,7 @@ object Fun {
 }
 case class Fun(params: List[Param], retType: Option[Node], body: Exp)
     extends Exp
-case class Name(n: String) extends Exp
+case class Name(n: String)           extends Exp
 case class Param(n: String, t: Node) extends Exp
 case class Select(e: Exp, n: String) extends Exp
 

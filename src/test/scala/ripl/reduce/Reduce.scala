@@ -190,26 +190,26 @@ class TestReduce extends FreeSpec with Matchers {
         test("add" -> add)("add" -> addPrime)()
       }
       "produce no errors when applied to right types" in {
-        val x = a0.App(a0.Name("add"), 4, 5)
+        val x      = a0.App(a0.Name("add"), 4, 5)
         val xPrime = a1.App(a1.Name("add", addPrime), 4, 5)
         test("add" -> add, "x" -> x)("add" -> addPrime, "x" -> xPrime)()
       }
       "produce errors when applied to too few args" in {
-        val x = a0.App(a0.Name("add"), 4)
+        val x      = a0.App(a0.Name("add"), 4)
         val xPrime = a1.App(a1.Name("add", addPrime), 4)
         test("add" -> add, "x" -> x)("add" -> addPrime, "x" -> xPrime)(
           WrongNumArgs(2, 1)
         )
       }
       "produce errors when applied to too many args" in {
-        val x = a0.App(a0.Name("add"), 4, 5, 6)
+        val x      = a0.App(a0.Name("add"), 4, 5, 6)
         val xPrime = a1.App(a1.Name("add", addPrime), 4, 5)
         test("add" -> add, "x" -> x)("add" -> addPrime, "x" -> xPrime)(
           WrongNumArgs(2, 3)
         )
       }
       "produce errors when applied to wrong types" in {
-        val x = a0.App(a0.Name("add"), 4, true)
+        val x      = a0.App(a0.Name("add"), 4, true)
         val xPrime = a1.App(a1.Name("add", addPrime), 4, true)
         test("add" -> add, "x" -> x)("add" -> addPrime, "x" -> xPrime)(
           TypeConflict(TInt, TBln)
@@ -286,7 +286,7 @@ class TestReduce extends FreeSpec with Matchers {
       }
       "produce errors when Point is required and Vector is returned" in {
         test(
-          "Point" -> _point,
+          "Point"  -> _point,
           "Vector" -> _vector,
           "f" -> a0.Fun(
             a0.Param("a", a0.Name("Int")),
@@ -295,7 +295,7 @@ class TestReduce extends FreeSpec with Matchers {
             a0.VObj(a0.Name("Vector"), "x" -> 1.f, "b" -> 2.f)
           }
         )(
-          "Point" -> point,
+          "Point"  -> point,
           "Vector" -> vector,
           "f" -> a1.Fun(a1.Param("a", TInt), a1.Param("b", TInt))(point) {
             a1.VObj(vector, "x" -> 1.f, "b" -> 2.f)
@@ -516,7 +516,7 @@ class TestReduce extends FreeSpec with Matchers {
   "local variables" - {
     "in blocks" - {
       val _block = a0.Block(a0.Var("x", 4), a0.Name("x"))
-      val block = a1.Block(a1.Var("x", 4), 4)
+      val block  = a1.Block(a1.Var("x", 4), 4)
       "are bound correctly" in {
         test("b" -> _block)("b" -> block)()
       }
@@ -559,12 +559,12 @@ class TestReduce extends FreeSpec with Matchers {
       val point = a1.Struct("Point", "x" -> TInt, "y" -> TInt)
       test(
         "Point" -> _point,
-        "a" -> a0.VObj(a0.Name("Point"), "x" -> 7, "y" -> 3),
-        "b" -> a0.Select(a0.Name("a"), "y")
+        "a"     -> a0.VObj(a0.Name("Point"), "x" -> 7, "y" -> 3),
+        "b"     -> a0.Select(a0.Name("a"), "y")
       )(
         "Point" -> point,
-        "a" -> a1.VObj(point, "x" -> 7, "y" -> 3),
-        "b" -> 3
+        "a"     -> a1.VObj(point, "x" -> 7, "y" -> 3),
+        "b"     -> 3
       )()
     }
     "members can be selected from struct variables" in {
@@ -580,7 +580,7 @@ class TestReduce extends FreeSpec with Matchers {
       )
       test("Point" -> _point, "getX" -> _getX)(
         "Point" -> point,
-        "getX" -> getX
+        "getX"  -> getX
       )()
     }
   }
@@ -767,15 +767,15 @@ class TestReduce extends FreeSpec with Matchers {
 
         val u = a1.VObj(vector, "x" -> 3.f, "y" -> 4.f)
         test(
-          "Vector" -> _vector,
+          "Vector"        -> _vector,
           "lengthSquared" -> _lengthSquared,
-          "u" -> a0.VObj(a0.Name("Vector"), "x" -> 3.f, "y" -> 4.f),
-          "uLength" -> a0.App(a0.Select(a0.Name("u"), "lengthSquared"))
+          "u"             -> a0.VObj(a0.Name("Vector"), "x" -> 3.f, "y" -> 4.f),
+          "uLength"       -> a0.App(a0.Select(a0.Name("u"), "lengthSquared"))
         )(
-          "Vector" -> vector,
+          "Vector"        -> vector,
           "lengthSquared" -> lengthSquared,
-          "u" -> u,
-          "uLength" -> a1.App(lengthSquared, u)
+          "u"             -> u,
+          "uLength"       -> a1.App(lengthSquared, u)
         )()
       }
     }
@@ -797,7 +797,7 @@ class TestReduce extends FreeSpec with Matchers {
 
         test("apply" -> _apply, "x" -> a0.App(5, 4))(
           "apply" -> apply,
-          "x" -> a1.App(apply, 5, 4)
+          "x"     -> a1.App(apply, 5, 4)
         )()
       }
 
@@ -837,16 +837,16 @@ class TestReduce extends FreeSpec with Matchers {
         )
 
         val _l = a0.VObj(a0.Name("Line"), "a" -> 2.f, "b" -> 1.f)
-        val l = a1.VObj(line, "a" -> 2.f, "b" -> 1.f)
+        val l  = a1.VObj(line, "a"            -> 2.f, "b" -> 1.f)
 
         test(
-          "Line" -> _line,
+          "Line"  -> _line,
           "apply" -> _apply,
-          "y" -> a0.App(_l, 4.f)
+          "y"     -> a0.App(_l, 4.f)
         )(
-          "Line" -> line,
+          "Line"  -> line,
           "apply" -> apply,
-          "y" -> a1.App(apply, l, 4.f)
+          "y"     -> a1.App(apply, l, 4.f)
         )()
       }
     }

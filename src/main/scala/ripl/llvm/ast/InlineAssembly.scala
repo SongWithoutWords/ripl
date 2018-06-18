@@ -5,7 +5,7 @@ package ripl.llvm.ast
 // <http://en.wikipedia.org/wiki/X86_assembly_language#Syntax>
 sealed trait Dialect
 case object Dialect {
-  case object ATTDialect extends Dialect
+  case object ATTDialect   extends Dialect
   case object IntelDialect extends Dialect
 }
 

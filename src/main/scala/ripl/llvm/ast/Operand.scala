@@ -18,7 +18,7 @@ case class MetadataNodeID(id: Int)
 // <http://llvm.org/docs/LangRef.html#metadata>
 sealed trait MetadataNode
 case class MetadataNodeData(data: List[Option[Metadata]]) extends MetadataNode
-case class MetadataNodeReference(data: MetadataNodeID) extends MetadataNode
+case class MetadataNodeReference(data: MetadataNodeID)    extends MetadataNode
 
 // <http://llvm.org/docs/LangRef.html#metadata>
 sealed trait Metadata

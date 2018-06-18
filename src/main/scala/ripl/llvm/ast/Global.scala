@@ -66,7 +66,7 @@ case class BasicBlock(
 )
 
 sealed trait UnnamedAddr
-case object LocalAddr extends UnnamedAddr
+case object LocalAddr  extends UnnamedAddr
 case object GlobalAddr extends UnnamedAddr
 
 // // helper for making 'GlobalVariable's

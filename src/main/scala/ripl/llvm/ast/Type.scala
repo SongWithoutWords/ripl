@@ -4,12 +4,12 @@ package ripl.llvm.ast
 // LLVM supports some special formats floating point format. This type is to distinguish those format. Also see  <http://llvm.org/docs/LangRef.html#floating-point-types>
 
 sealed trait FloatingPointType extends Type
-case object HalfFP extends FloatingPointType // ^ 16-bit floating point value
-case object FloatFP extends FloatingPointType // ^ 32-bit floating point value
-case object DoubleFP extends FloatingPointType // ^ 64-bit floating point value
-case object FP128FP extends FloatingPointType // ^ 128-bit floating point value (112-bit mantissa)
-case object X86_FP80FP extends FloatingPointType // ^ 80-bit floating point value (X87)
-case object PPC_FP128FP extends FloatingPointType // ^ 128-bit floating point value (two 64-bits)
+case object HalfFP             extends FloatingPointType // ^ 16-bit floating point value
+case object FloatFP            extends FloatingPointType // ^ 32-bit floating point value
+case object DoubleFP           extends FloatingPointType // ^ 64-bit floating point value
+case object FP128FP            extends FloatingPointType // ^ 128-bit floating point value (112-bit mantissa)
+case object X86_FP80FP         extends FloatingPointType // ^ 80-bit floating point value (X87)
+case object PPC_FP128FP        extends FloatingPointType // ^ 128-bit floating point value (two 64-bits)
 
 // <http://llvm.org/docs/LangRef.html#type-system>
 sealed trait Type

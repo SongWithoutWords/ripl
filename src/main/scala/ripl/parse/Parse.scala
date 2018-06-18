@@ -9,8 +9,8 @@ case object Parse {
 
   private def getParser(input: String): RiplParser = {
     val charStream = CharStreams.fromString(input)
-    val lexer = new RiplLexer(charStream)
-    val tokens = new CommonTokenStream(lexer)
+    val lexer      = new RiplLexer(charStream)
+    val tokens     = new CommonTokenStream(lexer)
     new RiplParser(tokens)
   }
 
