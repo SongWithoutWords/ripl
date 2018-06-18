@@ -34,6 +34,8 @@ case class Name(n: String)           extends Exp
 case class Param(n: String, t: Node) extends Exp
 case class Select(e: Exp, n: String) extends Exp
 
+case class SExp(es: List[Exp]) extends Exp
+
 case class Var(n: String, e: Exp) extends Exp // seems to have been replaced with "define"
 
 // Values
