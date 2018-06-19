@@ -15,23 +15,9 @@ case object Lex {
 
   def isValidInSymbol(c: Char) = c match {
 
-    // Non-control whitespace
-    case ' ' => false
-
-    // Punctuation
-    // case ':' => false // May be required in future
-    case '"' => false
-    case '`' => false
-    case ',' => false
-    case '.' => false
-
-    // Braces
-    case '(' => false
-    case ')' => false
-    case '[' => false
-    case ']' => false
-    case '{' => false
-    case '}' => false
+    // May require  ':' in future
+    case ' ' | '"' | '`' | ',' | '.' | '(' | ')' | '[' | ']' | '{' | '}' =>
+      false
 
     case c => !isControlCharacter(c)
   }
@@ -40,9 +26,7 @@ case object Lex {
 
     // Reserved unary prefixes corresponding to the PrefixOperator tokens
     // They cannot be used at the start of symbol, though they can be used within
-    case '\'' => true
-    case '^'  => true
-    case '~'  => true
+    case '\'' | '^' | '~' => true
 
     case c => isValidInSymbol(c)
   }
