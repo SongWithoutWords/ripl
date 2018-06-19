@@ -2,6 +2,8 @@ package ripl.parse.recursive
 
 import scala.annotation.tailrec
 
+import ripl.ast.common._
+
 case object Lex {
 
   def isC0_ControlCharacter(c: Char) = c < '\u001f'
@@ -60,7 +62,7 @@ case object Lex {
 
     import Token._
 
-    // TODO: pattern match on input first, can then organize by the lookahead length
+    // Could pattern match input first if some need lookahead
     input match {
       case Nil => accum.reverse
 
@@ -73,39 +75,58 @@ case object Lex {
       case '^' :: rest  => lex(Circumflex :: accum, rest)
       case '~' :: rest  => lex(Tilda :: accum, rest)
 
-      case c :: rest if isValidFirstInSymbol(c) =>
-        val (remainingInput, token) = lexSymbol(List(c), rest)
+      case c :: rest if c.isDigit =>
+        val (remainingInput, token) = lexNumberOrSymbol(List(c), LexInt, rest)
         lex(token :: accum, remainingInput)
 
-      case c :: rest if c.isDigit => {
-        val (remainingInput, tokenOrError) = lexNumber(rest)
-        ???
-        // lexNumber(c :: rest) match {
-
-      }
-
-      // case c :: rest
-
-      // case 't' :: 'r' :: 'u' :: 'e' :: rest =>
-      //   rest match {
-      //     case Nil =>
-      //   }
+      case c :: rest if isValidFirstInSymbol(c) =>
+        val (remainingInput, token) =
+          lexNumberOrSymbol(List(c), LexSymbol, rest)
+        lex(token :: accum, remainingInput)
     }
   }
 
+  sealed trait SymbolLexState
+  case object LexInt    extends SymbolLexState
+  case object LexFloat  extends SymbolLexState
+  case object LexSymbol extends SymbolLexState
+
   // Returns the remaining input
   @tailrec
-  private def lexSymbol(accum: List[Char],
-                        input: List[Char]): (List[Char], Token.Symbol) =
-    input match {
-      case c :: rest if isValidInSymbol(c) => lexSymbol(c :: accum, rest)
-      case rest                            => (rest, Token.Symbol(accum.reverse.mkString))
+  private def lexNumberOrSymbol(accum: List[Char],
+                                state: SymbolLexState,
+                                input: List[Char]): (List[Char], Token) = {
+
+    // Evaluated only when the token is complete
+    lazy val result = {
+      val contents = accum.reverse.mkString
+      state match {
+        case LexInt    => VInt(contents.toInt)
+        case LexFloat  => VFlt(contents.toFloat)
+        case LexSymbol => Token.Symbol(contents)
+      }
     }
+
+    input match {
+      // Digits don't change the state; they are valid in numbers and symbols
+      case c :: rest if c.isDigit => lexNumberOrSymbol(c :: accum, state, rest)
+
+      case '.' :: rest =>
+        state match {
+          case LexInt => lexNumberOrSymbol('.' :: accum, LexFloat, rest)
+          case _      => (input, result)
+        }
+
+      // Characters that are valid only in symbols transition the state to Symbol
+      case c :: rest if isValidInSymbol(c) =>
+        lexNumberOrSymbol(c :: accum, LexSymbol, rest)
+
+      case rest => (rest, result)
+    }
+  }
 
   private def lexNumber(input: List[Char]): (List[Char], Either[Token, Error]) =
     input match {
       case c :: rest if c.isDigit => ???
     }
-
-  // def app()
 }
