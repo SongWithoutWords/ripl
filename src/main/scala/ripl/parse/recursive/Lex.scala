@@ -66,6 +66,7 @@ case object Lex {
     input match {
       case Nil => accum.reverse
 
+      case ' ' :: rest  => lex(accum, rest)
       case '\n' :: rest => lex(Newline :: accum, rest)
       case '(' :: rest  => lex(LParen :: accum, rest)
       case ')' :: rest  => lex(RParen :: accum, rest)

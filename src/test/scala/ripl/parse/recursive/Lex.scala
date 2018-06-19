@@ -17,7 +17,7 @@ class TestLexer extends FreeSpec with Matchers {
   import Token._
 
   "single tokens" - {
-
+    test("a single space", " ")()
     test("\n")(Newline)
 
     test("(")(LParen)
