@@ -65,6 +65,14 @@ class TestLexer extends FreeSpec with Matchers {
         testSymbol("<:>")
         testSymbol("?!")
       }
+      "symbols with unicode" - {
+        testSymbol("λ")
+        test("Maebe Fünke")(Symbol("Maebe"), Symbol("Fünke"))
+
+        // Some test strings from http://www.columbia.edu/~fdc/utf8/
+        testSymbol("ᚠᛇᚻ᛫ᛒᛦᚦ")
+        test("Τη γλώσσα")(Symbol("Τη"), Symbol("γλώσσα"))
+      }
     }
   }
 
