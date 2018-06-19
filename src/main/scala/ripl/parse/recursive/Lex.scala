@@ -80,9 +80,11 @@ case object Lex {
 
   // Returns the remaining input
   @tailrec
-  private def lexNumberOrSymbol(accum: List[Char],
-                                state: SymbolLexState,
-                                input: List[Char]): (List[Char], Token) = {
+  private def lexNumberOrSymbol(
+      accum: List[Char],
+      state: SymbolLexState,
+      input: List[Char]
+    ): (List[Char], Token) = {
 
     // Evaluated only when the token is complete
     lazy val result = {
@@ -113,8 +115,10 @@ case object Lex {
   }
 
   // @tailrec
-  private def lexString(accum: List[Char],
-                        input: List[Char]): (List[Char], Token) = {
+  private def lexString(
+      accum: List[Char],
+      input: List[Char]
+    ): (List[Char], Token) = {
 
     lazy val result = VStr(accum.reverse.mkString)
     input match {
