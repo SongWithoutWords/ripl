@@ -76,7 +76,7 @@ case object Lex {
       case '~' :: rest  => lex(Tilda :: accum, rest)
 
       case c :: rest if c.isDigit => {
-        val (remainder, tokenOrError) = lexNumber(rest)
+        val (remainingInput, tokenOrError) = lexNumber(rest)
         ???
         // lexNumber(c :: rest) match {
 
