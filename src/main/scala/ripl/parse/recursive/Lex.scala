@@ -47,7 +47,7 @@ case object Lex {
     case c => isValidInSymbol(c)
   }
 
-  def apply(input: List[Char]): List[Token] = Token.Newline :: lex(input)
+  def apply(input: List[Char]): List[Token] = Token.Newline :: lex(Nil, input)
 
   sealed trait Error
   case object Error {
@@ -57,17 +57,22 @@ case object Lex {
 
 
   @tailrec
-  private def lex(input: List[Char]): List[Token] = {
+  private def lex(accum: List[Token], input: List[Char]): List[Token] = {
+
+    // I wish something like this would work
+    // @inline
+    // def ret(t: Token, rest: List[Char]) = lex(Newline :: accum, rest)
+
     input match {
-      case Nil => Nil
+      case Nil => accum.reverse
 
-      case '\n' :: rest => Newline :: lex(rest)
-      case '(' :: rest => LParen :: lex(rest)
-      case ')' :: rest => RParen :: lex(rest)
+      case '\n' :: rest => lex(Newline :: accum, rest)
+      case '(' :: rest  => lex(LParen :: accum, rest)
+      case ')' :: rest  => lex(RParen :: accum, rest)
 
-      case '\'' :: rest => Apostrophe :: lex(rest)
-      case '^' :: rest => Circumflex :: lex(rest)
-      case '~' :: rest => Tilda :: lex(rest)
+      case '\'' :: rest => lex(Apostrophe :: accum, rest)
+      case '^' :: rest  => lex(Circumflex :: accum, rest)
+      case '~' :: rest  => lex(Tilda :: accum, rest)
 
       case c :: rest if c.isDigit => {
         val (remainder, tokenOrError) = lexNumber(rest)
