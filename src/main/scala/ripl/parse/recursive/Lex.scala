@@ -83,8 +83,9 @@ case object Lex {
         val (remaining, token) = lexNumberOrSymbol(List(c), LexSymbol, rest)
         lex(token :: accum, remaining)
 
-      case "\"" :: rest =>
-        val (remainingInput, token)
+      case '"' :: rest =>
+        val (remaining, token) = lexString(Nil, rest)
+        lex(token :: accum, remaining)
     }
   }
 
@@ -124,6 +125,18 @@ case object Lex {
         lexNumberOrSymbol(c :: accum, LexSymbol, rest)
 
       case rest => (rest, result)
+    }
+  }
+
+  // @tailrec
+  private def lexString(accum: List[Char],
+                        input: List[Char]): (List[Char], Token) = {
+
+    lazy val result = VStr(accum.reverse.mkString)
+    input match {
+      case '"' :: rest => (rest, result)
+      case c :: rest   => lexString(c :: accum, rest)
+      case Nil         => ??? // Need a mechanism for returning lexing errors
     }
   }
 }
