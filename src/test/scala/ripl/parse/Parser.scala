@@ -272,7 +272,7 @@ class TestParser extends FreeSpec with Matchers {
               Name("b"),
               Block(Name("i"), Name("j"), Name("k")),
               Name("x"),
-              Name("y"),
+              Name("y")
             )
           }
         }

@@ -30,6 +30,7 @@ ensimeScalaVersion in ThisBuild := "2.12.6"
 ensimeIgnoreMissingDirectories  := true;
 
 scalafmtOnCompile := true
+// scalafmtVersion   := "1.4.0" // as high as neo-sbt-scalafmt presently supports
 
 enablePlugins(Antlr4Plugin)
 antlr4GenListener in Antlr4 := false

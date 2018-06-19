@@ -28,31 +28,26 @@ case class InstructionMetadata(data: List[(String, MetadataNode)])
 // <http://llvm.org/docs/LangRef.html#terminators>
 sealed trait Terminator
 case object Terminator {
-  case class Ret(
-      returnOperand: Option[Operand],
-      metadata: InstructionMetadata
-  ) extends Terminator
+  case class Ret(returnOperand: Option[Operand], metadata: InstructionMetadata)
+      extends Terminator
   case class CondBr(
       condition: Operand,
       trueDest: Name,
       falseDest: Name,
       metadata: InstructionMetadata
-  ) extends Terminator
-  case class Br(
-      dest: Name,
-      metadata: InstructionMetadata
-  ) extends Terminator
+    ) extends Terminator
+  case class Br(dest: Name, metadata: InstructionMetadata) extends Terminator
   case class Switch(
       operand0: Operand,
       defaultDest: Name,
       dests: List[(Constant, Name)],
       metadata: InstructionMetadata
-  ) extends Terminator
+    ) extends Terminator
   case class IndirectBr(
       operand0: Operand,
       possibleDests: List[Name],
       metadata: InstructionMetadata
-  ) extends Terminator
+    ) extends Terminator
   case class Invoke(
       callingConvention: CallingConvention,
       returnAttributes: List[ParameterAttribute],
@@ -62,30 +57,26 @@ case object Terminator {
       returnDest: Name,
       exceptionDest: Name,
       metadata: InstructionMetadata
-  ) extends Terminator
-  case class Resume(
-      operand0: Operand,
-      metadata: InstructionMetadata
-  ) extends Terminator
-  case class Unreachable(
-      metadata: InstructionMetadata
-  ) extends Terminator
+    ) extends Terminator
+  case class Resume(operand0: Operand, metadata: InstructionMetadata)
+      extends Terminator
+  case class Unreachable(metadata: InstructionMetadata) extends Terminator
   case class CleanupRet(
       cleanupPad: Operand,
       unwindDest: Option[Name],
       metadata: InstructionMetadata
-  ) extends Terminator
+    ) extends Terminator
   case class CatchRet(
       catchPad: Operand,
       successor: Name,
       metadata: InstructionMetadata
-  ) extends Terminator
+    ) extends Terminator
   case class CatchSwitch(
       parentPad: Operand,
       catchHandlers: NonEmpty[Name],
       defaultUnwindDest: Option[Name],
       metadata: InstructionMetadata
-  ) extends Terminator
+    ) extends Terminator
 }
 
 // <http://llvm.org/docs/LangRef.html#fast-math-flags>
@@ -98,7 +89,7 @@ case object FastMathFlags {
       noInfs: Boolean,
       noSignedZeros: Boolean,
       allowReciprocal: Boolean
-  ) extends FastMathFlags
+    ) extends FastMathFlags
 }
 
 // <http://llvm.org/docs/LangRef.html#atomic-memory-ordering-constraints>
@@ -141,120 +132,120 @@ case object Instruction {
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class FAdd(
       fastMathFlags: FastMathFlags,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Sub(
       nsw: Boolean,
       nuw: Boolean,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class FSub(
       fastMathFlags: FastMathFlags,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Mul(
       nsw: Boolean,
       nuw: Boolean,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class FMul(
       fastMathFlags: FastMathFlags,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class UDiv(
       exact: Boolean,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class SDiv(
       exact: Boolean,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class FDiv(
       fastMathFlags: FastMathFlags,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class URem(
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class SRem(
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class FRem(
       fastMathFlags: FastMathFlags,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Shl(
       nsw: Boolean,
       nuw: Boolean,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class LShr(
       exact: Boolean,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class AShr(
       exact: Boolean,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class And(
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Or(
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Xor(
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Alloca(
       allocatedType: Type,
       numElements: Option[Operand],
       alignment: Int,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Load(
       volatile: Boolean,
       address: Operand,
       maybeAtomicity: Option[Atomicity],
       alignment: Int,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Store(
       volatile: Boolean,
       address: Operand,
@@ -262,17 +253,15 @@ case object Instruction {
       maybeAtomicity: Option[Atomicity],
       alignment: Int,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class GetElementPtr(
       inBounds: Boolean,
       address: Operand,
       indices: List[Operand],
       metadata: InstructionMetadata
-  ) extends Instruction
-  case class Fence(
-      atomicity: Atomicity,
-      metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
+  case class Fence(atomicity: Atomicity, metadata: InstructionMetadata)
+      extends Instruction
   case class CmpXchg(
       volatile: Boolean,
       address: Operand,
@@ -281,7 +270,7 @@ case object Instruction {
       atomicity: Atomicity,
       failureMemoryOrdering: MemoryOrdering,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class AtomicRMW(
       volatile: Boolean,
       rmwOperation: RMWOperation,
@@ -289,89 +278,53 @@ case object Instruction {
       value: Operand,
       atomicity: Atomicity,
       metadata: InstructionMetadata
-  ) extends Instruction
-  case class Trunc(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class ZExt(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class SExt(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class FPToUI(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class FPToSI(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class UIToFP(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class SIToFP(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class FPTrunc(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class FPExt(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class PtrToInt(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class IntToPtr(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
-  case class BitCast(
-      operand0: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
+  case class Trunc(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class ZExt(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class SExt(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class FPToUI(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class FPToSI(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class UIToFP(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class SIToFP(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class FPTrunc(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class FPExt(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class PtrToInt(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class IntToPtr(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
+  case class BitCast(operand0: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
   case class AddrSpaceCast(
       operand0: Operand,
       t: Type,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class ICmp(
       iPredicate: IntegerPredicate,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class FCmp(
       fpPredicate: FloatingPointPredicate,
       operand0: Operand,
       operand1: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Phi(
       t: Type,
       incomingValues: List[(Operand, Name)],
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Call(
       tailCallKind: Option[TailCallKind],
       callingConvention: CallingConvention,
@@ -380,62 +333,59 @@ case object Instruction {
       arguments: List[Argument],
       functionAttributes: List[Either[GroupID, FunctionAttribute]],
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class Select(
       condition: Operand,
       trueValue: Operand,
       falseValue: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
-  case class VAArg(
-      argList: Operand,
-      t: Type,
-      metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
+  case class VAArg(argList: Operand, t: Type, metadata: InstructionMetadata)
+      extends Instruction
   case class ExtractElement(
       vector: Operand,
       index: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class InsertElement(
       vector: Operand,
       element: Operand,
       index: Operand,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class ShuffleVector(
       operand0: Operand,
       operand1: Operand,
       mask: Constant,
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class ExtractValue(
       aggregate: Operand,
       indices: List[Int],
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class InsertValue(
       aggregate: Operand,
       element: Operand,
       indices: List[Int],
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class LandingPad(
       t: Type,
       cleanup: Boolean,
       clauses: List[LandingPadClause],
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class CatchPad(
       catchSwitch: Operand,
       args: List[Operand],
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
   case class CleanupPad(
       parentPad: Operand,
       args: List[Operand],
       metadata: InstructionMetadata
-  ) extends Instruction
+    ) extends Instruction
 }
 
 // Instances of instructions may be given a name, allowing their results to be referenced as 'Operand's.

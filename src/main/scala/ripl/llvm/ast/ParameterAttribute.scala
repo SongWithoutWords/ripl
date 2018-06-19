@@ -26,5 +26,5 @@ case object ParameterAttribute {
   case class StringAttribute(
       stringAttributeKind: String,
       stringAttributeValue: String // ^ Use "" for no value - the two are conflated extends ParameterAttribute
-  ) extends ParameterAttribute
+    ) extends ParameterAttribute
 }

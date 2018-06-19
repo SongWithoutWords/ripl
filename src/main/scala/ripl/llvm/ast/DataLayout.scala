@@ -9,10 +9,7 @@ case object Endianness {
 }
 
 // An AlignmentInfo(describes, how) a given type must and would best be aligned
-case class AlignmentInfo(
-    abiAlignment: Int,
-    preferredAlignment: Int
-)
+case class AlignmentInfo(abiAlignment: Int, preferredAlignment: Int)
 
 // A type of type for which 'AlignmentInfo' may be specified
 sealed trait AlignType
@@ -41,7 +38,7 @@ case class DataLayout(
     typeLayouts: Map[(AlignType, Int), AlignmentInfo],
     aggregateLayout: AlignmentInfo,
     nativeSizes: Option[Set[Int]]
-)
+  )
 
 case object DataLayout {
   def default(endianness: Endianness) = DataLayout(

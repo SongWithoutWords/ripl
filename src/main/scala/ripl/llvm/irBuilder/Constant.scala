@@ -30,7 +30,7 @@ case object Constant {
       name: Option[Name],
       packed: Boolean,
       members: List[Constant]
-  ): F[Operand] =
+    ): F[Operand] =
     Applicative[F].pure(ConstantOperand(Struct(name, packed, members)))
 
   def struct[F[_]: Applicative](members: List[Constant]): F[Operand] =

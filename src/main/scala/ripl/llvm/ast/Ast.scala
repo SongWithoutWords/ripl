@@ -11,14 +11,14 @@ case class TypeDefinition(name: Name, t: Option[Type]) extends Definition
 case class MetadataNodeDefinition(
     nodeID: MetadataNodeID,
     metaData: List[Option[Metadata]]
-) extends Definition
+  ) extends Definition
 case class NamedMetadataDefinition(name: String, metaData: List[MetadataNodeID])
     extends Definition
 case class ModuleInlineAssembly(asm: String) extends Definition
 case class FunctionAttributes(
     groupId: GroupID,
     functionAttributs: List[FunctionAttribute]
-) extends Definition
+  ) extends Definition
 case class COMDAT(string: String, selectionKind: SelectionKind)
     extends Definition
 
@@ -30,7 +30,7 @@ case class Module(
     moduleDataLayout: Option[DataLayout],
     moduleTargetTriple: Option[String],
     moduleDefinitions: List[Definition]
-)
+  )
 
 // helper for making 'Module's
 case object Module {

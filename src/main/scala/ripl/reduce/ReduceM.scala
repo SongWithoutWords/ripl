@@ -42,16 +42,12 @@ case object ReduceM {
     def pure[A](a: A): ReduceM[A] = ReduceM(a, ReduceInfo())
     def pure(): ReduceM[Unit]     = pure(())
 
-    def flatMap[A, B](
-        ma: ReduceM[A]
-    )(f: A => ReduceM[B]): ReduceM[B] = {
+    def flatMap[A, B](ma: ReduceM[A])(f: A => ReduceM[B]): ReduceM[B] = {
       val mb = f(ma.value)
       ReduceM(mb.value, ma.info |+| mb.info)
     }
 
-    def tailRecM[A, B](
-        a: A
-    )(f: A => ReduceM[Either[A, B]]): ReduceM[B] =
+    def tailRecM[A, B](a: A)(f: A => ReduceM[Either[A, B]]): ReduceM[B] =
       f(a) match {
         case ReduceM(Left(nextA), info) =>
           val ReduceM(nextValue, nextInfo) = tailRecM(nextA)(f)

@@ -38,7 +38,7 @@ case object Constant {
       structName: Option[Name],
       isPacked: Boolean,
       memberValues: List[Constant]
-  ) extends Constant
+    ) extends Constant
   case class Array(memberType: Type, memberValues: List[Constant])
       extends Constant
   case class Vector(memberValues: List[Constant]) extends Constant
@@ -52,180 +52,91 @@ case object Constant {
       nuw: Boolean,
       operand0: Constant,
       operand1: Constant
-  ) extends Constant
-  case class FAdd(
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
+    ) extends Constant
+  case class FAdd(operand0: Constant, operand1: Constant) extends Constant
   case class Sub(
       nsw: Boolean,
       nuw: Boolean,
       operand0: Constant,
       operand1: Constant
-  ) extends Constant
-  case class FSub(
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
+    ) extends Constant
+  case class FSub(operand0: Constant, operand1: Constant) extends Constant
   case class Mul(
       nsw: Boolean,
       nuw: Boolean,
       operand0: Constant,
       operand1: Constant
-  ) extends Constant
-  case class FMul(
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
-  case class UDiv(
-      exact: Boolean,
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
-  case class SDiv(
-      exact: Boolean,
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
-  case class FDiv(
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
-  case class URem(
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
-  case class SRem(
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
-  case class FRem(
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
+    ) extends Constant
+  case class FMul(operand0: Constant, operand1: Constant) extends Constant
+  case class UDiv(exact: Boolean, operand0: Constant, operand1: Constant)
+      extends Constant
+  case class SDiv(exact: Boolean, operand0: Constant, operand1: Constant)
+      extends Constant
+  case class FDiv(operand0: Constant, operand1: Constant) extends Constant
+  case class URem(operand0: Constant, operand1: Constant) extends Constant
+  case class SRem(operand0: Constant, operand1: Constant) extends Constant
+  case class FRem(operand0: Constant, operand1: Constant) extends Constant
   case class Shl(
       nsw: Boolean,
       nuw: Boolean,
       operand0: Constant,
       operand1: Constant
-  ) extends Constant
-  case class LShr(
-      exact: Boolean,
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
-  case class AShr(
-      exact: Boolean,
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
-  case class And(
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
-  case class Or(
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
-  case class Xor(
-      operand0: Constant,
-      operand1: Constant
-  ) extends Constant
+    ) extends Constant
+  case class LShr(exact: Boolean, operand0: Constant, operand1: Constant)
+      extends Constant
+  case class AShr(exact: Boolean, operand0: Constant, operand1: Constant)
+      extends Constant
+  case class And(operand0: Constant, operand1: Constant) extends Constant
+  case class Or(operand0: Constant, operand1: Constant)  extends Constant
+  case class Xor(operand0: Constant, operand1: Constant) extends Constant
   case class GetElementPtr(
       inBounds: Boolean,
       address: Constant,
       indices: List[Constant]
-  ) extends Constant
-  case class Trunc(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class ZExt(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class SExt(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class FPToUI(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class FPToSI(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class UIToFP(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class SIToFP(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class FPTrunc(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class FPExt(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class PtrToInt(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class IntToPtr(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class BitCast(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
-  case class AddrSpaceCast(
-      operand0: Constant,
-      t: Type
-  ) extends Constant
+    ) extends Constant
+  case class Trunc(operand0: Constant, t: Type)         extends Constant
+  case class ZExt(operand0: Constant, t: Type)          extends Constant
+  case class SExt(operand0: Constant, t: Type)          extends Constant
+  case class FPToUI(operand0: Constant, t: Type)        extends Constant
+  case class FPToSI(operand0: Constant, t: Type)        extends Constant
+  case class UIToFP(operand0: Constant, t: Type)        extends Constant
+  case class SIToFP(operand0: Constant, t: Type)        extends Constant
+  case class FPTrunc(operand0: Constant, t: Type)       extends Constant
+  case class FPExt(operand0: Constant, t: Type)         extends Constant
+  case class PtrToInt(operand0: Constant, t: Type)      extends Constant
+  case class IntToPtr(operand0: Constant, t: Type)      extends Constant
+  case class BitCast(operand0: Constant, t: Type)       extends Constant
+  case class AddrSpaceCast(operand0: Constant, t: Type) extends Constant
   case class ICmp(
       iPredicate: IntegerPredicate,
       operand0: Constant,
       operand1: Constant
-  ) extends Constant
+    ) extends Constant
   case class FCmp(
       fpPredicate: FloatingPointPredicate,
       operand0: Constant,
       operand1: Constant
-  ) extends Constant
+    ) extends Constant
   case class Select(
       condition: Constant,
       trueValue: Constant,
       falseValue: Constant
-  ) extends Constant
-  case class ExtractElement(
-      vector: Constant,
-      index: Constant
-  ) extends Constant
-  case class InsertElement(
-      vector: Constant,
-      element: Constant,
-      index: Constant
-  ) extends Constant
+    ) extends Constant
+  case class ExtractElement(vector: Constant, index: Constant) extends Constant
+  case class InsertElement(vector: Constant, element: Constant, index: Constant)
+      extends Constant
   case class ShuffleVector(
       operand0: Constant,
       operand1: Constant,
       mask: Constant
-  ) extends Constant
-  case class ExtractValue(
-      aggregate: Constant,
-      indices: List[Int]
-  ) extends Constant
+    ) extends Constant
+  case class ExtractValue(aggregate: Constant, indices: List[Int])
+      extends Constant
   case class InsertValue(
       aggregate: Constant,
       element: Constant,
       indices: List[Int]
-  ) extends Constant
+    ) extends Constant
 }
 // Since LLVM types don't include signedness, there's ambiguity in interpreting
 // an constant as an Integer. The LLVM assembly printer prints integers as signed, but

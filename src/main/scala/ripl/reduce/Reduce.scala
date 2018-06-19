@@ -81,11 +81,11 @@ class Reduce(val astIn: a0.Ast) {
   def findCycle(
       node: a0.Node,
       history: List[a1.Cycle.Component]
-  ): List[a1.Cycle.Component] = {
+    ): List[a1.Cycle.Component] = {
     def impl(
         accum: List[a1.Cycle.Component],
         rem: List[a1.Cycle.Component]
-    ): List[a1.Cycle.Component] = rem match {
+      ): List[a1.Cycle.Component] = rem match {
       case Nil => Nil
       case head :: tail =>
         if (head.node eq node) (head :: accum).reverse
@@ -99,7 +99,7 @@ class Reduce(val astIn: a0.Ast) {
   def addToHistory(
       input: a0.Node,
       mapping: a0.Node => List[ReduceM[a1.Node]]
-  ): List[ReduceM[a1.Node]] = {
+    ): List[ReduceM[a1.Node]] = {
     val cycleComponent = input match {
       case f @ a0.Fun(params, retTypeOpt, _) =>
         a1.Cycle.Fun(
@@ -118,7 +118,7 @@ class Reduce(val astIn: a0.Ast) {
   def catchCycles(
       input: a0.Node,
       mapping: a0.Node => List[ReduceM[a1.Node]]
-  ): List[ReduceM[a1.Node]] = findCycle(input, history) match {
+    ): List[ReduceM[a1.Node]] = findCycle(input, history) match {
     case Nil => mapping(input)
     case cycle =>
       List(
@@ -139,7 +139,7 @@ class Reduce(val astIn: a0.Ast) {
   def catchCyclesAndAddToHistory(
       input: a0.Node,
       mapping: a0.Node => List[ReduceM[a1.Node]]
-  ): List[ReduceM[a1.Node]] = catchCycles(input, addToHistory(_, mapping))
+    ): List[ReduceM[a1.Node]] = catchCycles(input, addToHistory(_, mapping))
 
   val nodes = new IdentityMap[a0.Node, List[ReduceM[a1.Node]]]
 
@@ -249,7 +249,7 @@ class Reduce(val astIn: a0.Ast) {
       def chooseArgs(
           _f: ReduceM[a1.Exp],
           argOverloads: List[List[ReduceM[a1.Exp]]]
-      ): ReduceM[a1.Exp] = {
+        ): ReduceM[a1.Exp] = {
         _f.value.t match {
           case a1.TFun(params, ret) =>
             val paramCount = params.length

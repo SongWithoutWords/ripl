@@ -25,7 +25,7 @@ case class FunctionType(
     resultType: Type,
     argumentTypes: List[Type],
     isVarArg: Boolean = false
-) extends Type
+  ) extends Type
 // <http://llvm.org/docs/LangRef.html#vector-type>
 case class VectorType(nVectorElements: Int, elementType: Type) extends Type
 // <http://llvm.org/docs/LangRef.html#structure-type>

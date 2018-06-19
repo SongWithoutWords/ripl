@@ -157,7 +157,7 @@ case object ParseTreeToAst {
       def nestedNamespacesFromSelection(
           name: Exp,
           units: List[(String, Node)]
-      ): (String, Namespace) = name match {
+        ): (String, Namespace) = name match {
         case Select(root, last) =>
           nestedNamespacesFromSelection(
             root,

@@ -15,13 +15,17 @@ import ripl.reduce.CustomMatchers.matchAst
 
 class TestReduce extends FreeSpec with Matchers {
 
-  def test(in: Multi[String, a0.Node])(out: Multi[String, a1.Node])(
-      errs: Error*
-  ): Unit = Reduce(in) should matchAst((out, Set(errs: _*)))
+  def test(
+      in: Multi[String, a0.Node]
+    )(out: Multi[String, a1.Node]
+    )(errs: Error*
+    ): Unit = Reduce(in) should matchAst((out, Set(errs: _*)))
 
-  def test(in: (String, a0.Node)*)(out: (String, a1.Node)*)(
-      errs: Error*
-  ): Unit = test(Multi(in: _*))(Multi(out: _*))(errs: _*)
+  def test(
+      in: (String, a0.Node)*
+    )(out: (String, a1.Node)*
+    )(errs: Error*
+    ): Unit = test(Multi(in: _*))(Multi(out: _*))(errs: _*)
 
   def testErrs(in: Multi[String, a0.Node])(errs: Error*): Unit =
     Reduce(in)._2.shouldBe(Set(errs: _*))

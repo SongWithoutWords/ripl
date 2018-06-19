@@ -21,7 +21,8 @@ object MultiMap {
       // for functor
       override def map[A, B](
           multiMap: MultiMap[K, A]
-      )(f: A => B): MultiMap[K, B] =
+        )(f: A => B
+        ): MultiMap[K, B] =
         MultiMap(multiMap.underlyingMap.mapValues(_.map(f)))
 
       // for foldable
@@ -31,16 +32,18 @@ object MultiMap {
         }
       }
 
-      def foldRight[A, B](fa: MultiMap[K, A], lb: cats.Eval[B])(
-          f: (A, cats.Eval[B]) => cats.Eval[B]
-      ): cats.Eval[B] = ???
+      def foldRight[A, B](
+          fa: MultiMap[K, A],
+          lb: cats.Eval[B]
+        )(f: (A, cats.Eval[B]) => cats.Eval[B]
+        ): cats.Eval[B] = ???
 
       // for traversable
       def traverse[G[_], A, B](
           multiMap: MultiMap[K, A]
-      )(f: A => G[B])(
-          implicit evidence$1: Applicative[G]
-      ): G[MultiMap[K, B]] = {
+        )(f: A => G[B]
+        )(implicit evidence$1: Applicative[G]
+        ): G[MultiMap[K, B]] = {
         multiMap.underlyingMap.toList
           .traverse { kv: (K, List[A]) =>
             kv._2.traverse(f).map((kv._1, _))

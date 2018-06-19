@@ -228,7 +228,7 @@ case object IRBuilderInstruction {
       vector: Operand,
       element: Operand,
       index: Operand
-  ): IRBuilder[Operand] =
+    ): IRBuilder[Operand] =
     emitInstr(
       typeOf(vector),
       Instruction.InsertElement(vector, element, index, InstructionMetadata())
@@ -238,7 +238,7 @@ case object IRBuilderInstruction {
       vectorA: Operand,
       vectorB: Operand,
       mask: Constant
-  ): IRBuilder[Operand] =
+    ): IRBuilder[Operand] =
     // TODO: This return type is WRONG
     emitInstr(
       typeOf(vectorA),
@@ -255,7 +255,7 @@ case object IRBuilderInstruction {
       aggregate: Operand,
       element: Operand,
       indices: List[Int]
-  ): IRBuilder[Operand] =
+    ): IRBuilder[Operand] =
     emitInstr(
       typeOf(aggregate),
       Instruction
@@ -272,7 +272,7 @@ case object IRBuilderInstruction {
       pred: FloatingPointPredicate,
       a: Operand,
       b: Operand
-  ): IRBuilder[Operand] =
+    ): IRBuilder[Operand] =
     emitInstr(
       TypeAliases.i1,
       Instruction.FCmp(pred, a, b, InstructionMetadata())
@@ -283,23 +283,18 @@ case object IRBuilderInstruction {
     emitInstr(ty, Instruction.Phi(ty, incoming, InstructionMetadata()))
   }
 
-  def defaultCallInstruction(
-      f: Operand,
-      args: List[Argument]
-  ) = Instruction.Call(
-    None, // tailCallKind
-    CallingConvention.Fast,
-    Nil, // returnAttributes
-    f, // callableOperand
-    args,
-    Nil, // functionAttributes
-    InstructionMetadata() // metadata
-  )
+  def defaultCallInstruction(f: Operand, args: List[Argument]) =
+    Instruction.Call(
+      None, // tailCallKind
+      CallingConvention.Fast,
+      Nil, // returnAttributes
+      f, // callableOperand
+      args,
+      Nil, // functionAttributes
+      InstructionMetadata() // metadata
+    )
 
-  def call(
-      f: Operand,
-      args: List[Argument]
-  ): IRBuilder[Option[Operand]] = {
+  def call(f: Operand, args: List[Argument]): IRBuilder[Option[Operand]] = {
     val instr = defaultCallInstruction(f, args)
     typeOf(f) match {
       case FunctionType(VoidType, _, _) =>

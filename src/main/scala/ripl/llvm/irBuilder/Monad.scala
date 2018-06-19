@@ -81,7 +81,7 @@ case class PartialBlock(
     partialBlockName: Name,
     partialBlockInstrs: SnocList[Named[Instruction]],
     partialBlockTerm: Option[Named[Terminator]]
-)
+  )
 
 case object PartialBlock {
   def empty(name: Name) = PartialBlock(name, SnocList(Nil), None)
@@ -97,7 +97,7 @@ case class IRBuilderState(
     builderNameSuggestion: Option[String],
     builderBlocks: SnocList[BasicBlock],
     builderBlock: Option[PartialBlock]
-)
+  )
 
 case object IRBuilderState {
   val empty = IRBuilderState
@@ -108,7 +108,7 @@ case object runIRBuilder {
   def apply[A](
       initialState: IRBuilderState,
       computation: IRBuilder[A]
-  ): (A, List[BasicBlock]) = {
+    ): (A, List[BasicBlock]) = {
     val (finalState, result) = computation.run(initialState).value
     (result, finalState.builderBlocks.getSnocList)
   }
@@ -128,7 +128,7 @@ case object execIRBuilder {
   def apply[A](
       initialState: IRBuilderState,
       computation: IRBuilder[A]
-  ): List[BasicBlock] =
+    ): List[BasicBlock] =
     runIRBuilder(initialState, computation)._2
 }
 

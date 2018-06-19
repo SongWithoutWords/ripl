@@ -38,7 +38,7 @@ case object FunctionAttribute {
   case class StringAttribute(
       stringAttributeKind: String,
       stringAttributeValue: String // ^ Use "" for no value // the two are conflated
-  ) extends FunctionAttribute
+    ) extends FunctionAttribute
   // ^ AllocSize 0 (Just 0) is invalid
   case class AllocSize(a: Int, b: Option[Int]) extends FunctionAttribute
   case object WriteOnly                        extends FunctionAttribute

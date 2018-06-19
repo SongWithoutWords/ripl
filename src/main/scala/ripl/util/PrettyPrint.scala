@@ -15,7 +15,7 @@ object PrettyPrint {
     def printTraversable[A](
         traversable: TraversableOnce[Any],
         indentation: Int
-    ): String =
+      ): String =
       "\n" + (" " * indentation) + "[ " + traversable
         .map { term =>
           printTerm(term, indentation + 1)

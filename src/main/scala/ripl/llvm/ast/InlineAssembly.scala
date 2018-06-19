@@ -20,4 +20,4 @@ case class InlineAssembly(
     hasSideEffects: Boolean,
     alignStack: Boolean,
     dialect: Dialect
-) extends CallableOperand
+  ) extends CallableOperand
