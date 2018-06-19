@@ -45,6 +45,7 @@ case object Lex {
     case c => isValidInSymbol(c)
   }
 
+  def apply(input: String): List[Token]     = Lex(input.toList)
   def apply(input: List[Char]): List[Token] = Token.Newline :: lex(Nil, input)
 
   sealed trait Error
