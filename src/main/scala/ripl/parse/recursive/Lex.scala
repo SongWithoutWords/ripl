@@ -124,9 +124,4 @@ case object Lex {
       case rest => (rest, result)
     }
   }
-
-  private def lexNumber(input: List[Char]): (List[Char], Either[Token, Error]) =
-    input match {
-      case c :: rest if c.isDigit => ???
-    }
 }
