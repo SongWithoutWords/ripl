@@ -55,13 +55,10 @@ case object Lex {
   }
 
   @tailrec
+  // Must accumulate manually because scala doesn't support tail rec modulo cons
   private def lex(accum: List[Token], input: List[Char]): List[Token] = {
 
     import Token._
-
-    // I wish something like this would work
-    // @inline
-    // def ret(t: Token, rest: List[Char]) = lex(Newline :: accum, rest)
 
     // TODO: pattern match on input first, can then organize by the lookahead length
     input match {
