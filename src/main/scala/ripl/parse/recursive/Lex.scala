@@ -63,6 +63,7 @@ case object Lex {
     // @inline
     // def ret(t: Token, rest: List[Char]) = lex(Newline :: accum, rest)
 
+    // TODO: pattern match on input first, can then organize by the lookahead length
     input match {
       case Nil => accum.reverse
 
@@ -75,6 +76,10 @@ case object Lex {
       case '^' :: rest  => lex(Circumflex :: accum, rest)
       case '~' :: rest  => lex(Tilda :: accum, rest)
 
+      case c :: rest if isValidFirstInSymbol(c) =>
+        val (remainingInput, token) = lexSymbol(List(c), rest)
+        lex(token :: accum, remainingInput)
+
       case c :: rest if c.isDigit => {
         val (remainingInput, tokenOrError) = lexNumber(rest)
         ???
@@ -82,12 +87,23 @@ case object Lex {
 
       }
 
+      // case c :: rest
+
       // case 't' :: 'r' :: 'u' :: 'e' :: rest =>
       //   rest match {
       //     case Nil =>
       //   }
     }
   }
+
+  // Returns the remaining input
+  @tailrec
+  private def lexSymbol(accum: List[Char],
+                        input: List[Char]): (List[Char], Token.Symbol) =
+    input match {
+      case c :: rest if isValidInSymbol(c) => lexSymbol(c :: accum, rest)
+      case rest                            => (rest, Token.Symbol(accum.reverse.mkString))
+    }
 
   private def lexNumber(input: List[Char]): (List[Char], Either[Token, Error]) =
     input match {
