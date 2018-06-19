@@ -30,7 +30,7 @@ class TestLexer extends FreeSpec with Matchers {
     test("^")(Circumflex)
     test("~")(Tilda)
 
-   }
+  }
 
   "atoms" - {
     "symbols" - {
@@ -79,8 +79,8 @@ class TestLexer extends FreeSpec with Matchers {
       }
     }
     "boolean literals" - {
-      test("true")(VBln(true))
-      test("false")(VBln(false))
+      test("true")(Symbol("true"))
+      test("false")(Symbol("false"))
     }
     "integer literals" - {
       test("0")(VInt(0))
