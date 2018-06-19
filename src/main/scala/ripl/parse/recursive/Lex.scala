@@ -39,7 +39,7 @@ case object Lex {
   def isValidFirstInSymbol(c: Char) = c match {
 
     // Reserved unary prefixes corresponding to the PrefixOperator tokens
-    // Cannot be used at start of symbol, though they can be used within
+    // They cannot be used at the start of symbol, though they can be used within
     case '\'' => true
     case '~' => true
     case '^' => true
