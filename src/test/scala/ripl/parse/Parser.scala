@@ -26,43 +26,6 @@ class TestParser extends FreeSpec with Matchers {
 
   "expressions" - {
     "exp0" - {
-      "names" - {
-        "simple names" - {
-          testName("John")
-          testName("tim")
-          testName("H2O")
-        }
-        "naming conventions" - {
-          testName("camelCase")
-          testName("StudlyCase")
-          testName("snake_case")
-          testName("SCREAMING_SNAKE_CASE")
-          testName("_surrounded_with_under_scores_")
-        }
-        "names with keyword substrings" - {
-          testName("andy")
-          testName("ornate")
-          testName("trueism")
-          testName("falsely")
-          testName("adrift")
-          testName("earthen")
-          testName("elsewhere")
-        }
-        "operators" - {
-          testName("+")
-          testName("-")
-          testName("*")
-          testName("/")
-          testName("%")
-          testName(":")
-          testName("++")
-          testName(">>=")
-          testName("<>")
-          testName("<$>")
-          testName("<:>")
-          testName("?!")
-        }
-      }
       "boolean literals" - {
         test("true")(VBln(true))
         test("false")(VBln(false))
