@@ -4,8 +4,6 @@ import scala.annotation.tailrec
 
 case object Lex {
 
-  import Token._
-
   def isC0_ControlCharacter(c: Char) = c < '\u001f'
 
   def isC1_ControlCharacter(c: Char) = '\u007f' <= c && c <= '\u009f'
@@ -58,6 +56,8 @@ case object Lex {
 
   @tailrec
   private def lex(accum: List[Token], input: List[Char]): List[Token] = {
+
+    import Token._
 
     // I wish something like this would work
     // @inline
