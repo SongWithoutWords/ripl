@@ -84,9 +84,9 @@ case object Lex {
     }
   }
 
-  private def lexNumber(input: List[Char]): (List[Char], Either[Token, Error()]) =
+  private def lexNumber(input: List[Char]): (List[Char], Either[Token, Error]) =
     input match {
-      case c :: rest if c.isDigit => 
+      case c :: rest if c.isDigit => ???
     }
 
   // def app()
