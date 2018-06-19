@@ -19,6 +19,7 @@ case object Lex {
     case ' ' => false
 
     // Punctuation
+    // case ':' => false // May be required in future
     case '"' => false
     case '`' => false
     case ',' => false
