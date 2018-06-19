@@ -46,7 +46,7 @@ case object Lex {
   }
 
   def apply(input: String): List[Token]     = Lex(input.toList)
-  def apply(input: List[Char]): List[Token] = Token.Newline :: lex(Nil, input)
+  def apply(input: List[Char]): List[Token] = lex(Nil, input)
 
   sealed trait Error
   case object Error {
