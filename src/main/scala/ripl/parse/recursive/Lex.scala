@@ -76,13 +76,15 @@ case object Lex {
       case '~' :: rest  => lex(Tilda :: accum, rest)
 
       case c :: rest if c.isDigit =>
-        val (remainingInput, token) = lexNumberOrSymbol(List(c), LexInt, rest)
-        lex(token :: accum, remainingInput)
+        val (remaining, token) = lexNumberOrSymbol(List(c), LexInt, rest)
+        lex(token :: accum, remaining)
 
       case c :: rest if isValidFirstInSymbol(c) =>
-        val (remainingInput, token) =
-          lexNumberOrSymbol(List(c), LexSymbol, rest)
-        lex(token :: accum, remainingInput)
+        val (remaining, token) = lexNumberOrSymbol(List(c), LexSymbol, rest)
+        lex(token :: accum, remaining)
+
+      case "\"" :: rest =>
+        val (remainingInput, token)
     }
   }
 
