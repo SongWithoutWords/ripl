@@ -2,6 +2,7 @@ package ripl.parse.recursive
 
 import org.scalatest._
 
+import ripl.ast.common._
 import ripl.parse.recursive._
 
 import ripl.reduce.CustomMatchers.matchAst
@@ -18,7 +19,7 @@ class TestLexer extends FreeSpec with Matchers {
 
   import Token._
 
-  "single tokens" - {
+  "formatting tokens" - {
     test("a single space", " ")()
     test("\n")(Newline)
 
@@ -29,6 +30,9 @@ class TestLexer extends FreeSpec with Matchers {
     test("^")(Circumflex)
     test("~")(Tilda)
 
+   }
+
+  "atoms" - {
     "symbols" - {
       "simple" - {
         testSymbol("John")
@@ -73,6 +77,24 @@ class TestLexer extends FreeSpec with Matchers {
         testSymbol("ᚠᛇᚻ᛫ᛒᛦᚦ")
         test("Τη γλώσσα")(Symbol("Τη"), Symbol("γλώσσα"))
       }
+    }
+    "boolean literals" - {
+      test("true")(VBln(true))
+      test("false")(VBln(false))
+    }
+    "integer literals" - {
+      test("0")(VInt(0))
+      test("4")(VInt(4))
+      test("1536")(VInt(1536))
+    }
+    "floating point literals" - {
+      test("0.0")(VFlt(0.0f))
+      test("4.037")(VFlt(4.037f))
+      test("0.019")(VFlt(0.019f))
+    }
+    "string literals" - {
+      test("\"hello world!\"")(VStr("hello world!"))
+
     }
   }
 

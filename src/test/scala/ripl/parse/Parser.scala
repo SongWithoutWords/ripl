@@ -26,27 +26,9 @@ class TestParser extends FreeSpec with Matchers {
 
   "expressions" - {
     "exp0" - {
-      "boolean literals" - {
-        test("true")(VBln(true))
-        test("false")(VBln(false))
-      }
-      "integer literals" - {
-        test("0")(VInt(0))
-        test("4")(VInt(4))
-        test("1536")(VInt(1536))
-      }
-      "floating point literals" - {
-        test("0.0")(VFlt(0.0f))
-        test("4.037")(VFlt(4.037f))
-        test("0.019")(VFlt(0.019f))
-      }
-      "string literals" - {
-        test("\"hello world!\"")(VStr("hello world!"))
-
-        test("if value then \"true\" else \"false\"")(
-          If(Name("value"), VStr("true"), VStr("false"))
-        )
-      }
+      test("if value then \"true\" else \"false\"")(
+        If(Name("value"), VStr("true"), VStr("false"))
+      )
       "bracketed expressions" - {
         test("a * (x + b)") {
           App(Name("*"), Name("a"), App(Name("+"), Name("x"), Name("b")))
