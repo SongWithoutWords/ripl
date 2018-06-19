@@ -8,8 +8,8 @@ case object Token {
 
   sealed trait PrefixOperator extends Token
   case object Apostrophe extends PrefixOperator
-  case object Tilda extends PrefixOperator
   case object Circumflex extends PrefixOperator
+  case object Tilda extends PrefixOperator
 
   case class Symbol(s: String) extends Token
 

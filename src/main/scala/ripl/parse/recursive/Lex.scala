@@ -41,9 +41,8 @@ case object Lex {
     // Reserved unary prefixes corresponding to the PrefixOperator tokens
     // They cannot be used at the start of symbol, though they can be used within
     case '\'' => true
-    case '~' => true
     case '^' => true
-    case '@' => true
+    case '~' => true
 
     case c => isValidInSymbol(c)
   }
@@ -65,6 +64,10 @@ case object Lex {
       case '\n' :: rest => Newline :: lex(rest)
       case '(' :: rest => LParen :: lex(rest)
       case ')' :: rest => RParen :: lex(rest)
+
+      case '\'' :: rest => Apostrophe :: lex(rest)
+      case '^' :: rest => Circumflex :: lex(rest)
+      case '~' :: rest => Tilda :: lex(rest)
 
       case c :: rest if c.isDigit => {
         val (remainder, tokenOrError) = lexNumber(rest)
