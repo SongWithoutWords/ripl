@@ -39,8 +39,8 @@ case object Lex {
     // Reserved unary prefixes corresponding to the PrefixOperator tokens
     // They cannot be used at the start of symbol, though they can be used within
     case '\'' => true
-    case '^' => true
-    case '~' => true
+    case '^'  => true
+    case '~'  => true
 
     case c => isValidInSymbol(c)
   }
@@ -53,7 +53,6 @@ case object Lex {
     case class UnexpectedChar(c: Char)
     case class TooManyDecimalPoints(c: Char)
   }
-
 
   @tailrec
   private def lex(accum: List[Token], input: List[Char]): List[Token] = {
@@ -80,12 +79,11 @@ case object Lex {
         ???
         // lexNumber(c :: rest) match {
 
-
       }
 
       // case 't' :: 'r' :: 'u' :: 'e' :: rest =>
       //   rest match {
-      //     case Nil => 
+      //     case Nil =>
       //   }
     }
   }
