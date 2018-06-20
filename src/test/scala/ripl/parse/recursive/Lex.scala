@@ -97,6 +97,12 @@ class TestLexer extends FreeSpec with Matchers {
 
     }
   }
+  "comments" - {
+    test("; comment")()
+    test("a ; comment")(Symbol("a"))
+    test("a ; comment a")(Symbol("a"))
+    test("a ; comment \n a")(Symbol("a"), Symbol("a"))
+  }
 
   "groups of tokens" - {}
 }
