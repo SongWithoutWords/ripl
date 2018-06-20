@@ -1,0 +1,63 @@
+
+; Pseudo-specification of the whitespace rules
+e0
+  => e0
+
+(e0)
+=> (e0)
+
+e0 ... en
+  => (e0 ... en)
+
+(e0 ... en)
+  => (e0 ... en)
+
+((e0 ... en))
+  => ((e0 ... en))
+
+
+e0 ... em
+      .
+      .
+      .
+      en
+
+(e0 ... em ... en)
+
+
+if a
+  b
+  c
+=> (if a b c)
+
+if a
+  b  c
+=> (if a b c)
+
+; What would the implications be of a '.' for selection in a lisp style syntax?
+
+vector.x
+  => (x vector)
+
+n.factorial
+  => (factorial n)
+
+map.contains key
+  => (contains map key)
+
+numbers.filter(λ (x) (> x 0)).map(λ (x) (* x 7))
+
+  => (map numbers.filter(λ (x) (> x 0)) (λ (x) (* x 7)))
+
+  => (map (filter numbers (λ (x) (> x 0))) (λ (x) (* x 7)))
+
+; Can something similar be accomplished with '{}'?
+
+{vector x}
+  => (x vector)
+
+{n factorial}
+  => (factorial n)
+
+{{numbers filter (lambda(x) (> x 2))} map (λ (x) (* x 7))}
+
