@@ -114,7 +114,7 @@ case object Lex {
     }
   }
 
-  // @tailrec
+  @tailrec
   private def lexString(
       accum: List[Char],
       input: List[Char]
