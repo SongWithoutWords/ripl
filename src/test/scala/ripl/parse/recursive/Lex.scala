@@ -104,5 +104,97 @@ class TestLexer extends FreeSpec with Matchers {
     test("a ; comment \n b")(Symbol("a"), Symbol("b"))
   }
 
-  "groups of tokens" - {}
+  "indentation" - {
+    "delimited by whitespace" - {
+      test(
+        "  a"
+      )(Indent, Symbol("a"), Dedent)
+      test(
+        """  a
+          |  b""".stripMargin
+      )(Indent, Symbol("a"), Newline, Symbol("b"), Dedent)
+
+      test(
+        """  a
+          |    i""".stripMargin
+      )(Indent, Symbol("a"), Newline, Indent, Symbol("i"), Dedent, Dedent)
+
+      test(
+        """  a
+          |  b
+          |    i
+          |    j
+          |    k""".stripMargin
+      )(
+        // format: off
+        Indent,
+          Symbol("a"), Newline,
+          Symbol("b"), Newline,
+          Indent,
+            Symbol("i"), Newline,
+            Symbol("j"), Newline,
+            Symbol("k"),
+          Dedent,
+        Dedent
+        // format: on
+      )
+
+      test(
+        """  a
+          |
+          |  b
+          |  c
+          |    i
+          |  d
+          |  e
+          |
+          |    j
+          |  f""".stripMargin
+      )(
+        // format: off
+        Indent,
+          Symbol("a"), Newline,
+          Symbol("b"), Newline,
+          Symbol("c"), Newline,
+          Indent,
+            Symbol("i"), Newline,
+          Dedent,
+          Symbol("d"), Newline,
+          Symbol("e"), Newline,
+          Indent,
+            Symbol("j"), Newline,
+          Dedent,
+          Symbol("f"), Newline,
+        Dedent
+        // format: on
+      )
+
+      test(
+        """  a
+          |    i
+          |      x
+          |      y
+          |    j
+          |      z
+          """.stripMargin
+      )(
+        // format: off
+        Indent,
+          Symbol("a"),
+          Indent,
+            Symbol("i"),
+            Indent,
+              Symbol("x"),
+              Symbol("y"),
+            Dedent,
+            Symbol("j"),
+            Indent,
+              Symbol("z"),
+            Dedent,
+          Dedent,
+        Dedent
+        // format: on
+      )
+    }
+  }
 }
