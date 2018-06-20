@@ -73,3 +73,7 @@ numbers.filter(λ (x) (> x 0)).map(λ (x) (* x 7))
 
 {{numbers filter (lambda(x) (> x 2))} map (λ (x) (* x 7))}
 
+; could this numbers.filter example be clearer with a [] syntax?
+; I'm not so sure
+numbers.filter
+
