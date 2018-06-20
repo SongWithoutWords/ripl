@@ -1,0 +1,6 @@
+; is it possible that I could get infix operations for free because I have a statically typed language?
+; that I could try interpreting `a b c` as both (a b c) and (b a c)?
+; is there any valid input that could type check both ways and be ambiguous?
+; I suppose that with overloading that is entirely possible
+; Though I could then treat the shuffle as a demerit agains choosing that version,
+; almost like an implicit conversion
