@@ -1,19 +1,31 @@
 
-; Pseudo-specification of the whitespace rules
+; Example applications of the grammar rules
+
+; Lone exps
 e0
   => e0
 
 (e0)
 => (e0)
 
+(e0 ... en)
+=> (e0 ... en)
+
+; Exps on a line
 e0 ... en
   => (e0 ... en)
 
-(e0 ... en)
-  => (e0 ... en)
 
 ((e0 ... en))
   => ((e0 ... en))
+
+; Exps on a line, continued with indentation
+e0
+  e1
+  .
+  .
+  .
+  en
 
 
 e0 ... em
