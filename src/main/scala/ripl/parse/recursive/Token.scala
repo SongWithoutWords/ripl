@@ -3,6 +3,8 @@ package ripl.parse.recursive
 trait Token // also extended by ValAtom
 case object Token {
   case object Newline extends Token
+  case object Indent  extends Token
+  case object Dedent  extends Token
   case object LParen  extends Token
   case object RParen  extends Token
 
