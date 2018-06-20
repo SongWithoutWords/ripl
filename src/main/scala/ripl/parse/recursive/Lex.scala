@@ -32,8 +32,12 @@ case object Lex {
     case c => isValidInSymbol(c)
   }
 
-  def apply(input: String): List[Token]     = Lex(input.toList)
-  def apply(input: List[Char]): List[Token] = lex(Nil, input)
+  def apply(input: String): List[Token] = Lex(input.toList)
+  def apply(input: List[Char]): List[Token] = {
+    val (tokens: List[Token], indentLevels: List[Int], remainingInput) =
+      lexLeadingWhitespace(0, Nil, input)
+    lex(tokens, indentLevels, remainingInput)
+  }
 
   sealed trait Error
   case object Error {
@@ -43,36 +47,44 @@ case object Lex {
 
   @tailrec
   // Must accumulate manually because scala doesn't support tail rec modulo cons
-  private def lex(accum: List[Token], input: List[Char]): List[Token] = {
+  private def lex(
+      accum: List[Token],
+      indentLevels: List[Int],
+      input: List[Char]
+    ): List[Token] = {
 
     import Token._
 
     // Could pattern match input first if some need lookahead
     input match {
-      case Nil => accum.reverse
+      case Nil => accum.reverse ++ emitDedentsAtEnd(indentLevels)
 
-      case ' ' :: rest  => lex(accum, rest)
-      case '\n' :: rest => lex(Newline :: accum, rest)
-      case '(' :: rest  => lex(LParen :: accum, rest)
-      case ')' :: rest  => lex(RParen :: accum, rest)
+      case ' ' :: rest => lex(accum, indentLevels, rest)
+      case '(' :: rest => lex(LParen :: accum, indentLevels, rest)
+      case ')' :: rest => lex(RParen :: accum, indentLevels, rest)
 
-      case '\'' :: rest => lex(Apostrophe :: accum, rest)
-      case '^' :: rest  => lex(Circumflex :: accum, rest)
-      case '~' :: rest  => lex(Tilda :: accum, rest)
+      case '\'' :: rest => lex(Apostrophe :: accum, indentLevels, rest)
+      case '^' :: rest  => lex(Circumflex :: accum, indentLevels, rest)
+      case '~' :: rest  => lex(Tilda :: accum, indentLevels, rest)
 
-      case ';' :: rest => lex(accum, lexComment(rest))
+      case ';' :: rest => lex(accum, indentLevels, lexComment(rest))
+
+      case '\n' :: rest =>
+        val (tokens, newIndentLevels, remainingInput) =
+          lexLeadingWhitespace(0, indentLevels, rest)
+        lex(tokens ++ (Newline :: accum), newIndentLevels, rest)
 
       case c :: rest if c.isDigit =>
         val (remaining, token) = lexNumberOrSymbol(List(c), LexInt, rest)
-        lex(token :: accum, remaining)
+        lex(token :: accum, indentLevels, remaining)
 
       case c :: rest if isValidFirstInSymbol(c) =>
         val (remaining, token) = lexNumberOrSymbol(List(c), LexSymbol, rest)
-        lex(token :: accum, remaining)
+        lex(token :: accum, indentLevels, remaining)
 
       case '"' :: rest =>
         val (remaining, token) = lexString(Nil, rest)
-        lex(token :: accum, remaining)
+        lex(token :: accum, indentLevels, remaining)
     }
   }
 
@@ -80,6 +92,56 @@ case object Lex {
   case object LexInt    extends SymbolLexState
   case object LexFloat  extends SymbolLexState
   case object LexSymbol extends SymbolLexState
+  private def emitDedentsAtEnd(indentLevels: List[Int]): List[Token] =
+    List.fill(indentLevels.length)(Token.Dedent)
+
+  @tailrec
+  private def lexLeadingWhitespace(
+      spaceCount: Int,
+      indentLevels: List[Int],
+      input: List[Char]
+    ): (List[Token], List[Int], List[Char]) = {
+
+    def maxIndent(indents: List[Int]): Int = indents match {
+      case Nil       => 0
+      case x :: rest => x
+    }
+
+    def resolveIndentation(
+        spaceCount: Int,
+        indentLevels: List[Int]
+      ): (List[Token], List[Int]) = {
+      val currentIndent = maxIndent(indentLevels)
+      if (spaceCount == currentIndent) {
+        (Nil, indentLevels) // no change
+      } else if (spaceCount > currentIndent) {
+        (Token.Indent :: Nil, spaceCount :: indentLevels)
+      } else {
+
+        val (levelsDedented, levelsRemaining) =
+          indentLevels.span(_ > currentIndent)
+        (List.fill(levelsDedented.length)(Token.Indent), levelsRemaining)
+      }
+    }
+
+    input match {
+
+      case Nil =>
+        (emitDedentsAtEnd(indentLevels), Nil, Nil)
+
+      case c :: rest =>
+        c match {
+          case ' ' => lexLeadingWhitespace(spaceCount + 1, indentLevels, rest)
+
+          case '\n' | ';' => (Nil, indentLevels, input)
+
+          case _ =>
+            val (tokens, newIndentLevels) =
+              resolveIndentation(spaceCount, indentLevels)
+            (tokens, newIndentLevels, input)
+        }
+    }
+  }
 
   @tailrec
   private def lexComment(input: List[Char]): List[Char] = input match {
