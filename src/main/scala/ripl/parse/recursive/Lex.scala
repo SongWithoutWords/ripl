@@ -16,7 +16,8 @@ case object Lex {
   def isValidInSymbol(c: Char) = c match {
 
     // May require  ':' in future
-    case ' ' | '"' | '`' | ',' | '.' | '(' | ')' | '[' | ']' | '{' | '}' =>
+    case ' ' | '"' | '`' | ',' | ';' | '.' | '(' | ')' | '[' | ']' | '{' |
+        '}' =>
       false
 
     case c => !isControlCharacter(c)
@@ -59,6 +60,8 @@ case object Lex {
       case '^' :: rest  => lex(Circumflex :: accum, rest)
       case '~' :: rest  => lex(Tilda :: accum, rest)
 
+      case ';' :: rest => lex(accum, lexComment(rest))
+
       case c :: rest if c.isDigit =>
         val (remaining, token) = lexNumberOrSymbol(List(c), LexInt, rest)
         lex(token :: accum, remaining)
@@ -77,6 +80,16 @@ case object Lex {
   case object LexInt    extends SymbolLexState
   case object LexFloat  extends SymbolLexState
   case object LexSymbol extends SymbolLexState
+
+  @tailrec
+  private def lexComment(input: List[Char]): List[Char] = input match {
+    case c :: rest =>
+      c match {
+        case '\n' => rest
+        case _    => lexComment(rest)
+      }
+    case Nil => Nil
+  }
 
   // Returns the remaining input
   @tailrec
@@ -124,7 +137,7 @@ case object Lex {
     input match {
       case '"' :: rest => (rest, result)
       case c :: rest   => lexString(c :: accum, rest)
-      case Nil         => ??? // Need a mechanism for returning lexing errors
+      case Nil         => ??? // TODO: need a mechanism for returning lexing errors
     }
   }
 }
