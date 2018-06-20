@@ -1,0 +1,108 @@
+let x 1
+
+namespace math
+
+  let pi 3.14159265
+
+  let tau {2 * pi}
+
+  data Vector
+    f64 x
+    f64 y
+    f64 z
+
+   data ColourRGB
+     i8 r
+     i8 g
+     i8 b
+
+   data ColourRGBA
+     i8 r
+     i8 g
+     i8 b
+     i8 a
+
+   ; or should it be
+   data ColourRGBA
+     r: i8
+     g: i8
+     b: i8
+     a: i8
+
+   template a
+     data Maybe
+       Some a
+       None
+
+   ; def add[A](a0: A, a1: A) = a0 + a1 
+   template a
+     let add
+
+   template a
+    trait functor
+
+      template b
+        map : (-> (-> a b) (f a) (f b))
+
+        ; or
+        map :
+          -> (-> a b) (f a) (f b)
+
+        ; or
+        map : { {a -> b} -> (f a) -> (f b) }
+
+        ; this one didn't turn out very readable
+        map : {
+          a -> b
+          ->
+          f(a)
+          ->
+          f(b)
+          }
+
+        ; or
+        map :
+          ->
+            -> a b
+            f a
+            f b
+
+  define fact(n : i32)
+    if {n <= 1}
+      1
+      {n * fact{n - 1}}
+
+what would this grammar look like?
+
+what about mutation, reference, etc?
+
+~^T would become ~(^(T))? - maybe these symbols can be special
+
+what about ~ ^ T ?
+
+     exp
+        | literal
+        | name
+        | keyword
+        | '@' -- the world
+        | exp ':' exp -- type constraint
+        | (exp*) -- regular expression
+        | exp(exp+) -- neotoric or something (there can be no spaces)
+        | {exp*} -- infix
+        | Indent exp* Dedent 
+        | exp '.' exp -- selection
+        | unary exp
+
+     unary
+        | '^' -- reference
+        | '&' -- owned reference
+        | '~' -- mutable
+
+
+
+        
+
+
+    
+
+
