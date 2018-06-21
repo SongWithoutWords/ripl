@@ -12,10 +12,8 @@ class TestLexer extends FreeSpec with Matchers {
   def test(name: String, input: String)(out: Token*): Unit = name in {
     Lex(input) should matchAst(out)
   }
-  def test(input: String)(out: Token*): Unit =
-    test(input, input)(out: _*)
-  def testSymbol(input: String): Unit =
-    test(input, input)(Token.Symbol(input))
+  def test(input: String)(out: Token*): Unit = test(input, input)(out: _*)
+  def testName(input: String): Unit = test(input, input)(Name(input))
 
   import Token._
 
@@ -29,58 +27,57 @@ class TestLexer extends FreeSpec with Matchers {
     test("'")(Apostrophe)
     test("^")(Circumflex)
     test("~")(Tilda)
-
   }
 
   "atoms" - {
-    "symbols" - {
+    "names" - {
       "simple" - {
-        testSymbol("John")
-        testSymbol("tim")
-        testSymbol("H2O")
+        testName("John")
+        testName("tim")
+        testName("H2O")
       }
       "naming conventions" - {
-        testSymbol("camelCase")
-        testSymbol("StudlyCase")
-        testSymbol("snake_case")
-        testSymbol("SCREAMING_SNAKE_CASE")
-        testSymbol("_surrounded_with_under_scores_")
+        testName("camelCase")
+        testName("StudlyCase")
+        testName("snake_case")
+        testName("SCREAMING_SNAKE_CASE")
+        testName("_surrounded_with_under_scores_")
       }
       "names with keyword-like substrings" - {
-        testSymbol("andy")
-        testSymbol("ornate")
-        testSymbol("trueism")
-        testSymbol("falsely")
-        testSymbol("adrift")
-        testSymbol("earthen")
-        testSymbol("elsewhere")
+        testName("andy")
+        testName("ornate")
+        testName("trueism")
+        testName("falsely")
+        testName("adrift")
+        testName("earthen")
+        testName("elsewhere")
       }
       "operators" - {
-        testSymbol("+")
-        testSymbol("-")
-        testSymbol("*")
-        testSymbol("/")
-        testSymbol("%")
-        testSymbol(":")
-        testSymbol("++")
-        testSymbol(">>=")
-        testSymbol("<>")
-        testSymbol("<$>")
-        testSymbol("<:>")
-        testSymbol("?!")
+        testName("+")
+        testName("-")
+        testName("*")
+        testName("/")
+        testName("%")
+        testName(":")
+        testName("++")
+        testName(">>=")
+        testName("<>")
+        testName("<$>")
+        testName("<:>")
+        testName("?!")
       }
-      "symbols with unicode" - {
-        testSymbol("λ")
-        test("Maebe Fünke")(Symbol("Maebe"), Symbol("Fünke"))
+      "with unicode" - {
+        testName("λ")
+        test("Maebe Fünke")(Name("Maebe"), Name("Fünke"))
 
         // Some test strings from http://www.columbia.edu/~fdc/utf8/
-        testSymbol("ᚠᛇᚻ᛫ᛒᛦᚦ")
-        test("Τη γλώσσα")(Symbol("Τη"), Symbol("γλώσσα"))
+        testName("ᚠᛇᚻ᛫ᛒᛦᚦ")
+        test("Τη γλώσσα")(Name("Τη"), Name("γλώσσα"))
       }
     }
     "boolean literals" - {
-      test("true")(Symbol("true"))
-      test("false")(Symbol("false"))
+      test("true")(Name("true"))
+      test("false")(Name("false"))
     }
     "integer literals" - {
       test("0")(VInt(0))
@@ -99,25 +96,25 @@ class TestLexer extends FreeSpec with Matchers {
   }
   "comments" - {
     test("; comment")()
-    test("a ; comment")(Symbol("a"))
-    test("a ; comment b")(Symbol("a"))
-    test("a ; comment \n b")(Symbol("a"), Symbol("b"))
+    test("a ; comment")(Name("a"))
+    test("a ; comment b")(Name("a"))
+    test("a ; comment \n b")(Name("a"), Name("b"))
   }
 
   "indentation" - {
     "delimited by whitespace" - {
       test(
         "  a"
-      )(Indent, Symbol("a"), Dedent)
+      )(Indent, Name("a"), Dedent)
       test(
         """  a
           |  b""".stripMargin
-      )(Indent, Symbol("a"), Newline, Symbol("b"), Dedent)
+      )(Indent, Name("a"), Newline, Name("b"), Dedent)
 
       test(
         """  a
           |    i""".stripMargin
-      )(Indent, Symbol("a"), Newline, Indent, Symbol("i"), Dedent, Dedent)
+      )(Indent, Name("a"), Newline, Indent, Name("i"), Dedent, Dedent)
 
       test(
         """  a
@@ -127,16 +124,16 @@ class TestLexer extends FreeSpec with Matchers {
           |    k""".stripMargin
       )(
         Indent,
-        Symbol("a"),
+        Name("a"),
         Newline,
-        Symbol("b"),
+        Name("b"),
         Newline,
         Indent,
-        Symbol("i"),
+        Name("i"),
         Newline,
-        Symbol("j"),
+        Name("j"),
         Newline,
-        Symbol("k"),
+        Name("k"),
         Dedent,
         Dedent
       )
@@ -155,31 +152,31 @@ class TestLexer extends FreeSpec with Matchers {
           |  f""".stripMargin
       )(
         Indent,
-        Symbol("a"),
+        Name("a"),
         Newline,
         Newline,
-        Symbol("b"),
+        Name("b"),
         Newline,
-        Symbol("c"),
-        Newline,
-        Indent,
-        Symbol("i"),
+        Name("c"),
         Newline,
         Indent,
-        Symbol("x"),
+        Name("i"),
+        Newline,
+        Indent,
+        Name("x"),
         Newline,
         Dedent,
         Dedent,
-        Symbol("d"),
+        Name("d"),
         Newline,
-        Symbol("e"),
+        Name("e"),
         Newline,
         Newline,
         Indent,
-        Symbol("j"),
+        Name("j"),
         Newline,
         Dedent,
-        Symbol("f"),
+        Name("f"),
         Dedent
       )
 
@@ -193,21 +190,21 @@ class TestLexer extends FreeSpec with Matchers {
           """.stripMargin
       )(
         Indent,
-        Symbol("a"),
+        Name("a"),
         Newline,
         Indent,
-        Symbol("i"),
+        Name("i"),
         Newline,
         Indent,
-        Symbol("x"),
+        Name("x"),
         Newline,
-        Symbol("y"),
+        Name("y"),
         Newline,
         Dedent,
-        Symbol("j"),
+        Name("j"),
         Newline,
         Indent,
-        Symbol("z"),
+        Name("z"),
         Newline,
         Dedent,
         Dedent,

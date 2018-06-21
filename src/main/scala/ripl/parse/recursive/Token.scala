@@ -1,6 +1,6 @@
 package ripl.parse.recursive
 
-trait Token // also extended by ValAtom
+trait Token // also extended by `Atom`
 case object Token {
   case object Newline extends Token
   case object Indent  extends Token
@@ -12,6 +12,4 @@ case object Token {
   case object Apostrophe      extends PrefixOperator
   case object Circumflex      extends PrefixOperator
   case object Tilda           extends PrefixOperator
-
-  case class Symbol(s: String) extends Token
 }

@@ -167,7 +167,7 @@ case object Lex {
       state match {
         case LexInt    => VInt(contents.toInt)
         case LexFloat  => VFlt(contents.toFloat)
-        case LexSymbol => Token.Symbol(contents)
+        case LexSymbol => Name(contents)
       }
     }
 

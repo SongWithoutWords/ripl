@@ -3,7 +3,7 @@ package ripl.ast.untyped
 import ripl.util.MultiMap
 
 sealed trait Node
-sealed trait Exp extends Node
+trait Exp extends Node
 
 trait Type extends Exp
 trait Named { val name: String } // should probably be a Name eventually
@@ -30,7 +30,6 @@ object Fun {
 }
 case class Fun(params: List[Param], retType: Option[Node], body: Exp)
     extends Exp
-case class Name(n: String)           extends Exp
 case class Param(n: String, t: Node) extends Exp
 case class Select(e: Exp, n: String) extends Exp
 

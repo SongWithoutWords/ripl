@@ -20,17 +20,18 @@ class TestParser extends FreeSpec with Matchers {
     Parse(input) should matchAst(out.toList)
   }
 
-  "expressions" - {
-    "exp0" - {
-      test("if value then \"true\" else \"false\"")(
-        If(Name("value"), VStr("true"), VStr("false"))
-      )
-      "bracketed expressions" - {
-        test("a * (x + b)") {
-          App(Name("*"), Name("a"), App(Name("+"), Name("x"), Name("b")))
-        }
+  "s-expressions" - {
+
+    test("(if value \"true\" \"false\")")(
+      SExp(Name("if"), Name("value"), VStr("true"), VStr("false"))
+    )
+
+    "bracketed expressions" - {
+      test("a * (x + b)") {
+        App(Name("*"), Name("a"), App(Name("+"), Name("x"), Name("b")))
       }
     }
+
     "exp1" - {
       "unary operations" - {
         test("-7")(App(Name("-"), VInt(7)))

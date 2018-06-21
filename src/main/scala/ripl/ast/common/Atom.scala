@@ -12,7 +12,12 @@ object ImplicitConversions {
   implicit def ImplicitInt(i: Int): VInt     = VInt(i)
 }
 
-sealed trait ValAtom extends Token with a0.Val with a1.Val
+sealed trait Atom extends Token with a0.Exp
+
+// `Name` chosen over `Symbol` because scala defines symbol
+case class Name(s: String) extends Atom
+
+sealed trait ValAtom extends Atom with a0.Val with a1.Val
 
 case class VBln(b: Boolean) extends ValAtom {
   def t = TBln
