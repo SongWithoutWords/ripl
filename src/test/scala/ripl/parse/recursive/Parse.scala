@@ -8,9 +8,9 @@ import ripl.parse.recursive._
 
 import ripl.reduce.CustomMatchers.matchAst
 
-class TestParse extends FreeSpec with Matchers {
   def test(name: String, input: String)(out: Exp): Unit = name in {
     Parse(input) should matchAst(out)
+class ParseTest extends FreeSpec with Matchers {
   }
   def test(input: String)(out: Exp): Unit = test(input, input)(out)
 

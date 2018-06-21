@@ -7,7 +7,7 @@ import ripl.parse.recursive._
 
 import ripl.reduce.CustomMatchers.matchAst
 
-class TestLexer extends FreeSpec with Matchers {
+class LexTest extends FreeSpec with Matchers {
 
   def test(name: String, input: String)(out: Token*): Unit = name in {
     Lex(input) should matchAst(out)
