@@ -20,7 +20,7 @@ class ParseTest extends FreeSpec with Matchers {
     test("0")(VInt(0))
     test("195")(VInt(195))
     test("0.0")(VFlt(0))
-    test("1.374")(VFlt(0))
+    test("1.374")(VFlt(1.374f))
     test("unenclosed-atom")(Name("unenclosed-atom"))
   }
 
@@ -37,7 +37,7 @@ class ParseTest extends FreeSpec with Matchers {
 
       test("(single-enclosed-atom)")(SExp(Name("single-enclosed-atom")))
 
-      test("  (  single-enclosed-atom-with-spaces )    ")(
+      test("(  single-enclosed-atom-with-spaces )    ")(
         SExp(Name("single-enclosed-atom-with-spaces"))
       )
 
@@ -57,7 +57,7 @@ class ParseTest extends FreeSpec with Matchers {
         )
       )
 
-      test(" (  many  0.9 enclosed 1 atoms 84.7 with spaces)")(
+      test("(  many  0.9 enclosed 1 atoms 84.7 with spaces)")(
         SExp(
           Name("many"),
           VFlt(0.9f),
