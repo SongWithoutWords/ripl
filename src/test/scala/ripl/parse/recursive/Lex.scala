@@ -153,18 +153,18 @@ class TestLexer extends FreeSpec with Matchers {
       )(
         // format: off
         Indent,
-          Symbol("a"), Newline,
+          Symbol("a"), Newline, Newline,
           Symbol("b"), Newline,
           Symbol("c"), Newline,
           Indent,
             Symbol("i"), Newline,
           Dedent,
           Symbol("d"), Newline,
-          Symbol("e"), Newline,
+          Symbol("e"), Newline, Newline,
           Indent,
             Symbol("j"), Newline,
           Dedent,
-          Symbol("f"), Newline,
+          Symbol("f"),
         Dedent
         // format: on
       )
