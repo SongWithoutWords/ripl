@@ -74,8 +74,9 @@ case object Lex {
           lexLeadingWhitespace(0, indentLevels, rest)
         lex(tokens ++ (Newline :: accum), newIndentLevels, rest)
 
-      case c :: rest if c.isDigit =>
-        val (remaining, token) = lexNumberOrSymbol(List(c), LexInt, rest)
+      case c :: rest if c.isDigit || c == '-' =>
+        val state              = if (c == '-') LexNegative else LexInt
+        val (remaining, token) = lexNumberOrSymbol(List(c), state, rest)
         lex(token :: accum, indentLevels, remaining)
 
       case c :: rest if isValidFirstInSymbol(c) =>
@@ -89,9 +90,10 @@ case object Lex {
   }
 
   sealed trait SymbolLexState
-  case object LexInt    extends SymbolLexState
-  case object LexFloat  extends SymbolLexState
-  case object LexSymbol extends SymbolLexState
+  case object LexNegative extends SymbolLexState
+  case object LexInt      extends SymbolLexState
+  case object LexFloat    extends SymbolLexState
+  case object LexSymbol   extends SymbolLexState
   private def emitDedentsAtEnd(indentLevels: List[Int]): List[Token] =
     List.fill(indentLevels.length)(Token.Dedent)
 
@@ -165,15 +167,17 @@ case object Lex {
     lazy val result = {
       val contents = accum.reverse.mkString
       state match {
-        case LexInt    => VInt(contents.toInt)
-        case LexFloat  => VFlt(contents.toFloat)
-        case LexSymbol => Name(contents)
+        case LexInt                  => VInt(contents.toInt)
+        case LexFloat                => VFlt(contents.toFloat)
+        case LexSymbol | LexNegative => Name(contents)
       }
     }
 
     input match {
       // Digits don't change the state; they are valid in numbers and symbols
-      case c :: rest if c.isDigit => lexNumberOrSymbol(c :: accum, state, rest)
+      case c :: rest if c.isDigit =>
+        val newState = if (state == LexNegative) LexInt else state
+        lexNumberOrSymbol(c :: accum, newState, rest)
 
       case '.' :: rest =>
         state match {
