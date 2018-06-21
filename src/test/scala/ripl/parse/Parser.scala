@@ -1,10 +1,10 @@
-package ripl.parse.recursive
+package ripl.parse
 
 import org.scalatest._
 
 import ripl.ast.common._
 import ripl.ast.untyped._
-import ripl.parse.recursive._
+import ripl.parse._
 import ripl.util.MultiMap
 
 import ripl.reduce.CustomMatchers.matchAst
@@ -13,17 +13,17 @@ class TestParser extends FreeSpec with Matchers {
 
   // `name in { block }` is ScalaTest's free-spec syntax
   def test(input: String)(out: Node): Unit = input in {
-    Parse(input) should matchAst(out)
+    Parse.exp(input) should matchAst(out)
   }
 
   def testAst(input: String)(out: (String, Node)*): Unit = input in {
-    Parse(input) should matchAst(out.toList)
+    Parse.units(input) should matchAst(out.toList)
   }
 
   "s-expressions" - {
 
-    test("(if value \"true\" \"false\")")(
-      SExp(Name("if"), Name("value"), VStr("true"), VStr("false"))
+    test("if value then \"true\" else \"false\")")(
+      If(Name("value"), VStr("true"), VStr("false"))
     )
 
     "bracketed expressions" - {
