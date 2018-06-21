@@ -16,6 +16,8 @@ case object Parse {
       input: List[Token]
     ): List[Exp] = input match {
 
+    case Token.Newline :: rest => parseTopLevelExps(accum, rest)
+
     case Nil => accum.reverse
 
     case (atom: Atom) :: rest => parseTopLevelExps(atom :: accum, rest)

@@ -16,7 +16,12 @@ class ParseTest extends FreeSpec with Matchers {
 
   def test(input: String)(out: Exp*): Unit = test(input, input)(out: _*)
 
-  test("empty string", "")()
+  "whitespace" - {
+    test("empty string", "")()
+    test("spaces", "       ")()
+    test("newlines", "\n\n\n\n")()
+    test("newlines and spaces", "\n\n    \n      \n")()
+  }
 
   "atoms" - {
     test("0")(VInt(0))
