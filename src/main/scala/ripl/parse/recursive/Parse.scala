@@ -47,6 +47,5 @@ case object Parse {
 
     case Token.RParen :: rest =>
       (accum.reverse, rest)
-    // case (atom: Atom) :: rest => parseSExpContents(atom :: accum, rest)
   }
 }
