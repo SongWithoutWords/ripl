@@ -36,6 +36,8 @@ case class Select(e: Exp, n: String) extends Exp
 
 case class Var(n: String, e: Exp) extends Exp // seems to have been replaced with "define"
 
+case class SExp(exps: List[Exp]) extends Exp
+
 // Values
 trait Val extends Exp
 object VObj {
