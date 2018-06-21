@@ -25,7 +25,13 @@ case object Parse {
       parseTopLevelExps(sExp :: accum, remaining)
 
     case Token.RParen :: _ =>
-      ??? // TODO: This is an error case, unmatched closing parenthesis
+      ??? // TODO: Error case, unmatched closing parenthesis
+
+    case Token.Indent :: _ =>
+      ??? // TODO: Error case, indented top level expression
+
+    case Token.Dedent :: _ =>
+      ??? // TODO: Error case, must be some kind of error in the lexer
   }
 
   private def parseSExp(input: List[Token]): (Exp, List[Token]) = {
