@@ -8,11 +8,13 @@ import ripl.parse.recursive._
 
 import ripl.reduce.CustomMatchers.matchAst
 
-  def test(name: String, input: String)(out: Exp): Unit = name in {
-    Parse(input) should matchAst(out)
 class ParseTest extends FreeSpec with Matchers {
+
+  def test(name: String, input: String)(out: Exp*): Unit = name in {
+    Parse(input) should matchAst(out.toList)
   }
-  def test(input: String)(out: Exp): Unit = test(input, input)(out)
+
+  def test(input: String)(out: Exp*): Unit = test(input, input)(out: _*)
 
   "atoms" - {
     test("0")(VInt(0))
