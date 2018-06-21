@@ -40,7 +40,7 @@ class TestLexer extends FreeSpec with Matchers {
         testName("camelCase")
         testName("StudlyCase")
         testName("snake_case")
-        testName("kebab-case")
+        testName("lisp-case")
         testName("SCREAMING_SNAKE_CASE")
         testName("_surrounded_with_under_scores_")
       }
