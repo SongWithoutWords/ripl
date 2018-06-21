@@ -11,6 +11,7 @@ case object Parse {
   def apply(input: List[Token]): List[Exp] = parseTopLevelExps(Nil, input)
 
   @tailrec
+  // Must accumulate manually because scala doesn't support tail rec modulo cons
   private def parseTopLevelExps(
       accum: List[Exp],
       input: List[Token]
