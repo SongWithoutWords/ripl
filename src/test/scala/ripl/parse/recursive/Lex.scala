@@ -145,6 +145,7 @@ class TestLexer extends FreeSpec with Matchers {
           |  b
           |  c
           |    i
+          |      x
           |  d
           |  e
           |
@@ -158,6 +159,9 @@ class TestLexer extends FreeSpec with Matchers {
           Symbol("c"), Newline,
           Indent,
             Symbol("i"), Newline,
+            Indent,
+              Symbol("x"), Newline,
+            Dedent,
           Dedent,
           Symbol("d"), Newline,
           Symbol("e"), Newline, Newline,
