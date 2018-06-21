@@ -35,6 +35,7 @@ case class Select(e: Exp, n: String) extends Exp
 
 case class Var(n: String, e: Exp) extends Exp // seems to have been replaced with "define"
 
+case object SExp { def apply(exps: Exp*): SExp = SExp(exps.toList) }
 case class SExp(exps: List[Exp]) extends Exp
 
 // Values
