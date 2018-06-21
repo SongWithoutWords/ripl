@@ -126,17 +126,19 @@ class TestLexer extends FreeSpec with Matchers {
           |    j
           |    k""".stripMargin
       )(
-        // format: off
         Indent,
-          Symbol("a"), Newline,
-          Symbol("b"), Newline,
-          Indent,
-            Symbol("i"), Newline,
-            Symbol("j"), Newline,
-            Symbol("k"),
-          Dedent,
+        Symbol("a"),
+        Newline,
+        Symbol("b"),
+        Newline,
+        Indent,
+        Symbol("i"),
+        Newline,
+        Symbol("j"),
+        Newline,
+        Symbol("k"),
+        Dedent,
         Dedent
-        // format: on
       )
 
       test(
@@ -152,25 +154,33 @@ class TestLexer extends FreeSpec with Matchers {
           |    j
           |  f""".stripMargin
       )(
-        // format: off
         Indent,
-          Symbol("a"), Newline, Newline,
-          Symbol("b"), Newline,
-          Symbol("c"), Newline,
-          Indent,
-            Symbol("i"), Newline,
-            Indent,
-              Symbol("x"), Newline,
-            Dedent,
-          Dedent,
-          Symbol("d"), Newline,
-          Symbol("e"), Newline, Newline,
-          Indent,
-            Symbol("j"), Newline,
-          Dedent,
-          Symbol("f"),
+        Symbol("a"),
+        Newline,
+        Newline,
+        Symbol("b"),
+        Newline,
+        Symbol("c"),
+        Newline,
+        Indent,
+        Symbol("i"),
+        Newline,
+        Indent,
+        Symbol("x"),
+        Newline,
+        Dedent,
+        Dedent,
+        Symbol("d"),
+        Newline,
+        Symbol("e"),
+        Newline,
+        Newline,
+        Indent,
+        Symbol("j"),
+        Newline,
+        Dedent,
+        Symbol("f"),
         Dedent
-        // format: on
       )
 
       test(
@@ -182,22 +192,26 @@ class TestLexer extends FreeSpec with Matchers {
           |      z
           """.stripMargin
       )(
-        // format: off
         Indent,
-          Symbol("a"), Newline,
-          Indent,
-            Symbol("i"), Newline,
-            Indent,
-              Symbol("x"), Newline,
-              Symbol("y"), Newline,
-            Dedent,
-            Symbol("j"), Newline,
-            Indent,
-              Symbol("z"), Newline,
-            Dedent,
-          Dedent,
+        Symbol("a"),
+        Newline,
+        Indent,
+        Symbol("i"),
+        Newline,
+        Indent,
+        Symbol("x"),
+        Newline,
+        Symbol("y"),
+        Newline,
+        Dedent,
+        Symbol("j"),
+        Newline,
+        Indent,
+        Symbol("z"),
+        Newline,
+        Dedent,
+        Dedent,
         Dedent
-        // format: on
       )
     }
   }
