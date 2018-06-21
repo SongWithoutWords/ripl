@@ -13,7 +13,7 @@ class TestLexer extends FreeSpec with Matchers {
     Lex(input) should matchAst(out)
   }
   def test(input: String)(out: Token*): Unit = test(input, input)(out: _*)
-  def testName(input: String): Unit = test(input, input)(Name(input))
+  def testName(input: String): Unit          = test(input, input)(Name(input))
 
   import Token._
 
@@ -82,7 +82,9 @@ class TestLexer extends FreeSpec with Matchers {
     "integer literals" - {
       test("0")(VInt(0))
       test("4")(VInt(4))
+      test("-7")(VInt(-7))
       test("1536")(VInt(1536))
+      test("-456782")(VInt(-456782))
     }
     "floating point literals" - {
       test("0.0")(VFlt(0.0f))
