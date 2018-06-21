@@ -67,7 +67,7 @@ class LexTest extends FreeSpec with Matchers {
         testName("<:>")
         testName("?!")
       }
-      "with unicode" - {
+      "unicode" - {
         testName("λ")
         test("Maebe Fünke")(Name("Maebe"), Name("Fünke"))
 
