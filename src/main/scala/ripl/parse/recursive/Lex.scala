@@ -111,16 +111,16 @@ case object Lex {
         spaceCount: Int,
         indentLevels: List[Int]
       ): (List[Token], List[Int]) = {
-      val currentIndent = maxIndent(indentLevels)
-      if (spaceCount == currentIndent) {
+      val maxExistingIndent = maxIndent(indentLevels)
+      if (spaceCount == maxExistingIndent) {
         (Nil, indentLevels) // no change
-      } else if (spaceCount > currentIndent) {
+      } else if (spaceCount > maxExistingIndent) {
         (Token.Indent :: Nil, spaceCount :: indentLevels)
       } else {
 
         val (levelsDedented, levelsRemaining) =
-          indentLevels.span(_ > currentIndent)
-        (List.fill(levelsDedented.length)(Token.Indent), levelsRemaining)
+          indentLevels.span(_ > spaceCount)
+        (List.fill(levelsDedented.length)(Token.Dedent), levelsRemaining)
       }
     }
 
