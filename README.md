@@ -15,7 +15,7 @@ A Robust and Intuitive Programming Language, and work in progress, written in Sc
 ## Comparison with Other Languages
 *TODO*
 
-## Motivation and Rational
+## Motivation and Rationale
 *TODO*
 
 ## Examples
