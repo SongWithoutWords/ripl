@@ -57,11 +57,41 @@ case object Parse {
       val (sExp, remaining) = parseSExp(rest)
       parseLineContents(sExp :: accum, remaining)
 
+    case Token.Newline :: Token.Indent :: rest =>
+      val (exps, remaining) = parseIndentedContinuation(rest)
+      parseLineContents(exps ++ accum, remaining)
+
     case Token.Newline :: rest =>
+      (accum.reverse, rest)
+
+    case Token.Dedent :: rest =>
       (accum.reverse, rest)
 
     case Nil =>
       (accum.reverse, Nil)
+  }
+
+  private def parseIndentedContinuation(
+      input: List[Token]
+    ): (List[Exp], List[Token]) = parseIndentedContents(Nil, input)
+
+  private def parseIndentedContents(
+      accum: List[Exp],
+      input: List[Token]
+    ): (List[Exp], List[Token]) = input match {
+
+    // Don't reverse accum, it's going to be embedded in the containing line
+
+    case Nil => (accum, Nil)
+
+    case Token.Newline :: Token.Dedent :: rest =>
+      (accum, rest)
+
+    case Token.Newline :: rest => parseIndentedContents(accum, rest)
+
+    case rest =>
+      val (exp, remaining) = parseLine(rest)
+      parseIndentedContents(exp :: accum, remaining)
   }
 
   private def parseSExp(input: List[Token]): (Exp, List[Token]) = {
