@@ -102,17 +102,9 @@ class ParseTest extends FreeSpec with Matchers {
     }
   }
 
-  "exps grouped by line" - {
-
+  "expressions grouped by line" - {
     test("fact n")(SExp(Name("fact"), Name("n")))
-    test("(fact n)")(SExp(Name("fact"), Name("n")))
-    test("((fact n))")(SExp(SExp(Name("fact"), Name("n"))))
-
     test("if a b c")(SExp(Name("if"), Name("a"), Name("b"), Name("c")))
-    test("(if a b c)")(SExp(Name("if"), Name("a"), Name("b"), Name("c")))
-    test("((if a b c))")(
-      SExp(SExp(Name("if"), Name("a"), Name("b"), Name("c")))
-    )
   }
 
   "unary operators" - {}
