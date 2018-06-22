@@ -43,8 +43,9 @@ if a
 => (if a b c)
 
 if a
-  b  c
-=> (if a b c)
+  i  j
+  x
+=> (if a (i j) x)
 
 ; What would the implications be of a '.' for selection in a lisp style syntax?
 
