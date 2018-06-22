@@ -105,6 +105,17 @@ class ParseTest extends FreeSpec with Matchers {
   "expressions grouped by line" - {
     test("fact n")(SExp(Name("fact"), Name("n")))
     test("if a b c")(SExp(Name("if"), Name("a"), Name("b"), Name("c")))
+
+    "across multiple lines" - {
+      test("""|a
+              |i j
+              |
+              |x y z""".stripMargin)(
+        Name("a"),
+        SExp(Name("i"), Name("j")),
+        SExp(Name("x"), Name("y"), Name("z"))
+      )
+    }
   }
 
   "unary operators" - {}
