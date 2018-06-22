@@ -130,6 +130,45 @@ class ParseTest extends FreeSpec with Matchers {
         SExp(Name("if"), Name("a"), SExp(Name("i"), Name("j")), Name("x"))
       )
 
+      test("""|a
+              |  b
+              |    c""".stripMargin)(
+        SExp(Name("a"), SExp(Name("b"), Name("c")))
+      )
+
+      test("""|a
+              |  b
+              |    c
+              |      d""".stripMargin)(
+        SExp(Name("a"), SExp(Name("b"), SExp(Name("c"), Name("d"))))
+      )
+
+      test("""|define (fact n)
+              |  if (<= n 1)
+              |    1
+              |    * n (fact (- n 1))""".stripMargin)(
+        SExp(
+          Name("define"),
+          SExp(Name("fact"), Name("n")),
+          SExp(
+            Name("if"),
+            SExp(Name("<="), Name("n"), VInt(1)),
+            VInt(1),
+            SExp(
+              Name("*"),
+              Name("n"),
+              SExp(
+                Name("fact"),
+                SExp(
+                  Name("-"),
+                  Name("n"),
+                  VInt(1)
+                )
+              )
+            )
+          )
+        )
+      )
     }
   }
 
