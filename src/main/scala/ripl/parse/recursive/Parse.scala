@@ -64,8 +64,8 @@ case object Parse {
     case Token.Newline :: rest =>
       (accum.reverse, rest)
 
-    case Token.Dedent :: rest =>
-      (accum.reverse, rest)
+    case Token.Dedent :: _ =>
+      (accum.reverse, input)
 
     case Nil =>
       (accum.reverse, Nil)
@@ -83,6 +83,9 @@ case object Parse {
     // Don't reverse accum, it's going to be embedded in the containing line
 
     case Nil => (accum, Nil)
+
+    case Token.Dedent :: rest =>
+      (accum, rest)
 
     case Token.Newline :: Token.Dedent :: rest =>
       (accum, rest)
