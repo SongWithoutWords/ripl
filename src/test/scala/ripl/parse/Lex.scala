@@ -1,9 +1,8 @@
-package ripl.parse.recursive
+package ripl.parse
 
 import org.scalatest._
 
 import ripl.ast.common._
-import ripl.parse.recursive._
 
 import ripl.reduce.CustomMatchers.matchAst
 
