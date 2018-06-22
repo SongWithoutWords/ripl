@@ -123,6 +123,13 @@ class ParseTest extends FreeSpec with Matchers {
               |  c""".stripMargin)(
         SExp(Name("if"), Name("a"), Name("b"), Name("c"))
       )
+
+      test("""|if a
+              |  i j
+              |  x""".stripMargin)(
+        SExp(Name("if"), Name("a"), SExp(Name("i"), Name("j")), Name("x"))
+      )
+
     }
   }
 
