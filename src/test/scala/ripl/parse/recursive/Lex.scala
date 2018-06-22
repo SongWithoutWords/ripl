@@ -121,6 +121,22 @@ class LexTest extends FreeSpec with Matchers {
 
       test(
         """  a
+          |    i
+          |  b""".stripMargin
+      )(
+        Indent,
+        Name("a"),
+        Newline,
+        Indent,
+        Name("i"),
+        Newline,
+        Dedent,
+        Name("b"),
+        Dedent
+      )
+
+      test(
+        """  a
           |  b
           |    i
           |    j
