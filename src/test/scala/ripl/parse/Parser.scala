@@ -4,7 +4,7 @@ import org.scalatest._
 
 import ripl.ast.common._
 import ripl.ast.untyped._
-import ripl.parser._
+import ripl.parse._
 import ripl.util.MultiMap
 
 import ripl.reduce.CustomMatchers.matchAst
@@ -20,76 +20,18 @@ class TestParser extends FreeSpec with Matchers {
     Parse.units(input) should matchAst(out.toList)
   }
 
-  def testName(input: String): Unit = input in {
-    Parse.exp(input) should matchAst(Name(input))
-  }
+  "s-expressions" - {
 
-  "expressions" - {
-    "exp0" - {
-      "names" - {
-        "simple names" - {
-          testName("John")
-          testName("tim")
-          testName("H2O")
-        }
-        "naming conventions" - {
-          testName("camelCase")
-          testName("StudlyCase")
-          testName("snake_case")
-          testName("SCREAMING_SNAKE_CASE")
-          testName("_surrounded_with_under_scores_")
-        }
-        "names with keyword substrings" - {
-          testName("andy")
-          testName("ornate")
-          testName("trueism")
-          testName("falsely")
-          testName("adrift")
-          testName("earthen")
-          testName("elsewhere")
-        }
-        "operators" - {
-          testName("+")
-          testName("-")
-          testName("*")
-          testName("/")
-          testName("%")
-          testName(":")
-          testName("++")
-          testName(">>=")
-          testName("<>")
-          testName("<$>")
-          testName("<:>")
-          testName("?!")
-        }
-      }
-      "boolean literals" - {
-        test("true")(VBln(true))
-        test("false")(VBln(false))
-      }
-      "integer literals" - {
-        test("0")(VInt(0))
-        test("4")(VInt(4))
-        test("1536")(VInt(1536))
-      }
-      "floating point literals" - {
-        test("0.0")(VFlt(0.0f))
-        test("4.037")(VFlt(4.037f))
-        test("0.019")(VFlt(0.019f))
-      }
-      "string literals" - {
-        test("\"hello world!\"")(VStr("hello world!"))
+    test("if value then \"true\" else \"false\")")(
+      If(Name("value"), VStr("true"), VStr("false"))
+    )
 
-        test("if value then \"true\" else \"false\"")(
-          If(Name("value"), VStr("true"), VStr("false"))
-        )
-      }
-      "bracketed expressions" - {
-        test("a * (x + b)") {
-          App(Name("*"), Name("a"), App(Name("+"), Name("x"), Name("b")))
-        }
+    "bracketed expressions" - {
+      test("a * (x + b)") {
+        App(Name("*"), Name("a"), App(Name("+"), Name("x"), Name("b")))
       }
     }
+
     "exp1" - {
       "unary operations" - {
         test("-7")(App(Name("-"), VInt(7)))

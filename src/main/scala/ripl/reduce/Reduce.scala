@@ -361,7 +361,7 @@ class Reduce(val astIn: a0.Ast) {
     // either enforce the known return type
     // or gather and find supertype of types returned
 
-    case a0.Name(n) =>
+    case Name(n) =>
       lookupName(n) match {
         case Nil => List(raise(UnknownName(n)) >> pure(a1.Name(n)))
         case exps =>
