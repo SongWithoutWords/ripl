@@ -138,9 +138,96 @@ class ParseTest extends FreeSpec with Matchers {
 
       test("""|a
               |  b
+              |c""".stripMargin)(SExp(Name("a"), Name("b")), Name("c"))
+
+      test("""|a
+              |  b
               |    c
               |      d""".stripMargin)(
         SExp(Name("a"), SExp(Name("b"), SExp(Name("c"), Name("d"))))
+      )
+
+      test("""|a
+              |  b
+              |    c
+              |  d""".stripMargin)(
+        SExp(Name("a"), SExp(Name("b"), Name("c")), Name("d"))
+      )
+
+      test("""|a
+              |  b
+              |    c
+              |      d
+              |  e""".stripMargin)(
+        SExp(
+          Name("a"),
+          SExp(
+            Name("b"),
+            SExp(
+              Name("c"),
+              Name("d")
+            )
+          ),
+          Name("e")
+        )
+      )
+
+      test("""|a
+              |  b
+              |    c
+              |  d
+              |    e""".stripMargin)(
+        SExp(
+          Name("a"),
+          SExp(Name("b"), Name("c")),
+          SExp(Name("d"), Name("e"))
+        )
+      )
+
+      test("""|a
+              |  b
+              |    c
+              |      d
+              |        e
+              |    f
+              |      g
+              |  h
+              |i
+              |  j
+              |k""".stripMargin)(
+        SExp(
+          Name("a"),
+          SExp(
+            Name("b"),
+            SExp(
+              Name("c"),
+              SExp(
+                Name("d"),
+                Name("e")
+              )
+            ),
+            SExp(Name("f"), Name("g"))
+          ),
+          Name("h")
+        ),
+        SExp(Name("i"), Name("j")),
+        Name("k")
+      )
+
+      // test("(a (i j (x)) b ((y z) k) c)")
+      test("""|a
+              |  i j (x)
+              |  b
+              |  (y z)
+              |    k
+              |  c""".stripMargin)(
+        SExp(
+          Name("a"),
+          SExp(Name("i"), Name("j"), SExp(Name("x"))),
+          Name("b"),
+          SExp(SExp(Name("y"), Name("z")), Name("k")),
+          Name("c")
+        )
       )
 
       test("""|define (fact n)
