@@ -3,7 +3,7 @@ package ripl.parse
 import org.scalatest._
 
 import ripl.ast.common._
-import ripl.ast.untyped._
+import ripl.ast.parse._
 
 import ripl.reduce.CustomMatchers.matchAst
 

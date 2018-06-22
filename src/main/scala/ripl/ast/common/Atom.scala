@@ -2,7 +2,7 @@ package ripl.ast.common
 
 import ripl.ast.common._
 import ripl.ast.common.TypeAtom._
-import ripl.ast.{untyped => a0, typed => a1}
+import ripl.ast.{parse => p, untyped => a0, typed => a1}
 
 import ripl.parse.Token
 
@@ -12,7 +12,7 @@ object ImplicitConversions {
   implicit def ImplicitInt(i: Int): VInt     = VInt(i)
 }
 
-sealed trait Atom extends Token with a0.Exp
+sealed trait Atom extends Token with p.Exp with a0.Exp
 
 // `Name` chosen over `Symbol` because scala defines symbol
 case class Name(s: String) extends Atom

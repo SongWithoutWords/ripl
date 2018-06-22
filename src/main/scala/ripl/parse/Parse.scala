@@ -3,7 +3,7 @@ package ripl.parse
 import scala.annotation.tailrec
 
 import ripl.ast.common._
-import ripl.ast.untyped._
+import ripl.ast.parse._
 
 case object Parse {
 
