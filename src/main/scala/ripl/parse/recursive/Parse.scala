@@ -64,8 +64,8 @@ case object Parse {
     case Token.Newline :: rest =>
       (accum.reverse, rest)
 
-    case Token.Dedent :: _ =>
-      (accum.reverse, input)
+    case Token.Dedent :: rest =>
+      (accum.reverse, rest)
 
     case Nil =>
       (accum.reverse, Nil)
@@ -85,10 +85,10 @@ case object Parse {
     case Nil => (accum, Nil)
 
     case Token.Dedent :: rest =>
-      (accum, rest)
+      (accum, Token.Dedent :: rest)
 
     case Token.Newline :: Token.Dedent :: rest =>
-      (accum, rest)
+      (accum, Token.Dedent :: rest)
 
     case Token.Newline :: rest => parseIndentedContents(accum, rest)
 
