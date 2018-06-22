@@ -106,7 +106,7 @@ class ParseTest extends FreeSpec with Matchers {
     test("fact n")(SExp(Name("fact"), Name("n")))
     test("if a b c")(SExp(Name("if"), Name("a"), Name("b"), Name("c")))
 
-    "across multiple lines" - {
+    "can occur on multiple lines" - {
       test("""|a
               |i j
               |
@@ -114,6 +114,14 @@ class ParseTest extends FreeSpec with Matchers {
         Name("a"),
         SExp(Name("i"), Name("j")),
         SExp(Name("x"), Name("y"), Name("z"))
+      )
+    }
+
+    "can be continued via indentation" - {
+      test("""|if a
+              |  b
+              |  c""".stripMargin)(
+        SExp(Name("if"), Name("a"), Name("b"), Name("c"))
       )
     }
   }
