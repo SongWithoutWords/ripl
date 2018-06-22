@@ -1,4 +1,4 @@
-package ripl.parse.recursive
+package ripl.parse
 
 import scala.annotation.tailrec
 

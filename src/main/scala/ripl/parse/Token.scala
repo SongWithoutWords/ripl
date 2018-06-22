@@ -1,4 +1,4 @@
-package ripl.parse.recursive
+package ripl.parse
 
 trait Token // also extended by `Atom`
 case object Token {

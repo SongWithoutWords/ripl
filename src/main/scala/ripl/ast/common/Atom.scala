@@ -4,7 +4,7 @@ import ripl.ast.common._
 import ripl.ast.common.TypeAtom._
 import ripl.ast.{untyped => a0, typed => a1}
 
-import ripl.parse.recursive.Token
+import ripl.parse.Token
 
 object ImplicitConversions {
   implicit def ImplicitBln(b: Boolean): VBln = VBln(b)
