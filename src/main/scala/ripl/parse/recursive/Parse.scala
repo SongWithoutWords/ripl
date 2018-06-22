@@ -17,15 +17,9 @@ case object Parse {
       input: List[Token]
     ): List[Exp] = input match {
 
-    case Token.Newline :: rest => parseTopLevelExps(accum, rest)
-
     case Nil => accum.reverse
 
-    case (atom: Atom) :: rest => parseTopLevelExps(atom :: accum, rest)
-
-    case Token.LParen :: rest =>
-      val (sExp, remaining) = parseSExp(rest)
-      parseTopLevelExps(sExp :: accum, remaining)
+    case Token.Newline :: rest => parseTopLevelExps(accum, rest)
 
     case Token.RParen :: _ =>
       ??? // TODO: Error case, unmatched closing parenthesis
@@ -35,6 +29,39 @@ case object Parse {
 
     case Token.Dedent :: _ =>
       ??? // TODO: Error case, must be some kind of error in the lexer
+
+    case rest =>
+      val (exp, remaining) = parseLine(rest)
+      parseTopLevelExps(exp :: accum, remaining)
+  }
+
+  private def parseLine(input: List[Token]): (Exp, List[Token]) = {
+    val (contents, remaining) = parseLineContents(Nil, input)
+    val exp = contents match {
+      case Nil      => SExp()
+      case e :: Nil => e
+      case es       => SExp(es)
+    }
+    (exp, remaining)
+  }
+
+  @tailrec
+  private def parseLineContents(
+      accum: List[Exp],
+      input: List[Token]
+    ): (List[Exp], List[Token]) = input match {
+
+    case (atom: Atom) :: rest => parseLineContents(atom :: accum, rest)
+
+    case Token.LParen :: rest =>
+      val (sExp, remaining) = parseSExp(rest)
+      parseLineContents(sExp :: accum, remaining)
+
+    case Token.Newline :: rest =>
+      (accum.reverse, rest)
+
+    case Nil =>
+      (accum.reverse, Nil)
   }
 
   private def parseSExp(input: List[Token]): (Exp, List[Token]) = {
