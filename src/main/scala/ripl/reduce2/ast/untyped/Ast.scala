@@ -9,6 +9,10 @@ import ripl.ast.common._
 // Unique identifier of a definition within the program
 case class ID(value: Int)
 
+case object Definitions {
+  def apply(exps: Exp*): Definitions = Definitions(exps: _*)
+}
+
 case class Definitions(contents: ArrayBuffer[Exp]) {
   def apply(id: ID): Exp = contents(id.value)
 
