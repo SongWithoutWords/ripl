@@ -8,12 +8,11 @@ import ripl.ast.{untyped => a0}
 import ripl.reduce.ReduceM
 import ripl.util.MultiMap
 
-// I feel like I need to work on my hierarchy a little bit:
-// what if everything was a node, we got rid of units, and
-// most of the heavy lifting was done in map node?
-// That way, expression constructs yielding non-expressions
-// (such as types or namespaces) will boil off, leaving only
-// true expressions behind?
+// I think I could work on my hierarchy a bit.
+// What if everything was an exp, we got rid of nodes,
+// we introduced a distinction between values/variables,
+// constants and types, rather than distinguishing between
+// types and exps?
 
 sealed trait Node
 
