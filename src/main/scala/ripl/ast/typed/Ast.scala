@@ -57,24 +57,11 @@ case object InvalidExp extends Exp {
   def t = TError
 }
 
-// sealed trait CycleComponent {
-//   def node: a0.Node
-// }
-// object CycleComponent {
-//   case class Fun(node: a0.Fun, params: List[Type], ret: Option[Type]) extends CycleComponent
-//   // case class Fun(node: a0.Fun, t: ReduceM[TFun], ret: Option[TFun]) extends CycleComponent
-//   case class Node(node: a0.Node) extends CycleComponent
-
-//   implicit def apply(node: a0.Node) = Node(node)
-// }
-
-// case class
-
 object Cycle {
-  sealed trait Component { def node: a0.Node }
+  sealed trait Component { def node: a0.Exp }
   case class Fun(node: a0.Fun, params: List[Type], ret: Option[Type])
       extends Component
-  case class Node(node: a0.Node) extends Component
+  case class Node(node: a0.Exp) extends Component
 }
 
 case class Cycle(cycle: List[Cycle.Component]) extends Exp {
