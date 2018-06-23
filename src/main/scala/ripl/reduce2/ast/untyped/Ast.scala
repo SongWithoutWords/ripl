@@ -23,17 +23,24 @@ case class Definitions(contents: ArrayBuffer[Exp]) {
   }
 }
 
-case class Scopes(contents: ArrayBuffer[Scope]) {
-  def apply(id: ID): Scope = contents(id.value)
-}
+// case object Scope {
+//   def apply(scopes: Scope*): Scopes = Scopes(scopes: _*)
+// }
 
-case object Scope {
-  type Contents = MultiMap[Name, Either[ID, Scope]]
-}
+// case class Scope(scopes: => List[Scope.Contents])
 
-sealed trait Scope {
-  def lookup(n: Name): List[Either[ID, Scope]]
-}
+// case class Scopes(contents: ArrayBuffer[Scope]) {
+//   def apply(id: ID): Scope = contents(id.value)
+// }
+
+// case object Scope {
+//   type Contents = MultiMap[Name, Either[ID, Scope]]
+//   type Scope = List[Contents]
+// }
+
+// sealed trait Scope {
+//   def lookup(n: Name): List[Either[ID, Scope]]
+// }
 
 case class Global(contents: Scope.Contents) extends Scope {
   def lookup(n: Name) = contents(n)
@@ -43,4 +50,11 @@ case class Local(contents: Scope.Contents, parent: Scope) extends Scope {
   def lookup(n: Name) = contents(n) ++ parent.lookup(n)
 }
 
-case class Ast(definitions: Definitions, scopes: Scopes)
+case class Ast(definitions: Definitions, scopes: Scopes) {
+  def appendNew(a: Exp, s: Scope): ID = {
+    val count = definitions.contents.length
+    definitions.contents.append(a)
+    scopes.contents.append(s)
+    ID(count)
+  }
+}
