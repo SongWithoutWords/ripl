@@ -67,7 +67,7 @@ import Util._
 // Classes
 // -------------------------------------------------------------------------------
 
-case object prettyPrint {
+case object PrettyPrint {
 
   def ppIf(b: Boolean, s: String): String = if (b) s else ""
 
@@ -1063,5 +1063,5 @@ case object prettyPrint {
 // Toplevel
 // -----------------------------------------------------------------------------
 
-  def ppllvm(m: Module): String = pp(m)
+  def apply(m: Module): String = pp(m)
 }
