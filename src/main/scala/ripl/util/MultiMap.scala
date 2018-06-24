@@ -57,6 +57,7 @@ case class MultiMap[A, +B](underlyingMap: Map[A, List[B]]) {
 
   def add[B1 >: B](a: A, b: B1): MultiMap[A, B1] =
     MultiMap(underlyingMap.updated(a, b :: get(a)))
+
   def apply(a: A): List[B] = underlyingMap.get(a) match {
     case Some(l) => l
     case None    => Nil
@@ -64,5 +65,9 @@ case class MultiMap[A, +B](underlyingMap: Map[A, List[B]]) {
   def get(a: A) = apply(a)
 
   def mapValues[C](f: B => C): MultiMap[A, C] =
-    MultiMap(underlyingMap.mapValues { _.map(f) }) // (s: Set[B]) => s.map(f)})
+    MultiMap(underlyingMap.mapValues { _.map(f) })
+
+  def toList: List[(A, B)] = {
+    underlyingMap.toList.flatMap { case (a, bs) => bs.map((a, _)) }
+  }
 }
