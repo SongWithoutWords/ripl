@@ -17,15 +17,20 @@ import ripl.reduce.CustomMatchers.matchAst
 
 class TestIntegration extends FreeSpec with Matchers {
 
-  def test(
-      in: String
-    )(out: (String, a1.Node)*
-    )(errs: Error*
-    ): Unit = Reduce(Parse(Lex(in))) should matchAst((Multi(out: _*), Set(errs: _*)))
+  def test(in: String)(out: (String, a1.Node)*)(errs: Error*): Unit =
+    Reduce(Parse(Lex(in))) should matchAst((Multi(out: _*), Set(errs: _*)))
 
   def testErrs(in: Multi[String, a0.Exp])(errs: Error*): Unit =
     Reduce(in)._2.shouldBe(Set(errs: _*))
 
   def testErrs(in: (String, a0.Exp)*)(errs: Error*): Unit =
     testErrs(Multi(in: _*))(errs: _*)
+
+  "a + b is 9 given a = 4 and b = 5" in {
+    test(
+      """define a 4
+        |define b 5
+        |define c (+ a b)""".stripMargin
+    )("a" -> 4, "b" -> 5, "c" -> 9)()
+  }
 }
