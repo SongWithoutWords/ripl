@@ -9,6 +9,7 @@ import cats.implicits._
 
 import ripl.ast.common._
 import ripl.ast.common.TypeAtom._
+import ripl.ast.{parse => p}
 import ripl.ast.{untyped => a0}
 import ripl.ast.{typed => a1}
 import a1.{TError}
@@ -20,6 +21,10 @@ import Types._
 import ReduceM._
 
 object Reduce {
+
+  def apply(parseTree: List[p.Exp]): (a1.Ast, Errors) =
+    apply(ParseTreeToAst(parseTree))
+
   def apply(ast: a0.Definitions): (a1.Ast, Errors) = {
     val reduce = new Reduce(ast)
     (reduce.astOut, reduce.errors)
