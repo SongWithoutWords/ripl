@@ -46,7 +46,7 @@ case object ParseTreeToAst {
             // TODO: error for invalid function form
 
           }
-        case _ => ???
+        case (f :: exps) => App(mapExp(f), exps.map(mapExp))
       }
   }
 
