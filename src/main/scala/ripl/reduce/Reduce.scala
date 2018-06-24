@@ -9,6 +9,7 @@ import cats.implicits._
 
 import ripl.ast.common._
 import ripl.ast.common.TypeAtom._
+import ripl.ast.{parse => p}
 import ripl.ast.{untyped => a0}
 import ripl.ast.{typed => a1}
 import a1.{TError}
@@ -20,13 +21,17 @@ import Types._
 import ReduceM._
 
 object Reduce {
-  def apply(ast: a0.Ast): (a1.Ast, Errors) = {
+
+  def apply(parseTree: List[p.Exp]): (a1.Ast, Errors) =
+    apply(ParseTreeToAst(parseTree))
+
+  def apply(ast: a0.Definitions): (a1.Ast, Errors) = {
     val reduce = new Reduce(ast)
     (reduce.astOut, reduce.errors)
   }
 }
 
-class Reduce(val astIn: a0.Ast) {
+class Reduce(val astIn: a0.Definitions) {
   var errors                    = Set[Error]()
   def raiseImpure(e: Error)     = errors = errors + e
   def raiseImpure(errs: Errors) = errors = errors union errs
@@ -79,7 +84,7 @@ class Reduce(val astIn: a0.Ast) {
     chooseOverload(es.map { constrain(t, _) }, a1.InvalidExp)
 
   def findCycle(
-      node: a0.Node,
+      node: a0.Exp,
       history: List[a1.Cycle.Component]
     ): List[a1.Cycle.Component] = {
     def impl(
@@ -97,8 +102,8 @@ class Reduce(val astIn: a0.Ast) {
   var history = List[a1.Cycle.Component]()
 
   def addToHistory(
-      input: a0.Node,
-      mapping: a0.Node => List[ReduceM[a1.Node]]
+      input: a0.Exp,
+      mapping: a0.Exp => List[ReduceM[a1.Node]]
     ): List[ReduceM[a1.Node]] = {
     val cycleComponent = input match {
       case f @ a0.Fun(params, retTypeOpt, _) =>
@@ -116,8 +121,8 @@ class Reduce(val astIn: a0.Ast) {
   }
 
   def catchCycles(
-      input: a0.Node,
-      mapping: a0.Node => List[ReduceM[a1.Node]]
+      input: a0.Exp,
+      mapping: a0.Exp => List[ReduceM[a1.Node]]
     ): List[ReduceM[a1.Node]] = findCycle(input, history) match {
     case Nil => mapping(input)
     case cycle =>
@@ -137,11 +142,11 @@ class Reduce(val astIn: a0.Ast) {
   }
 
   def catchCyclesAndAddToHistory(
-      input: a0.Node,
-      mapping: a0.Node => List[ReduceM[a1.Node]]
+      input: a0.Exp,
+      mapping: a0.Exp => List[ReduceM[a1.Node]]
     ): List[ReduceM[a1.Node]] = catchCycles(input, addToHistory(_, mapping))
 
-  val nodes = new IdentityMap[a0.Node, List[ReduceM[a1.Node]]]
+  val nodes = new IdentityMap[a0.Exp, List[ReduceM[a1.Node]]]
 
   val astOut       = astIn.mapValues(mapNamespaceMember(_))
   val intrinsics   = MultiMap(a1.Intrinsic.values.map(i => (i.n, i)): _*)
@@ -166,7 +171,7 @@ class Reduce(val astIn: a0.Ast) {
   def lookupImplicitConversions(t: a1.Type): List[a1.Exp] =
     BuiltInConversions.entries(t)
 
-  def mapAsType(node: a0.Node): ReduceM[a1.Type] = mapNode(KType, node) match {
+  def mapAsType(node: a0.Exp): ReduceM[a1.Type] = mapNode(KType, node) match {
     case List(ReduceM(t: a1.Type, info)) => ReduceM(t, info)
     case Nil                             => pure(TError)
     case nodes =>
@@ -178,12 +183,12 @@ class Reduce(val astIn: a0.Ast) {
       }
   }
 
-  def mapAsExp(node: a0.Node): List[ReduceM[a1.Exp]] =
+  def mapAsExp(node: a0.Exp): List[ReduceM[a1.Exp]] =
     mapNode(KExp(None), node).collect {
       case ReduceM(e: a1.Exp, errs) => ReduceM(e, errs)
     }
 
-  def mapAsExp(ot: Option[a1.Type], node: a0.Node): ReduceM[a1.Exp] = ot match {
+  def mapAsExp(ot: Option[a1.Type], node: a0.Exp): ReduceM[a1.Exp] = ot match {
     case Some(t) => chooseOverload(t, mapAsExp(node))
     case None    => chooseOverload(mapAsExp(node), a1.InvalidExp)
   }
@@ -194,7 +199,7 @@ class Reduce(val astIn: a0.Ast) {
   case class KExp(t: Option[a1.Type]) extends Kind
   // case class KVal(t: a1.Type) extends Kind
 
-  def mapNamespaceMember(_n: a0.Node): a1.Node = {
+  def mapNamespaceMember(_n: a0.Exp): a1.Node = {
     val ReduceM(n, info) =
       chooseOverload(mapNodeAndAddToHistory(KAny, _n), a1.InvalidExp)
     raiseImpure(info.errors)
@@ -211,10 +216,8 @@ class Reduce(val astIn: a0.Ast) {
   //     a1.InvalidExp
   // }
 
-  def mapNodeWithoutCycleDetection(n: a0.Node) = n match {
+  def mapNodeWithoutCycleDetection(n: a0.Exp) = n match {
     case _t: a0.Type => mapType(_t)
-
-    case _e: a0.Exp => mapExp(KAny, _e)
 
     case a0.Namespace(_nodes) =>
       val nodes = _nodes.mapValues(mapNamespaceMember(_))
@@ -222,12 +225,14 @@ class Reduce(val astIn: a0.Ast) {
       nodes.underlyingMap.view.force
       popScope()
       List(pure(a1.Namespace(nodes)))
+
+    case _e: a0.Exp => mapExp(KAny, _e)
   }
 
-  def mapNode(kind: Kind, n: a0.Node): List[ReduceM[a1.Node]] =
+  def mapNode(kind: Kind, n: a0.Exp): List[ReduceM[a1.Node]] =
     nodes.getOrElseUpdate(n, catchCycles(n, mapNodeWithoutCycleDetection))
 
-  def mapNodeAndAddToHistory(kind: Kind, n: a0.Node): List[ReduceM[a1.Node]] =
+  def mapNodeAndAddToHistory(kind: Kind, n: a0.Exp): List[ReduceM[a1.Node]] =
     nodes.getOrElseUpdate(
       n,
       catchCyclesAndAddToHistory(n, mapNodeWithoutCycleDetection)
@@ -435,7 +440,7 @@ class Reduce(val astIn: a0.Ast) {
       case t: TypeAtom => pure(t)
       case a0.TFun(_params, _ret) =>
         for {
-          params <- _params.traverse { (n: a0.Node) =>
+          params <- _params.traverse { (n: a0.Exp) =>
             mapAsType(n)
           }
           ret <- mapAsType(_ret)

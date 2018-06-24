@@ -8,12 +8,11 @@ import ripl.ast.{untyped => a0}
 import ripl.reduce.ReduceM
 import ripl.util.MultiMap
 
-// I feel like I need to work on my hierarchy a little bit:
-// what if everything was a node, we got rid of units, and
-// most of the heavy lifting was done in map node?
-// That way, expression constructs yielding non-expressions
-// (such as types or namespaces) will boil off, leaving only
-// true expressions behind?
+// I think I could work on my hierarchy a bit.
+// What if everything was an exp, we got rid of nodes,
+// we introduced a distinction between values/variables,
+// constants and types, rather than distinguishing between
+// types and exps?
 
 sealed trait Node
 
@@ -57,24 +56,11 @@ case object InvalidExp extends Exp {
   def t = TError
 }
 
-// sealed trait CycleComponent {
-//   def node: a0.Node
-// }
-// object CycleComponent {
-//   case class Fun(node: a0.Fun, params: List[Type], ret: Option[Type]) extends CycleComponent
-//   // case class Fun(node: a0.Fun, t: ReduceM[TFun], ret: Option[TFun]) extends CycleComponent
-//   case class Node(node: a0.Node) extends CycleComponent
-
-//   implicit def apply(node: a0.Node) = Node(node)
-// }
-
-// case class
-
 object Cycle {
-  sealed trait Component { def node: a0.Node }
+  sealed trait Component { def node: a0.Exp }
   case class Fun(node: a0.Fun, params: List[Type], ret: Option[Type])
       extends Component
-  case class Node(node: a0.Node) extends Component
+  case class Node(node: a0.Exp) extends Component
 }
 
 case class Cycle(cycle: List[Cycle.Component]) extends Exp {
