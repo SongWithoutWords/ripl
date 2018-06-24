@@ -4,8 +4,10 @@ A Robust and Intuitive Programming Language, and work in progress, written in Sc
 ## Planned Features
 - [x] Compiled
 - [x] Strong, static typing
+- [x] Type inference
 - [x] Strict evaluation
-- [ ] Type-safe discriminated unions and functional idioms
+- [ ] Type-safe discriminated unions
+- [ ] Pattern matching
 - [x] Mutable data structures to support computationally intensive tasks
 - [ ] Type-level constraints on the mutability of data and purity of functions
 - [x] Ad-hoc polymorphism (overloading) to promote programmer sanity
