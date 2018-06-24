@@ -3,6 +3,7 @@ package ripl.llvm.ast
 
 // <http://llvm.org/doxygen/classllvm_1_1GlobalValue.html>
 sealed trait Global
+
 // <http://llvm.org/docs/LangRef.html#global-variables>
 case class GlobalVariable(
     name: Name,
@@ -19,6 +20,7 @@ case class GlobalVariable(
     comdat: Option[String],
     alignment: Int
   ) extends Global
+
 // <http://llvm.org/docs/LangRef.html#aliases>
 case class GlobalAlias(
     name: Name,
@@ -31,27 +33,28 @@ case class GlobalAlias(
     addrSpace: AddrSpace,
     aliasee: Constant
   ) extends Global
+
 // <http://llvm.org/docs/LangRef.html#functions>
 case class Function(
-    linkage: Linkage,
-    visibility: Visibility,
-    dllStorageClass: Option[StorageClass],
-    callingConvention: CallingConvention,
-    returnAttributes: List[ParameterAttribute],
-    returnType: Type,
-    name: Name,
-    parameters: Parameters,
-    functionAttributes: List[Either[GroupID, FunctionAttribute]],
-    section: Option[String],
-    comdat: Option[String],
-    alignment: Int,
-    garbageCollectorName: Option[String],
-    prefix: Option[Constant],
-    basicBlocks: List[BasicBlock],
-    personalityFunction: Option[Constant]
+    linkage: Linkage = Linkage.External,
+    visibility: Visibility = Visibility.Default,
+    dllStorageClass: Option[StorageClass] = None,
+    callingConvention: CallingConvention = CallingConvention.C,
+    returnAttributes: List[ParameterAttribute] = Nil,
+    returnType: Type = VoidType,
+    name: Name = Name(""),
+    parameters: Parameters = Parameters(Nil, false),
+    functionAttributes: List[Either[GroupID, FunctionAttribute]] = Nil,
+    section: Option[String] = None,
+    comdat: Option[String] = None,
+    alignment: Int = 0,
+    garbageCollectorName: Option[String] = None,
+    prefix: Option[Constant] = None,
+    basicBlocks: List[BasicBlock] = Nil,
+    personalityFunction: Option[Constant] = None
   ) extends Global
 
-case class Parameters(params: List[Parameter], isVarArg: Boolean)
+case class Parameters(params: List[Parameter], isVarArg: Boolean = false)
 
 // 'Parameter's for 'Function's
 case class Parameter(t: Type, name: Name, attributes: List[ParameterAttribute])
@@ -103,24 +106,3 @@ case object GlobalAddr extends UnnamedAddr
 //     aliasee = error "global alias aliasee not defined"
 //   )
 
-// // helper for making 'Function's
-// functionDefaults: Global
-// functionDefaults =
-//   Function(
-//     linkage = L.External,
-//     visibility = V.Default,
-//     dllStorageClass = Nothing,
-//     callingConvention = CC.C,
-//     returnAttributes = [],
-//     returnType = error "function return type not defined",
-//     name = error "function name not defined",
-//     parameters = ([], False),
-//     functionAttributes = [],
-//     section = Nothing,
-//     comdat = Nothing,
-//     alignment = 0,
-//     garbageCollectorName = Nothing,
-//     prefix = Nothing,
-//     basicBlocks = [],
-//     personalityFunction = Nothing
-//   )
