@@ -26,18 +26,15 @@ case object PartialBlock {
 
 // Builder monad state
 case class IRBuilderState(
-    builderSupply: Int,
-    // builderUsedNames: Set[String], // TODO: you'll need to fall back on the set idea
-    builderUsedNames: Map[String, Int],
-    builderNameSuggestion: Option[String],
-    builderBlocks: SnocList[BasicBlock],
-    builderBlock: Option[PartialBlock]
+    builderSupply: Int = 0,
+    // TODO: I'll need to fall back on the set idea,
+    // the map idea could fail in cases where the name ends in a number
+    // builderUsedNames: Set[String],
+    builderUsedNames: Map[String, Int] = Map(),
+    builderNameSuggestion: Option[String] = None,
+    builderBlocks: SnocList[BasicBlock] = SnocList(Nil),
+    builderBlock: Option[PartialBlock] = None
   )
-
-case object IRBuilderState {
-  val empty = IRBuilderState
-  (0, Set(), None, SnocList(Nil), None)
-}
 
 case object runIRBuilder {
   def apply[A](
@@ -50,6 +47,9 @@ case object runIRBuilder {
 }
 
 case object execIRBuilder {
+  def apply[A](computation: IRBuilder[A]): List[BasicBlock] =
+    runIRBuilder(IRBuilderState(), computation)._2
+
   def apply[A](
       initialState: IRBuilderState,
       computation: IRBuilder[A]
