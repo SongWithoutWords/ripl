@@ -11,6 +11,6 @@ class TestIntegration extends FreeSpec with Matchers {
   def test(name: String, riplSrc: String)(out: Either[Set[Error], Int]): Unit =
     Run(Paths.get("./target/test/llvm-ir/", name + ".ll"), riplSrc) shouldBe out
 
-  test("simple-main", """define main
-                        |  lambda () 3""".stripMargin)(Right(3))
+  test("000-meaning-of-life", """define main
+                                |  lambda () 42""".stripMargin)(Right(42))
 }
