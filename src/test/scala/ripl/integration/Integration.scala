@@ -1,36 +1,16 @@
 package ripl.integration
 
+import java.nio.file.Paths
+
 import org.scalatest._
 
-import ripl.util.{MultiMap => Multi}
-
-import ripl.ast.common._
-import ripl.ast.common.TypeAtom._
-import ripl.ast.common.ImplicitConversions._
-import ripl.ast.{untyped => a0, typed => a1}
-
-import ripl.parse.Lex
-import ripl.parse.Parse
-
-import ripl.reduce.Reduce
-import ripl.reduce.CustomMatchers.matchAst
+import ripl.process._
 
 class TestIntegration extends FreeSpec with Matchers {
 
-  def test(in: String)(out: (String, a1.Node)*)(errs: Error*): Unit =
-    Reduce(Parse(Lex(in))) should matchAst((Multi(out: _*), Set(errs: _*)))
+  def test(name: String, riplSrc: String)(out: Either[Set[Error], Int]): Unit =
+    Run(Paths.get(".", name + ".ll"), riplSrc) shouldBe out
 
-  def testErrs(in: Multi[String, a0.Exp])(errs: Error*): Unit =
-    Reduce(in)._2.shouldBe(Set(errs: _*))
-
-  def testErrs(in: (String, a0.Exp)*)(errs: Error*): Unit =
-    testErrs(Multi(in: _*))(errs: _*)
-
-  "a + b is 9 given a = 4 and b = 5" in {
-    test(
-      """define a 4
-        |define b 5
-        |define c (+ a b)""".stripMargin
-    )("a" -> 4, "b" -> 5, "c" -> 9)()
-  }
+  test("simple-main", """define main
+                        |  lambda () 3""".stripMargin)(Right(3))
 }
