@@ -15,7 +15,7 @@ import ripl.llvm.irBuilder.{IRBuilderInstruction => i}
 import ripl.llvm.irBuilder.{Constant => c}
 
 case object CodeGen {
-  def apply(ast: Ast): l.Module = genModule(ast)
+  def apply(ast: Ast): l.Module = { println(ast); genModule(ast) }
 
   def genModule(ast: Ast): l.Module = {
     val definitions = ast.toList.map {
@@ -63,8 +63,10 @@ case object CodeGen {
         }
 
         result <- (fun, ops) match {
-          case (Intrinsic.IAdd, List(a, b)) =>
-            i.add(a, b)
+          case (Intrinsic.IAdd, List(a, b)) => i.add(a, b)
+          case (Intrinsic.ISub, List(a, b)) => i.sub(a, b)
+          case (Intrinsic.IMul, List(a, b)) => i.mul(a, b)
+          case (Intrinsic.IDiv, List(a, b)) => i.sdiv(a, b)
 
           case _ =>
             for {
