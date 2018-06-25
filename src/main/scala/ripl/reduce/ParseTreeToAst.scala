@@ -23,6 +23,13 @@ case object ParseTreeToAst {
     case SExp(Name("define") :: rest) =>
       rest match {
         case Name(n) :: value :: Nil => (n, mapExp(value))
+        case SExp(Name(n) :: params) :: value :: Nil =>
+          (n, Fun(params.map(mapParam), None, mapExp(value)))
+        case SExp(Name(n) :: params) :: returnType :: value :: Nil =>
+          (
+            n,
+            Fun(params.map(mapParam), Some(mapExp(returnType)), mapExp(value))
+          )
       }
   }
 
@@ -51,7 +58,7 @@ case object ParseTreeToAst {
   }
 
   private def mapParam(exp: p.Exp): Param = exp match {
-    case SExp(Name(n) :: t :: Nil) => Param(n, mapExp(t))
+    case SExp(t :: Name(n) :: Nil) => Param(n, mapExp(t))
     case _                         => ???
     // TODO: error for invalid parameter form
   }
