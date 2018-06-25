@@ -39,6 +39,7 @@ case object GenerateLlvmIr {
 case object Run {
   def apply(path: Path, riplSrc: String) =
     GenerateLlvmIr(riplSrc).map { llvmIrSrc =>
+      Files.createDirectories(path.getParent)
       Files.write(path, llvmIrSrc.getBytes(StandardCharsets.UTF_8))
       Process(Seq("lli", path.toString)).!
     }
