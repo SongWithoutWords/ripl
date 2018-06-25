@@ -33,7 +33,8 @@ case class IRBuilderState(
     builderUsedNames: Map[String, Int] = Map(),
     builderNameSuggestion: Option[String] = None,
     builderBlocks: SnocList[BasicBlock] = SnocList(Nil),
-    builderBlock: Option[PartialBlock] = None
+    builderBlock: Option[PartialBlock] = None,
+    bindings: Map[String, Operand] = Map()
   )
 
 case object runIRBuilder {
@@ -123,6 +124,15 @@ case object freshName {
       }
     } yield
       (Name(hint + (if (nameUsedCount > 0) nameUsedCount.toString else "")))
+}
+
+case object addBinding {
+  def apply(nm: String, op: Operand): IRBuilder[Unit] = {
+
+    State.modify { (s: IRBuilderState) =>
+      s.copy(bindings = s.bindings + Tuple2(nm, op))
+    }
+  }
 }
 
 case object emitInstr {

@@ -45,6 +45,9 @@ case object CodeGen {
     m.execIRBuilder {
       val name = l.Name("entry")
       for {
+        _ <- params.traverse { p: Param =>
+          m.addBinding(p.n, l.LocalReference(genType(p.t), l.Name(p.n)))
+        }
         _     <- m.emitBlockStart(name)
         retOp <- genExp(e)
         _     <- i.ret(retOp)
@@ -70,6 +73,21 @@ case object CodeGen {
             } yield (app)
         }
       } yield (result)
+
+    case ripl.ast.typed.Name(nm, exp :: Nil) =>
+      for {
+        locals <- State.inspect { s: m.IRBuilderState =>
+          s.bindings
+        }
+      } yield
+        (locals.get(nm) match {
+          case Some(op) => op
+          case None =>
+            val tp = exp.t
+            l.ConstantOperand(
+              l.Constant.GlobalReference(genType(tp), l.Name(nm))
+            )
+        })
 
     case VInt(i) => c.int64[IRBuilder](i)
   }
