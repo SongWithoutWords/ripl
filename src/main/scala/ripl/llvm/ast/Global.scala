@@ -57,7 +57,11 @@ case class Function(
 case class Parameters(params: List[Parameter], isVarArg: Boolean = false)
 
 // 'Parameter's for 'Function's
-case class Parameter(t: Type, name: Name, attributes: List[ParameterAttribute] = Nil)
+case class Parameter(
+    t: Type,
+    name: Name,
+    attributes: List[ParameterAttribute] = Nil
+  )
 
 // <http://llvm.org/doxygen/classllvm_1_1BasicBlock.html>
 // LLVM code in a function is a sequence of 'BasicBlock's each with a label,
@@ -105,4 +109,3 @@ case object GlobalAddr extends UnnamedAddr
 //     addrSpace = AddrSpace 0,
 //     aliasee = error "global alias aliasee not defined"
 //   )
-
