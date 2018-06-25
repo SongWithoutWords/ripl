@@ -11,6 +11,20 @@ class TestIntegration extends FreeSpec with Matchers {
   def test(name: String, riplSrc: String)(out: Either[Set[Error], Int]): Unit =
     Run(Paths.get("./target/test/llvm-ir/", name + ".ll"), riplSrc) shouldBe out
 
-  test("000-meaning-of-life", """define main
-                                |  lambda () 42""".stripMargin)(Right(42))
+  test("lambda-style-main", """define main
+                              |  lambda () 42""".stripMargin)(Right(42))
+
+  test("function-style-main", """define (main) 42""".stripMargin)(Right(42))
+
+  test(
+    "simple-function-call",
+    """define (main) (meaning-of-life)
+      |define (meaning-of-life) 42""".stripMargin
+  )(Right(42))
+
+  test(
+    "simple-add",
+    """define (main) (add 37 5)
+      |define (add (Int a) (Int b)) (+ a b)""".stripMargin
+  )(Right(42))
 }
