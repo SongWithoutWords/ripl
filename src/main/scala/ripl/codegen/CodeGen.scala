@@ -53,16 +53,21 @@ case object CodeGen {
     }
 
   def genExp(exp: Exp): IRBuilder[l.Operand] = exp match {
-    case App(f, args) =>
+    case App(fun, args) =>
       for {
-        ops <- args.traverse { e =>
+        ops <- args.traverse { e: Exp =>
           genExp(e)
         }
 
-        result <- (f, ops) match {
+        result <- (fun, ops) match {
           case (Intrinsic.IAdd, List(a, b)) =>
             i.add(a, b)
 
+          case _ =>
+            for {
+              f   <- genExp(fun)
+              app <- i.call(f, ops.map(l.Argument(_)))
+            } yield (app)
         }
       } yield (result)
 
