@@ -76,6 +76,8 @@ case object CodeGen {
 
   def genType(t: Type): l.Type = t match {
     case TInt => l.IntegerType(64)
+
+    case TFun(params, ret) => l.FunctionType(genType(ret), params.map(genType))
   }
 
 }
