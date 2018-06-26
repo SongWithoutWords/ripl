@@ -34,7 +34,14 @@ case object ParseTreeToAst {
   }
 
   private def mapExp(exp: p.Exp): Exp = exp match {
-    case a: Atom => a
+    case a: Atom =>
+      a match {
+        // TODO: I don't really like this here,
+        // but I'm not really know where else it should go either
+        case Name("true")  => VBln(true)
+        case Name("false") => VBln(false)
+        case _             => a
+      }
     case SExp(exps) =>
       exps match {
         case Name("if") :: a :: b :: c :: Nil =>
@@ -51,7 +58,6 @@ case object ParseTreeToAst {
 
             case _ => ???
             // TODO: error for invalid function form
-
           }
         case (f :: exps) => App(mapExp(f), exps.map(mapExp))
       }
