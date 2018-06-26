@@ -76,6 +76,30 @@ case object CodeGen {
         }
       } yield (result)
 
+    case If(_a, _b, _c) =>
+      for {
+        branchName <- m.fresh()
+        a          <- genExp(_a)
+
+        ifThen = l.Name(branchName.s + ".then")
+        ifElse = l.Name(branchName.s + ".else")
+        ifExit = l.Name(branchName.s + ".exit")
+
+        _ <- i.condBr(a, ifThen, ifElse)
+
+        _ <- m.emitBlockStart(ifThen)
+        b <- genExp(_b)
+        _ <- i.br(ifExit)
+
+        _ <- m.emitBlockStart(ifElse)
+        c <- genExp(_c)
+        _ <- i.br(ifExit)
+
+        _      <- m.emitBlockStart(ifExit)
+        result <- i.phi(List(b -> ifThen, c -> ifElse))
+
+      } yield (result)
+
     case ripl.ast.typed.Name(nm, exp :: Nil) =>
       for {
         locals <- State.inspect { s: m.IRBuilderState =>
