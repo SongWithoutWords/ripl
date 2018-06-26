@@ -27,4 +27,12 @@ class TestIntegration extends FreeSpec with Matchers {
     """define (main) (add 37 5)
       |define (add (Int a) (Int b)) (+ a b)""".stripMargin
   )(Right(42))
+
+  test(
+    "nested-exps",
+    """define (main) (multiply-add 8 5 2)
+      |define (multiply-add (Int a) (Int b) (Int c))
+      |  + (* a b) c
+      """.stripMargin
+  )(Right(42))
 }
