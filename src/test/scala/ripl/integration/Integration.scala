@@ -37,10 +37,26 @@ class TestIntegration extends FreeSpec with Matchers {
   )(Right(42))
 
   test(
-    "ternary-using-if",
+    "ternary-using-if-true",
     """define (main) (ternary true 42 7)
       |define (ternary (Bln a) (Int b) (Int c))
       |  if a b c
       """.stripMargin
   )(Right(42))
+
+  test(
+    "ternary-using-if-false",
+    """define (main) (ternary false 42 7)
+      |define (ternary (Bln a) (Int b) (Int c))
+      |  if a b c
+      """.stripMargin
+  )(Right(7))
+
+  test(
+    "cascading-if",
+    """define (main) (cascading-if false 7 true 8 9)
+      |define (cascading-if (Bln c1) (Int e1) (Bln c2) (Int e2) (Int e3))
+      |  if c1 e1 (if c2 e2 e3)
+      """.stripMargin
+  )(Right(8))
 }
