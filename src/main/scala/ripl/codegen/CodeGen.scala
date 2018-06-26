@@ -15,7 +15,7 @@ import ripl.llvm.irBuilder.{IRBuilderInstruction => i}
 import ripl.llvm.irBuilder.{Constant => c}
 
 case object CodeGen {
-  def apply(ast: Ast): l.Module = { println(ast); genModule(ast) }
+  def apply(ast: Ast): l.Module = genModule(ast)
 
   def genModule(ast: Ast): l.Module = {
     val definitions = ast.toList.map {
