@@ -260,4 +260,22 @@ class ParseTest extends FreeSpec with Matchers {
 
   "unary operators" - {}
 
+  "selection" - {
+    test("a.b")(Select(Name("a"), Name("b")))
+    test("a.b.c")(Select(Select(Name("a"), Name("b")), Name("c")))
+    test("(a b).c")(Select(SExp(Name("a"), Name("b")), Name("c")))
+    test("(a b c).(i j k)")(
+      Select(
+        SExp(Name("a"), Name("b"), Name("c")),
+        SExp(Name("i"), Name("j"), Name("k"))
+      )
+    )
+    test("a.b c")(
+      SExp(
+        Select(Name("a"), Name("b")),
+        Name("c")
+      )
+    )
+  }
+
 }
