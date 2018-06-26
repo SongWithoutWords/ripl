@@ -126,6 +126,13 @@ case object freshName {
       (Name(hint + (if (nameUsedCount > 0) nameUsedCount.toString else "")))
 }
 
+case object getCurrentBlockName {
+  def apply(): IRBuilder[Name] =
+    State.inspect { s: IRBuilderState =>
+      s.builderBlock.map(_.partialBlockName).getOrElse(Name(""))
+    }
+}
+
 case object addBinding {
   def apply(nm: String, op: Operand): IRBuilder[Unit] = {
 

@@ -87,16 +87,18 @@ case object CodeGen {
 
         _ <- i.condBr(a, ifThen, ifElse)
 
-        _ <- m.emitBlockStart(ifThen)
-        b <- genExp(_b)
-        _ <- i.br(ifExit)
+        _         <- m.emitBlockStart(ifThen)
+        b         <- genExp(_b)
+        _         <- i.br(ifExit)
+        ifThenEnd <- m.getCurrentBlockName()
 
-        _ <- m.emitBlockStart(ifElse)
-        c <- genExp(_c)
-        _ <- i.br(ifExit)
+        _         <- m.emitBlockStart(ifElse)
+        c         <- genExp(_c)
+        _         <- i.br(ifExit)
+        ifElseEnd <- m.getCurrentBlockName()
 
         _      <- m.emitBlockStart(ifExit)
-        result <- i.phi(List(b -> ifThen, c -> ifElse))
+        result <- i.phi(List(b -> ifThenEnd, c -> ifElseEnd))
 
       } yield (result)
 
