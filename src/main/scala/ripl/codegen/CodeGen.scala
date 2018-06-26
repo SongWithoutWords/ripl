@@ -24,18 +24,23 @@ case object CodeGen {
     l.Module("ripl", "", None, None, definitions)
   }
 
-  def genUnit(name: String, node: Node): l.Definition = l.GlobalDefinition(
+  def genUnit(name: String, node: Node): l.Definition =
     node match {
       case Fun(params, rType, exp) =>
-        l.Function(
-          callingConvention = l.CallingConvention.Fast,
-          name = l.Name(name),
-          parameters = l.Parameters(params.map(genParam)),
-          returnType = genType(rType),
-          basicBlocks = genFun(params, exp)
+        l.GlobalDefinition(
+          l.Function(
+            callingConvention = l.CallingConvention.Fast,
+            name = l.Name(name),
+            parameters = l.Parameters(params.map(genParam)),
+            returnType = genType(rType),
+            basicBlocks = genFun(params, exp)
+          )
         )
+      case Struct(name, fields) =>
+        l.TypeDefinition(l.Name(name), Some(l.StructureType(false, fields.map {
+          case (_, tp) => genType(tp)
+        })))
     }
-  )
 
   def genParam(p: Param): l.Parameter = l.Parameter(genType(p.t), l.Name(p.n))
 
