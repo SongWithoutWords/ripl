@@ -91,11 +91,14 @@ case object CodeGen {
             )
         })
 
+    case VBln(b) => c.bit[IRBuilder](b)
     case VInt(i) => c.int64[IRBuilder](i)
   }
 
   def genType(t: Type): l.Type = t match {
+
     case TInt => l.IntegerType(64)
+    case TBln => l.IntegerType(1)
 
     case TFun(params, ret) => l.FunctionType(genType(ret), params.map(genType))
   }
