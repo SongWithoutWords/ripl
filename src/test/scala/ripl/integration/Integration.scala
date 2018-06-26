@@ -35,4 +35,12 @@ class TestIntegration extends FreeSpec with Matchers {
       |  + (* a b) c
       """.stripMargin
   )(Right(42))
+
+  test(
+    "ternary-using-if",
+    """define (main) (ternary true 42 7)
+      |define (ternary (Bln a) (Int b) (Int c))
+      |  if a b c
+      """.stripMargin
+  )(Right(42))
 }
