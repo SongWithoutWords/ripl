@@ -36,27 +36,60 @@ class TestIntegration extends FreeSpec with Matchers {
       """.stripMargin
   )(Right(42))
 
-  test(
-    "ternary-using-if-true",
-    """define (main) (ternary true 42 7)
-      |define (ternary (Bln a) (Int b) (Int c))
-      |  if a b c
-      """.stripMargin
-  )(Right(42))
+  "if-expressions" - {
 
-  test(
-    "ternary-using-if-false",
-    """define (main) (ternary false 42 7)
-      |define (ternary (Bln a) (Int b) (Int c))
-      |  if a b c
-      """.stripMargin
-  )(Right(7))
+    test(
+      "ternary-using-if-true",
+      """define (main) (ternary true 42 7)
+        |define (ternary (Bln a) (Int b) (Int c))
+        |  if a b c
+        """.stripMargin
+    )(Right(42))
 
-  test(
-    "cascading-if",
-    """define (main) (cascading-if false 7 true 8 9)
-      |define (cascading-if (Bln c1) (Int e1) (Bln c2) (Int e2) (Int e3))
-      |  if c1 e1 (if c2 e2 e3)
-      """.stripMargin
-  )(Right(8))
+    test(
+      "ternary-using-if-false",
+      """define (main) (ternary false 42 7)
+        |define (ternary (Bln a) (Int b) (Int c))
+        |  if a b c
+        """.stripMargin
+    )(Right(7))
+
+    test(
+      "cascading-if",
+      """define (main) (cascading-if false 7 true 8 9)
+        |define (cascading-if (Bln c1) (Int e1) (Bln c2) (Int e2) (Int e3))
+        |  if c1 e1 (if c2 e2 e3)
+        """.stripMargin
+    )(Right(8))
+
+    "xor-using-if-exps" - {
+
+      // Although it doesn't make any practical sense to define by branching,
+      // it's a good way to test the generation of nested if-expressions
+      def xorUsingIf(a: Boolean, b: Boolean) =
+        s"""define (main) (xor-using-if-exps ${a.toString} ${b.toString})
+           |define (xor-using-if-exps (Bln a) (Bln b))
+           |  if a (if b false true) (if b true false)""".stripMargin
+
+      test(
+        "xor-using-if-false-false",
+        xorUsingIf(false, false)
+      )(Right(0))
+
+      test(
+        "xor-using-if-exps-fase-true",
+        xorUsingIf(false, true)
+      )(Right(1))
+
+      test(
+        "xor-using-if-exps-true-true",
+        xorUsingIf(false, true)
+      )(Right(1))
+
+      test(
+        "xor-using-if-exps-true-true",
+        xorUsingIf(true, true)
+      )(Right(0))
+    }
+  }
 }
