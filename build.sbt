@@ -32,10 +32,6 @@ ensimeIgnoreMissingDirectories  := true;
 scalafmtOnCompile := true
 // scalafmtVersion   := "1.4.0" // as high as neo-sbt-scalafmt presently supports
 
-enablePlugins(Antlr4Plugin)
-antlr4GenListener in Antlr4 := false
-antlr4GenVisitor in Antlr4  := false
-
 // run tests in a separate JVM (avoids out-of-memory issues)
 fork in Test := true
 
