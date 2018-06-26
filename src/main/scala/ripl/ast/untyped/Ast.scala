@@ -46,12 +46,12 @@ object TFun {
   def apply(params: Exp*)(ret: Exp): TFun = TFun(params.toList, ret)
 }
 case class TFun(params: List[Exp], ret: Exp) extends Type
+
 object Struct {
   def apply(name: String, fields: (String, Exp)*): Struct =
-    Struct(name, MultiMap(fields: _*))
+    Struct(name, fields.toList)
 }
-
-case class Struct(name: String, fields: MultiMap[String, Exp])
+case class Struct(name: String, fields: List[(String, Exp)])
     extends Type
     with Named
 case class Union(name: String, alternatives: List[Exp]) extends Type with Named

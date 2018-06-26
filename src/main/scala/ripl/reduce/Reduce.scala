@@ -398,9 +398,11 @@ class Reduce(val astIn: a0.Definitions) {
               e.t match {
                 case a1.Struct(_, memberTypes) =>
                   // TODO: raise non-existent member when no field is found
-                  memberTypes.get(memberName).map { t =>
-                    pure(a1.Select(e, memberName, t))
-                  }
+                  memberTypes
+                    .collect { case (nm, tp) if nm == memberName => tp }
+                    .map { t =>
+                      pure(a1.Select(e, memberName, t))
+                    }
                 case t =>
                   List(
                     raise(SelectionFromNonStructType(t)) >> pure(
@@ -447,8 +449,13 @@ class Reduce(val astIn: a0.Definitions) {
         } yield a1.TFun(params, ret)
       case a0.Struct(name, _fields) =>
         for {
-          fields <- MultiMap.instances().traverse(_fields)(mapAsType)
-        } yield a1.Struct(name, fields)
+          fields <- _fields.traverse {
+            case (nm, _tp) =>
+              mapAsType(_tp) >>= { tp =>
+                pure(nm, tp)
+              }
+          }
+        } yield a1.Struct(name, fields.toList)
     })
 
   astOut.underlyingMap.view.force
