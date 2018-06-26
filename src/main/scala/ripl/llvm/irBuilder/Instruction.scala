@@ -294,13 +294,14 @@ case object IRBuilderInstruction {
       InstructionMetadata() // metadata
     )
 
-  def call(f: Operand, args: List[Argument]): IRBuilder[Option[Operand]] = {
+  def call(f: Operand, args: List[Argument]): IRBuilder[Operand] = {
     val instr = defaultCallInstruction(f, args)
     typeOf(f) match {
       case FunctionType(VoidType, _, _) =>
-        for { _ <- emitInstrVoid(instr) } yield (None)
+        for { _ <- emitInstrVoid(instr) } yield
+          (ConstantOperand(ripl.llvm.ast.Constant.Undef(VoidType)))
       case FunctionType(resType, _, _) =>
-        emitInstr(resType, instr).map(Some(_))
+        emitInstr(resType, instr) //.map(Some(_))
     }
   }
 

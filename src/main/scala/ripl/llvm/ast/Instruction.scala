@@ -17,7 +17,7 @@ case class NonEmpty[A](head: A, tail: List[A]) {
 // }
 // import InstructionAliases._
 
-case class Argument(op: Operand, attrs: List[ParameterAttribute])
+case class Argument(op: Operand, attrs: List[ParameterAttribute] = Nil)
 case class Atomicity(scope: SynchronizationScope, order: MemoryOrdering)
 case object InstructionMetadata {
   def apply(data: (String, MetadataNode)*): InstructionMetadata =

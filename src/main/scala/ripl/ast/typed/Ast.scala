@@ -181,6 +181,6 @@ object TFun {
 case class TFun(params: List[Type], ret: Type) extends Type
 object Struct {
   def apply(name: String, fields: (String, Type)*): Struct =
-    Struct(name, MultiMap(fields: _*))
+    Struct(name, fields.toList)
 }
-case class Struct(name: String, fields: MultiMap[String, Type]) extends Type
+case class Struct(name: String, fields: List[(String, Type)]) extends Type

@@ -1,36 +1,107 @@
 package ripl.integration
 
+import java.nio.file.Paths
+
 import org.scalatest._
 
-import ripl.util.{MultiMap => Multi}
-
-import ripl.ast.common._
-import ripl.ast.common.TypeAtom._
-import ripl.ast.common.ImplicitConversions._
-import ripl.ast.{untyped => a0, typed => a1}
-
-import ripl.parse.Lex
-import ripl.parse.Parse
-
-import ripl.reduce.Reduce
-import ripl.reduce.CustomMatchers.matchAst
+import ripl.process._
 
 class TestIntegration extends FreeSpec with Matchers {
 
-  def test(in: String)(out: (String, a1.Node)*)(errs: Error*): Unit =
-    Reduce(Parse(Lex(in))) should matchAst((Multi(out: _*), Set(errs: _*)))
+  def test(name: String, riplSrc: String)(out: Either[Set[Error], Int]): Unit =
+    Run(Paths.get("./target/test/llvm-ir/", name + ".ll"), riplSrc) shouldBe out
 
-  def testErrs(in: Multi[String, a0.Exp])(errs: Error*): Unit =
-    Reduce(in)._2.shouldBe(Set(errs: _*))
+  test("lambda-style-main", """define main
+                              |  lambda () 42""".stripMargin)(Right(42))
 
-  def testErrs(in: (String, a0.Exp)*)(errs: Error*): Unit =
-    testErrs(Multi(in: _*))(errs: _*)
+  test("function-style-main", """define (main) 42""".stripMargin)(Right(42))
 
-  "a + b is 9 given a = 4 and b = 5" in {
+  test(
+    "simple-function-call",
+    """define (main) (meaning-of-life)
+      |define (meaning-of-life) 42""".stripMargin
+  )(Right(42))
+
+  test(
+    "simple-add",
+    """define (main) (add 37 5)
+      |define (add (Int a) (Int b)) (+ a b)""".stripMargin
+  )(Right(42))
+
+  test(
+    "nested-exps",
+    """define (main) (multiply-add 8 5 2)
+      |define (multiply-add (Int a) (Int b) (Int c))
+      |  + (* a b) c
+      """.stripMargin
+  )(Right(42))
+
+  "if-expressions" - {
+
     test(
-      """define a 4
-        |define b 5
-        |define c (+ a b)""".stripMargin
-    )("a" -> 4, "b" -> 5, "c" -> 9)()
+      "ternary-using-if-true",
+      """define (main) (ternary true 42 7)
+        |define (ternary (Bln a) (Int b) (Int c))
+        |  if a b c
+        """.stripMargin
+    )(Right(42))
+
+    test(
+      "ternary-using-if-false",
+      """define (main) (ternary false 42 7)
+        |define (ternary (Bln a) (Int b) (Int c))
+        |  if a b c
+        """.stripMargin
+    )(Right(7))
+
+    test(
+      "cascading-if",
+      """define (main) (cascading-if false 7 true 8 9)
+        |define (cascading-if (Bln c1) (Int e1) (Bln c2) (Int e2) (Int e3))
+        |  if c1 e1 (if c2 e2 e3)
+        """.stripMargin
+    )(Right(8))
+
+    "xor-using-if-exps" - {
+
+      // Although it doesn't make any practical sense to define by branching,
+      // it's a good way to test the generation of nested if-expressions
+      def xorUsingIf(a: Boolean, b: Boolean) =
+        s"""define (main) (xor-using-if-exps ${a.toString} ${b.toString})
+           |define (xor-using-if-exps (Bln a) (Bln b))
+           |  if a (if b false true) (if b true false)""".stripMargin
+
+      test(
+        "xor-using-if-false-false",
+        xorUsingIf(false, false)
+      )(Right(0))
+
+      test(
+        "xor-using-if-exps-fase-true",
+        xorUsingIf(false, true)
+      )(Right(1))
+
+      test(
+        "xor-using-if-exps-true-true",
+        xorUsingIf(false, true)
+      )(Right(1))
+
+      test(
+        "xor-using-if-exps-true-true",
+        xorUsingIf(true, true)
+      )(Right(0))
+    }
   }
+
+  "structs" - {}
+
+  test(
+    "pair-sum",
+    """define (main) (pair-sum (pair 4 9))
+      |struct pair
+      |  Int a
+      |  Int b
+      |define (pair-sum (pair p))
+      |  + p.a p.b""".stripMargin
+  )(Right(13))
 }

@@ -21,16 +21,16 @@ case object Util {
   def lines(in: List[String]): String = in.mkString("", "\n", "")
 
   def spaces(in: List[String]): String = in.mkString("", " ", "")
-  def spaces(in: String*): String      = spaces(in: _*)
+  def spaces(in: String*): String      = spaces(in.toList)
 
   def commas(in: List[String]): String = in.mkString("", ", ", "")
-  def commas(in: String*): String      = commas(in: _*)
+  def commas(in: String*): String      = commas(in.toList)
 
   def colons(in: List[String]): String = in.mkString("", ":", "")
 
   def hlinecat(in: List[String]): String = in.mkString("", "\n", "")
 
-  def wrapbraces(leadIn: String, x: String): String = s"$leadIn {\n${x}\n}"
+  // def wrapbraces(leadIn: String, x: String): String = s"$leadIn {\n${x}\n}"
 
   def indent(n: Int, s: String) = {
     val beginningOfLine = "^".r
@@ -58,6 +58,8 @@ case object Util {
     def </>(rhs: String)   = lhs + "\n" + rhs
     def <:>(rhs: String)   = lhs + ":" + rhs
     def comma(rhs: String) = lhs + ", " + rhs
+
+    def wrapbraces(rhs: String): String = s"$lhs {\n${rhs}\n}"
   }
 }
 
@@ -181,7 +183,8 @@ case object PrettyPrint {
             "define" <+>
               infoBeforeParams <>
               ppParams(f.parameters.params.map(pp), f.parameters.isVarArg) <+>
-              infoAfterParams
+              infoAfterParams wrapbraces
+              lines(bs.map(pp))
         }
 
       case g: GlobalVariable =>
@@ -1000,7 +1003,7 @@ case object PrettyPrint {
     brackets(pp(op) comma (local(pp(nm))))
 
   def ppParams[A](params: List[String], isVarArg: Boolean): String =
-    commas(params ++ (if (isVarArg) List("...") else Nil))
+    parens(commas(params ++ (if (isVarArg) List("...") else Nil)))
 
   def ppFunctionArgumentTypes(ft: FunctionType): String =
     ppParams(ft.argumentTypes.map(pp), ft.isVarArg)
