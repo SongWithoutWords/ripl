@@ -74,6 +74,29 @@
  #+RESULTS:
  [[file:pca/languages.png]]
 
+ #+begin_src R :file pca/language-other-axes.png :results file graphics :exports results
+   library("FactoMineR")
+   library("factoextra")
+
+   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.pca <- PCA(data.active, graph = FALSE)
+
+   plot = fviz_pca_ind(
+              res.pca,
+              col.ind = "cos2", # Color by the quality of representation
+              gradient.cols = c("#0099FF", "#FF4400"),
+              ## gradient.cols = c("#FFFFFF", "#000000"),
+              axes = c(3,1),
+              repel = TRUE     # Avoid text overlapping
+              )
+   print(plot)
+ #+end_src
+
+ #+RESULTS:
+ [[file:pca/language-other-axes.png]]
+
 ** Languages and Language Features
  #+begin_src R :file pca/languages-and-language-features.png :results file graphics :exports results
    library("FactoMineR")
