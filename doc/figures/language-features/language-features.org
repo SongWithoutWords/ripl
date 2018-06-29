@@ -13,8 +13,8 @@
 | Scheme  |          -1 |                 +1 |               -1 |            -1 |            +1 |             NA |         -1 |                      NA |           -1 |                     NA |                  NA |          -1 |                +1 |                             -1 |          +1 |               -1 |           +1 |             -1 |             -1 |                   -1 |             +1 |                  +1 |
 
 * Principal Component Analysis
-** Principal Components 
- #+begin_src R :file pca/principal-components.png :results file graphics :exports results
+
+ #+begin_src R :results none :exports none
    library("FactoMineR")
    library("factoextra")
 
@@ -23,103 +23,78 @@
 
    res.pca <- PCA(data.active, graph = FALSE)
 
-   plot = fviz_eig(res.pca, addlabels = TRUE)
-   print(plot)
- #+end_src
- #+RESULTS:
- [[file:pca/principal-components.png]]
+   plot.to.png = function(ptp.filename, ptp.function, ptp.width = 480, ptp.height = 480) {
+     png(filename = ptp.filename, width = ptp.width, height = ptp.height)
+     plot.result = ptp.function()
+     print(plot.result)
+     dev.off()
+   }
 
-** Language Features
- #+begin_src R :file pca/language-features.png :results file graphics :exports results
-   library("FactoMineR")
-   library("factoextra")
+   # plot the principal component weights
+   plot.to.png("pca/principal-components.png",
+     function(){fviz_eig(res.pca, addlabels = TRUE)})
 
-   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
-   data.active <- data[, -(0:1)]
+   gradient = c("#0099FF", "#FF4400")
 
-   res.pca <- PCA(data.active, graph = FALSE)
+   axes.primary = c(1, 2)
+   axes.secondary = c(3, 2)
 
-   plot = fviz_pca_var(
-              res.pca,
-              col.var = "cos2", # Color by contributions to the PC
-              geom = c("text"),
-              ## gradient.cols = c("#0044BB", "#FC4400"),
-              gradient.cols = c("#0099FF", "#FF4400"),
-              ## gradient.cols = c("#0000FF", "#FF0000"),
-              repel = TRUE     # Avoid text overlapping
-              )
-   print(plot)
- #+end_src
- #+RESULTS:
- [[file:pca/language-features.png]]
- 
-** Languages
- #+begin_src R :file pca/languages.png :results file graphics :exports results
-   library("FactoMineR")
-   library("factoextra")
+   # plot the language features
+   plot.to.png("pca/language-features-primary-axes.png", 
+      function() {
+        fviz_pca_var(
+          res.pca,
+          axes = axes.primary,
+          geom = c("text", "point"),
+          col.var = "cos2",
+          gradient.cols = gradient,
+          repel = TRUE)
+      }
+   )
 
-   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
-   data.active <- data[, -(0:1)]
+   plot.to.png("pca/language-features-secondary-axes.png", 
+      function() {
+        fviz_pca_var(
+          res.pca,
+          axes = axes.secondary,
+          geom = c("text", "point"),
+          col.var = "cos2",
+          gradient.cols = gradient,
+          repel = TRUE)
+      }
+   )
 
-   res.pca <- PCA(data.active, graph = FALSE)
+   # plot the languages
+   plot.to.png("pca/languages-primary-axes.png", 
+      function() {
+        fviz_pca_ind(
+          res.pca,
+          axes = axes.primary,
+          geom = c("text", "point"),
+          col.ind = "cos2",
+          gradient.cols = gradient,
+          repel = TRUE)
+      }
+   )
 
-   plot = fviz_pca_ind(
-              res.pca,
-              col.ind = "cos2", # Color by the quality of representation
-              gradient.cols = c("#0099FF", "#FF4400"),
-              repel = TRUE     # Avoid text overlapping
-              )
-   print(plot)
- #+end_src
- #+RESULTS:
- [[file:pca/languages.png]]
+   plot.to.png("pca/languages-secondary-axes.png", 
+      function() {
+        fviz_pca_ind(
+          res.pca,
+          axes = axes.secondary,
+          geom = c("text", "point"),
+          col.ind = "cos2",
+          gradient.cols = gradient,
+          repel = TRUE)
+      }
+   )
 
- #+begin_src R :file pca/language-other-axes.png :results file graphics :exports results
-   library("FactoMineR")
-   library("factoextra")
-
-   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
-   data.active <- data[, -(0:1)]
-
-   res.pca <- PCA(data.active, graph = FALSE)
-
-   plot = fviz_pca_ind(
-              res.pca,
-              col.ind = "cos2", # Color by the quality of representation
-              gradient.cols = c("#0099FF", "#FF4400"),
-              ## gradient.cols = c("#FFFFFF", "#000000"),
-              axes = c(3,1),
-              repel = TRUE     # Avoid text overlapping
-              )
-   print(plot)
  #+end_src
 
- #+RESULTS:
- [[file:pca/language-other-axes.png]]
+ | [[file:pca/principal-components.png]]           |                                               |
+ | [[file:pca/language-features-primary-axes.png]] | [[file:pca/language-features-secondary-axes.png]] |
+ | [[file:pca/languages-primary-axes.png]]         | [[file:pca/languages-secondary-axes.png]]         |
 
-** Languages and Language Features
- #+begin_src R :file pca/languages-and-language-features.png :results file graphics :exports results
-   library("FactoMineR")
-   library("factoextra")
-
-   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
-   data.active <- data[, -(0:1)]
-
-   res.pca <- PCA(data.active, graph = FALSE)
-
-   plot = fviz_pca_biplot(
-              res.pca,
-              geom.var = c("text"),
-              repel = TRUE,
-              col.var = "#0099FF", # Variables color
-              col.ind = "#FF4400"  # Individuals color
-
-              ## gradient.cols = c("#0099FF", "#FF4400"),
-              )
-   print(plot)
- #+end_src
- #+RESULTS:
- [[file:pca/languages-and-language-features.png]]
 
 * Multiple Correspondence Analysis
 |         | compilation | memory-management | static-typing | memory-safety | type-inference | sub-typing | parametric-polymorphism | type-classes | type-level-programming | ad-hoc-polymorphism | inheritance | strict-evaluation | type-safe-discriminated-unions | null-safety | pattern-matching | mutable-data | immutable-data | syntax     | whitespace-sensitive | expression-oriented |
