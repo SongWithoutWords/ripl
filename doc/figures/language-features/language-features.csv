@@ -1,0 +1,10 @@
+  interpreted,garbage-collection,ownership-system,static-typing,type-safety,type-inference,sub-typing,parametric-polymorphism,ad-hoc-polymorphism,inheritance,strict-evaluation,type-safe-discriminated-unions,null-safety,pattern-matching,mutable-data, immutable-data
+C,-1,-1,-1,+1,-1,-1,+1,-1,-1,-1,+1,-1,-1,-1,+1,-1
+C++,-1,-1,-1,+1,-1,+1,+1,+1,+1,+1,+1,-1,-1,-1,+1,+1
+D,-1,+1,-1,+1,+1,+1,+1,+1,+1,+1,+1,+1,-1,-1,+1,+1
+Haskell,-1,+1,-1,+1,+1,+1,-1,+1,-1,-1,-1,+1,+1,+1,-1,+1
+Python,+1,+1,-1,-1,+1,+0,+1,+0,+0,+1,+1,-1,-1, -1, +1, -1
+Ripl,-1,+0,+0,+1,+1,+1,+1,+1,+1,-1,+1,+1,+1,+1,+1,+1
+Rust,-1,-1,+1,+1,+1,+1,-1,+1,-1,-1,+1,+1,+1,+1,+1,+1
+Scala,-1,+1,-1,+1,+1,+1,+1,+1,+1,+1,+1,+1,-1,+1,+1,+1
+Scheme,+1,+1,-1,-1,+1,+0,-1,+0,+0,-1,+1,-1,+1,-1,+1,-1
