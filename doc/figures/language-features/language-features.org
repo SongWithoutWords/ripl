@@ -14,7 +14,7 @@
 
 * Principal Component Analysis
 ** Principal Components 
- #+begin_src R :file pca/principal-components.png :results file graphics
+ #+begin_src R :file pca/principal-components.png :results file graphics :exports results
    library("FactoMineR")
    library("factoextra")
 
@@ -30,7 +30,7 @@
  [[file:pca/principal-components.png]]
 
 ** Language Features
- #+begin_src R :file pca/language-features-redscale.png :results file graphics
+ #+begin_src R :file pca/language-features-redscale.png :results file graphics :exports results
    library("FactoMineR")
    library("factoextra")
 
@@ -54,7 +54,7 @@
  [[file:pca/language-features-redscale.png]]
  
 ** Languages
- #+begin_src R :file pca/languages.png :results file graphics
+ #+begin_src R :file pca/languages.png :results file graphics :exports results
    library("FactoMineR")
    library("factoextra")
 
@@ -75,7 +75,7 @@
  [[file:pca/languages.png]]
 
 ** Languages and Language Features
- #+begin_src R :file pca/languages-and-language-features.png :results file graphics
+ #+begin_src R :file pca/languages-and-language-features.png :results file graphics :exports results
    library("FactoMineR")
    library("factoextra")
 
