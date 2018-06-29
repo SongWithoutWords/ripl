@@ -380,3 +380,52 @@
  #+RESULTS:
  [[file:mfa/languages.png]]
 
+* Hierarchical Clustering on Principal Components 
+
+** Dendogram 
+ #+begin_src R :file hcpc/dendogram.png :results file graphics :exports results
+   library("FactoMineR")
+   library("factoextra")
+
+   ## library("missMDA")
+
+
+   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.pca <- PCA(data.active, graph = FALSE)
+
+   ## res.hcpc <- HCPC(imputePCA(res.pca), graph = FALSE)
+
+   res.hcpc <- HCPC(res.pca, graph = FALSE)
+
+   plot = fviz_dend(res.hcpc)
+   print(plot)
+ #+end_src
+
+ #+RESULTS:
+ [[file:hcpc/dendogram.png]]
+
+** Cluster 
+ #+begin_src R :file hcpc/cluster.png :results file graphics :exports results
+   library("FactoMineR")
+   library("factoextra")
+
+   ## library("missMDA")
+
+
+   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.pca <- PCA(data.active, ncp = 5, graph = FALSE)
+
+   ## res.hcpc <- HCPC(imputePCA(res.pca), graph = FALSE)
+
+   res.hcpc <- HCPC(res.pca, graph = FALSE)
+
+   plot = fviz_cluster(res.hcpc)
+   print(plot)
+ #+end_src
+
+ #+RESULTS:
+ [[file:hcpc/cluster.png]]
