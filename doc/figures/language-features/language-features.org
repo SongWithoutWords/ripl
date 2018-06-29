@@ -30,7 +30,7 @@
  [[file:pca/principal-components.png]]
 
 ** Language Features
- #+begin_src R :file pca/language-features-redscale.png :results file graphics :exports results
+ #+begin_src R :file pca/language-features.png :results file graphics :exports results
    library("FactoMineR")
    library("factoextra")
 
@@ -51,7 +51,7 @@
    print(plot)
  #+end_src
  #+RESULTS:
- [[file:pca/language-features-redscale.png]]
+ [[file:pca/language-features.png]]
  
 ** Languages
  #+begin_src R :file pca/languages.png :results file graphics :exports results
