@@ -1,0 +1,12 @@
+compilation,garbage-collection,ownership-system,strict-evaluation,memory-safety,null-safety,static-typing,type-inference,sub-typing,parametric-polymorphism,type-classes,type-level-programming,ad-hoc-polymorphism,inheritance,type-safe-discriminated-unions,pattern-matching,mutable-data,immutable-data,c-style-syntax,whitespace-sensitive,uniform-syntax,expression-oriented
+C,+1,-1,-1,+1,-1,-1,+1,-1,+1,-1,-1,-1,-1,-1,-1,-1,+1,-1,+1,-1,-1,-1
+C++,+1,-1,-1,+1,-1,-1,+1,+1,+1,+1,-1,+1,+1,+1,-1,-1,+1,+1,+1,-1,-1,-1
+C#,+1,+1,-1,+1,+1,-1,+1,+1,+1,+1,-1,-1,+1,+1,-1,-1,+1,-1,+1,-1,-1,-1
+D,+1,+1,-1,+1,+1,-1,+1,+1,+1,+1,-1,+1,+1,+1,+1,-1,+1,+1,+1,-1,-1,-1
+Haskell,+1,+1,-1,-1,+1,+1,+1,+1,-1,+1,+1,+1,-1,-1,+1,+1,-1,+1,-1,+1,-1,+1
+Java,+1,+1,-1,+1,+1,-1,+1,-1,+1,+1,-1,-1,+1,+1,-1,-1,+1,-1,+1,-1,-1,-1
+Python,-1,+1,-1,+1,+1,-1,-1,NA,+1,NA,-1,NA,NA,+1,-1,-1,+1,-1,+1,+1,-1,-1
+Ripl,+1,NA,NA,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1,-1,+1,+1,+1,+1,-1,+1,+1,+1
+Rust,+1,-1,+1,+1,+1,+1,+1,+1,-1,+1,+1,-1,-1,-1,+1,+1,+1,+1,+1,-1,-1,+1
+Scala,+1,+1,-1,+1,+1,-1,+1,+1,+1,+1,-1,+1,+1,+1,+1,+1,+1,+1,+1,-1,-1,+1
+Scheme,-1,+1,-1,+1,+1,+1,-1,NA,-1,NA,-1,NA,NA,-1,-1,-1,+1,-1,-1,-1,+1,+1
