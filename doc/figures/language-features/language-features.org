@@ -88,12 +88,24 @@
           repel = TRUE)
       }
    )
+   
+   # plot hierarchical clustering on principal components
+   res.hcpc <- HCPC(res.pca, graph = FALSE)
+   plot.to.png("pca/language-taxonomy.png",
+     function() {
+       fviz_dend(res.hcpc)
+     }
+   )
+
+   plot = fviz_dend(res.hcpc)
+   print(plot)
 
  #+end_src
 
  | [[file:pca/principal-components.png]]           |                                               |
  | [[file:pca/language-features-primary-axes.png]] | [[file:pca/language-features-secondary-axes.png]] |
  | [[file:pca/languages-primary-axes.png]]         | [[file:pca/languages-secondary-axes.png]]         |
+ |  [[file:pca/language-taxonomy.png]]                                  |                                               |
 
 
 * Multiple Correspondence Analysis
