@@ -97,3 +97,103 @@
  #+end_src
  #+RESULTS:
  [[file:pca/languages-and-language-features.png]]
+
+* Multiple Correspondence Analysis
+|         | compilation | garbage-collection | ownership-system | static-typing | memory-safety | type-inference | sub-typing | parametric-polymorphism | type-classes | type-level-programming | ad-hoc-polymorphism | inheritance | strict-evaluation | type-safe-discriminated-unions | null-safety | pattern-matching | mutable-data | immutable-data | c-style-syntax | whitespace-sensitive | uniform-syntax | expression-oriented |
+|---------+-------------+--------------------+------------------+---------------+---------------+----------------+------------+-------------------------+--------------+------------------------+---------------------+-------------+-------------------+--------------------------------+-------------+------------------+--------------+----------------+----------------+----------------------+----------------+---------------------|
+| C       | yes         | no                 | no               | yes           | no            | no             | yes        | no                      | no           | no                     | no                  | no          | yes               | no                             | no          | no               | yes          | no             | yes            | no                   | no             | no                  |
+| C++     | yes         | no                 | no               | yes           | no            | yes            | yes        | yes                     | no           | yes                    | yes                 | yes         | yes               | no                             | no          | no               | yes          | yes            | yes            | no                   | no             | no                  |
+| C#      | yes         | yes                | no               | yes           | yes           | yes            | yes        | yes                     | no           | no                     | yes                 | yes         | yes               | no                             | no          | no               | yes          | no             | yes            | no                   | no             | no                  |
+| D       | yes         | yes                | no               | yes           | yes           | yes            | yes        | yes                     | no           | yes                    | yes                 | yes         | yes               | yes                            | no          | no               | yes          | yes            | yes            | no                   | no             | no                  |
+| Haskell | yes         | yes                | no               | yes           | yes           | yes            | no         | yes                     | yes          | yes                    | no                  | no          | no                | yes                            | yes         | yes              | no           | yes            | no             | yes                  | no             | yes                 |
+| Java    | yes         | yes                | no               | yes           | yes           | no             | yes        | yes                     | no           | no                     | yes                 | yes         | yes               | no                             | no          | no               | yes          | no             | yes            | no                   | no             | no                  |
+| Python  | no          | yes                | no               | no            | yes           | NA             | yes        | NA                      | no           | NA                     | NA                  | yes         | yes               | no                             | no          | no               | yes          | no             | yes            | yes                  | no             | no                  |
+| Ripl    | yes         | NA                 | NA               | yes           | yes           | yes            | yes        | yes                     | yes          | yes                    | yes                 | no          | yes               | yes                            | yes         | yes              | yes          | yes            | no             | yes                  | yes            | yes                 |
+| Rust    | yes         | no                 | yes              | yes           | yes           | yes            | no         | yes                     | yes          | no                     | no                  | no          | yes               | yes                            | yes         | yes              | yes          | yes            | yes            | no                   | no             | yes                 |
+| Scala   | yes         | yes                | no               | yes           | yes           | yes            | yes        | yes                     | no           | yes                    | yes                 | yes         | yes               | yes                            | no          | yes              | yes          | yes            | yes            | no                   | no             | yes                 |
+| Scheme  | no          | yes                | no               | no            | yes           | NA             | no         | NA                      | no           | NA                     | NA                  | no          | yes               | no                             | yes         | no               | yes          | no             | no             | no                   | yes            | yes                 |
+
+** Principal Components
+ #+begin_src R :file mca/principal-components.png :results file graphics :exports results
+   library("FactoMineR")
+   library("factoextra")
+
+   data = read.csv(file="qualitative-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.mca <- MCA(data.active, graph = FALSE)
+
+   plot = fviz_eig(res.mca, addlabels = TRUE)
+   print(plot)
+ #+end_src
+
+ #+RESULTS:
+ [[file:mca/principal-components.png]]
+
+ 
+** Language Features
+ #+begin_src R :results none :exports none
+   library("FactoMineR")
+   library("factoextra")
+
+   data = read.csv(file="qualitative-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.mca <- MCA(data.active, graph = FALSE)
+
+   png(filename = "mca/language-features.png", width = 540, height = 540)
+   plot = fviz_mca_var(
+            res.mca,
+            col.var = "cos2",
+            gradient.cols = c("#0099FF", "#FF4400"),
+            repel = TRUE,
+            ## ggTheme = theme_minimal()
+            )
+   print(plot)
+ #+end_src
+ [[file:mca/language-features.png]]
+
+
+** Languages
+ #+begin_src R :results none :exports none
+   library("FactoMineR")
+   library("factoextra")
+
+   data = read.csv(file="qualitative-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.mca <- MCA(data.active, graph = FALSE)
+
+   png(filename = "mca/languages.png", width = 540, height = 540)
+   plot = fviz_mca_ind(
+            res.mca,
+            col.ind = "cos2",
+            gradient.cols = c("#0099FF", "#FF4400"),
+            repel = TRUE,
+            ggTheme = theme_minimal())
+   print(plot)
+ #+end_src
+ [[file:mca/languages.png]]
+ 
+
+** Languages and Language Features
+ #+begin_src R :results none :exports none
+   library("FactoMineR")
+   library("factoextra")
+
+   data = read.csv(file="qualitative-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.mca <- MCA(data.active, graph = FALSE)
+
+   png(filename = "mca/languages-and-language-features.png", width = 540, height = 540)
+   plot = fviz_mca_biplot(
+            res.mca,
+            col.var = "#0099FF", # Variables color
+            col.ind = "#FF4400",  # Individuals color
+            repel = TRUE,
+            ggTheme = theme_minimal())
+   print(plot)
+ #+end_src
+ [[file:mca/languages-and-language-features.png]]
+
