@@ -1,0 +1,99 @@
+|         | compilation | garbage-collection | ownership-system | static-typing | memory-safety | type-inference | sub-typing | parametric-polymorphism | type-classes | type-level-programming | ad-hoc-polymorphism | inheritance | strict-evaluation | type-safe-discriminated-unions | null-safety | pattern-matching | mutable-data | immutable-data | c-style-syntax | whitespace-sensitive | uniform-syntax | expression-oriented |
+|---------+-------------+--------------------+------------------+---------------+---------------+----------------+------------+-------------------------+--------------+------------------------+---------------------+-------------+-------------------+--------------------------------+-------------+------------------+--------------+----------------+----------------+----------------------+----------------+---------------------|
+| C       |          +1 |                 -1 |               -1 |            +1 |            -1 |             -1 |         +1 |                      -1 |           -1 |                     -1 |                  -1 |          -1 |                +1 |                             -1 |          -1 |               -1 |           +1 |             -1 |             +1 |                   -1 |             -1 |                  -1 |
+| C++     |          +1 |                 -1 |               -1 |            +1 |            -1 |             +1 |         +1 |                      +1 |           -1 |                     +1 |                  +1 |          +1 |                +1 |                             -1 |          -1 |               -1 |           +1 |             +1 |             +1 |                   -1 |             -1 |                  -1 |
+| C#      |          +1 |                 +1 |               -1 |            +1 |            +1 |             +1 |         +1 |                      +1 |           -1 |                     -1 |                  +1 |          +1 |                +1 |                             -1 |          -1 |               -1 |           +1 |             -1 |             +1 |                   -1 |             -1 |                  -1 |
+| D       |          +1 |                 +1 |               -1 |            +1 |            +1 |             +1 |         +1 |                      +1 |           -1 |                     +1 |                  +1 |          +1 |                +1 |                             +1 |          -1 |               -1 |           +1 |             +1 |             +1 |                   -1 |             -1 |                  -1 |
+| Haskell |          +1 |                 +1 |               -1 |            +1 |            +1 |             +1 |         -1 |                      +1 |           +1 |                     +1 |                  -1 |          -1 |                -1 |                             +1 |          +1 |               +1 |           -1 |             +1 |             -1 |                   +1 |             -1 |                  +1 |
+| Java    |          +1 |                 +1 |               -1 |            +1 |            +1 |             -1 |         +1 |                      +1 |           -1 |                     -1 |                  +1 |          +1 |                +1 |                             -1 |          -1 |               -1 |           +1 |             -1 |             +1 |                   -1 |             -1 |                  -1 |
+| Python  |          -1 |                 +1 |               -1 |            -1 |            +1 |             +0 |         +1 |                      +0 |           -1 |                     +0 |                  +0 |          +1 |                +1 |                             -1 |          -1 |               -1 |           +1 |             -1 |             +1 |                   +1 |             -1 |                  -1 |
+| Ripl    |          +1 |                 +0 |               +0 |            +1 |            +1 |             +1 |         +1 |                      +1 |           +1 |                     +1 |                  +1 |          -1 |                +1 |                             +1 |          +1 |               +1 |           +1 |             +1 |             -1 |                   +1 |             +1 |                  +1 |
+| Rust    |          +1 |                 -1 |               +1 |            +1 |            +1 |             +1 |         -1 |                      +1 |           +1 |                     -1 |                  -1 |          -1 |                +1 |                             +1 |          +1 |               +1 |           +1 |             +1 |             +1 |                   -1 |             -1 |                  +1 |
+| Scala   |          +1 |                 +1 |               -1 |            +1 |            +1 |             +1 |         +1 |                      +1 |           -1 |                     +1 |                  +1 |          +1 |                +1 |                             +1 |          -1 |               +1 |           +1 |             +1 |             +1 |                   -1 |             -1 |                  +1 |
+| Scheme  |          -1 |                 +1 |               -1 |            -1 |            +1 |             +0 |         -1 |                      +0 |           -1 |                     +0 |                  +0 |          -1 |                +1 |                             -1 |          +1 |               -1 |           +1 |             -1 |             -1 |                   -1 |             +1 |                  +1 |
+
+* Principal Component Analysis
+** Principal Components 
+ #+begin_src R :file pca/principal-components.png :results file graphics
+   library("FactoMineR")
+   library("factoextra")
+
+   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.pca <- PCA(data.active, graph = FALSE)
+
+   plot = fviz_eig(res.pca, addlabels = TRUE)
+   print(plot)
+ #+end_src
+ #+RESULTS:
+ [[file:pca/principal-components.png]]
+
+** Language Features
+ #+begin_src R :file pca/language-features-redscale.png :results file graphics
+   library("FactoMineR")
+   library("factoextra")
+
+   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.pca <- PCA(data.active, graph = FALSE)
+
+   plot = fviz_pca_var(
+              res.pca,
+              col.var = "contrib", # Color by contributions to the PC
+              geom = c("text"),
+              ## gradient.cols = c("#0044BB", "#FC4400"),
+              gradient.cols = c("#0099FF", "#FF4400"),
+              ## gradient.cols = c("#0000FF", "#FF0000"),
+              repel = TRUE     # Avoid text overlapping
+              )
+   print(plot)
+ #+end_src
+ #+RESULTS:
+ [[file:pca/language-features-redscale.png]]
+ 
+** Languages
+ #+begin_src R :file pca/languages.png :results file graphics
+   library("FactoMineR")
+   library("factoextra")
+
+   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.pca <- PCA(data.active, graph = FALSE)
+
+   plot = fviz_pca_ind(
+              res.pca,
+              col.ind = "cos2", # Color by the quality of representation
+              gradient.cols = c("#0099FF", "#FF4400"),
+              repel = TRUE     # Avoid text overlapping
+              )
+   print(plot)
+ #+end_src
+ #+RESULTS:
+ [[file:pca/languages.png]]
+
+** Languages and Language Features
+ #+begin_src R :file pca/languages-and-language-features.png :results file graphics
+   library("FactoMineR")
+   library("factoextra")
+
+   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
+   data.active <- data[, -(0:1)]
+
+   res.pca <- PCA(data.active, graph = FALSE)
+
+   plot = fviz_pca_biplot(
+              res.pca,
+              geom.var = c("text"),
+              repel = TRUE,
+              col.var = "#0099FF", # Variables color
+              col.ind = "#FF4400"  # Individuals color
+
+              ## gradient.cols = c("#0099FF", "#FF4400"),
+              )
+   print(plot)
+ #+end_src
+ #+RESULTS:
+ [[file:pca/languages-and-language-features.png]]
