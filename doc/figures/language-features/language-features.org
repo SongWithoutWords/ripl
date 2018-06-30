@@ -103,9 +103,9 @@
    plot.to.png("pca/language-feature-taxonomy.png",
      function() {
        fviz_dend(
-        cex = 0.8,
+        cex = 0.9,
         res.hcpc.transpose,
-        labels_track_height = 1.6)
+        labels_track_height = 2.4)
      }
    )
 
