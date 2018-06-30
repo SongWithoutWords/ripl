@@ -369,7 +369,11 @@
               "syntax"),
               graph = FALSE
             )
-    plot = fviz_mfa_ind(res.mfa, col.ind = "cos2", repel="true")
+    plot = fviz_mfa_ind(
+              res.mfa,
+              col.ind = "cos2",
+              gradient.cols = c("#0099FF", "#FF4400"),
+              repel = TRUE)
     print(plot)
  #+end_src
 
