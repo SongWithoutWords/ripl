@@ -20,12 +20,22 @@
    library("factoextra")
 
    data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
-   data.active <- data[, -(0:1)]
 
-   
+   statically.typed.languages = data[data$"static-typing"==1, ]
+
+   statically.typed.languages
+
+   data.to.analyze = statically.typed.languages
+
+   data.active <- data.to.analyze[, -(0:1)]
+
    params.ncp = 5
 
-   res.pca <- PCA(data.active, ncp = params.ncp, graph = FALSE)
+
+   res.pca <- PCA(
+      data.active,
+      ncp = params.ncp,
+      graph = FALSE)
 
    plot.to.png = function(ptp.filename, ptp.function, ptp.width = 480, ptp.height = 480) {
      png(filename = ptp.filename, width = ptp.width, height = ptp.height)
@@ -92,7 +102,7 @@
           repel = TRUE)
       }
    )
-   
+
    # plot hierarchical clustering on principal components
    res.hcpc <- HCPC(res.pca, graph = FALSE)
    plot.to.png("pca/language-taxonomy.png",
@@ -101,7 +111,11 @@
      }
    )
 
-   res.pca.transpose <- PCA(t(data.active), ncp = params.ncp, graph = FALSE)
+   res.pca.transpose <- PCA(
+        t(data.active),
+        ncp = params.ncp,
+        graph = FALSE)
+
    res.hcpc.transpose <- HCPC(res.pca.transpose, graph = FALSE)
    plot.to.png("pca/language-feature-taxonomy.png",
      function() {
@@ -118,6 +132,7 @@
  | [[file:pca/language-features-primary-axes.png]] | [[file:pca/language-features-secondary-axes.png]] |
  | [[file:pca/languages-primary-axes.png]]         | [[file:pca/languages-secondary-axes.png]]         |
  | [[file:pca/language-taxonomy.png]]              | [[file:pca/language-feature-taxonomy.png]]        |
+
 
 
 * Multiple Correspondence Analysis
