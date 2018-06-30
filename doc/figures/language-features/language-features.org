@@ -22,7 +22,10 @@
    data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
    data.active <- data[, -(0:1)]
 
-   res.pca <- PCA(data.active, graph = FALSE)
+   
+   params.ncp = 5
+
+   res.pca <- PCA(data.active, ncp = params.ncp, graph = FALSE)
 
    plot.to.png = function(ptp.filename, ptp.function, ptp.width = 480, ptp.height = 480) {
      png(filename = ptp.filename, width = ptp.width, height = ptp.height)
@@ -98,7 +101,7 @@
      }
    )
 
-   res.pca.transpose <- PCA(t(data.active), graph = FALSE)
+   res.pca.transpose <- PCA(t(data.active), ncp = params.ncp, graph = FALSE)
    res.hcpc.transpose <- HCPC(res.pca.transpose, graph = FALSE)
    plot.to.png("pca/language-feature-taxonomy.png",
      function() {
