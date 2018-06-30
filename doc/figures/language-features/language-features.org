@@ -98,15 +98,23 @@
      }
    )
 
-   plot = fviz_dend(res.hcpc)
-   print(plot)
+   res.pca.transpose <- PCA(t(data.active), graph = FALSE)
+   res.hcpc.transpose <- HCPC(res.pca.transpose, graph = FALSE)
+   plot.to.png("pca/language-feature-taxonomy.png",
+     function() {
+       fviz_dend(
+        cex = 0.8,
+        res.hcpc.transpose,
+        labels_track_height = 1.6)
+     }
+   )
 
  #+end_src
 
  | [[file:pca/principal-components.png]]           |                                               |
  | [[file:pca/language-features-primary-axes.png]] | [[file:pca/language-features-secondary-axes.png]] |
  | [[file:pca/languages-primary-axes.png]]         | [[file:pca/languages-secondary-axes.png]]         |
- |  [[file:pca/language-taxonomy.png]]                                  |                                               |
+ | [[file:pca/language-taxonomy.png]]              | [[file:pca/language-feature-taxonomy.png]]        |
 
 
 * Multiple Correspondence Analysis
