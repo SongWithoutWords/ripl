@@ -1,33 +1,45 @@
-|         | compilation | garbage-collection | explicit-indirection | ownership-system | static-typing | memory-safety | type-inference | sub-typing | parametric-polymorphism | type-classes | type-level-programming | ad-hoc-polymorphism | inheritance | strict-evaluation | type-safe-discriminated-unions | null-safety | pattern-matching | mutable-data | immutable-data | c-style-syntax | uses-header-files | whitespace-sensitive | uniform-syntax | expression-oriented |
-|---------+-------------+--------------------+----------------------+------------------+---------------+---------------+----------------+------------+-------------------------+--------------+------------------------+---------------------+-------------+-------------------+--------------------------------+-------------+------------------+--------------+----------------+----------------+-------------------+----------------------+----------------+---------------------|
-| C       |          +1 |                 -1 |                   +1 |               -1 |            +1 |            -1 |             -1 |         +1 |                      -1 |           -1 |                     -1 |                  -1 |          -1 |                +1 |                             -1 |          -1 |               -1 |           +1 |             -1 |             +1 |                +1 |                   -1 |             -1 |                  -1 |
-| C++     |          +1 |                 -1 |                   +1 |               -1 |            +1 |            -1 |             +1 |         +1 |                      +1 |           -1 |                     +1 |                  +1 |          +1 |                +1 |                             -1 |          -1 |               -1 |           +1 |             +1 |             +1 |                +1 |                   -1 |             -1 |                  -1 |
-| C#      |          +1 |                 +1 |                   -1 |               -1 |            +1 |            +1 |             +1 |         +1 |                      +1 |           -1 |                     -1 |                  +1 |          +1 |                +1 |                             -1 |          -1 |               -1 |           +1 |             -1 |             +1 |                -1 |                   -1 |             -1 |                  -1 |
-| D       |          +1 |                 +1 |                   +1 |               -1 |            +1 |            +1 |             +1 |         +1 |                      +1 |           -1 |                     +1 |                  +1 |          +1 |                +1 |                             +1 |          -1 |               -1 |           +1 |             +1 |             +1 |                -1 |                   -1 |             -1 |                  -1 |
-| Haskell |          +1 |                 +1 |                   -1 |               -1 |            +1 |            +1 |             +1 |         -1 |                      +1 |           +1 |                     +1 |                  -1 |          -1 |                -1 |                             +1 |          +1 |               +1 |           -1 |             +1 |             -1 |                -1 |                   +1 |             -1 |                  +1 |
-| Java    |          +1 |                 +1 |                   -1 |               -1 |            +1 |            +1 |             -1 |         +1 |                      +1 |           -1 |                     -1 |                  +1 |          +1 |                +1 |                             -1 |          -1 |               -1 |           +1 |             -1 |             +1 |                -1 |                   -1 |             -1 |                  -1 |
-| ML      |          +1 |                 +1 |                   -1 |               -1 |            +1 |            +1 |             +1 |         -1 |                      +1 |           +1 |                     +1 |                  -1 |          -1 |                +1 |                             +1 |          +1 |               +1 |           +1 |             +1 |             -1 |                -1 |                   -1 |             -1 |                  +1 |
-| Python  |          -1 |                 +1 |                   -1 |               -1 |            -1 |            +1 |             NA |         +1 |                      NA |           -1 |                     NA |                  NA |          +1 |                +1 |                             -1 |          -1 |               -1 |           +1 |             -1 |             +1 |                -1 |                   +1 |             -1 |                  -1 |
-| Ripl    |          +1 |                 NA |                   +1 |               NA |            +1 |            +1 |             +1 |         +1 |                      +1 |           +1 |                     +1 |                  +1 |          -1 |                +1 |                             +1 |          +1 |               +1 |           +1 |             +1 |             -1 |                -1 |                   +1 |             +1 |                  +1 |
-| Rust    |          +1 |                 -1 |                   +1 |               +1 |            +1 |            +1 |             +1 |         -1 |                      +1 |           +1 |                     -1 |                  -1 |          -1 |                +1 |                             +1 |          +1 |               +1 |           +1 |             +1 |             +1 |                -1 |                   -1 |             -1 |                  +1 |
-| Scala   |          +1 |                 +1 |                   -1 |               -1 |            +1 |            +1 |             +1 |         +1 |                      +1 |           -1 |                     +1 |                  +1 |          +1 |                +1 |                             +1 |          -1 |               +1 |           +1 |             +1 |             +1 |                -1 |                   -1 |             -1 |                  +1 |
-| Scheme  |          -1 |                 +1 |                   -1 |               -1 |            -1 |            +1 |             NA |         -1 |                      NA |           -1 |                     NA |                  NA |          -1 |                +1 |                             -1 |          +1 |               -1 |           +1 |             -1 |             -1 |                -1 |                   -1 |             +1 |                  +1 |
+|                                |  C | C++ | C# |  D | Haskell | Java | ML | Python | Ripl | Rust | Scala | Scheme |
+| compilation                    | +1 |  +1 | +1 | +1 |      +1 |   +1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
+| garbage-collection             | -1 |  -1 | +1 | +1 |      +1 |   +1 | +1 |     +1 |   NA |   -1 |    +1 |     +1 |
+| explicit-indirection           | +1 |  +1 | -1 | +1 |      -1 |   -1 | -1 |     -1 |   +1 |   +1 |    -1 |     -1 |
+| ownership-system               | -1 |  -1 | -1 | -1 |      -1 |   -1 | -1 |     -1 |   NA |   +1 |    -1 |     -1 |
+| static-typing                  | +1 |  +1 | +1 | +1 |      +1 |   +1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
+| memory-safety                  | -1 |  -1 | +1 | +1 |      +1 |   +1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
+| type-inference                 | -1 |  +1 | +1 | +1 |      +1 |   -1 | +1 |     NA |   +1 |   +1 |    +1 |     NA |
+| sub-typing                     | +1 |  +1 | +1 | +1 |      -1 |   +1 | -1 |     +1 |   +1 |   -1 |    +1 |     -1 |
+| parametric-polymorphism        | -1 |  +1 | +1 | +1 |      +1 |   +1 | +1 |     NA |   +1 |   +1 |    +1 |     NA |
+| type-classes                   | -1 |  -1 | -1 | -1 |      +1 |   -1 | +1 |     -1 |   +1 |   +1 |    -1 |     -1 |
+| type-level-programming         | -1 |  +1 | -1 | +1 |      +1 |   -1 | +1 |     NA |   +1 |   -1 |    +1 |     NA |
+| ad-hoc-polymorphism            | -1 |  +1 | +1 | +1 |      -1 |   +1 | -1 |     NA |   +1 |   -1 |    +1 |     NA |
+| inheritance                    | -1 |  +1 | +1 | +1 |      -1 |   +1 | -1 |     +1 |   -1 |   -1 |    +1 |     -1 |
+| strict-evaluation              | +1 |  +1 | +1 | +1 |      -1 |   +1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
+| type-safe-discriminated-unions | -1 |  -1 | -1 | +1 |      +1 |   -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
+| null-safety                    | -1 |  -1 | -1 | -1 |      +1 |   -1 | +1 |     -1 |   +1 |   +1 |    -1 |     +1 |
+| pattern-matching               | -1 |  -1 | -1 | -1 |      +1 |   -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
+| mutable-data                   | +1 |  +1 | +1 | +1 |      -1 |   +1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
+| immutable-data                 | -1 |  +1 | -1 | +1 |      +1 |   -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
+| c-style-syntax                 | +1 |  +1 | +1 | +1 |      -1 |   +1 | -1 |     +1 |   -1 |   +1 |    +1 |     -1 |
+| uses-header-files              | +1 |  +1 | -1 | -1 |      -1 |   -1 | -1 |     -1 |   -1 |   -1 |    -1 |     -1 |
+| whitespace-sensitive           | -1 |  -1 | -1 | -1 |      +1 |   -1 | -1 |     +1 |   +1 |   -1 |    -1 |     -1 |
+| uniform-syntax                 | -1 |  -1 | -1 | -1 |      -1 |   -1 | -1 |     -1 |   +1 |   -1 |    -1 |     +1 |
+| expression-oriented            | -1 |  -1 | -1 | -1 |      +1 |   -1 | +1 |     -1 |   +1 |   +1 |    +1 |     +1 |
 
 * Principal Component Analysis
 
- #+begin_src R :results none :exports none
+ #+begin_src R :session :results output :exports none
    library("FactoMineR")
    library("factoextra")
 
-   data = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE)
+   
+   data.raw = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE) 
+
+   data = as.data.frame(t(data.raw))
 
    statically.typed.languages = data[data$"static-typing"==1, ]
 
-   statically.typed.languages
-
    data.to.analyze = statically.typed.languages
 
-   data.active <- data.to.analyze[, -(0:1)]
+   data.active = data.to.analyze[, -(0:1)]
 
    params.ncp = 5
 
@@ -127,6 +139,8 @@
    )
 
  #+end_src
+
+ #+RESULTS:
 
  | [[file:pca/principal-components.png]]           |                                               |
  | [[file:pca/language-features-primary-axes.png]] | [[file:pca/language-features-secondary-axes.png]] |
