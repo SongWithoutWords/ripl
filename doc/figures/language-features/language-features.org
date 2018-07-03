@@ -31,9 +31,9 @@
    library("factoextra")
 
    
-   data.raw = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE) 
+   data.transpose = read.csv(file="language-features.csv", head = TRUE, check.names = FALSE) 
 
-   data = as.data.frame(t(data.raw))
+   data = as.data.frame(t(data.transpose))
 
    statically.typed.languages = data[data$"static-typing"==1, ]
 
