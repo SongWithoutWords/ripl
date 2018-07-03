@@ -138,15 +138,51 @@
      }
    )
 
+
+
+  plot.to.png("pca/language-hierarchical-clustering.png",
+    function() {
+
+      language.distances = dist(data, method = "euclidean")
+      language.hierarchical.clustering = hclust(language.distances, method = "ward.D2")
+      language.dendrogram = as.dendrogram(language.hierarchical.clustering)
+
+      plot(
+        language.hierarchical.clustering,
+        main = "halafa",
+        xlab = "Height",
+        # nodePar = nodePar,
+        # horiz = TRUE
+      )
+    }
+  )
+
+  plot.to.png("pca/language-feature-hierarchical-clustering.png",
+    function() {
+
+      language.feature.distances = dist(data.transpose, method = "euclidean")
+      language.feature.hierarchical.clustering = hclust(language.feature.distances, method = "ward.D2")
+      language.feature.dendrogram = as.dendrogram(language.feature.hierarchical.clustering)
+
+      plot(
+        language.feature.hierarchical.clustering,
+        main = "halafa",
+        xlab = "Height",
+        # nodePar = nodePar,
+        # horiz = TRUE
+      )
+    }
+  )
+
  #+end_src
 
  #+RESULTS:
 
- | [[file:pca/principal-components.png]]           |                                               |
- | [[file:pca/language-features-primary-axes.png]] | [[file:pca/language-features-secondary-axes.png]] |
- | [[file:pca/languages-primary-axes.png]]         | [[file:pca/languages-secondary-axes.png]]         |
- | [[file:pca/language-taxonomy.png]]              | [[file:pca/language-feature-taxonomy.png]]        |
-
+ | [[file:pca/principal-components.png]]             |                                                       |
+ | [[file:pca/language-features-primary-axes.png]]   | [[file:pca/language-features-secondary-axes.png]]         |
+ | [[file:pca/languages-primary-axes.png]]           | [[file:pca/languages-secondary-axes.png]]                 |
+ | [[file:pca/language-taxonomy.png]]                | [[file:pca/language-feature-taxonomy.png]]                |
+ | [[file:pca/language-hierarchical-clustering.png]] | [[file:pca/language-feature-hierarchical-clustering.png]] |
 
 
 * Multiple Correspondence Analysis
