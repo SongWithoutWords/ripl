@@ -1,34 +1,34 @@
-|                                  |  C | C++ | C# |  D | Haskell | Java | JavaScript | ML | Python | Ripl | Rust | Scala | Scheme |
-|----------------------------------+----+-----+----+----+---------+------+------------+----+--------+------+------+-------+--------|
-| garbage-collection               | -1 |  -1 | +1 | +1 |      +1 |   +1 |         +1 | +1 |     +1 |   +0 |   -1 |    +1 |     +1 |
-| explicit-indirection             | +1 |  +1 | -1 | +1 |      -1 |   -1 |         -1 | -1 |     -1 |   +1 |   +1 |    -1 |     -1 |
-| ownership-system                 | -1 |  -1 | -1 | -1 |      -1 |   -1 |         -1 | -1 |     -1 |   +0 |   +1 |    -1 |     -1 |
-| static-typing                    | +1 |  +1 | +1 | +1 |      +1 |   +1 |         -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
-| memory-safety                    | -1 |  -1 | +1 | +1 |      +1 |   +1 |         +1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
-| type-inference                   | -1 |  +1 | +1 | +1 |      +1 |   -1 |         +0 | +1 |     +0 |   +1 |   +1 |    +1 |     +0 |
-| sub-typing                       | +1 |  +1 | +1 | +1 |      -1 |   +1 |         +0 | -1 |     +1 |   +1 |   -1 |    +1 |     -1 |
-| parametric-polymorphism          | -1 |  +1 | +1 | +1 |      +1 |   +1 |         +0 | +1 |     +0 |   +1 |   +1 |    +1 |     +0 |
-| type-classes                     | -1 |  -1 | -1 | -1 |      +1 |   -1 |         +0 | +1 |     -1 |   +1 |   +1 |    -1 |     -1 |
-| type-level-programming           | -1 |  +1 | -1 | +1 |      +1 |   -1 |         +0 | +1 |     +0 |   +1 |   -1 |    +1 |     +0 |
-| ad-hoc-polymorphism              | -1 |  +1 | +1 | +1 |      -1 |   +1 |         +0 | -1 |     +0 |   +1 |   -1 |    +1 |     +0 |
-| classical-inheritance            | -1 |  +1 | +1 | +1 |      -1 |   +1 |         -1 | -1 |     +1 |   -1 |   -1 |    +1 |     -1 |
-| prototypal-inheritance           | -1 |  -1 | -1 | -1 |      -1 |   -1 |         +1 | -1 |     -1 |   -1 |   -1 |    -1 |     -1 |
-| strict-evaluation                | +1 |  +1 | +1 | +1 |      -1 |   +1 |         +1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
-| type-safe-discriminated-unions   | -1 |  -1 | -1 | +1 |      +1 |   -1 |         -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
-| null-safety                      | -1 |  -1 | -1 | -1 |      +1 |   -1 |         -1 | +1 |     -1 |   +1 |   +1 |    -1 |     +1 |
-| pattern-matching                 | -1 |  -1 | -1 | -1 |      +1 |   -1 |         -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
-| mutable-data                     | +1 |  +1 | +1 | +1 |      -1 |   +1 |         +1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
-| immutable-data                   | -1 |  +1 | -1 | +1 |      +1 |   -1 |         -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
-| c-style-syntax                   | +1 |  +1 | +1 | +1 |      -1 |   +1 |         +1 | -1 |     +1 |   -1 |   +1 |    +1 |     -1 |
-| uses-header-files                | +1 |  +1 | -1 | -1 |      -1 |   -1 |         -1 | -1 |     -1 |   -1 |   -1 |    -1 |     -1 |
-| whitespace-sensitive             | -1 |  -1 | -1 | -1 |      +1 |   -1 |         -1 | -1 |     +1 |   +1 |   -1 |    -1 |     -1 |
-| uniform-syntax                   | -1 |  -1 | -1 | -1 |      -1 |   -1 |         -1 | -1 |     -1 |   +1 |   -1 |    -1 |     +1 |
-| expression-oriented              | -1 |  -1 | -1 | -1 |      +1 |   -1 |         -1 | +1 |     -1 |   +1 |   +1 |    +1 |     +1 |
-| top-level-functions              | +1 |  +1 | -1 | +1 |      +1 |   -1 |         +1 | +1 |     +1 |   +1 |   +1 |    -1 |     +1 |
-| methods                          | -1 |  +1 | +1 | +1 |      -1 |   +1 |         +1 | +0 |     +1 |   -1 |   -1 |    +1 |     -1 |
-| uniform-function-call-syntax     | +0 |  -1 | +0 | +1 |      +0 |   +0 |         -1 | +0 |     -1 |   +0 |   +0 |    +0 |     +0 |
-| compile-time-function-evaluation | -1 |  +1 | -1 | +1 |      -1 |   -1 |         +0 | -1 |     +0 |   +1 |   -1 |    -1 |     +0 |
-| closures                         | -1 |  +1 | +1 | +1 |      +1 |   +1 |         +1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
+|                                  |  C | C++ | C# |  D | Haskell | Java | JavaScript | LLVM-IR | ML | Python | Ripl | Rust | Scala | Scheme |
+|----------------------------------+----+-----+----+----+---------+------+------------+---------+----+--------+------+------+-------+--------|
+| garbage-collection               | -1 |  -1 | +1 | +1 |      +1 |   +1 |         +1 |      +0 | +1 |     +1 |   +0 |   -1 |    +1 |     +1 |
+| explicit-indirection             | +1 |  +1 | -1 | +1 |      -1 |   -1 |         -1 |      +1 | -1 |     -1 |   +1 |   +1 |    -1 |     -1 |
+| ownership-system                 | -1 |  -1 | -1 | -1 |      -1 |   -1 |         -1 |      -1 | -1 |     -1 |   +0 |   +1 |    -1 |     -1 |
+| static-typing                    | +1 |  +1 | +1 | +1 |      +1 |   +1 |         -1 |      +1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
+| memory-safety                    | -1 |  -1 | +1 | +1 |      +1 |   +1 |         +1 |      -1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
+| type-inference                   | -1 |  +1 | +1 | +1 |      +1 |   -1 |         +0 |      -1 | +1 |     +0 |   +1 |   +1 |    +1 |     +0 |
+| sub-typing                       | +1 |  +1 | +1 | +1 |      -1 |   +1 |         +0 |      -1 | -1 |     +1 |   +1 |   -1 |    +1 |     -1 |
+| parametric-polymorphism          | -1 |  +1 | +1 | +1 |      +1 |   +1 |         +0 |      -1 | +1 |     +0 |   +1 |   +1 |    +1 |     +0 |
+| type-classes                     | -1 |  -1 | -1 | -1 |      +1 |   -1 |         +0 |      -1 | +1 |     -1 |   +1 |   +1 |    -1 |     -1 |
+| type-level-programming           | -1 |  +1 | -1 | +1 |      +1 |   -1 |         +0 |      -1 | +1 |     +0 |   +1 |   -1 |    +1 |     +0 |
+| ad-hoc-polymorphism              | -1 |  +1 | +1 | +1 |      -1 |   +1 |         +0 |      -1 | -1 |     +0 |   +1 |   -1 |    +1 |     +0 |
+| classical-inheritance            | -1 |  +1 | +1 | +1 |      -1 |   +1 |         -1 |      -1 | -1 |     +1 |   -1 |   -1 |    +1 |     -1 |
+| prototypal-inheritance           | -1 |  -1 | -1 | -1 |      -1 |   -1 |         +1 |      -1 | -1 |     -1 |   -1 |   -1 |    -1 |     -1 |
+| strict-evaluation                | +1 |  +1 | +1 | +1 |      -1 |   +1 |         +1 |      +1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
+| type-safe-discriminated-unions   | -1 |  -1 | -1 | +1 |      +1 |   -1 |         -1 |      -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
+| null-safety                      | -1 |  -1 | -1 | -1 |      +1 |   -1 |         -1 |      -1 | +1 |     -1 |   +1 |   +1 |    -1 |     +1 |
+| pattern-matching                 | -1 |  -1 | -1 | -1 |      +1 |   -1 |         -1 |      -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
+| mutable-data                     | +1 |  +1 | +1 | +1 |      -1 |   +1 |         +1 |      +1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
+| immutable-data                   | -1 |  +1 | -1 | +1 |      +1 |   -1 |         -1 |      -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
+| c-style-syntax                   | +1 |  +1 | +1 | +1 |      -1 |   +1 |         +1 |      -1 | -1 |     +1 |   -1 |   +1 |    +1 |     -1 |
+| uses-header-files                | +1 |  +1 | -1 | -1 |      -1 |   -1 |         -1 |      -1 | -1 |     -1 |   -1 |   -1 |    -1 |     -1 |
+| whitespace-sensitive             | -1 |  -1 | -1 | -1 |      +1 |   -1 |         -1 |      -1 | -1 |     +1 |   +1 |   -1 |    -1 |     -1 |
+| uniform-syntax                   | -1 |  -1 | -1 | -1 |      -1 |   -1 |         -1 |      -1 | -1 |     -1 |   +1 |   -1 |    -1 |     +1 |
+| expression-oriented              | -1 |  -1 | -1 | -1 |      +1 |   -1 |         -1 |      -1 | +1 |     -1 |   +1 |   +1 |    +1 |     +1 |
+| top-level-functions              | +1 |  +1 | -1 | +1 |      +1 |   -1 |         +1 |      +1 | +1 |     +1 |   +1 |   +1 |    -1 |     +1 |
+| methods                          | -1 |  +1 | +1 | +1 |      -1 |   +1 |         +1 |      -1 | +0 |     +1 |   -1 |   -1 |    +1 |     -1 |
+| uniform-function-call-syntax     | +0 |  -1 | +0 | +1 |      +0 |   +0 |         -1 |      -1 | +0 |     -1 |   +0 |   +0 |    +0 |     +0 |
+| compile-time-function-evaluation | -1 |  +1 | -1 | +1 |      -1 |   -1 |         +0 |      -1 | -1 |     +0 |   +1 |   -1 |    -1 |     +0 |
+| closures                         | -1 |  +1 | +1 | +1 |      +1 |   +1 |         +1 |      -1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
 
 * Principal Component Analysis
 
@@ -238,4 +238,4 @@
  | [[file:pca/language-taxonomy.png]]                | [[file:pca/language-feature-taxonomy.png]]                |
  | [[file:pca/language-hierarchical-clustering.png]] | [[file:pca/language-feature-hierarchical-clustering.png]] |
  | [[file:language-heatmap.png]]                     |                                                       |
- |[[file:language-classic-mds.png]] |         [[file:language-non-metric-mds.png]]                                               |
+ | [[file:language-classic-mds.png]]                 | [[file:language-non-metric-mds.png]]                      |
