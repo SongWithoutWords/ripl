@@ -1,5 +1,5 @@
-* ripl
-A Robust and Intuitive Programming Language, and work in progress, written in Scala with an LLVM back-end.
+* Robust Intuitive Programming Language (ripl)
+  A programming language and work-in-progress called ripl. Written in Scala with an LLVM back-end, ripl is intended to combine the safety and purity of a language like Haskell, with the low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D.  
 
 ** Planned Features
   - Compiled
