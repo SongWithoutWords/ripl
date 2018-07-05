@@ -172,16 +172,16 @@
     }
 
     plot.phylogram.to.png(
-      "pca/language-hierarchical-clustering.png",
+      "hierarchical-clustering-of-languages.png",
       "Hierarchical Clustering of Languages by Language Features",
       data)
 
     plot.phylogram.to.png(
-      "pca/language-feature-hierarchical-clustering.png",
+      "hierarchical-clustering-of-language-features.png",
       "Hierarchical Clustering of Language Features by Language",
       data.transpose)
 
-    plot.to.png("language-heatmap.png",
+    plot.to.png("heatmap-of-language.png",
       function() {
         language.distances = dist(data, method = "euclidean")
         heatmap(
@@ -192,7 +192,7 @@
       }
     )
 
-    plot.to.png("language-classic-mds.png",
+    plot.to.png("multidimensional-scaling-of-languages-classic.png",
       function() {
 
         library(MASS)
@@ -209,7 +209,7 @@
       }
     )
 
-    plot.to.png("language-non-metric-mds.png",
+    plot.to.png("multidimensional-scaling-of-languages-non-metric.png",
       function() {
 
         library(MASS)
@@ -232,10 +232,10 @@
 
  #+RESULTS:
 
- | [[file:pca/principal-components.png]]             |                                                       |
- | [[file:pca/language-features-primary-axes.png]]   | [[file:pca/language-features-secondary-axes.png]]         |
- | [[file:pca/languages-primary-axes.png]]           | [[file:pca/languages-secondary-axes.png]]                 |
- | [[file:pca/language-taxonomy.png]]                | [[file:pca/language-feature-taxonomy.png]]                |
- | [[file:pca/language-hierarchical-clustering.png]] | [[file:pca/language-feature-hierarchical-clustering.png]] |
- | [[file:language-heatmap.png]]                     |                                                       |
- | [[file:language-classic-mds.png]]                 | [[file:language-non-metric-mds.png]]                      |
+ | [[file:pca/principal-components.png]]                      |                                                           |
+ | [[file:pca/language-features-primary-axes.png]]            | [[file:pca/language-features-secondary-axes.png]]             |
+ | [[file:pca/languages-primary-axes.png]]                    | [[file:pca/languages-secondary-axes.png]]                     |
+ | [[file:pca/language-taxonomy.png]]                         | [[file:pca/language-feature-taxonomy.png]]                    |
+ | [[file:hierarchical-clustering-of-languages.png]]          | [[file:hierarchical-clustering-of-language-features.png]]     |
+ | [[file:heatmap-of-language.png]]                           |                                                           |
+ | [[file:multidimensional-scaling-of-languages-classic.png]] | [[file:multidimensional-scaling-of-languages-non-metric.png]] |
