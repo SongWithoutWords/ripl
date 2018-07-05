@@ -11,7 +11,8 @@
 | type-classes                     | -1 |  -1 | -1 | -1 |      +1 |   -1 |         +0 | +1 |     -1 |   +1 |   +1 |    -1 |     -1 |
 | type-level-programming           | -1 |  +1 | -1 | +1 |      +1 |   -1 |         +0 | +1 |     +0 |   +1 |   -1 |    +1 |     +0 |
 | ad-hoc-polymorphism              | -1 |  +1 | +1 | +1 |      -1 |   +1 |         +0 | -1 |     +0 |   +1 |   -1 |    +1 |     +0 |
-| inheritance                      | -1 |  +1 | +1 | +1 |      -1 |   +1 |         +0 | -1 |     +1 |   -1 |   -1 |    +1 |     -1 |
+| classical-inheritance            | -1 |  +1 | +1 | +1 |      -1 |   +1 |         -1 | -1 |     +1 |   -1 |   -1 |    +1 |     -1 |
+| prototypal-inheritance           | -1 |  -1 | -1 | -1 |      -1 |   -1 |         +1 | -1 |     -1 |   -1 |   -1 |    -1 |     -1 |
 | strict-evaluation                | +1 |  +1 | +1 | +1 |      -1 |   +1 |         +1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
 | type-safe-discriminated-unions   | -1 |  -1 | -1 | +1 |      +1 |   -1 |         -1 | +1 |     -1 |   +1 |   +1 |    +1 |     -1 |
 | null-safety                      | -1 |  -1 | -1 | -1 |      +1 |   -1 |         -1 | +1 |     -1 |   +1 |   +1 |    -1 |     +1 |
@@ -180,7 +181,6 @@
       "Hierarchical Clustering of Language Features by Language",
       data.transpose)
 
-    library("grDevices")
     plot.to.png("language-heatmap.png",
       function() {
         language.distances = dist(data, method = "euclidean")
@@ -192,6 +192,42 @@
       }
     )
 
+    plot.to.png("language-classic-mds.png",
+      function() {
+
+        library(MASS)
+
+        language.distances = dist(data, method = "euclidean")
+        language.mds = cmdscale(language.distances, k=2, eig=TRUE)
+        
+        x = language.mds$points[,1]
+        y = language.mds$points[,2]
+
+        plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2", 
+          main="Classic MDS", type="n")
+        text(x, y, labels = row.names(data), cex=.7)
+      }
+    )
+
+    plot.to.png("language-non-metric-mds.png",
+      function() {
+
+        library(MASS)
+
+        language.distances = dist(data, method = "euclidean")
+        language.mds = isoMDS(language.distances, k=2)
+        
+        x = language.mds$points[,1]
+        y = language.mds$points[,2]
+
+        plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2", 
+          main="Nonmetric MDS", type="n")
+        text(x, y, labels = row.names(data), cex=.7)
+      }
+    )
+
+
+
   #+end_src
 
  #+RESULTS:
@@ -201,4 +237,5 @@
  | [[file:pca/languages-primary-axes.png]]           | [[file:pca/languages-secondary-axes.png]]                 |
  | [[file:pca/language-taxonomy.png]]                | [[file:pca/language-feature-taxonomy.png]]                |
  | [[file:pca/language-hierarchical-clustering.png]] | [[file:pca/language-feature-hierarchical-clustering.png]] |
- | [[file:language-heatmap.png]]      |                                                       |
+ | [[file:language-heatmap.png]]                     |                                                       |
+ |[[file:language-classic-mds.png]] |         [[file:language-non-metric-mds.png]]                                               |
