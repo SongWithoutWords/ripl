@@ -180,6 +180,17 @@
       "Hierarchical Clustering of Language Features by Language",
       data.transpose)
 
+    library("grDevices")
+    plot.to.png("language-heatmap.png",
+      function() {
+        language.distances = dist(data, method = "euclidean")
+        heatmap(
+          data.matrix(language.distances),
+          col = grey(0:255 / 255)
+        )
+      }
+    )
+
   #+end_src
 
  #+RESULTS:
@@ -189,4 +200,4 @@
  | [[file:pca/languages-primary-axes.png]]           | [[file:pca/languages-secondary-axes.png]]                 |
  | [[file:pca/language-taxonomy.png]]                | [[file:pca/language-feature-taxonomy.png]]                |
  | [[file:pca/language-hierarchical-clustering.png]] | [[file:pca/language-feature-hierarchical-clustering.png]] |
-
+ | [[file:language-heatmap.png]]      |                                                       |
