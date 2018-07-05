@@ -15,7 +15,7 @@
   - A readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
 ** Comparison with Other Languages
-*TODO*
+  In an effort to compare this language with others in an objective and impartial way, I identified a number of quantifiable language features to be used as a basis for comparison. I then evaluated each language across these criteria, assigning a value of +1 for features that were present, a value of -1 for features that were absent, and a value of +0 for features that were not applicable, producing the following table:
 
 ** Motivation and Rationale
 *TODO*
