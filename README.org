@@ -12,7 +12,7 @@ A Robust and Intuitive Programming Language, and work in progress, written in Sc
   - Type-level constraints on the mutability of data and purity of functions
   - Ad-hoc polymorphism (overloading) to promote programmer sanity
   - Parametric polymorphism (templates/generics) to abstract over types and perform type-level programming
-  - A readable, uniform syntax that is suitable for metaprogramming, inspired by [Readable Lisp S-expressions](https://sourceforge.net/p/readable/wiki/Home/)
+  - A readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
 ** Comparison with Other Languages
 *TODO*
