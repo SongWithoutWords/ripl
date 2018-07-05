@@ -23,6 +23,10 @@
 | whitespace-sensitive             | -1 |  -1 | -1 | -1 |      +1 |   -1 | -1 |     +1 |   +1 |   -1 |    -1 |     -1 |
 | uniform-syntax                   | -1 |  -1 | -1 | -1 |      -1 |   -1 | -1 |     -1 |   +1 |   -1 |    -1 |     +1 |
 | expression-oriented              | -1 |  -1 | -1 | -1 |      +1 |   -1 | +1 |     -1 |   +1 |   +1 |    +1 |     +1 |
+| top-level-functions              | +1 |  +1 | -1 | +1 |      +1 |   -1 | +1 |     +1 |   +1 |   +1 |    -1 |     +1 |
+| methods                          | -1 |  +1 | +1 | +1 |      -1 |   +1 | NA |     +1 |   -1 |   -1 |    +1 |     -1 |
+| uniform-function-call-syntax     | NA |  -1 | NA | +1 |      NA |   NA | NA |     -1 |   NA |   NA |    NA |     NA |
+| compile-time-function-evaluation | -1 |  +1 | -1 | +1 |      -1 |   -1 | -1 |     NA |   +1 |   -1 |    -1 |     NA |
 
 * Principal Component Analysis
 
@@ -448,6 +452,7 @@
 
  #+RESULTS:
  [[file:mfa/languages.png]]
+
 
 * Hierarchical Clustering on Principal Components 
 
