@@ -2,17 +2,17 @@
 A Robust and Intuitive Programming Language, and work in progress, written in Scala with an LLVM back-end.
 
 ** Planned Features
-- [X] Compiled
-- [X] Strong, static typing
-- [X] Type inference
-- [X] Strict evaluation
-- [ ] Type-safe discriminated unions
-- [ ] Pattern matching
-- [X] Mutable data structures to support computationally intensive tasks
-- [ ] Type-level constraints on the mutability of data and purity of functions
-- [X] Ad-hoc polymorphism (overloading) to promote programmer sanity
-- [ ] Parametric polymorphism (templates/generics) to abstract over types and perform type-level programming
-- [x] A readable, uniform syntax that is suitable for metaprogramming, inspired by [Readable Lisp S-expressions](https://sourceforge.net/p/readable/wiki/Home/)
+  - Compiled
+  - Strong, static typing
+  - Type inference
+  - Strict evaluation
+  - Type-safe discriminated unions
+  - Pattern matching
+  - Mutable data structures to support computationally intensive tasks
+  - Type-level constraints on the mutability of data and purity of functions
+  - Ad-hoc polymorphism (overloading) to promote programmer sanity
+  - Parametric polymorphism (templates/generics) to abstract over types and perform type-level programming
+  - A readable, uniform syntax that is suitable for metaprogramming, inspired by [Readable Lisp S-expressions](https://sourceforge.net/p/readable/wiki/Home/)
 
 ** Comparison with Other Languages
 *TODO*
