@@ -26,3 +26,4 @@ top-level-functions,+1,+1,-1,+1,+1,-1,+1,+1,+1,+1,-1,+1
 methods,-1,+1,+1,+1,-1,+1,NA,+1,-1,-1,+1,-1
 uniform-function-call-syntax,NA,-1,NA,+1,NA,NA,NA,-1,NA,NA,NA,NA
 compile-time-function-evaluation,-1,+1,-1,+1,-1,-1,-1,NA,+1,-1,-1,NA
+closures,-1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1
