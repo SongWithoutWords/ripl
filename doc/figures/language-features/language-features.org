@@ -186,7 +186,8 @@
         language.distances = dist(data, method = "euclidean")
         heatmap(
           data.matrix(language.distances),
-          col = grey(0:255 / 255)
+          col = grey(0:255 / 255),
+          symm = TRUE,
         )
       }
     )
