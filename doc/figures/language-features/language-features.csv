@@ -1,5 +1,4 @@
-C,C++,"C#",D,Haskell,Java,ML,Python,Ripl,Rust,Scala,Scheme
-compilation,+1,+1,+1,+1,+1,+1,+1,-1,+1,+1,+1,-1
+C,C++,C#,D,Haskell,Java,ML,Python,Ripl,Rust,Scala,Scheme
 garbage-collection,-1,-1,+1,+1,+1,+1,+1,+1,NA,-1,+1,+1
 explicit-indirection,+1,+1,-1,+1,-1,-1,-1,-1,+1,+1,-1,-1
 ownership-system,-1,-1,-1,-1,-1,-1,-1,-1,NA,+1,-1,-1
