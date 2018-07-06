@@ -4,6 +4,19 @@
 #+LATEX_HEADER: \usepackage[margin=0.8in]{geometry}
 #+LATEX_HEADER: \hypersetup{ colorlinks=true, linkcolor=black, urlcolor=blue }
 
+#+LATEX_HEADER: \usepackage{enumitem}   
+#+LATEX_HEADER:  \setlistdepth{9}
+#+LATEX_HEADER:   \setlist[itemize,1]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,2]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,3]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,4]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,5]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,6]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,7]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,8]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,9]{label=-}
+#+LATEX_HEADER:   \renewlist{itemize}{itemize}{9}
+
 ** Abstract
    ripl is a nascent programming language and the subject of my undergraduate thesis at UBC. Written in Scala with an LLVM back-end, ripl is intended to combine the safety and purity of a language like Haskell, with the low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. It is motivated by my appreciation for a wide range of language features and my inability to find any one existing language that encompasses all of these features.
 
