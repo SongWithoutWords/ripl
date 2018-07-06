@@ -31,9 +31,7 @@
 *** Hierarchical Clustering of Languages by Language Features
     One such statistical method is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the criteria mentioned above: 
     [[file:doc/figures/language-features/hierarchical-clustering-of-languages.png]]
-    The result of this clustering helps to classify ripl relative to other programming languages: it appears alongside other statically-typed, functional languages, after which it groups more closely with Rust than with ML or Haskell.
-
-    The results show a high-level split between statically-typed, functional languages and the other languages considered. Within this statically-typed and functional branch, there is a split between languages with imperative capabilities (Rust and ripl), and the more purely functional languages (Haskell and ML). 
+    The result of this clustering helps to classify ripl relative to other programming languages, and suggest that it is more similar to Rust than to either Haskell or ML, and that it has more in common with these languages than with the other languages considered.
 
 ** Motivation and Rationale
 *TODO*
