@@ -29,7 +29,11 @@
   Although this table is useful in detailing the features of each language, because it consists of more than 8 data-points in more than 24 dimensions, it is hard to visualize the high-level structure of the data and relationships between the languages by looking at the table itself. Fortunately, there are a number of statistical methods that can help to visualize this higher dimensional data.
 
 *** Hierarchical Clustering of Languages by Language Features
+    One such statistical method is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the criteria mentioned above: 
     [[file:doc/figures/language-features/hierarchical-clustering-of-languages.png]]
+    The result of this clustering helps to classify ripl relative to other programming languages: it appears alongside other statically-typed, functional languages, after which it groups more closely with Rust than with ML or Haskell.
+
+    The results show a high-level split between statically-typed, functional languages and the other languages considered. Within this statically-typed and functional branch, there is a split between languages with imperative capabilities (Rust and ripl), and the more purely functional languages (Haskell and ML). 
 
 ** Motivation and Rationale
 *TODO*
