@@ -1,7 +1,7 @@
 #+TITLE: Robust Intuitive Programming Language (ripl)
 #+SUBTITLE: Motivation, Design and Implementation
 #+AUTHOR: Ian McCall
-#+LATEX_HEADER: \usepackage[margin=0.5in]{geometry}
+#+LATEX_HEADER: \usepackage[margin=0.8in]{geometry}
 #+LATEX_HEADER: \hypersetup{ colorlinks=true, linkcolor=black, urlcolor=blue }
 
 ** Abstract
