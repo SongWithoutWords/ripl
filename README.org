@@ -33,6 +33,10 @@
     [[file:doc/figures/language-features/hierarchical-clustering-of-languages.png]]
     The result of this clustering helps to classify ripl relative to other programming languages, and suggest that it is more similar to Rust than to either Haskell or ML, and that it has more in common with these statically-typed, functional languages than with the other languages considered.
 
+*** TODO Heatmap of Languages
+
+*** TODO Multidimensional Scaling of Languages
+
 ** Motivation and Rationale
 *TODO*
 
