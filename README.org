@@ -1,4 +1,5 @@
 #+TITLE: Robust Intuitive Programming Language (ripl)
+#+SUBTITLE: Motivation, Design and Implementation
 #+LATEX_HEADER: \usepackage[margin=0.5in]{geometry}
 
 * Robust Intuitive Programming Language (ripl)
