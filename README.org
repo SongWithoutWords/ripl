@@ -45,7 +45,7 @@ Although this table is useful in detailing the features of each language, becaus
 
 One such data-visualization method is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups (in n-dimensional space) until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the criteria mentioned above: 
 
-    [[file:doc/figures/language-features/hierarchical-clustering-of-languages.png]]
+[[file:doc/figures/language-features/hierarchical-clustering-of-languages.png]]
 
 The results are consistent with my understanding of the languages considered, and help to place ripl in context. An annotated version of the tree above might look something like this:
     
