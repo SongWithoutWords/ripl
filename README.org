@@ -18,31 +18,33 @@
 #+LATEX_HEADER:   \renewlist{itemize}{itemize}{9}
 
 ** Abstract
-   ripl is a nascent programming language and the subject of my undergraduate thesis at UBC. Written in Scala with an LLVM back-end, ripl is intended to combine the safety and purity of a language like Haskell, with the low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. It is motivated by my appreciation for a wide range of language features and my inability to find any one existing language that encompasses all of these features.
+ripl is a nascent programming language and the subject of my undergraduate thesis at UBC. Written in Scala with an LLVM back-end, ripl is intended to combine the safety and purity of a language like Haskell, with the low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. It is motivated by my appreciation for a wide range of language features and my inability to find any one existing language that encompasses all of these features.
 
 ** Planned Features
-  - Compiled
-  - Strong, static typing
-  - Type inference
-  - Strict evaluation
-  - Type-safe discriminated unions
-  - Pattern matching
-  - Mutable data structures to support computationally intensive tasks
-  - Type-level constraints on the mutability of data and purity of functions
-  - Ad-hoc polymorphism (overloading) to promote programmer sanity
-  - Parametric polymorphism (templates/generics) to abstract over types and perform type-level programming
-  - A readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
+- Compiled
+- Strong, static typing
+- Type inference
+- Strict evaluation
+- Type-safe discriminated unions
+- Pattern matching
+- Mutable data structures to support computationally intensive tasks
+- Type-level constraints on the mutability of data and purity of functions
+- Ad-hoc polymorphism (overloading) to promote programmer sanity
+- Parametric polymorphism (templates/generics) to abstract over types and perform type-level programming
+- A readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
 ** Comparison with Other Languages
-  In an effort to compare this language with others in an objective and impartial way, I identified a number of quantifiable language features to be used as a basis for comparison. I then evaluated each language across these criteria, assigning a value of +1 for features that were present, a value of -1 for features that were absent, and a value of +0 for features that were not applicable, producing the following table:
+In an effort to compare this language with others in an objective and impartial way, I identified a number of quantifiable language features to be used as a basis for comparison. I then evaluated each language across these criteria, assigning a value of +1 for features that were present, a value of -1 for features that were absent, and a value of +0 for features that were not applicable, producing the following table:
 
 *** Language Feature Table 
-   #+INCLUDE: "./doc/language-features/table.org" :minlevel 1
+#+INCLUDE: "./doc/language-features/table.org" :minlevel 1
 
-  Although this table is useful in detailing the features of each language, because it consists of more than 8 data-points in more than 24 dimensions, it is hard to visualize the high-level structure of the data and relationships between the languages by looking at the table itself. Fortunately, there are a number of statistical methods that can help to visualize this higher dimensional data.
+Although this table is useful in detailing the features of each language, because it consists of more than 8 data-points in more than 24 dimensions, it is hard to visualize the high-level structure of the data and relationships between the languages by looking at the table itself. Fortunately, there are a number of statistical methods that can help to visualize this higher dimensional data.
 
 *** Hierarchical Clustering of Languages
-    One such data-visualization method is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups (in n-dimensional space) until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the criteria mentioned above: 
+
+One such data-visualization method is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups (in n-dimensional space) until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the criteria mentioned above: 
+
     [[file:doc/figures/language-features/hierarchical-clustering-of-languages.png]]
     The result of this clustering helps to classify ripl relative to other programming languages, and suggest that it is more similar to Rust than to either Haskell or ML, and that it has more in common with these statically-typed, functional languages than with the other languages considered.
 
