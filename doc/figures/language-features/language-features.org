@@ -201,6 +201,170 @@
   #+end_src
 
  #+RESULTS:
+ #+begin_example
+ null device 
+           1
+ null device 
+           1
+ null device 
+           1
+ null device 
+           1
+ null device 
+           1
+ null device 
+           1
+ null device 
+           1
+ $type
+ [1] "phylogram"
+
+ $use.edge.length
+ [1] TRUE
+
+ $node.pos
+ [1] 1
+
+ $node.depth
+ [1] 1
+
+ $show.tip.label
+ [1] TRUE
+
+ $show.node.label
+ [1] FALSE
+
+ $font
+ [1] 1
+
+ $cex
+ [1] 1.2
+
+ $adj
+ [1] 0
+
+ $srt
+ [1] 0
+
+ $no.margin
+ [1] FALSE
+
+ $label.offset
+ [1] 0.2
+
+ $x.lim
+ [1] 0.000000 8.997885
+
+ $y.lim
+ [1]  1 14
+
+ $direction
+ [1] "rightwards"
+
+ $tip.color
+ [1] "black"
+
+ $Ntip
+ [1] 14
+
+ $Nnode
+ [1] 13
+
+ $root.time
+ NULL
+
+ $align.tip.label
+ [1] FALSE
+
+ null device 
+           1
+ $type
+ [1] "phylogram"
+
+ $use.edge.length
+ [1] TRUE
+
+ $node.pos
+ [1] 1
+
+ $node.depth
+ [1] 1
+
+ $show.tip.label
+ [1] TRUE
+
+ $show.node.label
+ [1] FALSE
+
+ $font
+ [1] 1
+
+ $cex
+ [1] 1.2
+
+ $adj
+ [1] 0
+
+ $srt
+ [1] 0
+
+ $no.margin
+ [1] FALSE
+
+ $label.offset
+ [1] 0.2
+
+ $x.lim
+ [1]  0.00000 21.95377
+
+ $y.lim
+ [1]  1 31
+
+ $direction
+ [1] "rightwards"
+
+ $tip.color
+ [1] "black"
+
+ $Ntip
+ [1] 31
+
+ $Nnode
+ [1] 30
+
+ $root.time
+ NULL
+
+ $align.tip.label
+ [1] FALSE
+
+ null device 
+           1
+ $rowInd
+  [1]  9  5 12 11 14  8  1  4  2 13  3  6 10  7
+
+ $colInd
+  [1]  9  5 12 11 14  8  1  4  2 13  3  6 10  7
+
+ $Rowv
+ NULL
+
+ $Colv
+ NULL
+
+ null device 
+           1
+ NULL
+ null device 
+           1
+ initial  value 17.190627 
+ iter   5 value 11.687150
+ final  value 11.638097 
+ converged
+ NULL
+ null device 
+           1
+ #+end_example
 
  | [[file:pca/principal-components.png]]                      |                                                           |
  | [[file:pca/language-features-primary-axes.png]]            | [[file:pca/language-features-secondary-axes.png]]             |
