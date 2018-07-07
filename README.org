@@ -95,7 +95,7 @@ The result of this exercise provides some interesting insights: in particular, i
 
 *** DONE Move R code into its own file (it sortof sucks writing it in org mode)
 
-*** TODO Get rid of PCA, MDS is better
+*** DONE Get rid of PCA, MDS is better
 
 *** TODO Exclude ripl from hierarchical clustering of features
 
