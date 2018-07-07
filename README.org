@@ -105,10 +105,14 @@ The result of this exercise provides some interesting insights: in particular, i
 
 *** TODO Scale the images appropriately for the paper, both for markdown and pdf export
 
+*** TODO Get rid of classic MDS
+
 *** TODO Consider removing plot titles
 
 *** TODO Spread language feature table across multiple pages for latex export
 
-*** TODO Try adding footnotes to the table to provide additional information, does it clash with csv export?
+*** TODO Try adding footnotes to the table to provide additional information, does it work with csv and latex export?
 
 *** TODO Consider adding Dart and Lua as additional languages
+
+*** TODO Consider heatmaps and multidimensional scaling of language features
