@@ -67,9 +67,15 @@ The results are consistent with my understanding of the languages considered, an
 
 *** TODO Hierarchical Clustering of Language Features
 
+[[file:doc/figures/language-features/hierarchical-clustering-of-language-features.png]]
+
 *** TODO Heatmap of Languages
 
+[[file:doc/figures/language-features/heatmap-of-language.png]]
+
 *** TODO Multidimensional Scaling of Languages
+
+[[file:doc/figures/language-features/multidimensional-scaling-of-languages-non-metric.png]]
 
 ** Motivation and Rationale
 *TODO*
