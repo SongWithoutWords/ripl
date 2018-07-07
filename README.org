@@ -67,7 +67,11 @@ The results are consistent with my understanding of the languages considered, an
 
 *** TODO Hierarchical Clustering of Language Features
 
+Incidentally, by running hierarchical clustering on the transpose of our table, it's possible classify the language features it contains by the programming languages in which they occur:
+
 [[file:doc/figures/language-features/hierarchical-clustering-of-language-features.png]]
+
+The result of this exercise provides some interesting insights: in particular, it suggests a strong correlation between garbage collection and memory safety (which may come as no surprise), and between pattern matching, type-safe discriminated unions and null-safety.
 
 *** TODO Heatmap of Languages
 
