@@ -87,11 +87,17 @@ The result of this exercise provides some interesting insights: in particular, i
 
 **** TODO Move R code into its own file (it sortof sucks writing it in org mode)
 
+**** TODO Exclude ripl from hierarchical clustering of features
+
 **** TODO Experiment with other hierarchical clustering methods
+
+**** TODO Ensure that heatmap agrees with hierarchical clustering
 
 **** TODO Get rid of PCA, MDS is better
 
 **** TODO Scale the images appropriately for the paper, both for markdown and pdf export
+
+**** TODO Consider removing plot titles
 
 **** TODO Spread language feature table across multiple pages for latex export
 
