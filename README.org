@@ -78,6 +78,11 @@ The result of this exercise provides some interesting insights: in particular, i
 
 [[file:doc/figures/language-features/heatmap-of-language.png]]
 
+*** TODO Heatmap of Language Feature Correlations
+Important to keep in mind is that this is descriptive and not predictive statistics
+
+[[file:doc/figures/language-features/language-feature-correlation-heatmap-pearson.png]]
+
 *** TODO Multidimensional Scaling of Languages
 
 [[file:doc/figures/language-features/multidimensional-scaling-of-languages-non-metric.png]]
