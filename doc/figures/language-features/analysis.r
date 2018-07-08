@@ -2,6 +2,18 @@ library("FactoMineR")
 library("factoextra")
 library("ape")
 
+## Util
+
+concat.strings = function(...){ paste(..., sep = "") }
+
+plot.to.png = function(ptp.filename, ptp.function, ptp.width = 540, ptp.height = 540) {
+  png(filename = ptp.filename, width = ptp.width, height = ptp.height)
+  plot.result = ptp.function()
+  print(plot.result)
+  dev.off()
+}
+
+## Analysis
 
 language.features = read.csv(file="table.csv", head = TRUE, check.names = FALSE)
 
@@ -14,13 +26,6 @@ languages.to.analyze = languages # statically.typed.languages
 languages.active = languages.to.analyze[, -(0:1)]
 
 language.features.excluding.ripl = subset(language.features, select = -c(Ripl))
-
-plot.to.png = function(ptp.filename, ptp.function, ptp.width = 540, ptp.height = 540) {
-  png(filename = ptp.filename, width = ptp.width, height = ptp.height)
-  plot.result = ptp.function()
-  print(plot.result)
-  dev.off()
-}
 
 hclust.method = "ward.D2"
 
