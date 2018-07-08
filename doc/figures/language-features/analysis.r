@@ -29,6 +29,8 @@ languages.to.analyze = languages # statically.typed.languages
 
 languages.active = languages.to.analyze[, -(0:1)]
 
+distance.method = "euclidean"
+correlation.method = "pearson"
 hclust.method = "ward.D2"
 
 plot.phylogram.to.png = function(file.name, title, languages) {
@@ -36,7 +38,7 @@ plot.phylogram.to.png = function(file.name, title, languages) {
   plot.to.png(file.name,
     function() {
 
-      language.distances = dist(languages, method = "euclidean")
+      language.distances = dist(languages, method = distance.method)
 
       language.hierarchical.clustering = hclust(
         language.distances,
@@ -74,7 +76,7 @@ plot.phylogram.to.png(
 
 plot.to.png("heatmap-of-language.png",
   function() {
-    language.distances = dist(languages, method = "euclidean")
+    language.distances = dist(languages, method = distance.method)
 
     library(gplots)
 
@@ -90,7 +92,6 @@ plot.to.png("heatmap-of-language.png",
   }
 )
 
-correlation.method = "pearson"
 plot.to.png(
   width = 1020,
   height = 1020,
@@ -140,7 +141,7 @@ plot.to.png("multidimensional-scaling-of-languages-classic.png",
 
     library(MASS)
 
-    language.distances = dist(languages, method = "euclidean")
+    language.distances = dist(languages, method = distance.method)
     language.mds = cmdscale(language.distances, k=2, eig=TRUE)
 
     x = language.mds$points[,1]
@@ -157,7 +158,7 @@ plot.to.png("multidimensional-scaling-of-languages-non-metric.png",
 
     library(MASS)
 
-    language.distances = dist(languages, method = "euclidean")
+    language.distances = dist(languages, method = distance.method)
     language.mds = isoMDS(language.distances, k=2)
 
     x = language.mds$points[,1]
