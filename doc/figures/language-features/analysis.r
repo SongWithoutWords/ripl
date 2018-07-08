@@ -106,21 +106,23 @@ plot.to.png(
       languages.excluding.ripl,
       method = correlation.method)
 
-    ## width = width(language.feature.cor)
+    language.feature.distances = as.dist(1 - language.feature.cor)
+
+    language.feature.clusters = as.dendrogram(
+      hclust(language.feature.distances, method = hclust.method))
 
     library(gplots)
-    ## require("gplots")
 
     heatmap.2(
       language.feature.cor,
-      dendrogram = "none",
-      Rowv = TRUE,
-      Colv = TRUE,
+      ## dendrogram = "none",
+      Rowv = language.feature.clusters,
+      Colv = language.feature.clusters,
       col = colorRampPalette(c("red", "white", "blue")),
-      cexRow = 1.3,
-      cexCol = 1.3,
-      ## margins = c(18, 18),
-        ## grey(0:255 / 255),
+      cexRow = 1.5,
+      cexCol = 1.5,
+      margins = c(20, 20),
+      ## grey(0:255 / 255),
       symm = TRUE,
       trace = "none",
       tracecol = "black",
@@ -130,9 +132,9 @@ plot.to.png(
       sepcolor =  "black",
 
       # attempt to place the histogram/colour key above the plot
-      lmat=rbind(c(5, 4, 2), c(6, 1, 3)),
-      lhei=c(2.5, 5),
-      lwid=c(1, 10, 1),
+      ## lmat=rbind(c(5, 4, 2), c(6, 1, 3)),
+      ## lhei=c(2.5, 5),
+      ## lwid=c(1, 10, 1),
       )
   }
 )
