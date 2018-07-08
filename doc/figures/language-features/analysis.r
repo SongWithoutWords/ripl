@@ -3,15 +3,17 @@ library("factoextra")
 library("ape")
 
 
-data.transpose = read.csv(file="table.csv", head = TRUE, check.names = FALSE)
+language.features = read.csv(file="table.csv", head = TRUE, check.names = FALSE)
 
-data = as.data.frame(t(data.transpose))
+languages = as.data.frame(t(language.features))
 
-statically.typed.languages = data[data$"static-typing"==1, ]
+statically.typed.languages = languages[data$"static-typing"==1, ]
 
-data.to.analyze = data # statically.typed.languages
+languages.to.analyze = languages # statically.typed.languages
 
-data.active = data.to.analyze[, -(0:1)]
+languages.active = languages.to.analyze[, -(0:1)]
+
+language.features.excluding.ripl = subset(language.features, select = -c(Ripl))
 
 plot.to.png = function(ptp.filename, ptp.function, ptp.width = 540, ptp.height = 540) {
   png(filename = ptp.filename, width = ptp.width, height = ptp.height)
@@ -20,16 +22,18 @@ plot.to.png = function(ptp.filename, ptp.function, ptp.width = 540, ptp.height =
   dev.off()
 }
 
-plot.phylogram.to.png = function(file.name, title, data) {
+hclust.method = "ward.d2"
+
+plot.phylogram.to.png = function(file.name, title, languages) {
 
   plot.to.png(file.name,
     function() {
 
-      language.distances = dist(data, method = "euclidean")
+      language.distances = dist(languages, method = "euclidean")
 
       language.hierarchical.clustering = hclust(
         language.distances,
-        method = "ward.D2")
+        method = hclust.method)
 
       plot(
         as.phylo(language.hierarchical.clustering),
@@ -49,16 +53,21 @@ plot.phylogram.to.png = function(file.name, title, data) {
 plot.phylogram.to.png(
   "hierarchical-clustering-of-languages.png",
   "Hierarchical Clustering of Languages by Language Features",
-  data)
+  languages)
 
 plot.phylogram.to.png(
   "hierarchical-clustering-of-language-features.png",
   "Hierarchical Clustering of Language Features by Language",
-  data.transpose)
+  language.features)
+
+plot.phylogram.to.png(
+  "hierarchical-clustering-of-language-features-excluding-ripl.png",
+  "Hierarchical Clustering of Language Features by Language Excluding Ripl",
+  language.features.excluding.ripl)
 
 plot.to.png("heatmap-of-language.png",
   function() {
-    language.distances = dist(data, method = "euclidean")
+    language.distances = dist(languages, method = "euclidean")
     heatmap(
       data.matrix(language.distances),
       col = grey(0:255 / 255),
@@ -72,7 +81,7 @@ plot.to.png("multidimensional-scaling-of-languages-classic.png",
 
     library(MASS)
 
-    language.distances = dist(data, method = "euclidean")
+    language.distances = dist(languages, method = "euclidean")
     language.mds = cmdscale(language.distances, k=2, eig=TRUE)
 
     x = language.mds$points[,1]
@@ -80,7 +89,7 @@ plot.to.png("multidimensional-scaling-of-languages-classic.png",
 
     plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2",
       main="Classic MDS", type="n")
-    text(x, y, labels = row.names(data), cex=.7)
+    text(x, y, labels = row.names(languages), cex=.7)
   }
 )
 
@@ -89,7 +98,7 @@ plot.to.png("multidimensional-scaling-of-languages-non-metric.png",
 
     library(MASS)
 
-    language.distances = dist(data, method = "euclidean")
+    language.distances = dist(languages, method = "euclidean")
     language.mds = isoMDS(language.distances, k=2)
 
     x = language.mds$points[,1]
@@ -97,6 +106,6 @@ plot.to.png("multidimensional-scaling-of-languages-non-metric.png",
 
     plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2",
       main="Nonmetric MDS", type="n")
-    text(x, y, labels = row.names(data), cex=.7)
+    text(x, y, labels = row.names(languages), cex=.7)
   }
 )
