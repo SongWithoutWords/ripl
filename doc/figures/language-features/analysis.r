@@ -22,7 +22,7 @@ plot.to.png = function(ptp.filename, ptp.function, ptp.width = 540, ptp.height =
   dev.off()
 }
 
-hclust.method = "ward.d2"
+hclust.method = "ward.D2"
 
 plot.phylogram.to.png = function(file.name, title, languages) {
 
