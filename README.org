@@ -102,7 +102,7 @@ The result of this exercise provides some interesting insights: in particular, i
 *** DONE Experiment with other hierarchical clustering methods
 The alternatives weren't as good as ward.d2
 
-*** TODO Correlation analysis on language features
+*** TODO Correlation analysis of language features
 
 *** TODO Ensure that heatmap agrees with hierarchical clustering
 

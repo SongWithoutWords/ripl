@@ -6,9 +6,9 @@ library("ape")
 
 concat.strings = function(...){ paste(..., sep = "") }
 
-plot.to.png = function(ptp.filename, ptp.function, ptp.width = 540, ptp.height = 540) {
-  png(filename = ptp.filename, width = ptp.width, height = ptp.height)
-  plot.result = ptp.function()
+plot.to.png = function(filename, f, width = 540, height = 540) {
+  png(filename = filename, width = width, height = height)
+  plot.result = f()
   print(plot.result)
   dev.off()
 }
@@ -17,15 +17,17 @@ plot.to.png = function(ptp.filename, ptp.function, ptp.width = 540, ptp.height =
 
 language.features = read.csv(file="table.csv", head = TRUE, check.names = FALSE)
 
+language.features.excluding.ripl = subset(language.features, select = -c(Ripl))
+
 languages = as.data.frame(t(language.features))
 
-statically.typed.languages = languages[data$"static-typing"==1, ]
+languages.excluding.ripl = as.data.frame(t(language.features.excluding.ripl))
+
+## statically.typed.languages = languages[data$"static-typing"==1, ]
 
 languages.to.analyze = languages # statically.typed.languages
 
 languages.active = languages.to.analyze[, -(0:1)]
-
-language.features.excluding.ripl = subset(language.features, select = -c(Ripl))
 
 hclust.method = "ward.D2"
 
@@ -73,10 +75,62 @@ plot.phylogram.to.png(
 plot.to.png("heatmap-of-language.png",
   function() {
     language.distances = dist(languages, method = "euclidean")
-    heatmap(
+
+    library(gplots)
+
+    heatmap.2(
       data.matrix(language.distances),
+      dendrogram = "none",
+      Rowv = TRUE,
+      Colv = TRUE,
       col = grey(0:255 / 255),
       symm = TRUE,
+      trace = "none",
+      )
+  }
+)
+
+correlation.method = "pearson"
+plot.to.png(
+  width = 1020,
+  height = 1020,
+  concat.strings(
+    "language-feature-correlation-heatmap-",
+    correlation.method,
+    ".png"),
+  function() {
+
+    language.feature.cor = cor(
+      languages.excluding.ripl,
+      method = correlation.method)
+
+    ## width = width(language.feature.cor)
+
+    library(gplots)
+    ## require("gplots")
+
+    heatmap.2(
+      language.feature.cor,
+      dendrogram = "none",
+      Rowv = TRUE,
+      Colv = TRUE,
+      col = colorRampPalette(c("red", "white", "blue")),
+      cexRow = 1.3,
+      cexCol = 1.3,
+      ## margins = c(18, 18),
+        ## grey(0:255 / 255),
+      symm = TRUE,
+      trace = "none",
+      tracecol = "black",
+      colsep = 0:nrow(language.feature.cor),
+      rowsep = 0:ncol(language.feature.cor),
+      sepwidth = c(0.001, 0.001),
+      sepcolor =  "black",
+
+      # attempt to place the histogram/colour key above the plot
+      lmat=rbind(c(5, 4, 2), c(6, 1, 3)),
+      lhei=c(2.5, 5),
+      lwid=c(1, 10, 1),
       )
   }
 )
