@@ -109,7 +109,7 @@ The alternatives weren't as good as ward.d2
 
 *** TODO Correlation analysis of language features
 
-*** TODO Ensure that heatmap agrees with hierarchical clustering
+*** DONE Ensure that heatmap agrees with hierarchical clustering
 
 *** TODO Get rid of classic MDS
 
