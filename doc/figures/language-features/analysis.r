@@ -45,7 +45,7 @@ plot.phylogram.to.png = function(file.name, title, languages) {
         # xlab = "Height",
         # nodePar = nodePar,
         # horiz = TRUE
-      )
+        )
     }
   )
 }
@@ -72,7 +72,7 @@ plot.to.png("heatmap-of-language.png",
       data.matrix(language.distances),
       col = grey(0:255 / 255),
       symm = TRUE,
-    )
+      )
   }
 )
 
