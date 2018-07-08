@@ -97,15 +97,18 @@ The result of this exercise provides some interesting insights: in particular, i
 
 *** DONE Get rid of PCA, MDS is better
 
-*** TODO Exclude ripl from hierarchical clustering of features
+*** DONE Exclude ripl from hierarchical clustering of features
 
-*** TODO Experiment with other hierarchical clustering methods
+*** DONE Experiment with other hierarchical clustering methods
+The alternatives weren't as good as ward.d2
+
+*** TODO Correlation analysis on language features
 
 *** TODO Ensure that heatmap agrees with hierarchical clustering
 
-*** TODO Scale the images appropriately for the paper, both for markdown and pdf export
-
 *** TODO Get rid of classic MDS
+
+*** TODO Scale the images appropriately for the paper, both for markdown and pdf export
 
 *** TODO Consider removing plot titles
 
