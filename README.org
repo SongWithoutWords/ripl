@@ -21,6 +21,22 @@
 ** Abstract
 ripl is a nascent programming language and the subject of my undergraduate thesis at UBC. Written in Scala with an LLVM back-end, ripl is intended to combine the safety and purity of a language like Haskell, with the low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. It is motivated by my appreciation for a wide range of language features and my inability to find any one existing language that encompasses all of these features.
 
+** Design Goals
+
+*** Major Goals 
+
+**** TODO Robust constraints on the existence and mutability of data and the purity of functions
+
+**** TODO Mutability 
+
+**** TODO In-depth type-level programming
+
+*** Minor Goals
+
+**** TODO Lisp-style macros
+
+**** TODO Deterministice destructor calls for resource disposal
+
 ** Planned Features
 - Compiled
 - Strong, static typing
