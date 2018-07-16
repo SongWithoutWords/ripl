@@ -93,7 +93,7 @@ After 2.5 years working full time in C++, for example, I would place this langua
 
 **** TODO Lisp-style macros
 
-**** TODO Deterministice destructor calls for resource disposal (RAII)
+**** TODO Deterministic destructor calls for resource disposal (RAII)
 
 
 ** Comparison with Other Languages
