@@ -29,7 +29,7 @@
 - Type inference
 - Strict evaluation
 - Type-safe discriminated unions
-- Null-safety
+- Null safety
 - Pattern matching
 - Mutable data structures
 - Type-level constraints on the mutability of data and purity of functions
