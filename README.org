@@ -57,7 +57,7 @@ The language enables the programmer to establish a wide range of constraints in 
 - Type-level programming via templates and compile-time function evaluation
 - The language will be memory-safe, though whether this is achieved via garbage collection or a Rust-style ownership system is yet to be determined.
 
-*** Performant 
+*** Performant
 As a statically-typed and compiled language, ~ripl~ is suceptible to a wide range of optimizations, and has some inherent performance benefits over dynamically typed and/or interpreted languages.
 
 
