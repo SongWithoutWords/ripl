@@ -22,6 +22,22 @@
 
 ** Abstract
 ~ripl~ is a nascent programming language and the subject of my undergraduate thesis at UBC. Written in Scala with an LLVM back-end, ~ripl~ is intended to combine the safety and purity of a language like Haskell, with the efficient, low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. It is motivated by my appreciation for a wide range of language features and my inability to find any existing language that provides all of these features.
+** Features at a Glance
+- Compiled
+- Strong, static typing
+- Type inference
+- Strict evaluation
+- Type-safe discriminated unions
+- Null-safety
+- Pattern matching
+- Mutable data structures
+- Type-level constraints on the mutability of data and purity of functions
+- Name overloading
+- Subtyping via built-in and user defined implicit conversions
+- Parametric polymorphism and type-level programming via templates
+- Compile time function evaluation
+- Expression oriented
+- Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
 ** Design Goals
 
@@ -39,18 +55,6 @@
 
 **** TODO Deterministice destructor calls for resource disposal
 
-** Planned Features
-- Compiled
-- Strong, static typing
-- Type inference
-- Strict evaluation
-- Type-safe discriminated unions
-- Pattern matching
-- Mutable data structures to support computationally intensive tasks
-- Type-level constraints on the mutability of data and purity of functions
-- Ad-hoc polymorphism (overloading) to promote programmer sanity
-- Parametric polymorphism (templates/generics) to abstract over types and perform type-level programming
-- A readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
 ** Comparison with Other Languages
 In an effort to compare this language with others in an objective and impartial way, I identified a number of quantifiable language features to be used as a basis for comparison. I then evaluated each language across these criteria, assigning a value of +1 for features that were present, a value of -1 for features that were absent, and a value of +0 for features that were not applicable, producing the following table:
