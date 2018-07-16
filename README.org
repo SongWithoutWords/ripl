@@ -43,7 +43,7 @@
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
 ** Design Goals
-The following section provides an overview of the language's design goals and the language features that are intended to achieve these goals.
+The following section provides an overview of ~ripl~'s design goals and the language features that are intended to achieve these goals.
 
 *** Robust
 The language enables the programmer to establish a wide range of constraints in the type system, by means of the following features:
