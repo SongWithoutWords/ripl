@@ -41,20 +41,55 @@
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
 ** Design Goals
+The following section provides an overview of the language's design goals and the language features that are intended to achieve these goals.
 
-*** Major Goals 
+*** Robust
+The language enables the programmer to establish a wide range of constraints in the type system, by means of the following features:
+- Strong, static typing
+- Type-safe discriminated unions
+- Type-level constraints on the mutability of data
+- Type-level constraints on the existence of data (null-safety)
+- Type-level constraints on the purity of functions
+- Parametric polymorphism via templates
+- Constraints on template parameters via type-classes/traits
+- Type-level programming via templates and compile-time function evaluation
+- The language will be memory-safe, though whether this is achieved via garbage collection or a Rust-style ownership system is yet to be determined.
 
-**** TODO Robust constraints on the existence and mutability of data and the purity of functions
+*** Performant 
+As a statically-typed and compiled language, ~ripl~ is suceptible to a wide range of optimizations, and has some inherent performance benefits over dynamically typed and/or interpreted languages.
 
-**** TODO Mutability 
 
-**** TODO In-depth type-level programming
+As a statically-typed, compiled and strictly-evaluated language, ~ripl~ is suceptible to a similar range of optimizations as languages like C++ and Rust. Furthermore, by using LLVM-IR as a compile target, it's possible to leverage many of the optimizations developed for the C++ compiler Clang.
+
+By allowing for mutation and mutable datastructures, ~ripl~ enables the efficient solution of problems that may be difficult or inefficient to solve in a purely functional language like Haskell. As a result of the type level constraints on mutability and purity mentioned in the previous section, these internal mutations can be encapsulated within purely-functional interfaces.
+- Compiled
+- Mutable datastructures
+- Strict evaluation
+- Explicit indirection
+
+*** Concise and Intuitive
+By emulating certain features of concise languages, like Haskell, Racket and Scala, it is hoped that this language can be made concise as well. What sets these languages apart from other more verbose languages?
+
+Some languages are more ergonomic, concise and intuitive than others. Having worked for 2.5 years in C++, I'm fairly confident in the assertion that it is more verbose than Python. After translating an ~2000 line program at a job from Python to Scala, I found the Scala version to be ~20% shorter (in addition to being statically typed). After porting a complete set of LLVM bindings (llvm-hs) from Haskell to Scala (for this project), I found the Haskell version to be ~20% shorter as well.
+
+After 2.5 years working full time in C++, for example, I would place this language at the bottom of this spectrum. Slightly better, I would suggest, are languages like C# and Python. 
+- Type inference
+- Subtyping via implicit conversions
+- Name overloading
+- Expression oriented
+- Pattern matching
+- Readable, uniform syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
+
+*** Powerful
+- Type level programming via templates and compile-time function evaluation
+- Type-level traits, akin to Haskell type-classes
+- Lisp-style macros, enabled by the uniform syntax in combination with compile-time function evaluation
 
 *** Minor Goals
 
 **** TODO Lisp-style macros
 
-**** TODO Deterministice destructor calls for resource disposal
+**** TODO Deterministice destructor calls for resource disposal (RAII)
 
 
 ** Comparison with Other Languages
