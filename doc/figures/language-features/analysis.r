@@ -30,7 +30,10 @@ languages.to.analyze = languages # statically.typed.languages
 languages.active = languages.to.analyze[, -(0:1)]
 
 distance.method = "euclidean"
+
 correlation.method = "pearson"
+
+# method is one of: "ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median" , "centroid"
 hclust.method = "ward.D2"
 
 plot.phylogram.to.png = function(file.name, title, languages) {
