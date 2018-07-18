@@ -48,7 +48,7 @@
 Below is a program to compute the meaning of life[fn:1], that demonstrates function definition and constant definition and usage.
 
 #+NAME: meaning-of-life
-#+BEGIN_SRC scheme
+#+BEGIN_SRC racket
     define meaning-of-life 42
     define (main) meaning-of-life
 #+END_SRC
@@ -63,7 +63,7 @@ Expressions are grouped by parenthesis, or by whitespace according to the follow
 2. Lines may be continued via indentation.
 
 #+NAME: factorial
-#+BEGIN_SRC scheme
+#+BEGIN_SRC racket
     define (factorial (int n)) int
       if (<= n 1)
         1
