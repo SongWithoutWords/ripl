@@ -257,3 +257,8 @@ The alternatives weren't as good as ward.d2
 *** TODO Consider adding Dart and Lua as additional languages
 
 *** TODO Consider heatmaps and multidimensional scaling of language features
+
+* COMMENT Local Variables
+# Local Variables:
+# org-src-preserve-indentation: t
+# end:
