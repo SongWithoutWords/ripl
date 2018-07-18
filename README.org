@@ -42,7 +42,7 @@
 - Expression oriented
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
-** Design Goals
+** Design Goals and Corresponding Features
 The following section provides an overview of ~ripl~'s design goals and the language features that are intended to achieve these goals.
 
 *** Robust
