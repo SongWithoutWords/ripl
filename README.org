@@ -4,7 +4,7 @@
 #+LATEX_HEADER: \usepackage[margin=0.6in]{geometry}
 #+LATEX_HEADER: \hypersetup{ colorlinks=true, linkcolor=black, urlcolor=blue }
 
-#+LATEX_HEADER: \usepackage[notdefault]{sourcecodepro}
+#+LATEX_HEADER: \usepackage[scale=0.9]{sourcecodepro}
 
 #+LATEX_HEADER: \usepackage{enumitem}   
 #+LATEX_HEADER:  \setlist{noitemsep}
