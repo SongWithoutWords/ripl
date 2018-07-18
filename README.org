@@ -44,6 +44,34 @@
 - Expression oriented
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
+** Minimal Examples
+~ripl~'s syntax is expression oriented (like Haskell, Lisp, Rust and Scala, among others) in that it does not distinguish between expressions and statements (as do C, C++, C#, Java, JavaScript, Python and others): most syntactic constructs in ~ripl~ are expressions that yield a value of some kind. More specifically, ~ripl~'s syntax is Lisp-like and inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]. Expressions are grouped by parenthesis, or by whitespace according to the following rules:
+1. Expressions on a line are grouped.
+2. Lines may be continued via indentation.
+
+Below are two small examples that demonstrate definition of constnats, definition of functions, parameter type annotations, return type annotations, function application, if-expressions and recursion.
+
+#+BEGIN_QUOTE
+#+NAME: meaning-of-life
+#+BEGIN_SRC Racket
+define meaning-of-life 42
+define (main) meaning-of-life
+#+END_SRC
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+#+NAME: factorial
+#+BEGIN_SRC Racket
+define (factorial (int n)) int
+  if (<= n 1)
+    1
+    * n (factorial (- n 1))
+
+define (main) (factorial 5)
+#+END_SRC
+#+END_QUOTE
+
+
 ** Design Goals and Corresponding Features
 The following section provides an overview of ~ripl~'s design goals and the language features that are intended to achieve these goals.
 
