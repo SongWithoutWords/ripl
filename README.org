@@ -105,7 +105,6 @@ Personally I am a strong proponent of static typing and don't really understand 
 *** Performant
 As a statically-typed and compiled language, ~ripl~ is suceptible to a wide range of optimizations, and has some inherent performance benefits over dynamically typed and/or interpreted languages.
 
-
 As a statically-typed, compiled and strictly-evaluated language, ~ripl~ is suceptible to a similar range of optimizations as languages like C++ and Rust. Furthermore, by using LLVM-IR as a compile target, it's possible to leverage many of the optimizations developed for the C++ compiler Clang.
 
 By allowing for mutation and mutable datastructures, ~ripl~ enables the efficient solution of problems that may be difficult or inefficient to solve in a purely functional language like Haskell. As a result of the type level constraints on mutability and purity mentioned in the previous section, these internal mutations can be encapsulated within purely-functional interfaces.
@@ -137,7 +136,6 @@ After 2.5 years working full time in C++, for example, I would place this langua
 **** TODO Lisp-style macros
 
 **** TODO Deterministic destructor calls for resource disposal (RAII)
-
 
 ** Comparison with Other Languages
 In an effort to compare this language with others in an objective and impartial way, I identified a number of quantifiable language features to be used as a basis for comparison. I then evaluated each language across these criteria, assigning a value of +1 for features that were present, a value of -1 for features that were absent, and a value of +0 for features that were not applicable, producing the following table:
