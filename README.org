@@ -57,22 +57,9 @@
 - Expression oriented
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
-** Minimal Examples
-Below is a program to compute the meaning of life[fn:1], that demonstrates function definition and constant definition and usage.
+** Minimal Example
 
-#+NAME: meaning-of-life
-#+BEGIN_SRC racket
-define meaning-of-life 42
-define (main) meaning-of-life
-#+END_SRC
-
-~ripl~'s syntax is expression oriented (like Haskell, Lisp, Rust and Scala, among others) in that most syntactic constructs in ~ripl~ are expressions that yield a value of some kind (unlike C, C++, C#, Java, JavaScript and Python, among others). More specifically, ~ripl~'s syntax is Lisp-like and inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]], an extension of S-expressions that allows expressions to be grouped by whitespace, among other things. 
-
-Below are two small examples that demonstrate definition of constnats, definition of functions, parameter type annotations, return type annotations, function application, if-expressions and recursion.
-
-Expressions are grouped by parenthesis, or by whitespace according to the following rules:
-1. Expressions on a line are grouped.
-2. Lines may be continued via indentation.
+Below is a ~ripl~ program that computes the factorial of 5:
 
 #+NAME: factorial
 #+BEGIN_SRC racket
@@ -84,8 +71,15 @@ define (factorial (int n)) int
 define (main) (factorial 5)
 #+END_SRC
 
-*** Meaning of Life
-*** Factorial Function
+Although small, this example illustrates a number of defining characteristics of the language:
+1. ~ripl~'s syntax is expression oriented in that most of its syntactic constructs produce values rather than directing control flow (like Haskell, Lisp, ML, Rust, Scala, etc., and unlike C, C++, C#, Java, JavaScript, Python etc.).
+2. ~ripl~'s syntax is Lisp-like, and consequently:
+   1. Expressions can be grouped by parenthesis.
+   2. Function application is performed by grouping (i.e. ~(f x1 ... xn)~), as in Haskell, ML and Lisp, as opposed to the more traditional mathematical notation (i.e. ~f(x1, ... xn)~) of languages with C-style syntax.
+   3. There is neither operator precedence nor infix notation, which is elegant because the structure of the source code corresponds to the structure of the abstract syntax tree, but counter-intuitive because we're accustomed to reading mathematical expressions with conventional infix notation, operator precedence and associativity.
+3. ~ripl~'s syntax includes some extensions over traditional Lisp syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]:
+   1. Expressions on a line are grouped.
+   2. Lines can be continued via indentation.
 
 ** Design Goals and Corresponding Features
 The following section provides an overview of ~ripl~'s design goals and the language features that are intended to achieve these goals.
@@ -277,7 +271,6 @@ The alternatives weren't as good as ward.d2
 # C♯
 
 * Footnotes
-[fn:1] a joke from The Hitchhiker's Guide to the Galaxy by Douglas Adams
 
 # # org-block-background: (t (:background "#FFFFEA"))
 * COMMENT Local Variables
