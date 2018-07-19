@@ -232,7 +232,7 @@ Important to keep in mind is that this is descriptive and not predictive statist
 ** Usage
 *TODO*
 
-** TODOs for language comparison
+** Misc TODO
 
 *** DONE Move R code into its own file (it sortof sucks writing it in org mode)
 
@@ -261,6 +261,8 @@ The alternatives weren't as good as ward.d2
 
 *** TODO Consider heatmaps and multidimensional scaling of language features
 
+*** TODO Use unicode sharp sign for C#
+# C♯
 
 * Footnotes
 [fn:1] a joke from The Hitchhiker's Guide to the Galaxy by Douglas Adams
