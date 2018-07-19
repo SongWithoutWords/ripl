@@ -4,6 +4,7 @@
 #+LATEX_HEADER: \usepackage[margin=0.6in]{geometry}
 #+LATEX_HEADER: \hypersetup{ colorlinks=true, linkcolor=black, urlcolor=blue }
 
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
 #+LATEX_HEADER: \usepackage[scale=0.9]{sourcecodepro}
 
 #+LATEX_HEADER: \usepackage[utf8]{inputenc}
@@ -26,11 +27,9 @@
 
 #+BEGIN_EXPORT latex
 \lstset{language=Lisp,
-       % backgroundcolor=\color{lstgrey},
        backgroundcolor=\color{white},
        frame=single,
-       % basicstyle=\footnotesize\ttfamily,
-       basicstyle=\footnotesize\texttt{...},
+       basicstyle=\fontsize{9}{9}\ttfamily,
        captionpos=b,
        tabsize=2,
   }
