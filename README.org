@@ -8,6 +8,8 @@
 
 #+LATEX_HEADER: \usepackage[utf8]{inputenc}
 
+#+LATEX_HEADER: \usepackage{listings}
+
 #+LATEX_HEADER: \usepackage{enumitem}   
 #+LATEX_HEADER:  \setlist{noitemsep}
 #+LATEX_HEADER:  \setlistdepth{9}
@@ -21,6 +23,18 @@
 #+LATEX_HEADER:   \setlist[itemize,8]{label=-}
 #+LATEX_HEADER:   \setlist[itemize,9]{label=-}
 #+LATEX_HEADER:   \renewlist{itemize}{itemize}{9}
+
+#+BEGIN_EXPORT latex
+\lstset{language=Lisp,
+       % backgroundcolor=\color{lstgrey},
+       backgroundcolor=\color{white},
+       frame=single,
+       % basicstyle=\footnotesize\ttfamily,
+       basicstyle=\footnotesize\texttt{...},
+       captionpos=b,
+       tabsize=2,
+  }
+#+END_EXPORT
 
 #+LATEX: \newpage
 
@@ -267,9 +281,11 @@ The alternatives weren't as good as ward.d2
 * Footnotes
 [fn:1] a joke from The Hitchhiker's Guide to the Galaxy by Douglas Adams
 
+# # org-block-background: (t (:background "#FFFFEA"))
 * COMMENT Local Variables
 # Local Variables:
 # org-src-preserve-indentation: t
 # org-src-fontify-natively: t
-# org-block-background: (t (:background "#FFFFEA"))
+# org-export-latex-listings: t
+# org-latex-listings: t
 # end:
