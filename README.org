@@ -14,7 +14,11 @@
 
 #+LATEX_HEADER: \usepackage{titlesec}
 
+
+# Used for both bulleted and enumerated lists
 #+LATEX_HEADER: \usepackage{enumitem}   
+
+# Customize bulleted lists
 #+LATEX_HEADER:  \setlist{noitemsep, topsep=4pt, itemsep=3pt}
 #+LATEX_HEADER:  \setlistdepth{9}
 #+LATEX_HEADER:   \setlist[itemize,1]{label=-}
@@ -27,6 +31,11 @@
 #+LATEX_HEADER:   \setlist[itemize,8]{label=-}
 #+LATEX_HEADER:   \setlist[itemize,9]{label=-}
 #+LATEX_HEADER:   \renewlist{itemize}{itemize}{9}
+
+# Customize enumerated/numbered lists
+# options include \arabic, \roman, \alph and \Alph
+#+LATEX_HEADER: \setlist[enumerate,1]{label={\arabic*.}}
+#+LATEX_HEADER: \setlist[enumerate,2]{label={\alph*.}}
 
 #+BEGIN_EXPORT latex
 \titlespacing\section      {0pt} {4pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
