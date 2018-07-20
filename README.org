@@ -1,3 +1,6 @@
+# Can be used to toggle the export of footnotes
+#+OPTIONS: f:nil
+
 #+TITLE: Robust, Intuitive Programming Language (~ripl~)
 #+SUBTITLE: Motivation, Design and Implementation
 #+AUTHOR: Ian McCall
