@@ -15,7 +15,7 @@
 #+LATEX_HEADER: \usepackage{titlesec}
 
 #+LATEX_HEADER: \usepackage{enumitem}   
-#+LATEX_HEADER:  \setlist{noitemsep, topsep=2pt}
+#+LATEX_HEADER:  \setlist{noitemsep, topsep=4pt, itemsep=3pt}
 #+LATEX_HEADER:  \setlistdepth{9}
 #+LATEX_HEADER:   \setlist[itemize,1]{label=-}
 #+LATEX_HEADER:   \setlist[itemize,2]{label=-}
