@@ -123,9 +123,73 @@ Although small, this example demonstrates many of the language's defining charac
 Hopefully this example has helped to provide you with an intuition for the language, the features of which are discussed in more depth in the following sections.
 
 * Design Goals and Corresponding Features
+
+Although I've heard it said that programming languages are "just tools", that any language can be "learned in a week", that the choice of language "doesn't matter" and that the differences between programming languages are superficial or primarily syntactic[fn:2], I think that the differences are substantial and important. To quote Edsger Dijkstra, "the tools we are trying to use and the language or notation we are using to express or record our thoughts, are the major factors determining what we can think or express at all"[fn:3].
+
+Certain kinds of bugs, problems and anti-patterns, issues that can slow development, block teams, negatively impact customers and cost thousands of dollars, affect only some languages. Just as importantly, and as suggested by Dijkstra, the ability to express certain thoughts and ideas is contingent on the language in use.
+
+Likewise, 
+
+Likewise, some languages simply do not have the capabilities of others, and though it may not be easily possible to measure or account for the impact of these differences, these differences persist.
+
+Haskell does an excellent job of preventing a wide range of bugs and sources of error. Unfortunately, it does so in some cases by sacrificing some capabilities, such as mutation, 
+Haskell creator jokes about 
+
+Although some developers I've spoken with are under the impression that programming languages are "just tools", that the choice of language "doesn't matter", and that the differences between programming languages are superficial or primarily syntactic, I think that the differences are substantial and important.
+
+Because certain kinds of bugs, problems and anti-patterns are only possible in certain languages, and because these issues can impede or block teams, thereby slowing development and wasting potentially thousands of dollars the choice of language is important.
+
+
 The following section provides an overview of ~ripl~'s design goals and the language features that are intended to achieve these goals.
 
+
+
+Games are often at the forefront of what hardware can do, and although it would be a very expensive experiment (to attempt to implement a state of the art 3d game or game engine in Haskell), I do not have confidence that Haskell would be as fit for this purpose as a language like C++ or Rust, though for many or most other purposes I think Haskell would be superior.
+
 ** Robust
+
+Having worked in the games industry for 2.5 years, in a 20 year old and approximately 4 million line C++ codebase, I've observed some patterns that have given rise to some problems, many of which I feel can be attributed to the language itself:
+- Long compile times:
+- Null pointer exceptions: these can arise easily when there's uncertainty as to whether null is an acceptable value for a pointer
+- Singletons and side-effects:
+
+The problems mentioned above would not have been possible in Haskell.
+
+
+One thing I feel I can say about Haskell with little hesitation, is that it's a very robust language, and that many of the bugs and anti-patterns that I've encountered workin in the games industry
+
+Having worked as a programmer in the games industry for 2.5 years, in a 20 year old, approximately 4 million line C++ codebase, a lot of the anti-patterns and bugs I encountered were related to imperative and object oriented programming:
+
+In order to understand what is robust, it may be worth considering some bugs and anti-patterns found in the wild that are not robust.
+- Singletons:
+- Deep inheritance hierarchies:
+- Needless interfaces:
+- OOP insantiy:
+-
+Weird OOP
+
+
+- Rampant/flagrant use of singletons that can make initialization, saving and loading almost impossible to understand.
+- A class hierarchy 6 levels deep, with virtual functions that branched on an internal type tag, so that in order to understand the behaviour of an instance you needed to consider the intersection between its subtype and type tag.
+- Implicit requirements on the state of the arguments.
+- Measurements of angle in different directions in different units.
+- Different coordinate systems used by different parts of the engine.
+
+
+ All of this for no discernable reason.
+- An interface with pure virtual functions called IFoo that was implemented Foo, and was also implemented by FooProxy which wrapped all methods of Foo.
+-
+
+None of this would have been possible in a language like Haskell, and much less of it would have been possible in a language like Rust. Conversely, I think this would have been much worse in a language like Python without static typing.
+
+
+
+-
+
+- A lot of the problems I've encountered and bugs I've seen as a programmer are akin to miscommunication
+- Encoding something in the type system is better than documentation, especially if the type system is well constructed
+- I would like this language to be as robust and rigorous or nearly so as Haskell without sacrificing on various other features.
+
 The language enables the programmer to establish a wide range of constraints in the type system, by means of the following features:
 - Strong, static typing
 - Type-safe discriminated unions
@@ -312,6 +376,10 @@ The alternatives weren't as good as ward.d2
 # C♯
 
 * Footnotes
+
+[fn:3] [[https://www.cs.utexas.edu/~EWD/ewd03xx/EWD340.PDF][Edsger Dijkstra, EWD 340: The Humble Programmer, page 11]]
+
+[fn:2] The people I've heard voice these opinions are all C++, C#, Java, or Python programmers, so maybe they just haven't experienced the full diversity of programming languages.
 
 [fn:1]though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parenthesis
 
