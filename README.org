@@ -39,14 +39,14 @@
 
 #+BEGIN_EXPORT latex
 \titlespacing\section      {0pt} {4pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
-\titlespacing\subsection   {0pt} {4pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
-\titlespacing\subsubsection{0pt} {4pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
+\titlespacing\subsection   {0pt} {2pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
+\titlespacing\subsubsection{0pt} {2pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
 
 % Package that produces a similar result to the code below:
 % #+LATEX_HEADER: \usepackage[parfill]{parskip}
 
 \setlength\parindent{0pt} % sets indent to zero
-\setlength{\parskip}{8pt} % changes vertical space between paragraphs
+\setlength{\parskip}{6pt} % changes vertical space between paragraphs
 #+END_EXPORT
 
 #+BEGIN_EXPORT latex
