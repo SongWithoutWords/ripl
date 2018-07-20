@@ -16,7 +16,7 @@
 
 
 # Used for both bulleted and enumerated lists
-#+LATEX_HEADER: \usepackage{enumitem}   
+#+LATEX_HEADER: \usepackage{enumitem}
 
 # Customize bulleted lists
 #+LATEX_HEADER:  \setlist{noitemsep, topsep=4pt, itemsep=3pt}
@@ -208,7 +208,6 @@ After 2.5 years working full time in C++, for example, I would place this langua
 - Type-level traits, akin to Haskell type-classes
 - Lisp-style macros, enabled by the uniform syntax in combination with compile-time function evaluation
 
-
 ** Minor Goals
 *** TODO Lisp-style macros
 
@@ -226,12 +225,12 @@ Although this table is useful in detailing the features of each language, becaus
 
 ** Hierarchical Clustering of Languages
 
-One such visualization method is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups (in n-dimensional space) until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the criteria mentioned above: 
+One such visualization method is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups (in n-dimensional space) until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the criteria mentioned above:
 
 [[file:doc/figures/language-features/hierarchical-clustering-of-languages.png]]
 
 The results are consistent with my understanding of the languages considered, and help to place ripl in context. An annotated version of the tree above might look something like this:
-    
+
 - Languages considered
   - Statically typed, functional languages
     - ML-like (ML, Haskell)
