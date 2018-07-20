@@ -10,6 +10,7 @@
 #+LATEX_HEADER: \usepackage[utf8]{inputenc}
 
 #+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage[usenames, dvipsnames]{color}
 
 #+LATEX_HEADER: \usepackage{titlesec}
 
@@ -41,12 +42,17 @@
 #+END_EXPORT
 
 #+BEGIN_EXPORT latex
+\definecolor{LightGray}{gray}{0.9}
 \lstset{language=Lisp,
-       backgroundcolor=\color{white},
-       frame=single,
-       basicstyle=\fontsize{9}{9}\ttfamily,
+       % backgroundcolor=\color{White},
+       backgroundcolor=\color{LightGray},
+       % frame=single,
+       % frame=half,
+       % frame=leftline,
+       basicstyle=\fontsize{10}{10}\ttfamily,
        captionpos=b,
        tabsize=2,
+       keywordstyle=\color{blue},
   }
 #+END_EXPORT
 
