@@ -182,6 +182,7 @@ Personally I am a strong proponent of static typing and don't really understand 
 
 *** Type-Level Constraints on Purity
 
+*** Namespaces
 ** Performant
 As a statically-typed and compiled language, ~ripl~ is suceptible to a wide range of optimizations, and has some inherent performance benefits over dynamically typed and/or interpreted languages.
 
