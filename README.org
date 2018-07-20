@@ -11,6 +11,8 @@
 
 #+LATEX_HEADER: \usepackage{listings}
 
+#+LATEX_HEADER: \usepackage{titlesec}
+
 #+LATEX_HEADER: \usepackage{enumitem}   
 #+LATEX_HEADER:  \setlist{noitemsep}
 #+LATEX_HEADER:  \setlistdepth{9}
@@ -24,6 +26,19 @@
 #+LATEX_HEADER:   \setlist[itemize,8]{label=-}
 #+LATEX_HEADER:   \setlist[itemize,9]{label=-}
 #+LATEX_HEADER:   \renewlist{itemize}{itemize}{9}
+
+#+BEGIN_EXPORT latex
+\titlespacing\section      {0pt} {4pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
+\titlespacing\subsection   {0pt} {4pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
+\titlespacing\subsubsection{0pt} {4pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
+
+
+% Package that produces a similar result to the code below:
+% #+LATEX_HEADER: \usepackage[parfill]{parskip}
+
+\setlength\parindent{0pt} % sets indent to zero
+\setlength{\parskip}{8pt} % changes vertical space between paragraphs
+#+END_EXPORT
 
 #+BEGIN_EXPORT latex
 \lstset{language=Lisp,
