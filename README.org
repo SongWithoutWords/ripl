@@ -118,6 +118,7 @@ Although small, this example demonstrates many of the language's defining charac
 6. Return type annotations are required for recursive functions.
 7. The language does not distinguish between functions and operators, and as such names can be composed of unicode characters with few restrictions.
 8. The language provides some built in forms (e.g. ~define~, ~if~), functions (e.g. ~*~, ~-~, ~<=~) and types (e.g. ~int~)
+9. ~TODO Maybe mention that factorial can be used before it's defined.~
 
 Hopefully this example has helped to provide you with an intuition for the language, the features of which are discussed in more depth in the following sections.
 
