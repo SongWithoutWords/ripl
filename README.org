@@ -272,6 +272,7 @@ Important to keep in mind is that this is descriptive and not predictive statist
 
 [[file:doc/figures/language-features/multidimensional-scaling-of-languages-non-metric.png]]
 
+** TODO Discussion of specific languages
 * TODO Motivation and Rationale
 
 * TODO Examples
