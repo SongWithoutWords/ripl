@@ -127,11 +127,23 @@ Hopefully this example has helped to provide you with an intuition for the langu
 
 * Design Goals and Corresponding Features
 
-Although I've heard it said that programming languages are "just tools", that any language can be "learned in a week", that the choice of language "doesn't matter" and that the differences between programming languages are superficial or primarily syntactic[fn:2], I think that the differences are substantial and important. To quote Edsger Dijkstra, "the tools we are trying to use and the language or notation we are using to express or record our thoughts, are the major factors determining what we can think or express at all"[fn:3].
+Although I've heard it said that programming languages are "just tools", that any language can be "learned in a week", that the choice of language "doesn't matter" and that the differences between programming languages are superficial or primarily syntactic[fn:2], I think that the differences between languages are substantial and important. To quote Edsger Dijkstra, "the tools we are trying to use and the language or notation we are using to express or record our thoughts, are the major factors determining what we can think or express at all"[fn:3].
 
-Certain kinds of bugs, problems and anti-patterns, issues that can slow development, block teams, negatively impact customers and cost thousands of dollars, affect only some languages. Just as importantly, and as suggested by Dijkstra, the ability to express certain thoughts and ideas is contingent on the language in use.
+Certain kinds of bugs, problems and anti-patterns (such as null pointer exceptions, memory leaks, and shared or global mutable state), issues that can slow development, block teams, result in unpredictable programs, negatively impact users and cost thousands of dollars, affect only some languages. Just as importantly, and as mentioned by Dijkstra, the ability to express certain thoughts and ideas is contingent on the features of the language in use.
 
-Likewise, 
+One language that goes a long way towards obviating many of these kinds of problems, in addition to providing many expressive constructs, is Haskell, a language which ([[https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html][to quote Dijkstra again]]) "though not perfect, is of a quality that is several orders of magnitude higher than Java, which is a mess"[fn:5]. Before mentioning some criticisms of Haskell, it's worth mentioning that it feels like a very enlightening language, that operates in many ways at a higher level of abstraction than many other languages (with type classes in particular). Additionally, I find the libraries to be superb.
+That said, if Haskell is well-suited for 90% of applications, I do not think that it is well suited to that other 10% of applications that are highly interactive, real time or soft real time, like AAA games.
+
+Before criticising Haskell, I think its worth mentioning that I've found it to be the most 
+
+Unfortunately Haskell solves many of these problems by prohibiting certain useful features, or by placing them behind abstractions (i.e. monads, monad transformers, monad stacks and arrows) that are significantly more complicated than the features or concepts themselves.
+
+~Can I tie this in with what Simon Payton Jones is talking about with a future Haskell being strict?~
+
+
+Consequently, the intent for this language is to be robust by obviating as many of these problems as possible, while remaining versatile
+
+Segway to Haskell, Djikstra's opinion of Haskell, quote about Haskell about making the easy things hard, address some of the challenges associated with it, as well as mentioning some of the problems it solves.
 
 Likewise, some languages simply do not have the capabilities of others, and though it may not be easily possible to measure or account for the impact of these differences, these differences persist.
 
