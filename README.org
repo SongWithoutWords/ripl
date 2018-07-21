@@ -1,27 +1,412 @@
-* ripl
-A Robust and Intuitive Programming Language, and work in progress, written in Scala with an LLVM back-end.
+# Can be used to toggle the export of footnotes
+#+OPTIONS: f:t
 
-** Planned Features
-  - Compiled
-  - Strong, static typing
-  - Type inference
-  - Strict evaluation
-  - Type-safe discriminated unions
-  - Pattern matching
-  - Mutable data structures to support computationally intensive tasks
-  - Type-level constraints on the mutability of data and purity of functions
-  - Ad-hoc polymorphism (overloading) to promote programmer sanity
-  - Parametric polymorphism (templates/generics) to abstract over types and perform type-level programming
-  - A readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
+#+TITLE: Robust, Intuitive Programming Language (~ripl~)
+#+SUBTITLE: Motivation, Design and Implementation
+#+AUTHOR: Ian McCall
+#+LATEX_HEADER: \usepackage[margin=0.6in]{geometry}
+#+LATEX_HEADER: \hypersetup{ colorlinks=true, linkcolor=black, urlcolor=blue }
 
-** Comparison with Other Languages
-*TODO*
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage[scale=0.9]{sourcecodepro}
 
-** Motivation and Rationale
-*TODO*
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
 
-** Examples
-*TODO*
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage[usenames, dvipsnames]{color}
 
-** Usage
-*TODO*
+#+LATEX_HEADER: \usepackage{titlesec}
+
+
+# Used for both bulleted and enumerated lists
+#+LATEX_HEADER: \usepackage{enumitem}
+
+# Customize bulleted lists
+#+LATEX_HEADER:  \setlist{noitemsep, topsep=4pt, itemsep=3pt}
+#+LATEX_HEADER:  \setlistdepth{9}
+#+LATEX_HEADER:   \setlist[itemize,1]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,2]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,3]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,4]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,5]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,6]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,7]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,8]{label=-}
+#+LATEX_HEADER:   \setlist[itemize,9]{label=-}
+#+LATEX_HEADER:   \renewlist{itemize}{itemize}{9}
+
+# Customize enumerated/numbered lists
+# options include \arabic, \roman, \alph and \Alph
+#+LATEX_HEADER: \setlist[enumerate,1]{label={\arabic*.}}
+#+LATEX_HEADER: \setlist[enumerate,2]{label={\alph*.}}
+
+#+BEGIN_EXPORT latex
+\titlespacing\section      {0pt} {4pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
+\titlespacing\subsection   {0pt} {2pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
+\titlespacing\subsubsection{0pt} {2pt plus 4pt minus 2pt}{2pt plus 1pt minus 1pt}
+
+% Package that produces a similar result to the code below:
+% #+LATEX_HEADER: \usepackage[parfill]{parskip}
+
+\setlength\parindent{0pt} % sets indent to zero
+\setlength{\parskip}{6pt} % changes vertical space between paragraphs
+#+END_EXPORT
+
+#+BEGIN_EXPORT latex
+\definecolor{LightGray}{gray}{0.9}
+\lstset{language=Lisp,
+       % backgroundcolor=\color{White},
+       backgroundcolor=\color{LightGray},
+       % frame=single,
+       % frame=half,
+       % frame=leftline,
+       basicstyle=\fontsize{10}{10}\ttfamily,
+       captionpos=b,
+       tabsize=2,
+       keywordstyle=\color{blue},
+  }
+#+END_EXPORT
+
+#+LATEX: \newpage
+
+* Abstract
+~ripl~ is a nascent programming language and the subject of my undergraduate thesis at UBC. Written in Scala with an LLVM back-end, ~ripl~ is intended to combine the safety and purity of a language like Haskell, with the efficient, low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. It is motivated by my appreciation for a wide range of language features and my inability to find any existing language that can provide all of these features.
+
+~TODO Maybe mention or link back to the original repository, living document, etc etc.~
+
+* Features at a Glance
+- Compiled
+- Strong, static typing
+- Type inference
+- Strict evaluation
+- Type-safe discriminated unions
+- Null safety
+- Pattern matching
+- Mutable data structures
+- Type-level constraints on the mutability of data and purity of functions
+- Name overloading
+- Subtyping via built-in and user defined implicit conversions
+- Parametric polymorphism and type-level programming via templates
+- Compile time function evaluation
+- Expression oriented
+- Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]
+
+* Minimal Example
+
+Below is a ~ripl~ program that computes the factorial of 5:
+
+#+NAME: factorial
+#+BEGIN_SRC racket
+define (main) (factorial 5)
+
+define (factorial (int n)) int
+  if (<= n 1)
+    1
+    * n (factorial (- n 1))
+#+END_SRC
+
+Although small, this example demonstrates many of the language's defining characteristics:
+1. ~ripl~'s syntax is expression oriented in that most of its syntactic constructs produce values rather than directing control flow (like Haskell, Lisp, ML, Rust, Scala, etc., and unlike C, C++, C#, Java, JavaScript, Python etc.).
+2. ~ripl~'s syntax is Lisp-like, and as such:
+   1. Parenthesis group expressions (expressions may also be grouped by whitespace, as described below).
+   2. Names are separated by whitespace, parenthesis or one of a small number of reserved characters.
+   3. Functions are applied by grouping as in Haskell, ML and Lisp (i.e. ~(f x1 ... xn)~)[fn:1], as opposed to the traditional mathematical notation of languages with C-style syntax (i.e. ~f(x1, ... xn)~).
+   4. The structure of the source code reflects the structure of the abstract syntax tree.
+   5. Consequently, the language has no infix notation, operator precedence or associativity, an aspect of Lisp that is counter-intuitive for many (myself included), possibly because people are not accustomed to reading mathematical expressions without these conventions. ~ripl~ will ultimately have infix notation, though I'm presently considering two ways of doing this ~TODO: Link to section about this~.
+3. ~ripl~'s syntax includes some extensions over traditional Lisp syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]:
+   1. Two or more expressions on a line are grouped.
+   2. Lines are extended to include all subsequent expressions at the next level of indentation.
+4. The entry point of a program is a function called ~main~.
+5. Type annotations are required for function parameters; most other types can be inferred.
+6. Return type annotations are required for recursive functions.
+7. The language does not distinguish between functions and operators, and as such names can be composed of unicode characters with few restrictions.
+8. The language provides some built in forms (e.g. ~define~, ~if~), functions (e.g. ~*~, ~-~, ~<=~) and types (e.g. ~int~)
+9. ~TODO Maybe mention that factorial can be used before it's defined.~
+
+Hopefully this example has helped to provide you with an intuition for the language, the features of which are discussed in more depth in the following sections.
+
+* Design Goals and Corresponding Features
+
+Although I've heard it said that programming languages are "just tools", that any language can be "learned in a week", that the choice of language "doesn't matter" and that the differences between programming languages are superficial or primarily syntactic[fn:2], I think that the differences between languages are substantial and important. To quote Edsger Dijkstra, "the tools we are trying to use and the language or notation we are using to express or record our thoughts, are the major factors determining what we can think or express at all"[fn:3].
+
+Certain kinds of bugs, problems and anti-patterns (such as null pointer exceptions, memory leaks, and shared or global mutable state), issues that can slow development, block teams, result in unpredictable programs, negatively impact users and cost thousands of dollars, affect only some languages. Just as importantly, and as mentioned by Dijkstra, the ability to express certain thoughts and ideas is contingent on the features of the language in use.
+
+One language that goes a long way towards obviating many of these kinds of problems, in addition to providing many expressive constructs, is Haskell, a language which ([[https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html][to quote Dijkstra again]]) "though not perfect, is of a quality that is several orders of magnitude higher than Java, which is a mess"[fn:5]. Before mentioning some criticisms of Haskell, it's worth mentioning that it feels like a very enlightening language, that operates in many ways at a higher level of abstraction than many other languages (with type classes in particular). Additionally, I find the libraries to be superb.
+That said, if Haskell is well-suited for 90% of applications, I do not think that it is well suited to that other 10% of applications that are highly interactive, real time or soft real time, like AAA games.
+
+Before criticising Haskell, I think its worth mentioning that I've found it to be the most 
+
+Unfortunately Haskell solves many of these problems by prohibiting certain useful features, or by placing them behind abstractions (i.e. monads, monad transformers, monad stacks and arrows) that are significantly more complicated than the features or concepts themselves.
+
+~Can I tie this in with what Simon Payton Jones is talking about with a future Haskell being strict?~
+
+
+Consequently, the intent for this language is to be robust by obviating as many of these problems as possible, while remaining versatile
+
+Segway to Haskell, Djikstra's opinion of Haskell, quote about Haskell about making the easy things hard, address some of the challenges associated with it, as well as mentioning some of the problems it solves.
+
+Likewise, some languages simply do not have the capabilities of others, and though it may not be easily possible to measure or account for the impact of these differences, these differences persist.
+
+Haskell does an excellent job of preventing a wide range of bugs and sources of error. Unfortunately, it does so in some cases by sacrificing some capabilities, such as mutation, 
+Haskell creator jokes about 
+
+Although some developers I've spoken with are under the impression that programming languages are "just tools", that the choice of language "doesn't matter", and that the differences between programming languages are superficial or primarily syntactic, I think that the differences are substantial and important.
+
+Because certain kinds of bugs, problems and anti-patterns are only possible in certain languages, and because these issues can impede or block teams, thereby slowing development and wasting potentially thousands of dollars the choice of language is important.
+
+
+The following section provides an overview of ~ripl~'s design goals and the language features that are intended to achieve these goals.
+
+
+
+Games are often at the forefront of what hardware can do, and although it would be a very expensive experiment (to attempt to implement a state of the art 3d game or game engine in Haskell), I do not have confidence that Haskell would be as fit for this purpose as a language like C++ or Rust, though for many or most other purposes I think Haskell would be superior.
+
+** Robust
+
+Having worked in the games industry for 2.5 years, in a 20 year old and approximately 4 million line C++ codebase, I've observed some patterns that have given rise to some problems, many of which I feel can be attributed to the language itself:
+- Long compile times:
+- Null pointer exceptions: these can arise easily when there's uncertainty as to whether null is an acceptable value for a pointer
+- Singletons and side-effects:
+
+The problems mentioned above would not have been possible in Haskell.
+
+
+One thing I feel I can say about Haskell with little hesitation, is that it's a very robust language, and that many of the bugs and anti-patterns that I've encountered workin in the games industry
+
+Having worked as a programmer in the games industry for 2.5 years, in a 20 year old, approximately 4 million line C++ codebase, a lot of the anti-patterns and bugs I encountered were related to imperative and object oriented programming:
+
+In order to understand what is robust, it may be worth considering some bugs and anti-patterns found in the wild that are not robust.
+- Singletons:
+- Deep inheritance hierarchies:
+- Needless interfaces:
+- OOP insantiy:
+-
+Weird OOP
+
+
+- Rampant/flagrant use of singletons that can make initialization, saving and loading almost impossible to understand.
+- A class hierarchy 6 levels deep, with virtual functions that branched on an internal type tag, so that in order to understand the behaviour of an instance you needed to consider the intersection between its subtype and type tag.
+- Implicit requirements on the state of the arguments.
+- Measurements of angle in different directions in different units.
+- Different coordinate systems used by different parts of the engine.
+
+
+ All of this for no discernable reason.
+- An interface with pure virtual functions called IFoo that was implemented Foo, and was also implemented by FooProxy which wrapped all methods of Foo.
+-
+
+None of this would have been possible in a language like Haskell, and much less of it would have been possible in a language like Rust. Conversely, I think this would have been much worse in a language like Python without static typing.
+
+
+
+-
+
+- A lot of the problems I've encountered and bugs I've seen as a programmer are akin to miscommunication
+- Encoding something in the type system is better than documentation, especially if the type system is well constructed
+- I would like this language to be as robust and rigorous or nearly so as Haskell without sacrificing on various other features.
+
+The language enables the programmer to establish a wide range of constraints in the type system, by means of the following features:
+- Strong, static typing
+- Type-safe discriminated unions
+- Type-level constraints on the mutability of data
+- Type-level constraints on the existence of data (null-safety)
+- Type-level constraints on the purity of functions
+- Parametric polymorphism via templates
+- Constraints on template parameters via type-classes/traits
+- Type-level programming via templates and compile-time function evaluation
+- The language will be memory-safe, though whether this is achieved via garbage collection or a Rust-style ownership system is yet to be determined.
+
+*** Static Typing
+Static typing has a wide range of applications and advantages. It can catch errors earlier in the development process and nearer to the source than the corresponding runtime errors, can improve performance by informing optimizations and reducing the number of runtime checks because data types are known in advance, can be used to disambiguate names via overload resolution (as in C++, C#, D, Java, and Scala), can ensure that only certain functions have side effects (as in D and Haskell), can ensure that only certain aspects of certain variables can be modified (as in C++, D and Rust), and can be used as a basis for metaprogramming (as in Haskell, C++ and D).
+
+When combined with type inference, these advantages can be leveraged with little-to-no increase in program length or programmer effort. As such the primary motivation for ~ripl~ is to embrace static typing and to extend the range of invariants that can be encoded within the type system at compile time, so that the language can be used to develop robust programs with predictable behaviour at any scale.
+
+*** Type-Safe Discriminated Unions
+Type-safe discriminated unions (as seen in Haskell, ML, Rust and Scala, among others) provide a very powerful and intuitive way of modelling polymorphic data and computations that may take one of a number of forms (e.g. ~(Some value)~ or ~None~, ~(Result value)~ or ~(Error message)~, ~(NonEmpty head tail)~ or ~Empty~, etc.).
+
+Although discriminated unions are analogous in some respects to OOP style inheritance subtyping (which can even be used as a basis for discriminated unions, as in Scala), I would argue that type-safe discriminated unions when used in conjunction with pattern matching, result in code that is more robust, precise, straightforward and less tightly coupled than OOP style inheritance. As such, discriminated unions are an important feature of ~ripl~'s design, the advantages of which are highlighted in the following section on null-safety, for which they provide an excelent solution.
+
+*** Type-Level Constraints on Existence (null-safety)
+
+When my knowledge of programming was limited to imperative and object oriented languages, dependent typing was the only solution I could think of for the problem of null-safety and  I thought that dependent typing was the only viable solution for null-safety and other problems pertaining to the existence of data and potential for errors. Since becoming familiar with functional programming by learning Haskell, I'm glad to see that the solution is much simpler: 
+
+
+ in object-oriented programming looked at many of the problems in imperative and object-oriented languages, and assumed that dependent typing would be the solution
+
+Before learning Haskell and becoming familiar with functional programming, I believed that dependent typing was the solution for null-safety and other problems pertaining to the existence of data in object-oriented programming looked at many of the problems in imperative and object-oriented languages, and assumed that dependent typing would be the solution
+
+
+
+are a powerful tool for authoring and composing data types, and are analogous in some respects to OOP style inheritance and subtyping (in Scala, for example, discriminated unions are created using inheritance). They provide a very powerful and intuitive way of modelling data and computations that may take one of a number of forms, 
+
+Discriminated unions, as present in Haskell, ML, Scala
+
+
+Although some statically-typed languages like C++ and Java are notoriously verbose and awkward, with concise and elegant, statically-typed languages like Haskell and Scala on offer, it's hard to understand the appeal of dynamic typing. The only case I can think of in which the flexibility of dynamic typing might be necessary is in enabling Lisp-style macros: a feature that is present only in a small minority of relatively unpopular dynamically typed languages, namely Lisp, Scheme and Racket.
+
+Why then, the popularity of dynamically typed languages like Python, JavaScript and PHP? I don't know, any more than I can explain the popularity of Java, C and C++.
+
+ The only advantage I can think of that dynamic typing might provide, are the advantages that dynamic typing  confer to
+
+
+If the only staticaly typed languages on offer were verbose and unwieldy imperative languages like C++ and Java,
+Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,  
+
+Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,  
+Personally I am a strong proponent of static typing and don't really understand the appeal of dynamic typing. 
+
+
+
+*** Type-Level Constraints on Mutability
+
+*** Type-Level Constraints on Purity
+
+*** Namespaces
+** Performant
+As a statically-typed and compiled language, ~ripl~ is suceptible to a wide range of optimizations, and has some inherent performance benefits over dynamically typed and/or interpreted languages.
+
+As a statically-typed, compiled and strictly-evaluated language, ~ripl~ is suceptible to a similar range of optimizations as languages like C++ and Rust. Furthermore, by using LLVM-IR as a compile target, it's possible to leverage many of the optimizations developed for the C++ compiler Clang.
+
+By allowing for mutation and mutable datastructures, ~ripl~ enables the efficient solution of problems that may be difficult or inefficient to solve in a purely functional language like Haskell. As a result of the type level constraints on mutability and purity mentioned in the previous section, these internal mutations can be encapsulated within purely-functional interfaces.
+- Compiled
+- Mutable datastructures
+- Strict evaluation
+- Explicit indirection
+
+** Concise and Intuitive
+By emulating certain features of concise languages, like Haskell, Racket and Scala, it is hoped that this language can be made concise as well. What sets these languages apart from other more verbose languages?
+
+Some languages are more ergonomic, concise and intuitive than others. Having worked for 2.5 years in C++, I'm fairly confident in the assertion that it is more verbose than Python. After translating an ~2000 line program at a job from Python to Scala, I found the Scala version to be ~20% shorter (in addition to being statically typed). After porting a complete set of LLVM bindings (llvm-hs) from Haskell to Scala (for this project), I found the Haskell version to be ~20% shorter as well.
+
+After 2.5 years working full time in C++, for example, I would place this language at the bottom of this spectrum. Slightly better, I would suggest, are languages like C# and Python. 
+- Type inference
+- Subtyping via implicit conversions
+- Name overloading
+- Expression oriented
+- Pattern matching
+- Readable, uniform syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
+
+** Powerful
+- Type level programming via templates and compile-time function evaluation
+- Type-level traits, akin to Haskell type-classes
+- Lisp-style macros, enabled by the uniform syntax in combination with compile-time function evaluation
+
+** Minor Goals
+*** TODO Lisp-style macros
+
+*** TODO Deterministic destructor calls for resource disposal (RAII)
+
+** Notably Absent Features
+*** TODO Object Oriented Programming
+* Comparison with Other Languages
+In an effort to compare this language with others in an objective and impartial way, I identified a number of quantifiable language features to be used as a basis for comparison. I then evaluated each language across these criteria, assigning a value of +1 for features that were present, a value of -1 for features that were absent, and a value of +0 for features that were not applicable, producing the following table:
+
+** Language Feature Table
+#+INCLUDE: "./doc/figures/language-features/table.org" :minlevel 1
+
+Although this table is useful in detailing the features of each language, because it consists of more than 12 data-points in more than 30 dimensions, it is hard to visualize the high-level structure of the data and relationships between the languages by looking at the table itself. Fortunately, there are a number of data visualization methods that can help to visualize this higher dimensional data.
+
+** Hierarchical Clustering of Languages
+
+One such visualization method is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups (in n-dimensional space) until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the criteria mentioned above:
+
+[[file:doc/figures/language-features/hierarchical-clustering-of-languages.png]]
+
+The results are consistent with my understanding of the languages considered, and help to place ripl in context. An annotated version of the tree above might look something like this:
+
+- Languages considered
+  - Statically typed, functional languages
+    - ML-like (ML, Haskell)
+    - Other (ripl, Rust)
+  - Languages that are not both statically typed and functional
+    - Low-level (C, LLVM-IR)
+    - Higher-level
+      - Dynamically typed
+        - Scheme
+        - Python, JavaScript
+      - Statically typed
+        - C++ and D (which was intended as a successor of C++)
+        - Java-derived languages
+          - Scala (the height at which it branches indicates it's disimilarity to C# and Java)
+          - Java and C# (the most similar of any two languages considered)
+
+** TODO Hierarchical Clustering of Language Features
+
+Incidentally, by running hierarchical clustering on the transpose of our table, it's possible classify the language features it contains by the programming languages in which they occur:
+
+[[file:doc/figures/language-features/hierarchical-clustering-of-language-features.png]]
+
+The result of this exercise provides some interesting insights: in particular, it suggests a strong correlation between garbage collection and memory safety (which may come as no surprise), and between pattern matching, type-safe discriminated unions and null-safety.
+
+** TODO Heatmap of Languages
+
+[[file:doc/figures/language-features/heatmap-of-language.png]]
+
+** TODO Heatmap of Language Feature Correlations
+Important to keep in mind is that this is descriptive and not predictive statistics
+
+[[file:doc/figures/language-features/language-feature-correlation-heatmap-pearson.png]]
+
+** TODO Multidimensional Scaling of Languages
+
+[[file:doc/figures/language-features/multidimensional-scaling-of-languages-non-metric.png]]
+
+** TODO Discussion of specific languages
+* TODO Motivation and Rationale
+
+* TODO Examples
+
+* TODO Usage
+
+* Misc TODO
+
+** DONE Move R code into its own file (it sortof sucks writing it in org mode)
+
+** DONE Get rid of PCA, MDS is better
+
+** DONE Exclude ripl from hierarchical clustering of features
+
+** DONE Experiment with other hierarchical clustering methods
+The alternatives weren't as good as ward.d2
+
+** TODO Correlation analysis of language features
+
+** DONE Ensure that heatmap agrees with hierarchical clustering
+
+** TODO Get rid of classic MDS
+
+** TODO Scale the images appropriately for the paper, both for markdown and pdf export
+
+** TODO Consider removing plot titles
+
+** TODO Spread language feature table across multiple pages for latex export
+
+** TODO Try adding footnotes to the table to provide additional information, does it work with csv and latex export?
+
+** TODO Consider adding Dart and Lua as additional languages
+
+** TODO Consider heatmaps and multidimensional scaling of language features
+
+** TODO Use unicode sharp sign for C#
+# C♯
+
+* Footnotes
+
+[fn:1] though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parenthesis
+
+[fn:2] The people I've heard voice these opinions are all C++, C#, Java, or Python programmers, so maybe they just haven't experienced the full diversity of programming languages.
+
+[fn:3] Edsger Dijkstra, EWD 340: The Humble Programmer, https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html
+
+[fn:4]
+
+[fn:5] Edsger Dijkstra, To the members of the Budget Council, https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html
+
+# # org-block-background: (t (:background "#FFFFEA"))
+* COMMENT Local Variables
+# Local Variables:
+# org-src-preserve-indentation: t
+# org-src-fontify-natively: t
+# org-export-latex-listings: t
+# org-latex-listings: t
+# end:
