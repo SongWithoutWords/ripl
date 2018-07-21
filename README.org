@@ -89,7 +89,7 @@
 - Parametric polymorphism and type-level programming via templates
 - Compile time function evaluation
 - Expression oriented
-- Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
+- Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]
 
 * Minimal Example
 
