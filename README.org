@@ -392,11 +392,15 @@ The alternatives weren't as good as ward.d2
 
 * Footnotes
 
-[fn:3] [[https://www.cs.utexas.edu/~EWD/ewd03xx/EWD340.PDF][Edsger Dijkstra, EWD 340: The Humble Programmer, page 11]]
+[fn:1] though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parenthesis
 
 [fn:2] The people I've heard voice these opinions are all C++, C#, Java, or Python programmers, so maybe they just haven't experienced the full diversity of programming languages.
 
-[fn:1]though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parenthesis
+[fn:3] Edsger Dijkstra, EWD 340: The Humble Programmer, https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html
+
+[fn:4]
+
+[fn:5] Edsger Dijkstra, To the members of the Budget Council, https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html
 
 # # org-block-background: (t (:background "#FFFFEA"))
 * COMMENT Local Variables
