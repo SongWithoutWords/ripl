@@ -284,6 +284,20 @@ By allowing for mutation and mutable datastructures, ~ripl~ enables the efficien
 - Explicit indirection
 
 ** Concise and Intuitive
+
+Should cite the study that found
+Cite https://arxiv.org/pdf/1409.0252.pdf, which found that 
+
+#+BEGIN_QUOTE
+Languages are clearly divided into two groups: functional
+and scripting languages tend to provide the most concise
+code, whereas procedural and object-oriented languages are
+significantly more verbose. The absolute difference between
+the two groups is major; for instance, Java programs are on
+average 2.2–2.9 times longer than programs in functional and
+scripting languages.
+#+END_QUOTE
+
 By emulating certain features of concise languages, like Haskell, Racket and Scala, it is hoped that this language can be made concise as well. What sets these languages apart from other more verbose languages?
 
 Some languages are more ergonomic, concise and intuitive than others. Having worked for 2.5 years in C++, I'm fairly confident in the assertion that it is more verbose than Python. After translating an ~2000 line program at a job from Python to Scala, I found the Scala version to be ~20% shorter (in addition to being statically typed). After porting a complete set of LLVM bindings (llvm-hs) from Haskell to Scala (for this project), I found the Haskell version to be ~20% shorter as well.
