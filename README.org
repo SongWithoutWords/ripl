@@ -134,7 +134,7 @@ Although I've heard it said that programming languages are "just tools", that an
 
 ~Should the following go under the robust section?~
 
-Certain kinds of bugs, problems and anti-patterns (such as null pointer exceptions, memory leaks, hidden side-effects, and shared or global mutable state), issues that can slow development, block teams, result in unpredictable programs, negatively impact users and cost thousands of dollars, affect only some languages. Just as importantly, and as mentioned by Dijkstra, the ability to express certain thoughts and ideas is contingent on the features of the language in use.
+Certain kinds of bugs, problems and anti-patterns (such as null pointer exceptions, memory leaks, hidden side-effects, and shared or global mutable state), issues that can slow development, block teams, produce unpredictable programs, negatively impact users and cost thousands of dollars, affect only some languages. Just as importantly, and as mentioned by Dijkstra, the ability to express certain thoughts and ideas is contingent on the features of the language in use.
 
 One language that solves many of these problems, in addition to providing many expressive constructs, is Haskell, a language which ([[https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html][to quote Dijkstra again]]) "though not perfect, is of a quality that is several orders of magnitude higher than Java, which is a mess"[fn:5]. Before mentioning some criticisms of Haskell, it's worth mentioning that it feels like a very enlightening language, that operates in many ways at a higher level of abstraction than many other languages (with type classes in particular). Additionally, I find the libraries to be superb.
 
