@@ -74,6 +74,9 @@
 
 ~TODO Maybe mention or link back to the original repository, living document, etc etc.~
 
+* Project Status
+The language is still in development and is not yet in a usable state.
+
 * Features at a Glance
 - Compiled
 - Strong, static typing
