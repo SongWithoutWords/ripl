@@ -143,7 +143,7 @@ Unfortunately Haskell solves the problems posed by side-effects and mutability b
 ~Things to clarify still in this section~
 - Correlation found between imperative code and bugs, cite the study
 - Haskell is actually quite performant, cite the study
-- Monads have a variety of uses beyoond modelling stateful computations
+- Monads have a variety of uses beyond modelling stateful computations
 
 
 ~Can I tie this in with what Simon Payton Jones is talking about with a future Haskell being strict?~
@@ -155,8 +155,8 @@ Segway to Haskell, Djikstra's opinion of Haskell, quote about Haskell about maki
 
 Likewise, some languages simply do not have the capabilities of others, and though it may not be easily possible to measure or account for the impact of these differences, these differences persist.
 
-Haskell does an excellent job of preventing a wide range of bugs and sources of error. Unfortunately, it does so in some cases by sacrificing some capabilities, such as mutation, 
-Haskell creator jokes about 
+Haskell does an excellent job of preventing a wide range of bugs and sources of error. Unfortunately, it does so in some cases by sacrificing some capabilities, such as mutation,
+Haskell creator jokes about
 
 Although some developers I've spoken with are under the impression that programming languages are "just tools", that the choice of language "doesn't matter", and that the differences between programming languages are superficial or primarily syntactic, I think that the differences are substantial and important.
 
