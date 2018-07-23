@@ -70,11 +70,10 @@
 #+LATEX: \newpage
 
 * Abstract
-~ripl~ is a nascent programming language and the subject of my undergraduate thesis at UBC. Written in Scala with an LLVM back-end, ~ripl~ is intended to combine the safety and purity of a language like Haskell, with the efficient, low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. It is motivated by my appreciation for a wide range of language features and my inability to find any existing language that can provide all of these features.
+~ripl~ is a nascent programming language and the subject of my undergraduate thesis at UBC. It is intended to combine the safety and purity of a language like Haskell, with the efficient, low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. The ~ripl~ compiler is written in Scala with an LLVM backend, and is still in development. The purpose of this document is to provides an overview of ~ripl~'s motivation, design and implementation, in addition to a comparison with other languages.
 
-The purpose of this document is to provides an overview of ~ripl~'s motivation, design and implementation, in addition to a comparison with other languages.
 #+BEGIN_EXPORT latex
-The source of this document, in addition to the source of the compiler can be found at \url{https://github.com/SongWithoutWords/ripl}.
+The source of this document, in addition to the source of the compiler, can be found at \url{https://github.com/SongWithoutWords/ripl}.
 #+END_EXPORT
 
 * Project Status
