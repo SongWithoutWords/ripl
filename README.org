@@ -98,7 +98,7 @@ The language is still in development and is not yet in a usable state.
 
 * Minimal Example
 
-Below is a ~ripl~ program that computes the factorial of 5:
+This section provides a quick introduction to the language in the form of a small ~ripl~ program that computes the factorial of 5, followed by a brief discussion:
 
 #+NAME: factorial
 #+BEGIN_SRC racket
