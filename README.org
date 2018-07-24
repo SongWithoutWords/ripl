@@ -1,6 +1,10 @@
 # Can be used to toggle the export of footnotes
 #+OPTIONS: f:t
 
+# Set the header depth
+#+OPTIONS: H:5
+#+LATEX_HEADER: \setcounter{secnumdepth}{5}
+
 #+TITLE: Robust, Intuitive Programming Language (~ripl~)
 #+SUBTITLE: Motivation, Design, and Implementation
 #+AUTHOR: Ian McCall
