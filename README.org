@@ -344,14 +344,6 @@ it does so in the typical C++ fashion of declaring it to be undefined behavior. 
 
 If C++ cannot even guarantee that a program in which a null pointer is dereferenced will fail, then it seems clear to me that the language cannot be considered null-safe. Although references in C++ may help to mitigate the problems associated with ~null~ because they can be used to express the /intent/ that a value with reference type is not null, they do not actually provide null-safety, as demonstrated above.
 
-***** TODO Options in Scala
-
-**** TODO Full Solutions in Existing Languages
-
-***** TODO Special-Case Dependent Typing in Kotlin
-
-***** TODO Option/Maybe in Haskell, ML, Rust, etc.
-
 **** TODO How
 Some programming languages have features that mitigate the problems associated with ~null~ without truly solving them. 
 When my knowledge of programming was limited to imperative and object oriented languages, dependent typing was the only solution I could think of for the problem of null-safety and  I thought that dependent typing was the only viable solution for null-safety and other problems pertaining to the existence of data and potential for errors. Since becoming familiar with functional programming by learning Haskell, I'm glad to see that the solution is much simpler: 
