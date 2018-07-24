@@ -62,8 +62,22 @@
 #+END_EXPORT
 
 #+BEGIN_EXPORT latex
+\lstdefinelanguage{ripl}{
+    morekeywords=
+      { define
+      , if
+      , int
+      , struct
+      , template
+      , union
+      },
+    sensitive=true, % keywords are not case-sensitive
+    morecomment=[l]{;}, % l is for line comment
+    morestring=[b]" % defines that strings are enclosed in double quotes
+}
+
 \definecolor{LightGray}{gray}{0.9}
-\lstset{language=Lisp,
+\lstset{language=ripl,
        % backgroundcolor=\color{White},
        backgroundcolor=\color{LightGray},
        % frame=single,
