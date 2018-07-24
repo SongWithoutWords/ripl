@@ -126,16 +126,18 @@ Although small, this example demonstrates many of the language's defining charac
 3. ~ripl~'s syntax includes some extensions over traditional Lisp syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]:
    1. Two or more expressions on a line are grouped.
    2. Lines are extended to include all subsequent expressions at the next level of indentation.
-4. The entry point of a program is a function called ~main~.
-5. Type annotations are required for function parameters; most other types can be inferred.
-6. Return type annotations are required for recursive functions.
-7. The language does not distinguish between functions and operators, and as such names can be composed of unicode characters with few restrictions.
-8. The language provides built in forms (e.g. ~define~, ~if~), functions (e.g. ~*~, ~-~, ~<=~) and types (e.g. ~int~)
+4. ~ripl~ does not distinguish between functions and operators, and as such names can be composed of unicode characters, with the exception of unicode control characters and a small set of reserved characters.
+5. ~ripl~ provides a number of built in forms (e.g. ~define~, ~if~), functions (e.g. ~*~, ~-~, ~<=~) and types (e.g. ~int~)
+6. The entry point of a program is a function called ~main~.
+7. Type annotations are required for function parameters; most other types can be inferred.
+8. Return type annotations are required for recursive functions.
 9. Names may be referenced in source files before they are defined.
 
 Hopefully this example has helped to provide you with an intuition for the language, the features of which are discussed in more depth in the following sections.
 
 * Design Goals and Corresponding Features
+
+~In this section, really consider using a what, why, how kind of format.~
 
 Although I've heard it said that programming languages are "just tools", that any language can be "learned in a week", that the choice of language "doesn't matter" and that the differences between programming languages are superficial or primarily syntactic[fn:2], I think that the differences between languages are substantial and important. To quote Edsger Dijkstra, "the tools we are trying to use and the language or notation we are using to express or record our thoughts, are the major factors determining what we can think or express at all"[fn:3].
 
@@ -148,6 +150,9 @@ One language that solves many of these problems, in addition to providing many e
 Unfortunately Haskell solves the problems posed by side-effects and mutability by confining them to specific monads (namely IO and ST). Although this achieves the aim of differentiating between pure and impure computations, and does so in an elegant way, the combined abstractions of lazy evaluation, implicit indirection, and monads make it much harder (in my experience[fn:8]) to optimize or reason about computationally intensive, highly stateful and highly interactive programs in Haskell than it is in other languages, especially languages that are designed for this purpose like C++ and Rust.
 
 This is not to say that Haskell is not reasonably performant, because it is[fn:6], or that monads are not useful, because they are[fn:7], but rather that there are other ways to impose constraints on the mutability of data (as employed in C++, D, and Rust) and purity of functions (as employed in D), that do not require this additional level of complexity and abstraction. Similar methods are employed in ~ripl~ and are described in the following section.
+
+- The potential performance implications of purely functional programming go beyond just.
+- There are many advantages of purely functional linked lists,
 
 https://arxiv.org/pdf/1409.0252.pdf
 
@@ -519,4 +524,5 @@ The alternatives weren't as good as ward.d2
 # org-src-fontify-natively: t
 # org-export-latex-listings: t
 # org-latex-listings: t
+# org-babel-sh-command: "./doc/scripts/redirect-stderr.sh"
 # end:
