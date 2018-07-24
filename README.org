@@ -298,14 +298,6 @@ When compiled with GCC 7.3.0 using `gcc -g -std=c++11 -o references-not-null-saf
      11
 #+END_EXAMPLE
 
-When compiled with Clang using `clang++ references-not-null-safe.cpp -g -std=c++11 -o references-not-null-safe` and debugged using LLDB, this program produces the following output: 
-
-When compiled with Clang and debugged using LLDB, this program produces the following output:
-
-#+BEGIN_EXAMPLE
-
-#+END_EXAMPLE
-
 Although references in C++ help to mitigate the problems associated with ~null~ because they can be used to express the intent that a value with reference type is not intended to be ~null~, and conversely that a value with pointer type can reasonably be expected to be ~null~, they do not entirely solve the problem for a number of reasons:
 1. It's possible to dereference a pointer to a reference without performing a ~null~ check, which does not raise a null-pointer-exception immediately, but later when the null-reference is used.
 2. The convention of pointers for optional values and references for non-optional values is thrown off because:
