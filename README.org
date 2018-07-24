@@ -254,7 +254,7 @@ Type-safe discriminated unions (as seen in Haskell, ML, Rust and Scala, among ot
 
 Although discriminated unions are analogous in some respects to OOP style inheritance subtyping (which can even be used as a basis for discriminated unions, as in Scala), I would argue that type-safe discriminated unions when used in conjunction with pattern matching, result in code that is more robust, precise, straightforward and less tightly coupled than OOP style inheritance. As such, discriminated unions are an important feature of ~ripl~'s design, the advantages of which are highlighted in the following section on null-safety, for which they provide an excelent solution.
 
-*** Type-Level Constraints on Existence (null-safety)
+*** Type-Level Constraints on Existence (null safety)
 
 **** TODO What
 The absence of null-safety, by which ~null~, ~nil~, etc. can be substituted for some or all values, is an aspect of many languages, including C, C++, C#, D, Java, JavaScript, Python, and Scala. ~worth looking up the history of this stuff~. 
