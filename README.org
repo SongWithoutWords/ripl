@@ -536,11 +536,11 @@ https://github.com/idris-lang/Idris-dev/blob/master/libs/prelude/Prelude/Maybe.i
 
 https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare
 
-[fn:8] 
+[fn:8] ~TODO: Monads can make stateful computations harder to reason about~
 
-[fn:7] 
+[fn:7] ~TODO: Monads are useful~
 
-[fn:6] 
+[fn:6] ~TODO: Haskell reasonably performant~
 
 [fn:1] though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parenthesis
 
@@ -548,7 +548,7 @@ https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-T
 
 [fn:3] Edsger Dijkstra, EWD 340: The Humble Programmer, https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html
 
-[fn:4]
+[fn:4] ~TODO: Source for Readable Lisp S-expressions~
 
 [fn:5] Edsger Dijkstra, To the members of the Budget Council, https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html
 
