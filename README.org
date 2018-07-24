@@ -284,30 +284,26 @@ int main() {
   const int b = a + 1;
   return b;
 }
+
+// When compiled with GCC 7.3.0 using `gcc -g -std=c++11` and debugged using LLDB,
+// the program above produces the following output, and we can see that the address
+// of the reference is 0x0, or null:
+
+//   Process 8786 stopped
+//     thread #1, name = 'references-not-', stop reason = signal SIGSEGV:
+//         invalid address (fault address: 0x0)
+//       frame #0: 0x0000000000400479 references-not-null-safe`main at         
+//         references-not-null-safe.cpp:8
+//   -> 8      const int b = a + 1;
 #+END_SRC
 
-When compiled with GCC 7.3.0 using ~gcc -g -std=c++11 -o references-not-null-safe references-not-null-safe.cpp~ and debugged using LLDB, this program produces the following output: 
+Although the C++ Standard addresses this in section 8.3.2,
+#+BEGIN_QUOTE
+Note: in particular, a null reference cannot exist in a well-defined program, because the only way to create such a reference would be to bind it to the “object” obtained by dereferencing a null pointer, which causes undefined behavior.
+#+END_QUOTE
+it does so in the typical C++ fashion of declaring it to be undefined behavior. The argument that a reference cannot be null 
 
-#+BEGIN_EXAMPLE
-  thread #1, name = 'cpp-references-', stop reason = signal SIGSEGV:
-          invalid address (fault address: 0x0)
-      frame #0: 0x0000000000400479 references-not-null-safe`main at
-          references-not-null-safe.cpp:8
-     5
-     6    int main() {
-     7      const int& a = createNullReference();
-  -> 8      const int b = a + 1;
-     9      return b;
-     10   }
-     11
-#+END_EXAMPLE
-
-Although references in C++ help to mitigate the problems associated with ~null~ because they can be used to express the intent that a value with reference type is not intended to be ~null~, and conversely that a value with pointer type can reasonably be expected to be ~null~, they do not entirely solve the problem for a number of reasons:
-1. It's possible to dereference a pointer to a reference without performing a ~null~ check, which does not raise a null-pointer-exception immediately, but later when the null-reference is used.
-2. The convention of pointers for optional values and references for non-optional values is thrown off because:
-   1. There is C++ code in use that was written before references were introduced.
-   2. There are other differences between references and pointers that might encourage people to use pointers instead of references, especially as member variables.
-   3. Not all C++ programmers may be aware of or in favour of this convention.
+If C++ cannot even guarantee that a program in which a null pointer is dereferenced will fail, then it seems clear to me that the language cannot be considered null-safe. Although references in C++ may help to mitigate the problems associated with ~null~ because they can be used to express the /intent/ that a value with reference type is not null, they do not actually provide null-safety, as demonstrated above.
 
 ***** TODO Options in Scala
 
@@ -496,6 +492,9 @@ The alternatives weren't as good as ward.d2
 # C♯
 
 * Footnotes
+
+[fn:10] Tony Hoare, Null References: The Billion Dollar Mistake,
+https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare
 
 [fn:8] 
 
