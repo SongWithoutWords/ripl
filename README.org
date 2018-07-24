@@ -247,6 +247,77 @@ Although discriminated unions are analogous in some respects to OOP style inheri
 
 *** Type-Level Constraints on Existence (null-safety)
 
+**** TODO What
+The absence of null-safety, by which ~null~, ~nil~, etc. can be substituted for some or all values, is an aspect of many languages, including C, C++, C#, D, Java, JavaScript, Python, and Scala. ~worth looking up the history of this stuff~. 
+
+**** TODO Why
+Condemned by its inventor/creator as the "billion dollar mistake" ~(citation, etc)~, the absence of null-safety makes the existence or non-existence of reference types a constant source of ambiguity and error. For example, given a C-style signature like ~A* f(X* x, Y* y, Z* z)~ it's unclear whether ~f~ may return ~null~. Additionally, for each of ~f~'s parameters, it's unclear whether the parameter is truly optional, whether the parameter is non-optional but will be ~null~ checked and handled "gracefully", whether ~f~ will dereference the pointer thereby crashing the program given a ~null~ input, or whether ~f~ will hand the argument off to another function, for which we must again consider the same questions. In a large program with deep call stacks, the absence of null-safety this is a very real waste of time and source of runtime errors.
+
+**** TODO Partial Solutions in Existing Languages
+
+***** TODO References in C++
+References have been a feature of C++ since 1985. Although there are a number of differences between references and pointers in C++, the differences that are relevant to null-safety are:
+1. ~T*~ (pointer to a value of type ~T~) and ~T&~ (reference to a value of type ~T~) are distinct types.
+2. ~nullptr~ can be used in place of pointers but not references.
+3. Pointers may be converted to and from references using the dereference operator ~*~ and address-of operator ~&~ respectively.
+As a result of these differences mentioned above, references 
+Consequently, although it's not possible to use ~nullptr~ in place of a reference in C++, null-references can arise in C++ when a null pointer is cast to a reference. This can happen quite easily if a trusting caller receives a value of type ~T*~ and uses it in place of a ~T&~ by dereferencing it without performing a null-check.
+
+#+NAME: references-not-null-safe 
+#+BEGIN_SRC C++ :mkdirp yes :tangle doc/snippets/cpp/references-not-null-safe.cpp
+const int& createNullReference() {
+  const int* const i = nullptr;
+  return *i;
+}
+
+int main() {
+  const int& a = createNullReference();
+  const int b = a + 1;
+  return b;
+}
+#+END_SRC
+
+When compiled with GCC 7.3.0 using `gcc -g -std=c++11 -o references-not-null-safe references-not-null-safe.cpp` and debugged using LLDB, this program produces the following output: 
+
+#+BEGIN_EXAMPLE
+  thread #1, name = 'cpp-references-', stop reason = signal SIGSEGV:
+          invalid address (fault address: 0x0)
+      frame #0: 0x0000000000400479 references-not-null-safe`main at
+          references-not-null-safe.cpp:8
+    5    
+    6    int main() {
+    7      const int& a = createNullReference();
+  -> 8      const int b = a + 1;
+    9      return b;
+    10   }
+    11
+#+END_EXAMPLE
+
+When compiled with Clang using `clang++ references-not-null-safe.cpp -g -std=c++11 -o references-not-null-safe` and debugged using LLDB, this program produces the following output: 
+
+When compiled with Clang and debugged using LLDB, this program produces the following output:
+
+#+BEGIN_EXAMPLE
+
+#+END_EXAMPLE
+
+Although references in C++ help to mitigate the problems associated with ~null~ because they can be used to express the intent that a value with reference type is not intended to be ~null~, and conversely that a value with pointer type can reasonably be expected to be ~null~, they do not entirely solve the problem for a number of reasons:
+1. It's possible to dereference a pointer to a reference without performing a ~null~ check, which does not raise a null-pointer-exception immediately, but later when the null-reference is used.
+2. The convention of pointers for optional values and references for non-optional values is thrown off because:
+   1. There is C++ code in use that was written before references were introduced.
+   2. There are other differences between references and pointers that might encourage people to use pointers instead of references, especially as member variables.
+   3. Not all C++ programmers may be aware of or in favour of this convention.
+
+***** TODO Options in Scala
+
+**** TODO Full Solutions in Existing Languages
+
+***** TODO Special-Case Dependent Typing in Kotlin
+
+***** TODO Option/Maybe in Haskell, ML, Rust, etc.
+
+**** TODO How
+Some programming languages have features that mitigate the problems associated with ~null~ without truly solving them. 
 When my knowledge of programming was limited to imperative and object oriented languages, dependent typing was the only solution I could think of for the problem of null-safety and  I thought that dependent typing was the only viable solution for null-safety and other problems pertaining to the existence of data and potential for errors. Since becoming familiar with functional programming by learning Haskell, I'm glad to see that the solution is much simpler: 
 
 
