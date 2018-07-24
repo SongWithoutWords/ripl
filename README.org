@@ -256,11 +256,23 @@ Although discriminated unions are analogous in some respects to OOP style inheri
 
 *** Type-Level Constraints on Existence (null safety)
 
-**** TODO What
-The absence of null-safety, by which ~null~, ~nil~, etc. can be substituted for some or all values, is an aspect of many languages, including C, C++, C#, D, Java, JavaScript, Python, and Scala. ~worth looking up the history of this stuff~. 
+The ability to substitute ~null~, ~nil~, etc. for many or all values is a frequent source of ambiguity and error in many languages, including C, C++, C#, D, Java, JavaScript, Lisp, Python, and Scala.
 
-**** TODO Why
-Condemned by its inventor/creator as the "billion dollar mistake" ~(citation, etc)~, the absence of null-safety makes the existence or non-existence of reference types a constant source of ambiguity and error. For example, given a C-style signature like ~A* f(X* x, Y* y, Z* z)~ it's unclear whether ~f~ may return ~null~. Additionally, for each of ~f~'s parameters, it's unclear whether the parameter is truly optional, whether the parameter is non-optional but will be ~null~ checked and handled "gracefully", whether ~f~ will dereference the pointer thereby crashing the program given a ~null~ input, or whether ~f~ will hand the argument off to another function, for which we must again consider the same questions. In a large program with deep call stacks, the absence of null-safety this is a very real waste of time and source of runtime errors.
+The null reference was invented in 1965 by Tony Hoare, who later described it as a "billion-dollar mistake" when speaking at a software conference called QCon London in 2009[fn:10].
+
+#+BEGIN_QUOTE
+I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn't resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years.
+#+END_QUOTE
+
+Although the unrestricted and potentially unsafe use of ~null~ is a significant problem, the ability to represent a value that may or may not exist remains highly important. To date I've encountered two viable mechanisms by which a language can express potentially non-existant values while maintaining null-safety:
+
+1. *Dependent Typing:* dependent typing is a language feature in which the type of an expression may depend on its value. Kotlin employs a limited form of dependent typing to differentiate between nullable and non-nullable pointers at compile time, based on type annotations in addition to control flow[fn:11].
+
+2. *Type-Safe Discriminated Unions:* discriminated unions, as discussed in section [[Type-Safe Discriminated Unions]], provide a very robust and safe way of representing polymorphic types, and is employed by Haskell, ML, and Rust, among others, to represent potentially non-existent values in a type safe way[fn:12].
+
+Between the use of dependent typing or discriminated unions for null safety I prefer the latter, because it's much simpler than full-blown dependent typing (as seen in languages like Idris, which is roughly speaking a strictly evaluated and dependently typed Haskell), and because type-safe discriminated unions are much more widely applicable than the limited form of dependent typing seen in Kotlin. In support of this idea, Idris, which has both discriminated unions /and/ dependent typing implements its ~Maybe~ type in terms of unions[fn:13]; ~ripl~ will do the same.
+
+
 
 **** TODO Partial Solutions in Existing Languages
 
@@ -493,7 +505,16 @@ The alternatives weren't as good as ward.d2
 
 * Footnotes
 
+[fn:13] Idris Standard Library, Maybe,
+
+https://github.com/idris-lang/Idris-dev/blob/master/libs/prelude/Prelude/Maybe.idr
+
+[fn:12] Although Scala has type safe discriminated unions and an option type, it is not null-safe. The following expression type checks correctly and produces a null pointer exception at runtime: ~Some(null) match { case Some(x) => x.toString; case _ => ""}~
+
+[fn:11] Kotlin Language Reference, Null Safety, https://kotlinlang.org/docs/reference/null-safety.html
+
 [fn:10] Tony Hoare, Null References: The Billion Dollar Mistake,
+
 https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare
 
 [fn:8] 
