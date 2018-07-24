@@ -289,13 +289,13 @@ When compiled with GCC 7.3.0 using `gcc -g -std=c++11 -o references-not-null-saf
           invalid address (fault address: 0x0)
       frame #0: 0x0000000000400479 references-not-null-safe`main at
           references-not-null-safe.cpp:8
-    5    
-    6    int main() {
-    7      const int& a = createNullReference();
+     5
+     6    int main() {
+     7      const int& a = createNullReference();
   -> 8      const int b = a + 1;
-    9      return b;
-    10   }
-    11
+     9      return b;
+     10   }
+     11
 #+END_EXAMPLE
 
 When compiled with Clang using `clang++ references-not-null-safe.cpp -g -std=c++11 -o references-not-null-safe` and debugged using LLDB, this program produces the following output: 
