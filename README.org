@@ -282,7 +282,7 @@ int main() {
 }
 #+END_SRC
 
-When compiled with GCC 7.3.0 using `gcc -g -std=c++11 -o references-not-null-safe references-not-null-safe.cpp` and debugged using LLDB, this program produces the following output: 
+When compiled with GCC 7.3.0 using ~gcc -g -std=c++11 -o references-not-null-safe references-not-null-safe.cpp~ and debugged using LLDB, this program produces the following output: 
 
 #+BEGIN_EXAMPLE
   thread #1, name = 'cpp-references-', stop reason = signal SIGSEGV:
