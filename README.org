@@ -345,8 +345,8 @@ it does so in the typical C++ fashion of declaring it to be undefined behavior. 
 If C++ cannot even guarantee that a program in which a null pointer is dereferenced will fail, then it seems clear to me that the language cannot be considered null-safe. Although references in C++ may help to mitigate the problems associated with ~null~ because they can be used to express the /intent/ that a value with reference type is not null, they do not actually provide null-safety, as demonstrated above.
 
 **** TODO How
-Some programming languages have features that mitigate the problems associated with ~null~ without truly solving them. 
-When my knowledge of programming was limited to imperative and object oriented languages, dependent typing was the only solution I could think of for the problem of null-safety and  I thought that dependent typing was the only viable solution for null-safety and other problems pertaining to the existence of data and potential for errors. Since becoming familiar with functional programming by learning Haskell, I'm glad to see that the solution is much simpler: 
+Some programming languages have features that mitigate the problems associated with ~null~ without truly solving them.
+When my knowledge of programming was limited to imperative and object oriented languages, dependent typing was the only solution I could think of for the problem of null-safety and  I thought that dependent typing was the only viable solution for null-safety and other problems pertaining to the existence of data and potential for errors. Since becoming familiar with functional programming by learning Haskell, I'm glad to see that the solution is much simpler:
 
 
  in object-oriented programming looked at many of the problems in imperative and object-oriented languages, and assumed that dependent typing would be the solution
@@ -355,7 +355,7 @@ Before learning Haskell and becoming familiar with functional programming, I bel
 
 
 
-are a powerful tool for authoring and composing data types, and are analogous in some respects to OOP style inheritance and subtyping (in Scala, for example, discriminated unions are created using inheritance). They provide a very powerful and intuitive way of modelling data and computations that may take one of a number of forms, 
+are a powerful tool for authoring and composing data types, and are analogous in some respects to OOP style inheritance and subtyping (in Scala, for example, discriminated unions are created using inheritance). They provide a very powerful and intuitive way of modelling data and computations that may take one of a number of forms,
 
 Discriminated unions, as present in Haskell, ML, Scala
 
@@ -368,10 +368,10 @@ Why then, the popularity of dynamically typed languages like Python, JavaScript 
 
 
 If the only staticaly typed languages on offer were verbose and unwieldy imperative languages like C++ and Java,
-Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,  
+Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,
 
-Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,  
-Personally I am a strong proponent of static typing and don't really understand the appeal of dynamic typing. 
+Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,
+Personally I am a strong proponent of static typing and don't really understand the appeal of dynamic typing.
 
 
 
