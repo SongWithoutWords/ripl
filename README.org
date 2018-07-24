@@ -10,6 +10,11 @@
 #+LATEX_HEADER: \usepackage[T1]{fontenc}
 #+LATEX_HEADER: \usepackage[scale=0.9]{sourcecodepro}
 
+# Set size of verbatim font used in "example" orb blocks
+#+LATEX_HEADER: \usepackage{verbatim}
+#+LATEX_HEADER: \makeatletter
+#+LATEX_HEADER: \def\verbatim@font{\fontsize{10}{10}\ttfamily}
+
 #+LATEX_HEADER: \usepackage[utf8]{inputenc}
 
 #+LATEX_HEADER: \usepackage{listings}
