@@ -533,4 +533,5 @@ https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-T
 # org-export-latex-listings: t
 # org-latex-listings: t
 # org-babel-sh-command: "./doc/scripts/redirect-stderr.sh"
+# org-latex-listings-langs: '(racket "ripl")
 # end:
