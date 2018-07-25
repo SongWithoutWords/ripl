@@ -171,7 +171,7 @@ Hopefully this example has helped to provide you with an intuition for the langu
 
 * Design Goals and Corresponding Features
 
-~In this section, really consider using a what, why, how kind of format.~
+# In this section, really consider using a what, why, how kind of format.
 
 Although I've heard it said that programming languages are "just tools", that any language can be "learned in a week", that the choice of language "doesn't matter" and that the differences between programming languages are superficial or primarily syntactic[fn:2], I think that the differences between languages are substantial and important. To quote Edsger Dijkstra, "the tools we are trying to use and the language or notation we are using to express or record our thoughts, are the major factors determining what we can think or express at all"[fn:3].
 
@@ -187,7 +187,7 @@ The parser is often the trickiest bit of a compiler
 #+END_QUOTE
 http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
 
-~Should the following go under the robust section?~
+# Should the following go under the robust section?
 
 Certain kinds of bugs, problems, and anti-patterns (such as null pointer exceptions, memory leaks, hidden side-effects, and shared or global mutable state), issues that can slow development, block teams, produce unpredictable programs, negatively impact users, and cost thousands of dollars, affect only some languages. Just as importantly, and as mentioned by Dijkstra, the ability to express certain thoughts and ideas is contingent on the features of the language in use.
 
@@ -208,7 +208,7 @@ https://arxiv.org/pdf/1409.0252.pdf
 - Monads have a variety of uses beyond modelling stateful computations
 
 
-~Can I tie this in with what Simon Payton Jones is talking about with a future Haskell being strict?~
+# Can I tie this in with what Simon Payton Jones is talking about with a future Haskell being strict?
 
 
 Consequently, the intent for this language is to be robust by obviating as many of these problems as possible, while remaining versatile
