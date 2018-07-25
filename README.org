@@ -135,6 +135,8 @@ The language is still in development and is not yet in a usable state.
 - Expression oriented
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]
 
+[fn:4] ~TODO: Source for Readable Lisp S-expressions~
+
 * Minimal Example
 
 This section provides a quick introduction to the language in the form of a small ~ripl~ program that computes the factorial of 5, followed by a brief discussion:
@@ -168,6 +170,8 @@ Although small, this example demonstrates many of the language's defining charac
 9. Names may be referenced in source files before they are defined.
 
 Hopefully this example has helped to provide you with an intuition for the language, the features of which are discussed in more depth in the following sections.
+
+[fn:1] though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parenthesis
 
 * Design Goals and Corresponding Features
 
@@ -207,6 +211,17 @@ https://arxiv.org/pdf/1409.0252.pdf
 - Haskell is actually quite performant, cite the study
 - Monads have a variety of uses beyond modelling stateful computations
 
+[fn:2] The people I've heard voice these opinions are all C++, C#, Java, or Python programmers, so maybe they just haven't experienced the full diversity of programming languages.
+
+[fn:3] Edsger Dijkstra, EWD 340: The Humble Programmer, https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html
+
+[fn:5] Edsger Dijkstra, To the members of the Budget Council, https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html
+
+[fn:8] ~TODO: Monads can make stateful computations harder to reason about~
+
+[fn:7] ~TODO: Monads are useful~
+
+[fn:6] ~TODO: Haskell reasonably performant~
 
 # Can I tie this in with what Simon Payton Jones is talking about with a future Haskell being strict?
 
@@ -505,29 +520,7 @@ The alternatives weren't as good as ward.d2
 ** TODO Use unicode sharp sign for C#
 # C♯
 
-* Footnotes
 
-
-
-
-
-[fn:8] ~TODO: Monads can make stateful computations harder to reason about~
-
-[fn:7] ~TODO: Monads are useful~
-
-[fn:6] ~TODO: Haskell reasonably performant~
-
-[fn:1] though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parenthesis
-
-[fn:2] The people I've heard voice these opinions are all C++, C#, Java, or Python programmers, so maybe they just haven't experienced the full diversity of programming languages.
-
-[fn:3] Edsger Dijkstra, EWD 340: The Humble Programmer, https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html
-
-[fn:4] ~TODO: Source for Readable Lisp S-expressions~
-
-[fn:5] Edsger Dijkstra, To the members of the Budget Council, https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html
-
-# # org-block-background: (t (:background "#FFFFEA"))
 * COMMENT Local Variables
 # Local Variables:
 # org-src-preserve-indentation: t
