@@ -517,7 +517,7 @@ Important to keep in mind is that this is descriptive and not predictive statist
 
 * TODO Usage
 
-* Misc TODO
+* COMMENT Misc TODO
 
 ** DONE Move R code into its own file (it sortof sucks writing it in org mode)
 
