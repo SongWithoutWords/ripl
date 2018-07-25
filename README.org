@@ -12,6 +12,7 @@
 #+LATEX_HEADER: \hypersetup{ colorlinks=true, linkcolor=black, urlcolor=blue }
 
 #+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage{cmbright}
 #+LATEX_HEADER: \usepackage[scale=0.9]{sourcecodepro}
 
 # Set size of verbatim font used in "example" orb blocks
