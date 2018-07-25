@@ -356,6 +356,8 @@ Between the use of dependent typing or discriminated unions for null safety I pr
 #+END_EXPORT
 https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare
 
+[fn:13] Idris Standard Library, Maybe, https://github.com/idris-lang/Idris-dev/blob/master/libs/prelude/Prelude/Maybe.idr
+
 *** TODO Type-Level Constraints on Mutability
 
 *** TODO Type-Level Constraints on Purity
@@ -505,9 +507,7 @@ The alternatives weren't as good as ward.d2
 
 * Footnotes
 
-[fn:13] Idris Standard Library, Maybe,
 
-https://github.com/idris-lang/Idris-dev/blob/master/libs/prelude/Prelude/Maybe.idr
 
 [fn:12] Although Scala has type safe discriminated unions and an option type, it is not null-safe. The following expression type checks correctly and produces a null pointer exception at runtime: ~Some(null) match { case Some(x) => x.toString; case _ => ""}~
 
