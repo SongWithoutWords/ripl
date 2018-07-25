@@ -350,6 +350,10 @@ Although the unrestricted and potentially unsafe use of ~null~ is a significant 
 
 Between the use of dependent typing or discriminated unions for null safety I prefer the latter, because it's much simpler than full-blown dependent typing (as seen in languages like Idris, which is roughly speaking a strictly evaluated and dependently typed Haskell), and because type-safe discriminated unions are much more widely applicable than the limited form of dependent typing seen in Kotlin. In support of this idea, Idris, which has both discriminated unions /and/ dependent typing implements its ~Maybe~ type in terms of unions[fn:13]; ~ripl~ will do the same.
 
+[fn:10] Tony Hoare, Null References: The Billion Dollar Mistake,
+
+https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare
+
 *** TODO Type-Level Constraints on Mutability
 
 *** TODO Type-Level Constraints on Purity
@@ -506,10 +510,6 @@ https://github.com/idris-lang/Idris-dev/blob/master/libs/prelude/Prelude/Maybe.i
 [fn:12] Although Scala has type safe discriminated unions and an option type, it is not null-safe. The following expression type checks correctly and produces a null pointer exception at runtime: ~Some(null) match { case Some(x) => x.toString; case _ => ""}~
 
 [fn:11] Kotlin Language Reference, Null Safety, https://kotlinlang.org/docs/reference/null-safety.html
-
-[fn:10] Tony Hoare, Null References: The Billion Dollar Mistake,
-
-https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare
 
 [fn:8] ~TODO: Monads can make stateful computations harder to reason about~
 
