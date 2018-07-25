@@ -385,6 +385,7 @@ Between the use of dependent typing or discriminated unions for null safety I pr
 
 [fn:13] Idris Standard Library, Maybe, https://github.com/idris-lang/Idris-dev/blob/master/libs/prelude/Prelude/Maybe.idr
 
+
 *** TODO Type-Level Constraints on Mutability
 
 Unconstrained or underconstrained mutability is problematic. The more state a program has, and the more widely this state can be modified, the harder it is to reason about. Fortunately, there are a number of ways in which programming languages can enable programmers to limit the amount and scope of a program's state:
