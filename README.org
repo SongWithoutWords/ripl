@@ -23,7 +23,7 @@
 #+LATEX_HEADER: \usepackage[utf8]{inputenc}
 
 #+LATEX_HEADER: \usepackage{listings}
-#+LATEX_HEADER: \usepackage[dvipsnames]{color}
+#+LATEX_HEADER: \usepackage[dvipsnames, table]{xcolor}
 
 #+LATEX_HEADER: \usepackage{titlesec}
 
@@ -429,6 +429,7 @@ In an effort to compare this language with others in an objective and impartial 
 
 ** Language Feature Table
 
+#+ATTR_LATEX: :float sideways :environment tabular :caption Language Feature Table \rowcolors{2}{gray!30}{}
 |                                  |  C | C++ | C# |  D | Haskell | Java | JavaScript | LLVM-IR | ML | Python | Ripl | Rust | Scala | Scheme |
 |----------------------------------+----+-----+----+----+---------+------+------------+---------+----+--------+------+------+-------+--------|
 | garbage-collection               | -1 |  -1 | +1 | +1 |      +1 |   +1 |         +1 |      +0 | +1 |     +1 |   +0 |   -1 |    +1 |     +1 |
@@ -539,7 +540,7 @@ The alternatives weren't as good as ward.d2
 
 ** TODO Consider removing plot titles
 
-** TODO Spread language feature table across multiple pages for latex export
+** DONE Spread language feature table across multiple pages for latex export
 
 ** TODO Try adding footnotes to the table to provide additional information, does it work with csv and latex export?
 
