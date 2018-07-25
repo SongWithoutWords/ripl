@@ -365,6 +365,7 @@ Between the use of dependent typing or discriminated unions for null safety I pr
 
 *** TODO Type-Level Constraints on Mutability
 
+The absence of constraints on mutability is quite common, especially among imperative languages.
 
 *** TODO Type-Level Constraints on Purity
 
