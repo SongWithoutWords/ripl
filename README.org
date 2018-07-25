@@ -22,7 +22,7 @@
 #+LATEX_HEADER: \usepackage[utf8]{inputenc}
 
 #+LATEX_HEADER: \usepackage{listings}
-#+LATEX_HEADER: \usepackage[usenames, dvipsnames]{color}
+#+LATEX_HEADER: \usepackage[dvipsnames]{color}
 
 #+LATEX_HEADER: \usepackage{titlesec}
 
@@ -76,17 +76,31 @@
     morestring=[b]" % defines that strings are enclosed in double quotes
 }
 
-\definecolor{LightGray}{gray}{0.9}
+\definecolor{DarkGray}    {rgb}{0.26, 0.26, 0.30}
+\definecolor{DarkBlue}    {rgb}{0.20, 0.40, 0.80}
+\definecolor{DarkGreen}   {rgb}{0.15, 0.50, 0.40}
+
+\definecolor{LightGray}   {rgb}{0.94, 0.96, 0.96}
+\definecolor{LightBlue}   {rgb}{0.40, 0.75, 1.00}
+\definecolor{LightGreen}  {rgb}{0.40, 0.80, 0.60}
+
 \lstset{language=ripl,
        % backgroundcolor=\color{White},
-       backgroundcolor=\color{LightGray},
        % frame=single,
        % frame=half,
        % frame=leftline,
-       basicstyle=\fontsize{10}{10}\ttfamily,
        captionpos=b,
        tabsize=2,
-       keywordstyle=\color{blue},
+       % dark theme
+       backgroundcolor=\color{DarkGray},
+       basicstyle=\color{LightGray}\fontsize{10}{10}\ttfamily,
+       keywordstyle=\color{LightBlue},
+       commentstyle=\color{LightGreen},
+       % light theme
+       backgroundcolor=\color{LightGray},
+       basicstyle=\color{DarkGray}\fontsize{10}{10}\ttfamily,
+       keywordstyle=\color{DarkBlue},
+       commentstyle=\color{DarkGreen},
   }
 #+END_EXPORT
 
