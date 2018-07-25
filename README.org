@@ -308,6 +308,7 @@ When combined with type inference, these advantages can be leveraged with little
 # Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,
 # Personally I am a strong proponent of static typing and don't really understand the appeal of dynamic typing.
 
+
 *** Type-Safe Discriminated Unions
 
 Type-safe discriminated unions, or sum types, (as seen in Haskell, ML, Rust and Scala, among others) provide a very powerful and intuitive way of modelling polymorphic data and computations that may take one of a number of forms. Some examples in ~ripl~ are shown below:
@@ -364,9 +365,13 @@ Between the use of dependent typing or discriminated unions for null safety I pr
 
 *** TODO Type-Level Constraints on Mutability
 
+
 *** TODO Type-Level Constraints on Purity
 
+
 *** TODO Namespaces
+
+
 ** Performant
 As a statically-typed and compiled language, ~ripl~ is suceptible to a wide range of optimizations, and has some inherent performance benefits over dynamically typed and/or interpreted languages.
 
