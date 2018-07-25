@@ -368,7 +368,25 @@ Between the use of dependent typing or discriminated unions for null safety I pr
 
 *** TODO Type-Level Constraints on Mutability
 
-The absence of constraints on mutability is quite common, especially among imperative languages.
+Unconstrained or underconstrained mutability is problematic. The more state a program has, and the more widely this state can be modified, the harder it is to reason about. Fortunately, there are a number of ways in which programming languages can enable programmers to limit the amount and scope of a program's state:
+
+# How much harder would math be if it was stateful and the meaning of operations was subject to change in real time? That is what imperative programming with shared mutable state is like.
+
+**** Temporary, Local Variables
+
+Although a number of languages have had a shaky history with temporary, local variables (including BASIC, COBOL[fn:9] and Fortran[fn:14]), we are fortunate that temporary, local variables are ubiquitous in modern languages. The locality of these variables reduces the scope in which their state can be accessed, and their transience reduces the state of the program that would otherwise persist between function calls. All variables in ~ripl~ not declared at the top level are temporary and local.
+
+[fn:9] http://www.jeromegarfunkel.com/authored/cobol_apology.htm
+[fn:14] http://www.mathcs.emory.edu/~cheung/Courses/561/Syllabus/5-Fortran/scoping.html
+
+**** Encapsulation
+
+Considered one of the defining features of object oriented programming, encapsulation is another feature that helps to limit the scope of program state. Although I do not have concrete plans for encapsulation and access modifiers in ~ripl~, encapsulation warrants mentioning because it demonstrates that not only functional languages are concerned with limiting the scope of mutable state but also imperative and object oriented languages.
+
+**** TODO Expression Orientation
+
+**** TODO Type-Level Constraints on Mutability
+
 
 *** TODO Type-Level Constraints on Purity
 
