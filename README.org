@@ -116,7 +116,7 @@ The source of this document, in addition to the source of the compiler, can be f
 #+END_EXPORT
 
 * Project Status
-The language is still in development and is not yet in a usable state.
+The language and compiler are still in development and is not yet in a usable state.
 
 * Features at a Glance
 - Compiled
