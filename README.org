@@ -13,7 +13,8 @@
 
 #+LATEX_HEADER: \usepackage[T1]{fontenc}
 #+LATEX_HEADER: \usepackage{cmbright}
-#+LATEX_HEADER: \usepackage[scale=0.9]{sourcecodepro}
+# #+LATEX_HEADER: \usepackage[scale=0.9]{sourcecodepro}
+#+LATEX_HEADER: \usepackage{sourcecodepro}
 
 #+LATEX_HEADER: \setcounter{tocdepth}{4}
 
@@ -71,12 +72,16 @@
 #+BEGIN_EXPORT latex
 \lstdefinelanguage{ripl}{
     morekeywords=
+      % definitions
       { define
-      , if
-      , int
       , struct
       , template
       , union
+      % forms
+      , if
+      % types
+      , f32
+      , i32
       },
     sensitive=true, % keywords are not case-sensitive
     morecomment=[l]{;}, % l is for line comment
@@ -440,10 +445,10 @@ In C++ and D, types can be made immutable using the ~const~ keyword, with some d
 
 In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is required to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust takes this a step further and prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17]
 
-The equivalent in ~ripl~ of Rust's ~mut~ keyword is the ~~~ symbol, which was chosen because:
-1. it's not a commonly used symbol for an operator.
-2. it's more concise than ~mut~.
-3. it looks fluid, hence susceptible to change, hence mutable.
+The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was chosen because:
+1. it is not a commonly used symbol in programming.
+2. it is shorter than ~mut~.
+3. it looks fluid, hence changing, hence mutable.
 
 [fn:16] D Language, const(FAQ), https://dlang.org/articles/const-faq.html#cpp-const
 
