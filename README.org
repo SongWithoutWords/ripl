@@ -403,7 +403,7 @@ Although a number of languages have had a shaky history with temporary, local va
 
 Considered one of the defining features of object oriented programming, encapsulation is another feature that helps to limit the scope of program state. Although I do not have concrete plans for encapsulation and access modifiers in ~ripl~, encapsulation warrants mentioning because it demonstrates that not only functional languages are concerned with limiting the scope of mutable state but also imperative and object oriented languages.
 
-**** TODO Expression Orientation
+**** Expression Orientation
 
 Expression orientation is a language feature that allows programmers to perform computations by composing expressions rather than directing control flow or mutating intermediary values. Expression orientation is a continuum, from assembly languages and compiler intermediary representations that are highly imperative, to imperative languages with both expressions and statements (like C++, C#, Java, etc.), to fully functional languages in which everything or nearly everything is an expression (like Haskell, Lisp, ML, Scala, etc.).
 
