@@ -430,7 +430,136 @@ Although this annecdote does not demonstrate that the above problem could not be
 
 [fn:15] Haskell Website, Purely Functional, https://www.haskell.org/
 
-**** TODO Type-Level Constraints on Mutability
+**** Type-Level Constraints on Mutability
+
+A middle ground between the unconstrained or underconstrained mutability and impurity of languages like C#, Java, ML, and Scala, and the functional purity of languages like Haskell and Idris, are per-variable type-level constraints on mutability, as seen in C++, D and Rust. This is a really great feature in my view, because it removes the ambiguity of what can be modified within what scope, while still allowing mutation where necessary.
+
+In C++ and D, types can be made immutable using the ~const~ keyword, with some differences[fn:16]:
+1. ~const~ in C++ can be bypassed using ~const_cast~ or ~mutable~, which undermines its legitimacy.
+2. ~const~ in D applies recursively to all types that a composite type is composed of, a quality they refer to as transitiv. This has the the disadvantage of reduces the range of types that can be expressed, and may force the use of entirely mutable types when only parts of these types need to be mutable. For example, a function that simulates interactions between entities might operate on an immutable list of references to mutable entities, thereby expressing its intent to modify the entities themselves, and not the container. Unfortunately, this distinction cannot be expressed with D's transitive const.
+
+In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is required to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust takes this a step further and prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17]
+
+The equivalent in ~ripl~ of Rust's ~mut~ keyword is the ~~~ symbol, which was chosen because:
+1. it's not a commonly used symbol for an operator.
+2. it's more concise than ~mut~.
+3. it looks fluid, hence susceptible to change, hence mutable.
+
+[fn:16] D Language, const(FAQ), https://dlang.org/articles/const-faq.html#cpp-const
+
+[fn:17] https://doc.rust-lang.org/book/second-edition/ch04-02-references-and-borrowing.html#the-rules-of-references
+
+
+# #+BEGIN_EXPORT latex
+# \begin{minipage}{\linewidth}
+# #+END_EXPORT
+# #+NAME: scale-vector-in-place
+# #+CAPTION: scale vector in place
+# #+BEGIN_SRC racket
+
+# struct character
+#   string name
+#   i32 health
+#   i32 stamina
+
+# define default-stamina 100
+# ;; define healthy-threshold 50
+
+# ;; This compiles: it does not modify its immutable parameter
+# define (is-tired (^entity e))
+#   < e.stamina tired-threshold
+
+# ;; This compiles: it mutates its mutable parameter
+# define (restore-stamina (^~entity e) (i32 amount))
+#   if (is-tired e) ; this is okay, ∀ types T, T <: ~T
+
+#   set e.stamina ( (+ e.stamina amount)
+
+# ;; This does not compile: it attempts to mutate its immutable parameter
+# define (is-healthy (^entity e))
+#   set e.health (+ e.health 10) ; compile error: attempt to modify an immutable value
+
+# ;; This does not compile: it attempts to mutate its immutable parameter
+# define (is-woundend (^entity e))
+#   recover-stamina e            ; compile error: type conflict between attempt to modify an immutable value
+
+#   < e.stamina 50
+
+# struct interval
+#   f32 min
+#   f32 max
+
+# ;; This function compiles
+# define (contains (^interval i) (f32 x))
+#   <= i.min x i.max
+
+# ;; This function does not compile: it attempts to modify an immutable value
+# define (contains (^interval i) (f32 x))
+#   set i.min x ; compile error: attempt to modify an immutable value
+
+# struct rectangle
+#   interval x
+#   interval y
+
+# ;; This function does not attempt to modify any immutable values, and so compiles
+# define (contains (^rectangle r) (vector v))
+#   and (contains r.x v.x) (contains r.y v.y)
+
+# ;; This function attempts to modify an immutable value, and so does not compile
+# define (contains (^rectangle r) (vector v))
+#   set r.x.min r.x.max ; compile error: attempt to modify an immutable value
+
+# define (clamp (interval i) (f32 x))
+
+# ;; define (contains (rectangle r) (vector v))
+# ;;   and (
+
+# struct health
+#   i32 cur
+#   i32 max
+
+# define (alive (entity e))
+
+# ;; This function attempts to mutate an immutable value and so does not compile
+# define (is-within-bounds (^player p) (^rectangle bounds))
+#   set p.health (- p.health 10)
+
+# ;; This function does not attempt to mutate an immutable object, and so compiles
+# define (is-within-bounds (^player p) (^rectangle bounds))
+#   and
+#     (> p.x bounds.x-min)
+#     (< p.x bounds.x-max)
+#     (> p.y bounds.y-min)
+#     (< p.y bounds.y-min)
+
+#   inflict-damage c 100
+
+# ;; This function attempts to mutate an immutable value and will not compile
+
+# define (inflict-damage (^~character c) (i32 damage))
+#   set c.health (- c.health damage)
+
+# define (inflict-damage-if-out-of-bounds 
+
+# define (clamp (f32 x) (f32 min) (f32 max))
+#   cond
+#     (< x min) min
+#     (> x max) max
+#     x
+
+# define (clamp-in-place (^~f32 x) (f32 min) (f32 max))
+#   set x (clamp x min max)
+
+# define (contains (^rectangle rect) 
+
+# define (scale-in-place (^~vector v) (f32 a))
+#   set v.x (* v.x a)
+#   set v.y (* v.y a)
+
+# #+END_SRC
+# #+BEGIN_EXPORT latex
+# \end{minipage}
+# #+END_EXPORT
 
 
 *** TODO Type-Level Constraints on Purity
@@ -629,6 +758,8 @@ The alternatives weren't as good as ward.d2
 ** TODO Use unicode sharp sign for C#
 # C♯
 
+
+* Footnotes
 
 * COMMENT Local Variables
 
