@@ -461,6 +461,8 @@ The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was ch
 [fn:17] https://doc.rust-lang.org/book/second-edition/ch04-02-references-and-borrowing.html#the-rules-of-references
 
 
+***** COMMENT Code to demonstrate mutability
+
 # #+BEGIN_EXPORT latex
 # \begin{minipage}{\linewidth}
 # #+END_EXPORT
