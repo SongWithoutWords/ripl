@@ -17,6 +17,10 @@
 
 #+LATEX_HEADER: \setcounter{tocdepth}{4}
 
+# increase space between table and caption
+#+LATEX_HEADER: \usepackage{caption}
+#+LATEX_HEADER: \captionsetup[table]{skip=10pt}
+
 # Set size of verbatim font used in "example" orb blocks
 #+LATEX_HEADER: \usepackage{verbatim}
 #+LATEX_HEADER: \makeatletter
