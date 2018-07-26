@@ -499,6 +499,7 @@ Although this table is useful in detailing the features of each language, becaus
 #+BEGIN_EXPORT latex
 \begin{sidewaystable}[htbp]
 \caption{Language Feature Table}
+\resizebox{\textwidth}{!}{
 \rowcolors{2}{gray!30}{}
 #+END_EXPORT
 |                                  |  C | C++ | C# |  D | Haskell | Java | JavaScript | LLVM-IR | ML | Python | Ripl | Rust | Scala | Scheme |
@@ -535,6 +536,7 @@ Although this table is useful in detailing the features of each language, becaus
 | compile-time-function-evaluation | -1 |  +1 | -1 | +1 |      -1 |   -1 |         +0 |      -1 | -1 |     +0 |   +1 |   -1 |    -1 |     +0 |
 | closures                         | -1 |  +1 | +1 | +1 |      +1 |   +1 |         +1 |      -1 | +1 |     +1 |   +1 |   +1 |    +1 |     +1 |
 #+BEGIN_EXPORT latex
+} % end resizebox
 \end{sidewaystable}
 \pagebreak % without this pagebreak, the table may not land in the right section
 #+END_EXPORT
