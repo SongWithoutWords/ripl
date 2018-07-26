@@ -414,7 +414,7 @@ Expression orientation is a language feature that allows programmers to perform 
 Expression orientation helps to reduce the statefullness of a program by reducing the number of variables in scope and reducing the need to mutate these variables. Everything in ~ripl~ that is not a top-level definition is an expression.
 # Provide a link to expression orientation section under concise/intuitive
 
-**** Limiting Mutation to Within Monads
+**** Modelling Mutation and Impurity With Monads
 
 One way of constraining mutation, as seen in Haskell and Idris, is to limit mutation to occurring within monads (namely IO and ST, in both Haskell and Idris):
 
