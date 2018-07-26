@@ -247,6 +247,8 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 
 [fn:6] ~TODO: Haskell reasonably performant~
 
+** COMMENT Notes
+
 # Can I tie this in with what Simon Payton Jones is talking about with a future Haskell being strict?
 
 # Consequently, the intent for this language is to be robust by obviating as many of these problems as possible, while remaining versatile
@@ -266,7 +268,10 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 
 # Games are often at the forefront of what hardware can do, and although it would be a very expensive experiment (to attempt to implement a state of the art 3d game or game engine in Haskell), I do not have confidence that Haskell would be as fit for this purpose as a language like C++ or Rust, though for many or most other purposes I think Haskell would be superior.
 
+
 ** Robust
+
+*** COMMENT Notes
 
 # Having worked in the games industry for 2.5 years, in a 20 year old and approximately 4 million line C++ codebase, I've observed some patterns that have given rise to some problems, many of which I feel can be attributed to the language itself:
 # - Long compile times:
@@ -313,6 +318,7 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 # - Constraints on template parameters via type-classes/traits
 # - Type-level programming via templates and compile-time function evaluation
 # - The language will be memory-safe, though whether this is achieved via garbage collection or a Rust-style ownership system is yet to be determined.
+
 
 *** Static Typing
 
