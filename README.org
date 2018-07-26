@@ -410,6 +410,22 @@ Expression orientation is a language feature that allows programmers to perform 
 Expression orientation helps to reduce the statefullness of a program by reducing the number of variables in scope and reducing the need to mutate these variables. Everything in ~ripl~ that is not a top-level definition is an expression.
 # Provide a link to expression orientation section under concise/intuitive
 
+**** Limiting Mutation to Within Monads
+
+One way of constraining mutation, as seen in Haskell, is to limit mutation to occurring within monads (namely IO and ST):
+
+#+BEGIN_QUOTE
+Every function in Haskell is a function in the mathematical sense (i.e., "pure"). Even side-effecting IO operations are but a description of what to do, produced by pure code. There are no statements or instructions, only expressions which cannot mutate variables (local or global) nor access state like time or random numbers.[fn:15]
+#+END_QUOTE
+
+Although I agree with Haskell's designers that it's important to separate pure from impure code, and that the way they have done so is very elegant, in practice I find that this additional monadic abstraction can make stateful code significantly harder to write.
+
+For example, during the semantic phase of the ~ripl~ compiler, every expression is "reduced" to a value, a type, or a typed expression. Most expressions will depend on other definitions in the program, and these definitions can occur in any order. To deal with this, I reduce the AST lazily, and feed the result back into the ~reduce~ function (a process called "tying the knot") so that the type or value of each definition can be computed in terms of others. Although this works perfectly in many cases, in order to handle cyclic dependencies the computation must be stateful and track the definitions it has already visited so that it does not loop infinitely. After two weeks of trying to get this to work in Haskell with the ST monad, I tried it in Scala, got it to work in a single afternoon, and subsequently ported the entire compiler to Scala.
+
+Although this annecdote does not demonstrate that the above problem cannot be solved in Haskell, or that this problem cannot be solved in another simpler way, it is an example in which Haskell's approach to statefullness made a problem intractable for a user. While constraints on mutability and function purity are important, straightforward imperative/stateful programming is also valuable, and at times necessary. The following two sections describe how a language can include these kinds of constraints while preserving the ability to perform straightforward stateful programming.
+
+[fn:15] Haskell Website, Purely Functional, https://www.haskell.org/
+
 **** TODO Type-Level Constraints on Mutability
 
 
