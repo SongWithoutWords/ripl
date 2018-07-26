@@ -335,8 +335,8 @@ Type-safe discriminated unions, or sum types, (as seen in Haskell, ML, Rust and 
 #+BEGIN_EXPORT latex
 \begin{minipage}{\linewidth}
 #+END_EXPORT
-#+NAME: descriminated-unions
-#+CAPTION: descriminated unions
+#+NAME: discriminated-unions
+#+CAPTION: discriminated unions
 #+BEGIN_SRC racket
 ; the union keyword can be used to create a type-safe discriminated union
 union expression
