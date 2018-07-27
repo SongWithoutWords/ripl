@@ -456,12 +456,30 @@ In C++ and D, types can be made immutable using the ~const~ keyword, with some d
 1. ~const~ in C++ can be bypassed using ~const_cast~ or ~mutable~, which undermines its legitimacy.
 2. ~const~ in D applies recursively to all types that a composite type is composed of, a quality they refer to as transitiv. This has the the disadvantage of reduces the range of types that can be expressed, and may force the use of entirely mutable types when only parts of these types need to be mutable. For example, a function that simulates interactions between entities might operate on an immutable list of references to mutable entities, thereby expressing its intent to modify the entities themselves, and not the container. Unfortunately, this distinction cannot be expressed with D's transitive const.
 
-In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is required to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust takes this a step further and prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17]
+In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is /required/ to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust takes this a step further in a great way, and prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17] Whether ~ripl~ can achieve the same in future will depend on a choice between garbage collection and a Rust-style ownership system for the language, a decision that hasn't been made yet (although a Rust-style ownership system has many advantages, I uncertain about the implementation difficulty, language complexity, and syntactic weight this might add).
 
 The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was chosen because:
 1. it is not a commonly used symbol in programming.
 2. it is shorter than ~mut~.
 3. it looks fluid, hence changing, hence mutable.
+
+The purpose of the mutable type modifier in ~ripl~ is to limit mutation to variables with a mutable type. The type system rules for mutability in ~ripl~ are as follows, for all types =U= and =V=, and templated types =T=:
+1. =U    <: ~V iff U <: V=
+2. =U    <: ^V iff U <: V=
+3. =^~U  <: ^V iff U <: V=
+4. =U   /<: ^~V=
+5. =^U  /<: ^~V=
+6. =(T U1 ... Un) <: (T V1 ... Vn) iff AND[i = 1..n]{ Ui <: Vi }=
+
+Paraphrased in English, these rules can be summarised are as follows:
+1. Mutable copies can be made of immutable data.
+2. Immutable references can be taken to immutable data.
+3. References to mutable data can be substituted for references to immutable data.
+4. Mutable references cannot be taken to immutable data.
+5. References to immutable data cannot be substituted for references to mutable data.
+6. Templated types may not be copied or referenced in such a way that they provide mutable references to immutable data.
+
+These rules may be revised if they are found to be inadequate in some way, or in the event that ~ripl~ adopts a Rust-inspired ownership system.
 
 [fn:16] D Language, const(FAQ), https://dlang.org/articles/const-faq.html#cpp-const
 
