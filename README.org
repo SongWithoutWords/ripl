@@ -596,6 +596,27 @@ For the purpose of type-checking, this boils down to the following rule: mutable
 
 *** TODO Type-Level Constraints on Purity
 
+# I'd like to reword these first two sentences
+
+An impure function is one that depends on or modifies global, mutable state in some way. This global, mutable state may occur in the form of global variables, singletons, or system-level IO like the file system, invoking other processes, textual IO or drawing to the screen. Although this IO is undoubtedly the purpose for which we create programs, there are some problems with unconstrained or unexpected impurity.
+
+At its most extreme, impurity and mutation entirely subvert the purpose of function signatures in documenting what functions do, and thereby undermine the structure of the program. When the signature of the entry point of the program (a function that can do /anything/) is not distinguished from pure functions like simple arithmetic operators, how can we trust any function?
+
+In small programs in which the functions can be read and comprehended in their entirety, this may not be much of an issue. In large programs with deep callstacks, however, this can be a real problem.
+
+I once created an alternate initialization path for a 20 year old and approximately 4 million line C++ game engine with a diverse cast of singletons and little-to-no documentation. It was a two week process of cutting, pasting, adapting, reordering and binary searching.
+
+ At its worst, it can reduce programming to a process of trial and error
+
+In a purely functional program you can tell how the pieces fit together from their types; in a more imperative program there may be a way to arrange and order the pieces such that they fit, but it may not be immediately obvious how.
+
+In the most extreme cases of impurity and mutation in large programs interfaces break down and the purpose or role of functions within the program become unclear: 
+
+- How mutability goes wrong
+- How other languages (namely D solve this)
+- Maybe briefly mention Haskell
+- Describe how it's done here.
+
 
 *** TODO Namespaces
 
