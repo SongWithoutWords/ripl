@@ -396,7 +396,7 @@ Although the unrestricted and potentially unsafe use of ~null~ is a significant 
 
 2. *Type-Safe Discriminated Unions:* discriminated unions, as discussed in section [[Type-Safe Discriminated Unions]], provide a very robust and safe way of representing polymorphic types, and is employed by Haskell, ML, and Rust, among others, to represent potentially non-existent values in a type safe way[fn:12].
 
-Between the use of dependent typing or discriminated unions for null safety I prefer the latter, because it's much simpler than full-blown dependent typing (as seen in languages like Idris, which is roughly speaking a strictly evaluated and dependently typed Haskell), and because type-safe discriminated unions are much more widely applicable than the limited form of dependent typing seen in Kotlin. In support of this idea, Idris, which has both discriminated unions /and/ dependent typing implements its ~Maybe~ type in terms of unions[fn:13]; ~ripl~ will do the same.
+Between these options I prefer type-safe discriminated unions, because they're simpler than full-blown dependent typing (as seen in languages like Idris, which is roughly speaking a strictly evaluated and dependently typed Haskell), and because type-safe discriminated unions are much more widely applicable than the limited form of dependent typing seen in Kotlin. In support of this idea, Idris, which has both discriminated unions /and/ dependent typing, implements its ~Maybe~ type in terms of unions[fn:13]; ~ripl~ will do the same.
 
 [fn:10] Tony Hoare, Null References: The Billion Dollar Mistake, https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare
 
