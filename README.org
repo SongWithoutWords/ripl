@@ -3,6 +3,13 @@
 
 # Set the header depth
 #+OPTIONS: H:5
+
+# Can be used to enable unicode characters
+# #+LATEX_COMPILER: lualatex
+# #+LATEX_HEADER: \usepackage{unicode-math}
+# #+LATEX_HEADER: \usepackage[utf8x]{inputenc}
+# #+LATEX_HEADER: \usepackage[mathletters]{ucs}
+
 #+LATEX_HEADER: \setcounter{secnumdepth}{5}
 
 #+TITLE: Robust, Intuitive Programming Language (~ripl~)
