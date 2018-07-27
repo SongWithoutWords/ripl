@@ -59,6 +59,9 @@
 #+LATEX_HEADER:   \setlist[itemize,9]{label=-}
 #+LATEX_HEADER:   \renewlist{itemize}{itemize}{9}
 
+# Space above footnotes
+#+LATEX_HEADER: \addtolength{\skip\footins}{6pt}
+
 # Customize enumerated/numbered lists
 # options include \arabic, \roman, \alph and \Alph
 #+LATEX_HEADER: \setlist[enumerate,1]{label={\arabic*.}}
