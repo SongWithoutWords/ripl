@@ -463,23 +463,18 @@ The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was ch
 2. it is shorter than ~mut~.
 3. it looks fluid, hence changing, hence mutable.
 
-The purpose of the mutable type modifier in ~ripl~ is to limit mutation to variables with a mutable type. The type system rules for mutability in ~ripl~ are as follows, for all types =U= and =V=, and templated types =T=:
-1. =U    <: ~V iff U <: V=
-2. =U    <: ^V iff U <: V=
-3. =^~U  <: ^V iff U <: V=
-4. =U   /<: ^~V=
-5. =^U  /<: ^~V=
-6. =(T U1 ... Un) <: (T V1 ... Vn) iff AND[i = 1..n]{ Ui <: Vi }=
+The purpose of the mutable type modifier in ~ripl~ is to limit mutation to variables that are mutable within the present scope. Assignment between mutable and immutable values and references are handled according to the following table:
 
-Paraphrased in English, these rules can be summarised are as follows:
-1. Mutable copies can be made of immutable data.
-2. Immutable references can be taken to immutable data.
-3. References to mutable data can be substituted for references to immutable data.
-4. Mutable references cannot be taken to immutable data.
-5. References to immutable data cannot be substituted for references to mutable data.
-6. Templated types may not be copied or referenced in such a way that they provide mutable references to immutable data.
+#+CAPTION: Assignment Between Mutable and Immutable Values and References
+#+ATTR_LATEX: :align r|llll
+| Type  | Assign to =T= | Assign to =~T= | Assign to =^T=   | Assign to =^~T=  |
+|-------+---------------+----------------+------------------+------------------|
+| =T=   | value copied  | value copied   | value referenced | type error       |
+| =~T=  | value copied  | value copied   | value referenced | value referenced |
+| =^T=  | value copied  | value copied   | reference copied | type error       |
+| =^~T= | value copied  | value copied   | reference copied | reference copied |
 
-These rules may be revised if they are found to be inadequate in some way, or in the event that ~ripl~ adopts a Rust-inspired ownership system.
+For the purpose of type-checking, this boils down to the following rule: mutable references cannot be created to immutable data.
 
 [fn:16] D Language, const(FAQ), https://dlang.org/articles/const-faq.html#cpp-const
 
