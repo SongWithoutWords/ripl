@@ -160,6 +160,70 @@ The language and compiler are still in development and are not yet in a usable s
 
 [fn:4] ~TODO: Source for Readable Lisp S-expressions~
 
+
+#+BEGIN_SRC emacs-lisp :exports results
+(defun recursive-count (regex string start)
+  (if (string-match regex string start)
+      (+ 1 (recursive-count regex string (match-end 0)))
+      0))
+
+(defun count-occurences (regex string)
+  (recursive-count regex string 0))
+
+(defun occurences-in-buffer (language-and-regex)
+  (list
+    (nth 0 language-and-regex) ; the name
+    (-
+      (count-occurences
+        (nth 1 language-and-regex) ; the pattern
+        (buffer-string))
+      ; subtract the occurences in this little program
+      (nth 2 language-and-regex))))
+
+(setq case-fold-search nil)
+(setq languages-to-search
+ `(
+    ("C++" "C\\+\\+" 2)
+    ("C#" "C#" 3)
+    ("D" "\\<D\\>" 3)
+    ("Go" "\\<Go\\>" 3)
+    ("Haskell" "Haskell" 3)
+    ("Idris" "Idris" 3)
+    ("Java" "\\<Java\\>" 3)
+    ("JavaScript" "JavaScript" 3)
+    ("Lisp, Racket and Scheme", "Lisp\\|Racket\\|Scheme" 9)
+    ("ML" "\\<ML\\>" 3)
+    ("Python" "Python" 3)
+    ("Rust" "Rust" 3)
+    ("Scala" "Scala" 3)
+))
+
+`(
+  ("Language" "Mentions in this Document")
+  hline
+  ,@(cl-sort
+    (mapcar 'occurences-in-buffer languages-to-search)
+    (lambda (a b) (> (nth 1 a) (nth 1 b)))))
+#+END_SRC
+
+#+CAPTION: Language Mentions as a Proxy for their Influence on ~ripl~
+#+RESULTS:
+| Language                | Mentions in this Document |
+|-------------------------+---------------------------|
+| Haskell                 |                        52 |
+| C++                     |                        30 |
+| Lisp, Racket and Scheme |                        25 |
+| Scala                   |                        21 |
+| Rust                    |                        19 |
+| Java                    |                        17 |
+| D                       |                        16 |
+| Python                  |                        12 |
+| C#                      |                        11 |
+| ML                      |                        10 |
+| Idris                   |                         7 |
+| JavaScript              |                         7 |
+| Go                      |                         0 |
+
 * Minimal Example
 
 This section provides a quick introduction to the language in the form of a small ~ripl~ program that computes the factorial of 5, followed by a brief discussion:
