@@ -660,9 +660,8 @@ For the purpose of type-checking, this boils down to the following rule: mutable
 
 *** TODO Type-Level Constraints on Purity
 
-# I'd like to reword these first two sentences
+An impure function is one that depends on or modifies global, mutable program state like global variables and singletons, or performs system-level IO like interacting with the file-system, performing textual IO, invoking other processes or drawing to the screen. Although this IO is undoubtedly the purpose for which we create programs, there are some disadvantages to impure, or potentially impure[fn:18] functions, including:
 
-An impure function is one that depends on or modifies global, mutable state in some way. This global, mutable state may occur in the form of global variables, singletons, or system-level IO like the file system, invoking other processes, textual IO or drawing to the screen. Although this IO is undoubtedly the purpose for which we create programs, there are some problems with unconstrained or unexpected impurity.
 
 At its most extreme, impurity and mutation entirely subvert the purpose of function signatures in documenting what functions do, and thereby undermine the structure of the program. When the signature of the entry point of the program (a function that can do /anything/) is not distinguished from pure functions like simple arithmetic operators, how can we trust any function?
 
@@ -681,6 +680,7 @@ In the most extreme cases of impurity and mutation in large programs interfaces 
 - Maybe briefly mention Haskell
 - Describe how it's done here.
 
+[fn:18] (potentially impure in the event that the language doesn't distinguish)
 
 *** TODO Namespaces
 
