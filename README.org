@@ -542,9 +542,9 @@ In C++ and D, types can be made immutable using the ~const~ keyword, with some d
 In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is /required/ to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust takes this a step further in a great way, and prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17] Whether ~ripl~ can achieve the same in future will depend on a choice between garbage collection and a Rust-style ownership system for the language, a decision that hasn't been made yet (although a Rust-style ownership system has many advantages, I uncertain about the implementation difficulty, language complexity, and syntactic weight this might add).
 
 The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was chosen because:
-1. it is not a commonly used symbol in programming.
-2. it is shorter than ~mut~.
-3. it looks fluid, hence changing, hence mutable.
+1. It is not a commonly used symbol in programming.
+2. It is shorter than ~mut~.
+3. It looks fluid, hence changing, hence mutable.
 
 The purpose of the mutable type modifier in ~ripl~ is to limit mutation to variables that are mutable within the present scope. Assignment between mutable and immutable values and references are handled according to the following table:
 
