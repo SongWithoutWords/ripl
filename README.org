@@ -557,7 +557,7 @@ The purpose of the mutable type modifier in ~ripl~ is to limit mutation to varia
 | =^T=  | value copied  | value copied   | reference copied | type error       |
 | =^~T= | value copied  | value copied   | reference copied | reference copied |
 
-For the purpose of type-checking, this boils down to the following rule: mutable references cannot be created to immutable data.
+These rules can be applied recursively to composite types like functions and templates. For the purpose of type-checking, this boils down to the following rule: mutable references cannot be created to immutable data.
 
 [fn:16] D Language, const(FAQ), https://dlang.org/articles/const-faq.html#cpp-const
 
