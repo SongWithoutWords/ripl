@@ -715,7 +715,7 @@ By emulating certain features of concise languages, like Haskell, Racket and Sca
 
 Some languages are more ergonomic, concise and intuitive than others. Having worked for 2.5 years in C++, I'm fairly confident in the assertion that it is more verbose than Python. After translating an ~2000 line program at a job from Python to Scala, I found the Scala version to be ~20% shorter (in addition to being statically typed). After porting a complete set of LLVM bindings (llvm-hs) from Haskell to Scala (for this project), I found the Haskell version to be ~20% shorter as well.
 
-After 2.5 years working full time in C++, for example, I would place this language at the bottom of this spectrum. Slightly better, I would suggest, are languages like C# and Python. 
+After 2.5 years working full time in C++, for example, I would place this language at the bottom of this spectrum. Slightly better, I would suggest, are languages like C# and Python.
 - Type inference
 - Subtyping via implicit conversions
 - Name overloading
