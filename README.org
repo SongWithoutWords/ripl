@@ -217,8 +217,7 @@ The language and compiler are still in development and are not yet in a usable s
     (mapcar 'occurences-in-buffer languages-to-search)
     (lambda (a b) (> (nth 1 a) (nth 1 b)))))
 #+END_SRC
-
-#+CAPTION: Language Mentions as a Proxy for their Influence on ~ripl~
+#+ATTR_LATEX: :caption \caption{Language Mentions as a Proxy for their Influence on \texttt{ripl}'s Design Thus Far} \rowcolors{2}{gray!30}{}
 #+RESULTS:
 | Language                | Mentions in this Document |
 |-------------------------+---------------------------|
