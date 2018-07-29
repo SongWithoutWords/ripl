@@ -157,6 +157,9 @@
 }
 
 \tableofcontents
+\listoffigures
+\listoftables
+\lstlistoflistings
 
 \newpage
 
