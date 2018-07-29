@@ -67,6 +67,10 @@
 # Prevent footnotes from being split across multiple pages
 #+LATEX_HEADER: \interfootnotelinepenalty=10000
 
+# tabu enables footnotes in tables, though I haven't gotten it to work with resizebox
+# #+LATEX_HEADER: \usepackage{tabu}
+# #+LATEX_HEADER: \usepackage{tabularx}
+
 # Customize enumerated/numbered lists
 # options include \arabic, \roman, \alph and \Alph
 #+LATEX_HEADER: \setlist[enumerate,1]{label={\arabic*.}}
