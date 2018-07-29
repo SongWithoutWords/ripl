@@ -788,6 +788,7 @@ As with variable mutability, ~ripl~'s approach to constraints on purity is simil
 
 ** TODO Concise and Intuitive
 
+*** COMMENT Notes
 # Should cite the study that found
 # Cite https://arxiv.org/pdf/1409.0252.pdf, which found that
 
@@ -813,13 +814,27 @@ As with variable mutability, ~ripl~'s approach to constraints on purity is simil
 # - Pattern matching
 # - Readable, uniform syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
+*** TODO Expression Orientation
+
+*** TODO Pattern Matching
+
+*** TODO Name Overloading
+
+*** TODO Relatively Fewer Language Constructs
+
 ** TODO Powerful
+
+*** TODO Templates
 # - Type level programming via templates and compile-time function evaluation
+
+*** TODO Compile-Time Function Evaluation
 # - Type-level traits, akin to Haskell type-classes
-# - Lisp-style macros, enabled by the uniform syntax in combination with compile-time function evaluation
+
+*** TODO Type Classes
 
 ** TODO Minor Goals
 *** TODO Lisp-style macros
+# - Lisp-style macros, enabled by the uniform syntax in combination with compile-time function evaluation
 
 *** TODO Deterministic destructor calls for resource disposal (RAII)
 
