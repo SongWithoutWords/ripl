@@ -577,14 +577,14 @@ In C++ and D, types can be made immutable using the ~const~ keyword, with some d
 1. ~const~ in C++ can be bypassed using ~const_cast~ or ~mutable~, which undermines its legitimacy.
 2. ~const~ in D applies recursively to all types that a composite type is composed of, a quality they refer to as transitiv. This has the the disadvantage of reduces the range of types that can be expressed, and may force the use of entirely mutable types when only parts of these types need to be mutable. For example, a function that simulates interactions between entities might operate on an immutable list of references to mutable entities, thereby expressing its intent to modify the entities themselves, and not the container. Unfortunately, this distinction cannot be expressed with D's transitive const.
 
-In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is /required/ to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust takes this a step further in a great way, and prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17] Whether ~ripl~ can achieve the same in future will depend on a choice between garbage collection and a Rust-style ownership system for the language, a decision that hasn't been made yet (although a Rust-style ownership system has many advantages, I uncertain about the implementation difficulty, language complexity, and syntactic weight this might add).
+In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is /required/ to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust takes this a step further in a great way, and prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17] Whether ~ripl~ can achieve the same in future will depend on a choice between garbage collection and a Rust-style ownership system, a decision that hasn't been made yet. Although a Rust-style ownership system has many advantages, I am uncertain about the complexity this might add to the language and how difficult this would be to implement.
 
 The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was chosen because:
 1. It is not a commonly used symbol in programming.
 2. It is shorter than ~mut~.
 3. It looks fluid, hence changing, hence mutable.
 
-The purpose of the mutable type modifier in ~ripl~ is to limit mutation to variables that are mutable within the present scope. Assignment between mutable and immutable values and references are handled according to the following table:
+The purpose of the mutable type modifier in ~ripl~ is to restrict mutation to a set of variables that are explicitly mutable within the present scope. Assignment between mutable and immutable values and references are handled according to the following table:
 
 #+CAPTION: Assignment Between Mutable and Immutable Values and References
 #+ATTR_LATEX: :align r|llll
