@@ -142,6 +142,20 @@
 
 \maketitle
 
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\thanks{
+\blfootnote{ \texttt{+} Feature included in \texttt{ripl} }
+\blfootnote{ \texttt{-} Feature not included in \texttt{ripl} }
+\blfootnote{ \texttt{?} Feature may be included in future }
+}
+}
+
 \tableofcontents
 
 \newpage
@@ -719,7 +733,7 @@ In a purely functional program you can tell how the pieces fit together from the
 # can be tested in isolation and will behave the same way when integrated into the program within the context of the program as it did when tested alone.
 
 
-Even if a function performs computations with mutable state internally, as long as these internal mutations do not escape to the outside world, all of the above properties still hold. In pure functional languages like Haskell and Idris, this encapsulation of effects and separation of pure and impure code is done using monads (such as IO and ST), as discussed in section [[Not Included: Modelling Mutation and Impurity With Monads]]. As mentioned in that section, I think this encapsulation of effects is a very good thing, but I have concerns about the complexity of this approach, both for the programmer and for the machine.
+Even if a function performs computations with mutable state internally, as long as these internal mutations do not escape to the outside world, all of the above properties still hold. In pure functional languages like Haskell and Idris, this encapsulation of effects and separation of pure and impure code is done using monads (such as IO and ST), as discussed in section [[[Not Included] Modelling Mutation and Impurity With Monads]]. As mentioned in that section, I think this encapsulation of effects is a very good thing, but I have concerns about the complexity of this approach, both for the programmer and for the machine.
 
 A great alternative solution to this problem in an impure language is employed in D, and is described very well by David Nadlinger[fn:20]. Combined with compile-time evaluation of pure functions and templates that can take arbitrary objects as arguments, this feature helps to provide powerful type-level programming in addition to type-level constraints.
 
