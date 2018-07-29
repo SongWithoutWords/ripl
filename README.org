@@ -33,6 +33,9 @@
 #+LATEX_HEADER: \usepackage{caption}
 #+LATEX_HEADER: \captionsetup[table]{skip=10pt}
 
+# allows use of the H option for force a float to Here
+#+LATEX_HEADER: \usepackage{float}
+
 #+LATEX_HEADER: \usepackage{multicol}
 
 #+LATEX_HEADER: \usepackage{adjustbox}
@@ -255,20 +258,20 @@ The language and compiler are still in development and are not yet in a usable s
     (mapcar 'occurences-in-buffer languages-to-search)
     (lambda (a b) (> (nth 1 a) (nth 1 b)))))
 #+END_SRC
-#+ATTR_LATEX: :caption \caption{Language Mentions as a Proxy for their Influence on \texttt{ripl}'s Design Thus Far} \rowcolors{2}{gray!30}{}
+#+ATTR_LATEX: :placement [H] :caption \caption{Language Mentions as a Proxy for Influence on \texttt{ripl}'s Design} \rowcolors{2}{gray!30}{}
 #+RESULTS:
 | Language                | Mentions in this Document |
 |-------------------------+---------------------------|
 | Haskell                 |                        34 |
-| D                       |                        19 |
-| C++                     |                        18 |
+| D                       |                        22 |
+| C++                     |                        19 |
+| Rust                    |                        17 |
 | Lisp, Racket and Scheme |                        16 |
-| Rust                    |                        16 |
 | Scala                   |                        13 |
 | Java                    |                        11 |
 | ML                      |                        10 |
 | C#                      |                         9 |
-| Idris                   |                         8 |
+| Idris                   |                         9 |
 | C                       |                         5 |
 | Python                  |                         5 |
 | JavaScript              |                         4 |
@@ -277,6 +280,7 @@ The language and compiler are still in development and are not yet in a usable s
 | BASIC                   |                         1 |
 | COBOL                   |                         1 |
 | Go                      |                         0 |
+
 
 * Minimal Example
 
