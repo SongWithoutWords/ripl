@@ -687,7 +687,29 @@ These rules can be applied recursively to composite types like functions and tem
 
 *** TODO Type-Level Constraints on Purity
 
-An impure function is one that depends on or modifies global, mutable program state like global variables and singletons, or performs system-level IO like interacting with the file-system, performing textual IO, invoking other processes or drawing to the screen. Although this IO is undoubtedly the purpose for which we create programs, there are some disadvantages to impure, or potentially impure[fn:18] functions, including:
+An impure function is one that depends on or modifies global, mutable state like global variables and singletons, or performs system-level IO like interacting with the file-system, performing textual IO, invoking other processes or drawing to the screen. Although this IO is the purpose for which we create programs, there are some disadvantages to impure, or potentially impure[fn:18] functions, including:
+
+1. Their behaviour may depend on global, mutable state.
+2. Their inputs and dependencies may not be clear from their signature.
+3. Their outputs and effects may not be clear from their signature.
+
+Indeed, in order to /know/ how such potentially impure functions may interact with the program, it is necessary to recursively read all of the functions they call, and understand how all of these functions effect and are effected by the global state of the program, in addition to the feedback between them. In a suitably large and impure program, this complexity is not possible to comprehend. In a suitably large and impure program, the programmer may arrange functions to produce the desired effect in one place and break something somewhere else in the process. For these reasons, impure or potentially impure functions are harder to test, harder to debug and harder to reason about.
+
+At its most extreme, systemic impurity entirely subverts the purpose of function signatures in documenting what functions do, and thereby undermines the structure of the program. When a language fails to distinguish (as most do) between the signature of the entry point of the program (something like =int main()=), a function that can do /anything/, and the signature of a pure function like addition (something like =int +(int, int)=), how can any function in this language be trusted?
+
+In a purely functional program you can tell how the pieces fit together from their types; in a more imperative program there may be a way to arrange and order the pieces such that they fit, but it may not be immediately obvious how. In a pure language like Haskell, we know a lot about a function with a type like =A -> B=. We know that it will use an =A= to compute a =B= without depending on or modifying the state of the program in any way[fn:19], and consequently that:
+1. It always produces the same output given the same input.
+2. It does not effect the program and so can be called any number of times without consequence.
+3. It behaves the same way within the context of the program as it does when tested in isolation.
+4. It can be evaluated at compile time if its arguments are known at compile time.
+# can be tested in isolation and will behave the same way when integrated into the program within the context of the program as it did when tested alone.
+
+
+Even if a function performs computations with mutable state internally, as long as these internal mutations do not escape to the outside world, all of the above properties still hold. In pure functional languages like Haskell and Idris, this encapsulation of effects and separation of pure and impure code is done using monads (such as IO and ST), as discussed in section [[Not Included: Modelling Mutation and Impurity With Monads]]. As mentioned in that section, I think this encapsulation of effects is a very good thing, but I have concerns about the complexity of this approach, both for the programmer and for the machine.
+
+A great alternative solution to this problem in an impure language is employed in D, and is described very well by David Nadlinger[fn:20]. Combined with compile-time evaluation of pure functions and templates that can take arbitrary objects as arguments, this feature helps to provide powerful type-level programming in addition to type-level constraints.
+
+As with variable mutability, ~ripl~'s approach to constraints on purity is similar to that of ~D~, but different.
 
 #+begin_table
 #+LATEX: \caption{Description of table.}
@@ -702,24 +724,25 @@ An impure function is one that depends on or modifies global, mutable program st
 #+LATEX: }
 #+end_table
 
-At its most extreme, impurity and mutation entirely subvert the purpose of function signatures in documenting what functions do, and thereby undermine the structure of the program. When the signature of the entry point of the program (a function that can do /anything/) is not distinguished from pure functions like simple arithmetic operators, how can we trust any function?
+# A solution to this problem in a non-functionally pure languageThere is another solution to this problem used in D, which will be used also by ~ripl~ with some adjustments.
 
-In small programs in which the functions can be read and comprehended in their entirety, this may not be much of an issue. In large programs with deep callstacks, however, this can be a real problem.
+- [X] How impurity goes wrong
+- [-] How other languages (namely D solve this)
+- [X] Maybe briefly mention Haskell
+- [ ] Describe how it's done here.
 
-I once created an alternate initialization path for a 20 year old and approximately 4 million line C++ game engine with a diverse cast of singletons and little-to-no documentation. It was a two week process of cutting, pasting, adapting, reordering and binary searching.
+# | But really though[fn:22] |
+# Of course, every useful program needs to perform effects, talk about three layer cake, onion architecture, thin layer of IO on top of functionally pure business logic.
 
- At its worst, it can reduce programming to a process of trial and error
+# I once created an alternate initialization path for a 20 year old and approximately 4 million line C++ game engine with a diverse cast of singletons and little-to-no documentation. It was a two week process of cutting, pasting, adapting, reordering and binary searching.
 
-In a purely functional program you can tell how the pieces fit together from their types; in a more imperative program there may be a way to arrange and order the pieces such that they fit, but it may not be immediately obvious how.
+[fn:18] The purity of a function in a language that does not distinguish between pure and impure functions can only be determined by recursively reading it and all of the functions it calls, which may not be feasible.
 
-In the most extreme cases of impurity and mutation in large programs interfaces break down and the purpose or role of functions within the program become unclear: 
+[fn:19] Unless it circumvents the type system by some mechanism like Haskell's =unsafePerformIO=, but this is highly uncommon.
 
-- How mutability goes wrong
-- How other languages (namely D solve this)
-- Maybe briefly mention Haskell
-- Describe how it's done here.
+[fn:20] David Nadlinger, Purity in D, http://klickverbot.at/blog/2012/05/purity-in-d/
 
-[fn:18] (potentially impure in the event that the language doesn't distinguish)
+[fn:21] Creating new data is as close as we get to modifying data in place in Haskell, without resorting to ST monad which would be overkill in this case.
 
 *** TODO Namespaces
 
