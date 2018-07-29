@@ -292,9 +292,7 @@ Hopefully this example has helped to provide you with an intuition for the langu
 
 [fn:1] though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parenthesis
 
-* Design Goals and Corresponding Features
-
-# Should this be Design Goals and Related Features?
+* Design Goals and Related Features
 
 # In this section, really consider using a what, why, how kind of format.
 
