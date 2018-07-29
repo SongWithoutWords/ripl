@@ -254,16 +254,16 @@ The language and compiler are still in development and are not yet in a usable s
 #+RESULTS:
 | Language                | Mentions in this Document |
 |-------------------------+---------------------------|
-| Haskell                 |                        32 |
+| Haskell                 |                        34 |
+| D                       |                        19 |
 | C++                     |                        18 |
-| Lisp, Racket and Scheme |                        17 |
-| D                       |                        16 |
-| Rust                    |                        15 |
+| Lisp, Racket and Scheme |                        16 |
+| Rust                    |                        16 |
 | Scala                   |                        13 |
 | Java                    |                        11 |
 | ML                      |                        10 |
 | C#                      |                         9 |
-| Idris                   |                         7 |
+| Idris                   |                         8 |
 | C                       |                         5 |
 | Python                  |                         5 |
 | JavaScript              |                         4 |
