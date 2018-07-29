@@ -4,6 +4,10 @@
 # Set the header depth
 #+OPTIONS: H:5
 
+# Disable automatic toc
+#+OPTIONS: toc:nil
+#+OPTIONS: title:nil
+
 # Can be used to enable unicode characters
 # #+LATEX_COMPILER: lualatex
 # #+LATEX_HEADER: \usepackage{unicode-math}
@@ -135,6 +139,11 @@
        keywordstyle=\color{DarkBlue},
        commentstyle=\color{DarkGreen},
   }
+
+\maketitle
+
+\tableofcontents
+
 #+END_EXPORT
 
 #+LATEX: \newpage
