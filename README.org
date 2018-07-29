@@ -384,7 +384,7 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 
 # Consequently, the intent for this language is to be robust by obviating as many of these problems as possible, while remaining versatile
 
-# Segway to Haskell, Djikstra's opinion of Haskell, quote about Haskell about making the easy things hard, address some of the challenges associated with it, as well as mentioning some of the problems it solves.
+# Segue to Haskell, Djikstra's opinion of Haskell, quote about Haskell about making the easy things hard, address some of the challenges associated with it, as well as mentioning some of the problems it solves.
 
 # Likewise, some languages simply do not have the capabilities of others, and though it may not be easily possible to measure or account for the impact of these differences, these differences persist.
 
@@ -419,7 +419,7 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 # - Singletons:
 # - Deep inheritance hierarchies:
 # - Needless interfaces:
-# - OOP insantiy:
+# - OOP insanity:
 # -
 # Weird OOP
 
@@ -430,7 +430,7 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 # - Different coordinate systems used by different parts of the engine.
 
 
-#  All of this for no discernable reason.
+#  All of this for no discernible reason.
 # - An interface with pure virtual functions called IFoo that was implemented Foo, and was also implemented by FooProxy which wrapped all methods of Foo.
 
 # None of this would have been possible in a language like Haskell, and much less of it would have been possible in a language like Rust. Conversely, I think this would have been much worse in a language like Python without static typing.
@@ -463,7 +463,7 @@ When combined with type inference, these advantages can be leveraged with little
 
 # The only advantage I can think of that dynamic typing might provide, are the advantages that dynamic typing  confer to
 
-# If the only staticaly typed languages on offer were verbose and unwieldy imperative languages like C++ and Java,
+# If the only statically typed languages on offer were verbose and unwieldy imperative languages like C++ and Java,
 # Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,
 
 # Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,
@@ -500,7 +500,7 @@ template (list a)
 
 Unlike untagged unions that do not record the type of the union's value, and non-type-safe discriminated unions in which a type tag is manually set and branched on by the programmer, type-safe discriminated unions include a type tag that is automatically set during construction and automatically branched on during pattern matching.
 
-Although discriminated unions are analogous in some respects to OOP style inheritance subtyping (which can even be used as a basis for discriminated unions, as in Scala), I would argue that type-safe discriminated unions when used in conjunction with pattern matching, result in code that is more robust, precise, straightforward and less tightly coupled than OOP style inheritance. As such, discriminated unions are an important feature of ~ripl~'s design, the advantages of which are highlighted in the following section on null-safety, for which they provide an excelent solution.
+Although discriminated unions are analogous in some respects to OOP style inheritance subtyping (which can even be used as a basis for discriminated unions, as in Scala), I would argue that type-safe discriminated unions when used in conjunction with pattern matching, result in code that is more robust, precise, straightforward and less tightly coupled than OOP style inheritance. As such, discriminated unions are an important feature of ~ripl~'s design, the advantages of which are highlighted in the following section on null-safety, for which they provide an excellent solution.
 
 # Discriminated unions are a powerful tool for authoring and composing data types, and are analogous in some respects to OOP style inheritance and subtyping (in Scala, for example, discriminated unions are created using inheritance). They provide a very powerful and intuitive way of modelling data and computations that may take one of a number of forms,
 
@@ -515,7 +515,7 @@ The null reference was invented in 1965 by Tony Hoare, who later described it as
 I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn't resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years.
 #+END_QUOTE
 
-Although the unrestricted and potentially unsafe use of ~null~ is a significant problem, the ability to represent a value that may or may not exist remains highly important. To date I've encountered two viable mechanisms by which a language can express potentially non-existant values while maintaining null-safety:
+Although the unrestricted and potentially unsafe use of ~null~ is a significant problem, the ability to represent a value that may or may not exist remains highly important. To date I've encountered two viable mechanisms by which a language can express potentially non-existent values while maintaining null-safety:
 
 1. *Dependent Typing:* dependent typing is a language feature in which the type of an expression may depend on its value. Kotlin employs a limited form of dependent typing to differentiate between nullable and non-nullable pointers at compile time, based on type annotations in addition to control flow[fn:11].
 
@@ -578,11 +578,11 @@ Although this annecdote does not demonstrate that the above problem could not be
 
 *** =+= Type-Level Constraints on Mutability
 
-A middle ground between the unconstrained or underconstrained mutability and impurity of languages like C#, Java, ML, and Scala, and the functional purity of languages like Haskell and Idris, are per-variable type-level constraints on mutability, as seen in C++, D and Rust. This is a really great feature in my view, because it removes the ambiguity of what can be modified within what scope, while still allowing mutation where necessary.
+A middle ground between the unconstrained or under-constrained mutability and impurity of languages like C#, Java, ML, and Scala, and the functional purity of languages like Haskell and Idris, are per-variable type-level constraints on mutability, as seen in C++, D and Rust. This is a really great feature in my view, because it removes the ambiguity of what can be modified within what scope, while still allowing mutation where necessary.
 
 In C++ and D, types can be made immutable using the ~const~ keyword, with some differences[fn:16]:
 1. ~const~ in C++ can be bypassed using ~const_cast~ or ~mutable~, which undermines its legitimacy.
-2. ~const~ in D applies recursively to all types that a composite type is composed of, a quality they refer to as transitiv. This has the the disadvantage of reduces the range of types that can be expressed, and may force the use of entirely mutable types when only parts of these types need to be mutable. For example, a function that simulates interactions between entities might operate on an immutable list of references to mutable entities, thereby expressing its intent to modify the entities themselves, and not the container. Unfortunately, this distinction cannot be expressed with D's transitive const.
+2. ~const~ in D applies recursively to all types that a composite type is composed of, a quality they refer to as transitive. This has the the disadvantage of reduces the range of types that can be expressed, and may force the use of entirely mutable types when only parts of these types need to be mutable. For example, a function that simulates interactions between entities might operate on an immutable list of references to mutable entities, thereby expressing its intent to modify the entities themselves, and not the container. Unfortunately, this distinction cannot be expressed with D's transitive ~const~.
 
 In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is /required/ to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust takes this a step further in a great way, and prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17] Whether ~ripl~ can achieve the same in future will depend on a choice between garbage collection and a Rust-style ownership system, a decision that hasn't been made yet. Although a Rust-style ownership system has many advantages, I am uncertain about the complexity this might add to the language and how difficult this would be to implement.
 
@@ -788,13 +788,13 @@ As with variable mutability, ~ripl~'s approach to constraints on purity is simil
 
 
 ** TODO Performant
-# As a statically-typed and compiled language, ~ripl~ is suceptible to a wide range of optimizations, and has some inherent performance benefits over dynamically typed and/or interpreted languages.
+# As a statically-typed and compiled language, ~ripl~ is susceptible to a wide range of optimizations, and has some inherent performance benefits over dynamically typed and/or interpreted languages.
 
-# As a statically-typed, compiled and strictly-evaluated language, ~ripl~ is suceptible to a similar range of optimizations as languages like C++ and Rust. Furthermore, by using LLVM-IR as a compile target, it's possible to leverage many of the optimizations developed for the C++ compiler Clang.
+# As a statically-typed, compiled and strictly-evaluated language, ~ripl~ is susceptible to a similar range of optimizations as languages like C++ and Rust. Furthermore, by using LLVM-IR as a compile target, it's possible to leverage many of the optimizations developed for the C++ compiler Clang.
 
-# By allowing for mutation and mutable datastructures, ~ripl~ enables the efficient solution of problems that may be difficult or inefficient to solve in a purely functional language like Haskell. As a result of the type level constraints on mutability and purity mentioned in the previous section, these internal mutations can be encapsulated within purely-functional interfaces.
+# By allowing for mutation and mutable data-structures, ~ripl~ enables the efficient solution of problems that may be difficult or inefficient to solve in a purely functional language like Haskell. As a result of the type level constraints on mutability and purity mentioned in the previous section, these internal mutations can be encapsulated within purely-functional interfaces.
 # - Compiled
-# - Mutable datastructures
+# - Mutable data-structures
 # - Strict evaluation
 # - Explicit indirection
 
