@@ -29,6 +29,8 @@
 #+LATEX_HEADER: \usepackage{caption}
 #+LATEX_HEADER: \captionsetup[table]{skip=10pt}
 
+#+LATEX_HEADER: \usepackage{adjustbox}
+
 # Set size of verbatim font used in "example" orb blocks
 #+LATEX_HEADER: \usepackage{verbatim}
 #+LATEX_HEADER: \makeatletter
@@ -685,6 +687,18 @@ These rules can be applied recursively to composite types like functions and tem
 
 An impure function is one that depends on or modifies global, mutable program state like global variables and singletons, or performs system-level IO like interacting with the file-system, performing textual IO, invoking other processes or drawing to the screen. Although this IO is undoubtedly the purpose for which we create programs, there are some disadvantages to impure, or potentially impure[fn:18] functions, including:
 
+#+begin_table
+#+LATEX: \caption{Description of table.}
+#+LATEX: \adjustbox{max width=\linewidth}{
+| Language | Potentially Impure | Pure with Mutable Arguments            | Pure Function                         |
+|----------+--------------------+----------------------------------------+---------------------------------------|
+| C++      | =int main()=       |                                        | =Point operator+(Point a, Point b)=   |
+| D        | =int main()=       |                                        | =pure Point add(Point a, Point b)=    |
+| Haskell  | =main :: IO ()=    | =normalize :: Vector -> Vector=[fn:21] | =(+) :: Point -> Point -> Point=      |
+| ~ripl~   | =(main ~@)=        | =(normalize (^~Vector v))=             | =(+ (Point a) (Point b)) Point=       |
+| Rust     | =fn main()=        | =fn normalize(v: &mut Vector)=         | =fn add(a: Point, b: Point) -> Point= |
+#+LATEX: }
+#+end_table
 
 At its most extreme, impurity and mutation entirely subvert the purpose of function signatures in documenting what functions do, and thereby undermine the structure of the program. When the signature of the entry point of the program (a function that can do /anything/) is not distinguished from pure functions like simple arithmetic operators, how can we trust any function?
 
