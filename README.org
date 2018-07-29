@@ -425,7 +425,7 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 # - The language will be memory-safe, though whether this is achieved via garbage collection or a Rust-style ownership system is yet to be determined.
 
 
-*** Static Typing
+*** =+= Static Typing
 
 Static typing has a wide range of applications and advantages. It can catch errors earlier in the development process and nearer to the source than the corresponding runtime errors, can improve performance by informing optimizations and reducing the number of runtime checks because data types are known in advance, can be used to disambiguate names via overload resolution (as in C++, C#, D, Java, and Scala), can ensure that only certain functions have side effects (as in D and Haskell), can ensure that only certain aspects of certain variables can be modified (as in C++, D and Rust), and can be used as a basis for metaprogramming (as in C++, D and Haskell).
 
@@ -444,7 +444,7 @@ When combined with type inference, these advantages can be leveraged with little
 # Personally I am a strong proponent of static typing and don't really understand the appeal of dynamic typing.
 
 
-*** Type-Safe Discriminated Unions
+*** =+= Type-Safe Discriminated Unions
 
 Type-safe discriminated unions, or sum types, (as seen in Haskell, ML, Rust and Scala, among others) provide a very powerful and intuitive way of modelling polymorphic data and computations that may take one of a number of forms. Some examples in ~ripl~ are shown below:
 
@@ -479,7 +479,7 @@ Although discriminated unions are analogous in some respects to OOP style inheri
 # Discriminated unions are a powerful tool for authoring and composing data types, and are analogous in some respects to OOP style inheritance and subtyping (in Scala, for example, discriminated unions are created using inheritance). They provide a very powerful and intuitive way of modelling data and computations that may take one of a number of forms,
 
 
-*** Type-Level Constraints on Existence (null safety)
+*** =+= Type-Level Constraints on Existence (null safety)
 
 The ability to substitute ~null~, ~nil~, etc. for many or all values is a frequent source of ambiguity and error in many languages, including C, C++, C#, D, Java, JavaScript, Lisp, Python, and Scala.
 
@@ -493,7 +493,7 @@ Although the unrestricted and potentially unsafe use of ~null~ is a significant 
 
 1. *Dependent Typing:* dependent typing is a language feature in which the type of an expression may depend on its value. Kotlin employs a limited form of dependent typing to differentiate between nullable and non-nullable pointers at compile time, based on type annotations in addition to control flow[fn:11].
 
-2. *Type-Safe Discriminated Unions:* discriminated unions, as discussed in section [[Type-Safe Discriminated Unions]], provide a very robust and safe way of representing polymorphic types, and is employed by Haskell, ML, and Rust, among others, to represent potentially non-existent values in a type safe way[fn:12].
+2. *Type-Safe Discriminated Unions:* discriminated unions, as discussed in section [[\[Included\] Type-Safe Discriminated Unions]], provide a very robust and safe way of representing polymorphic types, and is employed by Haskell, ML, and Rust, among others, to represent potentially non-existent values in a type safe way[fn:12].
 
 Between these options I prefer type-safe discriminated unions, because they're simpler than full-blown dependent typing (as seen in languages like Idris, which is roughly speaking a strictly evaluated and dependently typed Haskell), and because type-safe discriminated unions are much more widely applicable than the limited form of dependent typing seen in Kotlin. In support of this idea, Idris, which has both discriminated unions /and/ dependent typing, implements its ~Maybe~ type in terms of unions[fn:13]; ~ripl~ will do the same.
 
@@ -506,31 +506,32 @@ Between these options I prefer type-safe discriminated unions, because they're s
 [fn:13] Idris Standard Library, Maybe, https://github.com/idris-lang/Idris-dev/blob/master/libs/prelude/Prelude/Maybe.idr
 
 
-*** TODO Type-Level Constraints on Mutability
+*** COMMENT Type-Level Constraints on Mutability ~(this text should be somewhere else)~
 
 Unconstrained or underconstrained mutability is problematic. The more state a program has, and the more widely this state can be modified, the harder it is to reason about. Fortunately, there are a number of ways in which programming languages can enable programmers to limit the amount and scope of a program's state:
 
 # How much harder would math be if it was stateful and the meaning of operations was subject to change in real time? That is what imperative programming with shared mutable state is like.
 
-**** Temporary, Local Variables
+
+*** =+= Temporary, Local Variables
 
 Although a number of languages have had a shaky history with temporary, local variables (including BASIC, COBOL[fn:9] and Fortran[fn:14]), we are fortunate that temporary, local variables are ubiquitous in modern languages. The locality of these variables reduces the scope in which their state can be accessed, and their transience reduces the state of the program that would otherwise persist between function calls. All variables in ~ripl~ not declared at the top level are temporary and local.
 
 [fn:9] http://www.jeromegarfunkel.com/authored/cobol_apology.htm
 [fn:14] http://www.mathcs.emory.edu/~cheung/Courses/561/Syllabus/5-Fortran/scoping.html
 
-**** Encapsulation
+*** =?= Encapsulation
 
 Considered one of the defining features of object oriented programming, encapsulation is another feature that helps to limit the scope of program state. Although I do not have concrete plans for encapsulation and access modifiers in ~ripl~, encapsulation warrants mentioning because it demonstrates that not only functional languages are concerned with limiting the scope of mutable state but also imperative and object oriented languages.
 
-**** Expression Orientation
+*** =+= Expression Orientation
 
 Expression orientation is a language feature that allows programmers to perform computations by composing expressions rather than directing control flow or mutating intermediary values. Expression orientation is a continuum, from assembly languages and compiler intermediary representations that are highly imperative, to imperative languages with both expressions and statements (like C++, C#, Java, etc.), to fully functional languages in which everything or nearly everything is an expression (like Haskell, Lisp, ML, Scala, etc.).
 
 Expression orientation helps to reduce the statefullness of a program by reducing the number of variables in scope and reducing the need to mutate these variables. Everything in ~ripl~ that is not a top-level definition is an expression.
 # Provide a link to expression orientation section under concise/intuitive
 
-**** Modelling Mutation and Impurity With Monads
+*** =-= Modelling Mutation and Impurity With Monads
 
 # Should this be Modelling Mutation and Impurity With Monads (Not Adopted)
 
@@ -544,11 +545,12 @@ Although I agree with the designers of these languages that it's important to se
 
 For example, during the semantic phase of the ~ripl~ compiler, every expression is "reduced" to a value, a type, or a typed expression. Most expressions will depend on other definitions in the program, and these definitions can occur in any order. To deal with this, I reduce the AST lazily, and feed the result back into the ~reduce~ function (a process called "tying the knot") so that the type or value of each definition can be computed in terms of others. Although this works perfectly in many cases, in order to handle cyclic dependencies the computation must be stateful and track the definitions it has already visited so that it does not loop infinitely. After two weeks of trying to get this to work in Haskell with the ST monad, I tried it in Scala, got it to work in a single afternoon, and subsequently ported the entire compiler to Scala.
 
-Although this annecdote does not demonstrate that the above problem could not be solved with laziness and monads in Haskell, or that this problem could not be solved without resorting to mutation at all, it is an example in which Haskell's approach to statefullness made a problem intractable for a user. While constraints on mutability and function purity are important, straightforward imperative/stateful programming is also valuable, and at times necessary. ~ripl~'s approach to encoding these constraints while preserving the ability to perform straightforward stateful programming is discussed in the following two sections: [[Type-Level Constraints on Mutability]] and [[Type-Level Constraints on Purity]].
+Although this annecdote does not demonstrate that the above problem could not be solved with laziness and monads in Haskell, or that this problem could not be solved without resorting to mutation at all, it is an example in which Haskell's approach to statefullness made a problem intractable for a user. While constraints on mutability and function purity are important, straightforward imperative/stateful programming is also valuable, and at times necessary. ~ripl~'s approach to encoding these constraints while preserving the ability to perform straightforward stateful programming is discussed in the following two sections: [[=+= Type-Level Constraints on Mutability]] and [[[Included] Type-Level Constraints on Purity)]].
 
 [fn:15] Haskell Website, Purely Functional, https://www.haskell.org/
 
-**** Type-Level Constraints on Mutability
+
+*** =+= Type-Level Constraints on Mutability
 
 A middle ground between the unconstrained or underconstrained mutability and impurity of languages like C#, Java, ML, and Scala, and the functional purity of languages like Haskell and Idris, are per-variable type-level constraints on mutability, as seen in C++, D and Rust. This is a really great feature in my view, because it removes the ambiguity of what can be modified within what scope, while still allowing mutation where necessary.
 
@@ -581,7 +583,7 @@ These rules can be applied recursively to composite types like functions and tem
 [fn:17] https://doc.rust-lang.org/book/second-edition/ch04-02-references-and-borrowing.html#the-rules-of-references
 
 
-***** COMMENT Code to demonstrate mutability
+**** COMMENT Code to demonstrate mutability
 
 # #+BEGIN_EXPORT latex
 # \begin{minipage}{\linewidth}
@@ -695,7 +697,9 @@ These rules can be applied recursively to composite types like functions and tem
 # #+END_EXPORT
 
 
-*** TODO Type-Level Constraints on Purity
+*** =+= Type-Level Constraints on Purity
+
+# Should this be type-level constraints on impurity?
 
 An impure function is one that depends on or modifies global, mutable state like global variables and singletons, or performs system-level IO like interacting with the file-system, performing textual IO, invoking other processes or drawing to the screen. Although this IO is the purpose for which we create programs, there are some disadvantages to impure, or potentially impure[fn:18] functions, including:
 
