@@ -810,6 +810,17 @@ As a statically-typed and compiled language with mutable data-structures, and wi
 
 *** COMMENT Notes
 
+# Before we get into the specifics of how ~ripl~'s design endeavours to achieve these goals, it may be worth discussing other languages from this perspective:
+# - *C++*
+# - *D*
+#   - ~Pro~ compile-time function evaluation is a good alternative to template meta-programming.
+# - *Haskell*
+#   - ~Pro~
+#   - ~Con~ lack of name overloading
+#   - ~Con~ poor module system
+# - *Idris*
+# - *Lisp*
+
 
 # Should cite the study that found
 # Cite https://arxiv.org/pdf/1409.0252.pdf, which found that
