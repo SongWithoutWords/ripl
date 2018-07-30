@@ -399,6 +399,10 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 
 ** Robust
 
+# Should go somewhere:
+
+What's more, although Haskell's performance is legendary within the Haskell community, a third party comparative study of programming languages conducted by ETH Zuric found Haskell's performance to be average, and its memory usage to be the worst among any language considered (possibly as a result of laziness).
+
 *** COMMENT Notes
 
 # Having worked in the games industry for 2.5 years, in a 20 year old and approximately 4 million line C++ codebase, I've observed some patterns that have given rise to some problems, many of which I feel can be attributed to the language itself:
