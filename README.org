@@ -153,7 +153,9 @@ After conducting a quantitative analysis of language features across a wide lang
 \end{abstract}
 \pagebreak
 
-\Large{\textbf{Symbols in Section Names}}
+\begin{Large}
+\textbf{Symbols in Section Names}
+\end{Large}
 \newline
 \begin{small}
 \texttt{+} Feature included in \texttt{ripl}
