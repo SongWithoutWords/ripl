@@ -818,6 +818,8 @@ As the user interface of a language, syntax warrants serious care and considerat
 
  In mid-June 2018, I came across [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]. I was very impressed, and immediately set about changing ~ripl~ to incorporate this new syntax (examples of which can be seen in [[Minimal Example]] and [[=+= Type-Safe Discriminated Unions]]). I still have not entirely redesigned the languages grammar to account for these changes.
 
+TODO: Rest
+
 # http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
 
 *** COMMENT Notes
