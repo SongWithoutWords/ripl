@@ -542,9 +542,11 @@ Although a number of languages have had a shaky history with temporary, local va
 [fn:9] http://www.jeromegarfunkel.com/authored/cobol_apology.htm
 [fn:14] http://www.mathcs.emory.edu/~cheung/Courses/561/Syllabus/5-Fortran/scoping.html
 
+
 *** =?= Encapsulation
 
 Considered one of the defining features of object oriented programming, encapsulation is another feature that helps to limit the scope of program state. Although I do not have concrete plans for encapsulation and access modifiers in ~ripl~, encapsulation warrants mentioning because it demonstrates that not only functional languages are concerned with limiting the scope of mutable state but also imperative and object oriented languages.
+
 
 *** =+= Expression Orientation
 
@@ -552,6 +554,7 @@ Expression orientation is a language feature that allows programmers to perform 
 
 Expression orientation helps to reduce the statefullness of a program by reducing the number of variables in scope and reducing the need to mutate these variables. Everything in ~ripl~ that is not a top-level definition is an expression.
 # Provide a link to expression orientation section under concise/intuitive
+
 
 *** =-= Modelling Mutation and Impurity With Monads
 
@@ -809,7 +812,9 @@ Syntax is the user interface of a language
 The parser is often the trickiest bit of a compiler
 #+END_QUOTE
 
-Syntax does, I believe, warrant serious design and consideration. ~ripl~'s syntax has changed dramatically since its inception:
+# When placed in perspective as the user interface of a language
+
+Syntax does, I believe, warrant serious design and consideration. ~ripl~'s syntax has changed dramatically since its inception. 
 
 This has been part of an ongoing process of development and I hope improvement.
 
