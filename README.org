@@ -152,7 +152,8 @@
 \pagebreak
 
 \begin{abstract}
-After conducting a quantitative analysis of language features across a wide languages, I believe that \texttt{ripl} is sufficiently different from existing languages to warrant its creation, and that it will offer a productive, ergonomic and performant middle-ground between high-level purely-functional languages and lower-level imperative languages, with some cool new features thrown in.
+
+\texttt{ripl} is a nascent programming language that is intended to combine the safety and purity of a language like Haskell, with the efficient, low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. The \texttt{ripl} compiler is written in Scala with an LLVM backend, and is still in development. This document provides an overview of \texttt{ripl}'s motivation, design and implementation, in addition to a quantitative comparison with other languages over a wide range of language features. The results of this comparison suggest that \texttt{ripl} is sufficiently different from existing languages to warrant its creation, and I believe it will offer a unique, productive, ergonomic, and performant middle-ground between high-level purely-functional languages and lower-level imperative languages, with some interesting new features as well.
 \end{abstract}
 \pagebreak
 
