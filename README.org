@@ -802,16 +802,9 @@ Although they are referred to by many names (packages, modules, namespaces, and 
 *** TODO =+= Memory Safety
 
 
-** TODO Performant
-# As a statically-typed and compiled language, ~ripl~ is susceptible to a wide range of optimizations, and has some inherent performance benefits over dynamically typed and/or interpreted languages.
+** Performant
 
-# As a statically-typed, compiled and strictly-evaluated language, ~ripl~ is susceptible to a similar range of optimizations as languages like C++ and Rust. Furthermore, by using LLVM-IR as a compile target, it's possible to leverage many of the optimizations developed for the C++ compiler Clang.
-
-# By allowing for mutation and mutable data-structures, ~ripl~ enables the efficient solution of problems that may be difficult or inefficient to solve in a purely functional language like Haskell. As a result of the type level constraints on mutability and purity mentioned in the previous section, these internal mutations can be encapsulated within purely-functional interfaces.
-# - Compiled
-# - Mutable data-structures
-# - Strict evaluation
-# - Explicit indirection
+As a statically-typed and compiled language with mutable data-structures and without virtual functions or implicit boxing, ~ripl~ is susceptible to a similar range of optimizations as languages like C++ and Rust. By using LLVM-IR as a compile target, ~ripl~ can leverage many of the optimizations developed for the C++ compiler Clang. If ~ripl~ adopts an ownership system inspired by Rust instead of garbage collection (a decision that is discussed in [[=+= Memory Safety]]), then ~ripl~ may have similar performance potential to C++ and Rust (though actual performance will depend on the implementation).
 
 ** TODO Concise and Intuitive
 
