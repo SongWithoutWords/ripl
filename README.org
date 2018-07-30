@@ -162,9 +162,8 @@ After conducting a quantitative analysis of language features across a wide lang
 \newline
 \texttt{-} Feature not included in \texttt{ripl}
 \newline
-\texttt{?} Feature may be included in future % \newline
+\texttt{?} Feature may be included in future
 \end{small}
-}
 
 \tableofcontents
 \listoffigures
