@@ -208,9 +208,9 @@ The language and compiler are still in development and are not yet in a usable s
 
 [fn:4] ~TODO: Source for Readable Lisp S-expressions~
 
-* Influence by Other Languages
+* Influence of Other Languages
 
-Below is a list of languages mentioned in this document, ordered by the number of mentions. The order is consistent with my expectation, and provides some insight into the languages that have influenced ~ripl~'s design. It is worth mentioning that this influence doesn't necessarily suggest similarity, because ~ripl~'s design has been influenced both by example and counter-example.
+Below is a list of languages mentioned in this document, ordered by the number of mentions. The order is consistent with my expectation, and provides some insight into the influence of other languages on ~ripl~'s design. It is worth mentioning that this influence doesn't necessarily suggest similarity, because ~ripl~'s design has been influenced both by example and counter-example.
 
 #+BEGIN_SRC emacs-lisp :exports results
 (defun recursive-count (regex string start)
