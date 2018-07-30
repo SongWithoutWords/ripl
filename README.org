@@ -341,17 +341,6 @@ Hopefully this example has helped to provide you with an intuition for the langu
 
 Although I've heard it said that programming languages are "just tools", that any language can be "learned in a week", that the choice of language "doesn't matter" and that the differences between programming languages are superficial or primarily syntactic[fn:2], I think that the differences between languages are substantial and important. To quote Edsger Dijkstra, "the tools we are trying to use and the language or notation we are using to express or record our thoughts, are the major factors determining what we can think or express at all"[fn:3].
 
-# To quote Simon Peyton Jones,
-# #+BEGIN_QUOTE
-# +Syntax is not important+
-
-# Syntax is the user interface of a language
-
-# +Parsing is the easy bit of a compiler+
-
-# The parser is often the trickiest bit of a compiler
-# #+END_QUOTE
-# http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
 
 # Should the following go under the robust section?
 
@@ -807,6 +796,18 @@ Although they are referred to by many names (packages, modules, namespaces, and 
 As a statically-typed and compiled language with mutable data-structures, and without virtual functions, lazy evaluation, or implicit indirection (e.g. boxing), ~ripl~ is susceptible to a similar range of optimizations as languages like C++ and Rust. By using LLVM-IR as a compile target, as does the Rust compiler rustc, and C++ compiler Clang, ~ripl~ can leverage many of the same optimizations. If ~ripl~ adopts an ownership system inspired by Rust instead of garbage collection (a decision that is discussed in [[=+= Memory Safety]]), then ~ripl~ may have similar performance potential to C++ and Rust (though actual performance will depend on the implementation).
 
 ** TODO Ergonomic, Intuitive, and Concise
+
+#+BEGIN_QUOTE
++Syntax is not important+
+
+Syntax is the user interface of a language
+
++Parsing is the easy bit of a compiler+
+
+The parser is often the trickiest bit of a compiler
+#+END_QUOTE
+
+# http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
 
 *** COMMENT Notes
 
