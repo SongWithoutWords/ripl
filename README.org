@@ -799,6 +799,8 @@ Below is a table comparing pure and impure function signatures in various langua
 Although they are referred to by many names (packages, modules, namespaces, and maybe others), and there is a lot of variety in their behaviour between languages, namespaces are essentially a system to restrict the visibility of names to avoid name collisions. This is important, and prevents the need to prefix every symbol name with the library that it comes from, as is often necessary in languages without this feature like C and some Lisps. ~ripl~'s namespace feature is inspired by and very similar to that of C#. In addition to this system, which is pretty simple, I would like to add a feature that will allow the compiler to infer namespaces from the directory structure, to reduce the potential for inconsistency between the two.
 
 
+*** TODO + Memory Safety
+
 
 ** TODO Performant
 # As a statically-typed and compiled language, ~ripl~ is susceptible to a wide range of optimizations, and has some inherent performance benefits over dynamically typed and/or interpreted languages.
