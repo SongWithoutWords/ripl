@@ -797,6 +797,8 @@ As a statically-typed and compiled language with mutable data-structures, and wi
 
 ** TODO Ergonomic, Intuitive, and Concise
 
+In order for a language to be pleasant to use, it needs to be ergonomic, concise, and intuitive, and I believe these goals are correlated and entwined. To quote Simon Peyton Jones, one of the lead contributors to Haskell and GHC:
+
 #+BEGIN_QUOTE
 +Syntax is not important+
 
