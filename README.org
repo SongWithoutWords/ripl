@@ -254,7 +254,7 @@ Below is a table of language mentions in this document. The order is consistent 
     ("Java" "\\<Java\\>" 1)
     ("JavaScript" "JavaScript" 1)
     ("Kotlin" "Kotlin" 1)
-    ("Lisp, Racket and Scheme", "Lisp\\|Racket\\|Scheme" 3)
+    ("Lisp, Racket, and Scheme", "Lisp\\|Racket\\|Scheme" 3)
     ("ML" "\\<ML\\>" 1)
     ("Python" "Python" 1)
     ("Rust" "Rust" 1)
@@ -270,26 +270,26 @@ Below is a table of language mentions in this document. The order is consistent 
 #+END_SRC
 #+ATTR_LATEX: :placement [H] :caption \caption{Language Mentions as a Proxy for Influence on \texttt{ripl}'s Design} \rowcolors{2}{gray!30}{}
 #+RESULTS:
-| Language                | Mentions in this Document |
-|-------------------------+---------------------------|
-| Haskell                 |                        34 |
-| D                       |                        22 |
-| C++                     |                        19 |
-| Rust                    |                        17 |
-| Lisp, Racket and Scheme |                        16 |
-| Scala                   |                        13 |
-| Java                    |                        11 |
-| ML                      |                        10 |
-| C#                      |                         9 |
-| Idris                   |                         9 |
-| C                       |                         5 |
-| Python                  |                         5 |
-| JavaScript              |                         4 |
-| Kotlin                  |                         3 |
-| Fortran                 |                         2 |
-| BASIC                   |                         1 |
-| COBOL                   |                         1 |
-| Go                      |                         0 |
+| Language                 | Mentions in this Document |
+|--------------------------+---------------------------|
+| Haskell                  |                        34 |
+| C++                      |                        23 |
+| D                        |                        22 |
+| Rust                     |                        21 |
+| Lisp, Racket, and Scheme |                        17 |
+| Scala                    |                        13 |
+| Java                     |                        11 |
+| C#                       |                        10 |
+| ML                       |                        10 |
+| Idris                    |                         9 |
+| C                        |                         6 |
+| Python                   |                         5 |
+| JavaScript               |                         4 |
+| Kotlin                   |                         3 |
+| Fortran                  |                         2 |
+| BASIC                    |                         1 |
+| COBOL                    |                         1 |
+| Go                       |                         0 |
 
 
 * Minimal Example
