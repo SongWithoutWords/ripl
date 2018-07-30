@@ -797,7 +797,7 @@ As a statically-typed and compiled language with mutable data-structures, and wi
 
 ** TODO Ergonomic, Intuitive, and Concise
 
-In order for a language to be pleasant to use, it needs to be ergonomic, concise, and intuitive, and I believe these goals are correlated and entwined. To quote Simon Peyton Jones, one of the lead contributors to Haskell and GHC:
+In order for a language to be pleasant to use, it needs to be ergonomic, concise, and intuitive, and I believe these goals are correlated and entwined. Although some people do not seem to take syntax seriously (I've heard it dismissed as superficial bike-shedding, or described as a "solved problem"), I'm inclined to agree with Simon Peyton Jones, when he wrote in a presentation about Haskell's design:
 
 #+BEGIN_QUOTE
 +Syntax is not important+
@@ -808,6 +808,10 @@ Syntax is the user interface of a language
 
 The parser is often the trickiest bit of a compiler
 #+END_QUOTE
+
+Syntax does, I believe, warrant serious design and consideration. ~ripl~'s syntax has changed dramatically since its inception:
+
+This has been part of an ongoing process of development and I hope improvement.
 
 # http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
 
