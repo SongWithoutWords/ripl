@@ -839,11 +839,15 @@ As a statically-typed and compiled language with mutable data-structures and wit
 
 *** TODO Expression Orientation
 
+
 *** TODO Pattern Matching
+
 
 *** TODO Name Overloading
 
+
 *** TODO Relatively Fewer Language Constructs
+
 
 ** TODO Powerful
 
