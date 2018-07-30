@@ -565,7 +565,7 @@ Every function in Haskell is a function in the mathematical sense (i.e., "pure")
 
 Although I agree with the designers of these languages that it's important to separate pure and impure code, and that the way they have modelled stateful computations within a purely functional language is elegant, in practice I find that this additional monadic abstraction can make stateful code significantly harder to write (especially when combined with laziness, as in Haskell).
 
-For example, during the semantic phase of the ~ripl~ compiler, every expression is "reduced" to a value, a type, or a typed expression. Most expressions will depend on other definitions in the program, and these definitions can occur in any order. To deal with this, I reduce the AST lazily, and feed the result back into the ~reduce~ function (a process called "tying the knot") so that the type or value of each definition can be computed in terms of others. Although this works perfectly in many cases, in order to handle cyclic dependencies the computation must be stateful and track the definitions it has already visited so that it does not loop infinitely. After two weeks of trying to get this to work in Haskell with the ST monad, I tried it in Scala, got it to work in a single afternoon, and subsequently ported the entire compiler to Scala.
+For example, during the semantic phase of the ~ripl~ compiler, every expression is "reduced" to a value, a type, or a typed expression. Most expressions will depend on other definitions in the program, and these definitions can occur in any order. To deal with this, I reduce the abstract syntax tree lazily, and feed the result back into the ~reduce~ function (a process called "tying the knot") so that the type or value of each definition can be computed in terms of others. Although this works perfectly in many cases, in order to handle cyclic dependencies the computation must be stateful and track the definitions it has already visited so that it does not loop infinitely. After two weeks of trying to get this to work in Haskell with the ST monad, I tried it in Scala, got it to work in a single afternoon, and subsequently ported the entire compiler to Scala.
 
 Although this anecdote does not demonstrate that the above problem could not be solved with laziness and monads in Haskell, or that this problem could not be solved without resorting to mutation at all, it is an example in which Haskell's approach to statefullness made a problem intractable for a user. While constraints on mutability and function purity are important, straightforward imperative/stateful programming is also valuable, and at times necessary. ~ripl~'s approach to encoding these constraints while preserving the ability to perform straightforward stateful programming is discussed in the following two sections: [[=+= Type-Level Constraints on Mutability]] and [[=+= Type-Level Constraints on Purity]].
 
@@ -733,22 +733,28 @@ Indeed, in order to /know/ how such potentially impure functions may interact wi
 
 At its most extreme, systemic impurity entirely subverts the purpose of function signatures in documenting what functions do, and thereby undermines the structure of the program. When a language fails to distinguish (as most do) between the signature of the entry point of the program (something like =int main()=), a function that can do /anything/, and the signature of a pure function like addition (something like =int +(int, int)=), how can any function in this language be trusted?
 
-In a purely functional program you can tell how the pieces fit together from their types; in a more imperative program there may be a way to arrange and order the pieces such that they fit, but it may not be immediately obvious how. In a pure language like Haskell, we know a lot about a function with a type like =A -> B=. We know that it will use an =A= to compute a =B= without depending on or modifying the state of the program in any way[fn:19], and consequently that:
+In a purely functional program you can tell how the pieces fit together from their types, whereas in a more imperative program there may be a way to arrange and order the pieces such that they fit, but it may not be immediately obvious how. In a pure language like Haskell, we know a lot about a function with a type like =A -> B=. We know that it will use an =A= to compute a =B= without depending on or modifying the state of the program in any way[fn:19], and consequently that:
 1. It always produces the same output given the same input.
 2. It does not effect the program and so can be called any number of times without consequence.
 3. It behaves the same way within the context of the program as it does when tested in isolation.
 4. It can be evaluated at compile time if its arguments are known at compile time.
-# can be tested in isolation and will behave the same way when integrated into the program within the context of the program as it did when tested alone.
 
+Even if a function performs computations with mutable state internally, as long as these internal mutations do not escape to the outside world, all of the above properties still hold. In pure functional languages like Haskell and Idris, this encapsulation of effects and separation of pure and impure code is done using monads (such as IO and ST), as discussed in section [[=-= Modelling Mutation and Impurity With Monads]]. As mentioned in that section, I think this encapsulation of effects is positive, but I have concerns about the complexity of this approach, both for the programmer and for the machine.
 
-Even if a function performs computations with mutable state internally, as long as these internal mutations do not escape to the outside world, all of the above properties still hold. In pure functional languages like Haskell and Idris, this encapsulation of effects and separation of pure and impure code is done using monads (such as IO and ST), as discussed in section [[[Not Included] Modelling Mutation and Impurity With Monads]]. As mentioned in that section, I think this encapsulation of effects is a very good thing, but I have concerns about the complexity of this approach, both for the programmer and for the machine.
+A great alternative solution to this problem in an impure language is employed in D, and is described very well by David Nadlinger[fn:20]. Combined with compile-time evaluation of pure functions and templates that can take arbitrary objects as arguments, this feature helps to provide a basis for powerful type-level programming, in addition to type-level constraints, in D.
 
-A great alternative solution to this problem in an impure language is employed in D, and is described very well by David Nadlinger[fn:20]. Combined with compile-time evaluation of pure functions and templates that can take arbitrary objects as arguments, this feature helps to provide powerful type-level programming in addition to type-level constraints.
+~ripl~'s method of constraining purity is similar to that of D, but differs in some respects. Rather than using a modifier keyword like D, ~ripl~ has a global program state object =@=, that may be taken as a parameter from =main= and distributed to the rest of the program as an argument to other functions. In order to read global state (such as reading global variables, reading files, or checking the current time) functions must take =@= as a parameter. In order to modify global state (such as writing global variables, writing files, or writing to the console) functions must take =~@= as a parameter. =~@= may be substituted for =@= just as =^~T= may be substituted for =^T= as described in section [[=+= Type-Level Constraints on Mutability]]. The advantages of this approach include:
+1. It leverages the same syntax and scoping rules as function parameters, so should be intuitive.
+2. It is easily and intuitively encoded in function types, e.g. =main= would have type =(-> ~@ int)=.
+3. Function purity is visible at the call site in addition to the signature (e.g. =println ~@ "Hello world!"=).
+4. It's possible to express the difference between read-only impurity =@= and read-write impurity =~@=.
 
-As with variable mutability, ~ripl~'s approach to constraints on purity is similar to that of ~D~, but different.
+# Maybe add something about how pure by default is better
 
-#+begin_table
-#+LATEX: \caption{Description of table.}
+Below is a table comparing pure and impure function signatures in various languages. Of the languages considered, D, Haskell and ~ripl~ are able to express the difference between pure and impure functions and C++ and Rust are not. The ability to express this difference is actually quite rare among languages, and the only others that I know of in which this is possible to express are purely functional languages like Idris, Clean and Frege. ~ripl~ is the only language I know of that uses a world state parameter, and can express the difference between read-only and read-write impurity.
+
+#+LATEX: \begin{table}[htbp]
+#+LATEX: \caption{Comparison of Pure and Impure Function Signatures in Various Languages}
 #+LATEX: \adjustbox{max width=\linewidth}{
 | Language | Potentially Impure | Pure with Mutable Arguments         | Pure                                  |
 |----------+--------------------+-------------------------------------+---------------------------------------|
@@ -758,27 +764,24 @@ As with variable mutability, ~ripl~'s approach to constraints on purity is simil
 | ~ripl~   | =(main ~@)=        | =(normalize (^~Vector v))=          | =(+ (Point a) (Point b)) Point=       |
 | Rust     | =fn main()=        | =fn normalize(v: &mut Vector)=      | =fn add(a: Point, b: Point) -> Point= |
 #+LATEX: }
-#+end_table
+#+LATEX: \end{table}
 
-# A solution to this problem in a non-functionally pure languageThere is another solution to this problem used in D, which will be used also by ~ripl~ with some adjustments.
-
-- [X] How impurity goes wrong
-- [-] How other languages (namely D solve this)
-- [X] Maybe briefly mention Haskell
-- [ ] Describe how it's done here.
-
-# | But really though[fn:22] |
+# - [X] How impurity goes wrong
+# - [X] How other languages (namely D solve this)
+# - [X] Maybe briefly mention Haskell
+# - [-] Describe how it's done here.
 # Of course, every useful program needs to perform effects, talk about three layer cake, onion architecture, thin layer of IO on top of functionally pure business logic.
 
 # I once created an alternate initialization path for a 20 year old and approximately 4 million line C++ game engine with a diverse cast of singletons and little-to-no documentation. It was a two week process of cutting, pasting, adapting, reordering and binary searching.
 
 [fn:18] The purity of a function in a language that does not distinguish between pure and impure functions can only be determined by recursively reading it and all of the functions it calls, which may not be feasible.
 
-[fn:19] Unless it circumvents the type system by some mechanism like Haskell's =unsafePerformIO=, but this is highly uncommon.
+[fn:19] Unless it circumvents the type system by some mechanism like Haskell's =unsafePerformIO=, but this is uncommon.
 
 [fn:20] David Nadlinger, Purity in D, http://klickverbot.at/blog/2012/05/purity-in-d/
 
 [fn:21] Creating new data is as close as we get to modifying data in place in Haskell, without resorting to ST monad which would be overkill in this case.
+
 
 *** TODO Namespaces
 
