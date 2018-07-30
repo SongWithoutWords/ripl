@@ -789,7 +789,7 @@ A ~ripl~ function that does not take the global state parameter, but takes one o
 
 [fn:21] Creating new data is as close as we get to modifying data in place in Haskell, without resorting to ST monad which would be overkill in this case.
 
-[fn:24] This terminology is used by, and possibly introduced by the D programming language:
+[fn:24] This terminology is used by, and possibly introduced by, the D programming language:
 https://tour.dlang.org/tour/en/gems/functional-programming
 
 
@@ -833,10 +833,10 @@ As the user interface of a language, syntax warrants serious care and considerat
 
 TODO: Rest
 
-[fn:22] Simon Peyton Jones, Wearing the Hair Shirt: A Retrospective on Haskell, Slide 9,
+[fn:22] Simon Peyton Jones, Wearing the Hair Shirt: A Retrospective on Haskell, slide 9,
 http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
 
-[fn:23] Sebastian Nanz, Carlo A. Furia, A Comparative Study of Programming Languages in Rosetta Code,
+[fn:23] Sebastian Nanz, Carlo A. Furia, A Comparative Study of Programming Languages in Rosetta Code, page 6,
 https://arxiv.org/pdf/1409.0252.pdf
 
 *** COMMENT Notes
