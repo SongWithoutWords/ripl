@@ -822,6 +822,11 @@ The parser is often the trickiest bit of a compiler
 # - *Idris*
 # - *Lisp*
 
+# Having worked full time doing game programming in C++ for 2.5 years, and having written in more ergonomic languages like  do not believe it met these goals.
+
+# There is a wide range in the degree to which different languages meet these goals.
+
+# Some languages meet these goals:
 
 # Should cite the study that found
 # Cite https://arxiv.org/pdf/1409.0252.pdf, which found that
