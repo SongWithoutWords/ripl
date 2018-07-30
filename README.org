@@ -145,7 +145,10 @@
        commentstyle=\color{DarkGreen},
   }
 
-\maketitle
+% Surrounding commands remove page number from title page
+\clearpage\maketitle
+\thispagestyle{empty}
+
 \pagebreak
 
 \begin{abstract}
