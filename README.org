@@ -748,10 +748,10 @@ In a purely functional program you can tell how the pieces fit together from the
 
 Even if a function performs computations with mutable state internally, as long as these internal mutations do not escape to the outside world, all of the above properties still hold. In pure functional languages like Haskell and Idris, this encapsulation of effects and separation of pure and impure code is done using monads (such as IO and ST), as discussed in section [[=-= Modelling Mutation and Impurity With Monads]]. As mentioned in that section, I think this encapsulation of effects is positive, but I have concerns about the complexity of this approach, both for the programmer and for the machine.
 
-**** D's Approach to Constraining Impurity
+**** Purity in D
 A great alternative solution to this problem in an impure language is employed in D, and is described very well by David Nadlinger[fn:20]. Combined with compile-time evaluation of pure functions and templates that can take arbitrary objects as arguments, this feature helps to provide a basis for powerful type-level programming, in addition to type-level constraints, in D.
 
-**** =ripl='s Approach to Constraining Impurity
+**** Purity in =ripl=
 ~ripl~'s method of constraining purity is similar to that of D, but differs in some respects. Rather than using a modifier keyword like D, ~ripl~ has a global state parameter =@=, that may be taken as a parameter to =main= and distributed to the rest of the program as an argument to other functions. In order to read global state (such as reading global variables, reading files, or checking the current time) functions must take =@= as a parameter. In order to modify global state (such as writing global variables, writing files, or writing to the console) functions must take =~@= as a parameter. =~@= may be substituted for =@= just as =^~T= may be substituted for =^T= as described in section [[=+= Type-Level Constraints on Mutability]]. The advantages of this approach include:
 1. It leverages the same syntax and scoping rules as function parameters, so should be intuitive.
 2. It is easily and intuitively encoded in function types, e.g. =main= would have type =(-> ~@ int)=.
