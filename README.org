@@ -846,7 +846,7 @@ As a statically-typed and compiled language with mutable data-structures and wit
 *** TODO Name Overloading
 
 
-*** TODO Relatively Fewer Language Constructs
+*** TODO Minimal Design
 
 
 ** TODO Powerful
