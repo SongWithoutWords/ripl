@@ -387,7 +387,7 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 
 ** COMMENT Notes
 
-# Can I tie this in with what Simon Payton Jones is talking about with a future Haskell being strict?
+# Can I tie this in with what Simon Peyton Jones is talking about with a future Haskell being strict?
 
 # Consequently, the intent for this language is to be robust by obviating as many of these problems as possible, while remaining versatile
 
