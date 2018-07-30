@@ -819,6 +819,12 @@ Syntax is the user interface of a language
 The parser is often the trickiest bit of a compiler
 #+END_QUOTE
 
+Indeed, there are some very large and measurable differences between various languages' syntaxes. A study by ETH Zurich of programs in Rosetta Code (a repository of solutions to over 700 programming tasks in hundreds of languages) found that[fn:23]:
+
+#+BEGIN_QUOTE
+Languages are clearly divided into two groups: functional and scripting languages tend to provide the most concise code, whereas procedural and object-oriented languages are significantly more verbose. The absolute difference between the two groups is major; for instance, Java programs are on average 2.2–2.9 times longer than programs in functional and scripting languages.
+#+END_QUOTE
+
 As the user interface of a language, syntax warrants serious care and consideration. Nearly all aspects of ~ripl~'s syntax have changed radically over the course of its development thus far. This has been part of an ongoing process of development and, I hope, improvement.
 
 ~ripl~'s initial syntax was a [[https://github.com/SongWithoutWords/pidgin/blob/78205a910516c1defb62344e74a271cef4675a49/src/Parser.y][Python-like BNF grammar]] with C-style function application and whitespace delimited blocks. It had both statements and expressions, both if-expressions and if-statements (again like Python). As time went on, I started to think that this distinction between statements and expressions was redundant and inelegant. In a commit in January 2018, [[https://github.com/SongWithoutWords/pidgin/commit/51804e611d0d394a6f388b5b15e9f9bbd4ebcfcc][statements were removed from the grammar,]] and the language started to become expression oriented. By early June 2018, [[https://github.com/SongWithoutWords/ripl/blob/87b64d2ded8a0c88180e7fef701bb9015df46c7b/src/main/antlr4/RiplParser.g4][nearly all constructs had became expressions in the grammar]], including composite types like structs, unions and function types.
@@ -827,7 +833,11 @@ As the user interface of a language, syntax warrants serious care and considerat
 
 TODO: Rest
 
-# http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
+[fn:22] Simon Peyton Jones, Wearing the Hair Shirt: A Retrospective on Haskell, Slide 9,
+http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
+
+[fn:23] Sebastian Nanz, Carlo A. Furia, A Comparative Study of Programming Languages in Rosetta Code,
+https://arxiv.org/pdf/1409.0252.pdf
 
 *** COMMENT Notes
 
@@ -848,18 +858,8 @@ TODO: Rest
 
 # Some languages meet these goals:
 
-# Should cite the study that found
-# Cite https://arxiv.org/pdf/1409.0252.pdf, which found that
 
-# #+BEGIN_QUOTE
-# Languages are clearly divided into two groups: functional
-# and scripting languages tend to provide the most concise
-# code, whereas procedural and object-oriented languages are
-# significantly more verbose. The absolute difference between
-# the two groups is major; for instance, Java programs are on
-# average 2.2–2.9 times longer than programs in functional and
-# scripting languages.
-# #+END_QUOTE
+
 
 # By emulating certain features of concise languages, like Haskell, Racket and Scala, it is hoped that this language can be made concise as well. What sets these languages apart from other more verbose languages?
 
