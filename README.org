@@ -775,10 +775,6 @@ Below is a table comparing pure and impure function signatures in various langua
 #+LATEX: }
 #+LATEX: \end{table}
 
-# - [X] How impurity goes wrong
-# - [X] How other languages (namely D solve this)
-# - [X] Maybe briefly mention Haskell
-# - [-] Describe how it's done here.
 # TODO Of course, every useful program needs to perform effects, talk about three layer cake, onion architecture, thin layer of IO on top of functionally pure business logic.
 
 # I once created an alternate initialization path for a 20 year old and approximately 4 million line C++ game engine with a diverse cast of singletons and little-to-no documentation. It was a two week process of cutting, pasting, adapting, reordering and binary searching.
