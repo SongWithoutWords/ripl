@@ -754,7 +754,7 @@ A great alternative solution to this problem in an impure language is employed i
 **** Purity in =ripl=
 ~ripl~'s method of constraining purity is similar to that of D, but differs in some respects. Rather than using a modifier keyword like D, ~ripl~ has a global state parameter =@=, that may be taken as a parameter to =main= and distributed to the rest of the program as an argument to other functions. In order to read global state (such as reading global variables, reading files, checking the current time, or using memory addresses in computations) functions must take =@= as a parameter. In order to modify global state (such as writing global variables, writing files, or writing to the console) functions must take =~@= as a parameter. =~@= may be substituted for =@= just as =^~T= may be substituted for =^T= as described in section [[=+= Type-Level Constraints on Mutability]]. The advantages of this approach include:
 1. It leverages the same syntax and scoping rules as function parameters, so should be intuitive.
-2. It is easily and intuitively encoded in function types, e.g. =main= would have type =(-> ~@ int)=.
+2. It is easily and intuitively encoded in function types, e.g. =main= may have type =(-> ~@ int)=.
 3. Function purity is visible at the call site in addition to the signature (e.g. =println ~@ "Hello world!"=).
 4. It's possible to express the difference between read-only impurity =@= and read-write impurity =~@=.
 
