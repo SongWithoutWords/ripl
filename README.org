@@ -775,6 +775,8 @@ Below is a table comparing pure and impure function signatures in various langua
 #+LATEX: }
 #+LATEX: \end{table}
 
+A ~ripl~ function that does not take the global state parameter, but takes one or more mutable references is weakly pure; a ~ripl~ function that takes neither the global state parameter, nor any mutable reference is strongly pure[fn:24].
+
 # TODO Of course, every useful program needs to perform effects, talk about three layer cake, onion architecture, thin layer of IO on top of functionally pure business logic.
 
 # I once created an alternate initialization path for a 20 year old and approximately 4 million line C++ game engine with a diverse cast of singletons and little-to-no documentation. It was a two week process of cutting, pasting, adapting, reordering and binary searching.
@@ -786,6 +788,9 @@ Below is a table comparing pure and impure function signatures in various langua
 [fn:20] David Nadlinger, Purity in D, http://klickverbot.at/blog/2012/05/purity-in-d/
 
 [fn:21] Creating new data is as close as we get to modifying data in place in Haskell, without resorting to ST monad which would be overkill in this case.
+
+[fn:24] This terminology is used by, and possibly introduced by the D programming language:
+https://tour.dlang.org/tour/en/gems/functional-programming
 
 
 *** + Namespaces
