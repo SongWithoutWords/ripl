@@ -178,7 +178,7 @@ After conducting a quantitative analysis of language features across a wide lang
 #+END_EXPORT
 
 
-* Abstract
+* Introduction
 ~ripl~ is a nascent programming language and the subject of my undergraduate thesis at UBC. It is intended to combine the safety and purity of a language like Haskell, with the efficient, low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. The ~ripl~ compiler is written in Scala with an LLVM backend, and is still in development. The purpose of this document is to provide an overview of ~ripl~'s motivation, design and implementation, in addition to a comparison with other languages.
 
 #+BEGIN_EXPORT latex
