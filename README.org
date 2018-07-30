@@ -149,7 +149,7 @@
 \pagebreak
 
 \begin{abstract}
-After conducting a quantitative analysis of language features across a wide languages, I believe that \texttt{ripl} is sufficiently different from existing languages to warrant its creation, and that it will offer a productive middleground between high-level functional languages and lower-level imperative languages, with some cool new features thrown in.
+After conducting a quantitative analysis of language features across a wide languages, I believe that \texttt{ripl} is sufficiently different from existing languages to warrant its creation, and that it will offer a productive, ergonomic and performant middle-ground between high-level purely-functional languages and lower-level imperative languages, with some cool new features thrown in.
 \end{abstract}
 \pagebreak
 
