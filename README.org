@@ -146,19 +146,15 @@
   }
 
 \maketitle
-
-\newcommand\blfootnote[1]{%
-  \begingroup
-  \renewcommand\thefootnote{}\footnote{#1}%
-  \addtocounter{footnote}{-1}%
-  \endgroup
-}
-
-\thanks{
-\blfootnote{ \texttt{+} Feature included in \texttt{ripl} }
-\blfootnote{ \texttt{-} Feature not included in \texttt{ripl} }
-\blfootnote{ \texttt{?} Feature may be included in future }
-}
+\Large{\textbf{Symbols in Section Names}}
+\newline
+\begin{small}
+\texttt{+} Feature included in \texttt{ripl}
+\newline
+\texttt{-} Feature not included in \texttt{ripl}
+\newline
+\texttt{?} Feature may be included in future % \newline
+\end{small}
 }
 
 \tableofcontents
