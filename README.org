@@ -563,8 +563,6 @@ Expression orientation helps to reduce the statefullness of a program by reducin
 
 *** =-= Modelling Mutation and Impurity With Monads
 
-# Should this be Modelling Mutation and Impurity With Monads (Not Adopted)
-
 One way of constraining mutation, as seen in Haskell and Idris, is to limit mutation to occurring within monads (namely IO and ST, in both Haskell and Idris):
 
 #+BEGIN_QUOTE
