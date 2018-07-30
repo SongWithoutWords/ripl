@@ -865,6 +865,9 @@ This has been part of an ongoing process of development and I hope improvement.
 # - Readable, uniform syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
 
 
+*** TODO Whitespace Delimitation
+
+
 *** TODO Expression Orientation
 
 
