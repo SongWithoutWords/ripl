@@ -807,7 +807,7 @@ As a statically-typed and compiled language with mutable data-structures, and wi
 
 ** TODO Ergonomic, Intuitive, and Concise
 
-In order for a language to be enjoyable to use (or at least be unobtrusive), it needs to be ergonomic, intuitive and concise. Although some people don't seem to take syntax seriously (by dismissing it as superficial bike-shedding, describing it as a "solved problem", or wondering why discontent users of verbose languages are "afraid of typing"), I'm inclined to agree with Simon Peyton Jones, when he wrote in a presentation about Haskell's design:
+In order for a language to be enjoyable to use (or at least unobtrusive), it needs to be ergonomic, intuitive and concise. Although some people don't seem to take syntax very seriously (by dismissing it as superficial bike-shedding, describing it as a "solved problem", or wondering why discontent users of verbose languages are "afraid of typing"), I'm inclined to agree with Simon Peyton Jones, when he wrote in a presentation about Haskell's design[fn:22]:
 
 #+BEGIN_QUOTE
 +Syntax is not important+
