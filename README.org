@@ -113,7 +113,7 @@
       },
     sensitive=true, % keywords are not case-sensitive
     morecomment=[l]{;}, % l is for line comment
-    morestring=[b]" % defines that strings are enclosed in double quotes
+    morestring=[b]" % defines that strings are enclosed in double quotes " for balance in buffer ;)
 }
 
 \definecolor{DarkGray}    {rgb}{0.26, 0.26, 0.30}
