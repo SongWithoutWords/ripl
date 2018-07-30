@@ -414,7 +414,7 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 
 # The problems mentioned above would not have been possible in Haskell.
 
-# One thing I feel I can say about Haskell with little hesitation, is that it's a very robust language, and that many of the bugs and anti-patterns that I've encountered workin in the games industry
+# One thing I feel I can say about Haskell with little hesitation, is that it's a very robust language, and that many of the bugs and anti-patterns that I've encountered working in the games industry
 
 # Having worked as a programmer in the games industry for 2.5 years, in a 20 year old, approximately 4 million line C++ codebase, a lot of the anti-patterns and bugs I encountered were related to imperative and object oriented programming:
 
