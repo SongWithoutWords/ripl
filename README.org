@@ -800,7 +800,7 @@ As a statically-typed and compiled language with mutable data-structures, and wi
 
 ** TODO Ergonomic, Intuitive, and Concise
 
-In order for a language to be pleasant to use, it needs to be ergonomic, concise, and intuitive, and I believe these goals are correlated and entwined. Although some people do not seem to take syntax seriously (I've heard it dismissed as superficial bike-shedding, or described as a "solved problem"), I'm inclined to agree with Simon Peyton Jones, when he wrote in a presentation about Haskell's design:
+In order for a language to be enjoyable to use (or at least be unobtrusive), it needs to be ergonomic, intuitive and concise. Although some people don't seem to take syntax seriously (by dismissing it as superficial bike-shedding, describing it as a "solved problem", or wondering why discontent users of verbose languages are "afraid of typing"), I'm inclined to agree with Simon Peyton Jones, when he wrote in a presentation about Haskell's design:
 
 #+BEGIN_QUOTE
 +Syntax is not important+
@@ -812,11 +812,11 @@ Syntax is the user interface of a language
 The parser is often the trickiest bit of a compiler
 #+END_QUOTE
 
-# When placed in perspective as the user interface of a language
+As the user interface of a language, syntax warrants serious care and consideration. Nearly all aspects of ~ripl~'s syntax have changed radically over the course of its development thus far. This has been part of an ongoing process of development and, I hope, improvement.
 
-Syntax does, I believe, warrant serious design and consideration. ~ripl~'s syntax has changed dramatically since its inception. 
+~ripl~'s initial syntax was a [[https://github.com/SongWithoutWords/pidgin/blob/78205a910516c1defb62344e74a271cef4675a49/src/Parser.y][Python-like BNF grammar]] with C-style function application and whitespace delimited blocks. It had both statements and expressions, both if-expressions and if-statements (again like Python). As time went on, I started to think that this distinction between statements and expressions was redundant and inelegant. In a commit in January 2018, [[https://github.com/SongWithoutWords/pidgin/commit/51804e611d0d394a6f388b5b15e9f9bbd4ebcfcc][statements were removed from the grammar,]] and the language started to become expression oriented. By early June 2018, [[https://github.com/SongWithoutWords/ripl/blob/87b64d2ded8a0c88180e7fef701bb9015df46c7b/src/main/antlr4/RiplParser.g4][nearly all constructs had became expressions in the grammar]], including composite types like structs, unions and function types.
 
-This has been part of an ongoing process of development and I hope improvement.
+ In mid-June 2018, I came across [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]. I was very impressed, and immediately set about changing ~ripl~ to incorporate this new syntax (examples of which can be seen in [[Minimal Example]] and [[=+= Type-Safe Discriminated Unions]]). I still have not entirely redesigned the languages grammar to account for these changes.
 
 # http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
 
