@@ -20,7 +20,6 @@
 #+SUBTITLE: Motivation, Design, and Implementation
 #+AUTHOR: Ian McCall
 #+LATEX_HEADER: \usepackage[margin=0.6in]{geometry}
-#+LATEX_HEADER: \hypersetup{ colorlinks=true, linkcolor=black, urlcolor=blue }
 
 #+LATEX_HEADER: \usepackage[T1]{fontenc}
 #+LATEX_HEADER: \usepackage{cmbright}
@@ -52,6 +51,8 @@
 
 #+LATEX_HEADER: \usepackage{titlesec}
 
+# hyperlinke colors
+#+LATEX_HEADER: \hypersetup{ colorlinks=true, linkcolor=black, urlcolor=blue }
 
 # Used for both bulleted and enumerated lists
 #+LATEX_HEADER: \usepackage{enumitem}
