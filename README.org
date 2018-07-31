@@ -519,7 +519,7 @@ template (list a)
 #+END_SRC
 #+LATEX: \end{minipage}
 
-Unlike untagged unions that do not record the type of the union's value, and non-type-safe discriminated unions in which a type tag is manually set and branched on by the programmer, type-safe discriminated unions include a type tag that is automatically set during construction and automatically branched on during pattern matching.
+Unlike untagged unions that do not record the type of the union's value, and non-type-safe discriminated unions in which a type tag is manually set and branched on by the programmer, type-safe discriminated unions include a type tag that is automatically set during construction and automatically branched on during pattern matching. An example of pattern matching in ~ripl~ can be seen in section [[=+= Pattern Matching]].
 
 Although discriminated unions are analogous in some respects to OOP style inheritance subtyping (which can even be used as a basis for discriminated unions, as in Scala), I would argue that type-safe discriminated unions when used in conjunction with pattern matching, result in code that is more robust, precise, straightforward and less tightly coupled than OOP style inheritance. As such, discriminated unions are an important feature of ~ripl~'s design, the advantages of which are highlighted in the following section on null-safety, for which they provide an excellent solution.
 
