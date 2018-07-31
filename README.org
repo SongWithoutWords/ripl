@@ -78,6 +78,9 @@
 # Space above footnotes
 #+LATEX_HEADER: \addtolength{\skip\footins}{6pt}
 
+# Space between footnotes
+#+LATEX_HEADER: \addtolength{\footnotesep}{5pt} % {\baselineskip}
+
 # Prevent footnotes from being split across multiple pages
 #+LATEX_HEADER: \interfootnotelinepenalty=10000
 
