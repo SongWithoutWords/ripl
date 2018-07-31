@@ -930,9 +930,9 @@ https://www.cs.umd.edu/~ben/papers/Miara1983Program.pdf
 # - Type level programming via templates and compile-time function evaluation
 
 *** TODO Compile-Time Function Evaluation
-# - Type-level traits, akin to Haskell type-classes
 
 *** TODO Type Classes
+# - Type-level traits, akin to Haskell type-classes
 
 ** TODO Minor Goals
 *** TODO Lisp-style macros
