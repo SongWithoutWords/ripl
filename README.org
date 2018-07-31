@@ -1013,6 +1013,9 @@ define (evaluate (expression e))
 
 *** TODO =+= Minimal and Consistent Design
 
+# Essential and accidental complexity was coined by Brooks
+# https://en.wikipedia.org/wiki/No_Silver_Bullet
+
 I think there are two kinds of complexity that affect programming language designs. There is the inherent complexity of the problems the language is trying to solve, such as the complexity of data-races and memory management without garbage collection, which Rust solves with its ownership system. Then there is the accidental complexity of (in my experience) nearly everything in C++.
 A large part of designing a language that can be easily understood (I believe) is to avoid complicated and duplicate features wherever possible.
 
