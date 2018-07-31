@@ -201,8 +201,7 @@ The source of this document and the compiler can be found at \url{https://github
 
 
 * Project Status
-The language and compiler are still in development and are not yet in a usable state.
-# TODO: provide link to detailed implementation status.
+The language and compiler are still in development and are not yet in a usable state. A detailed overview of the implementation status can be found in section [[Detailed Implementation Status]].
 
 
 * Features at a Glance
