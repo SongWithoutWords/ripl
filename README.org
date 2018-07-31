@@ -1019,6 +1019,8 @@ define (evaluate (expression e))
 *** TODO =+= Templates
 # - Type level programming via templates and compile-time function evaluation
 
+Templates are like generics/regular parametric polymorphism, except that they can also take integral numeric parameters in C++ and any object in D and ~ripl~. ~TODO: Maybe provide an example of people using type-level peano numbers in Haskell~
+
 
 *** TODO =+= Compile-Time Evaluation
 
