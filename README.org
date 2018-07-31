@@ -903,9 +903,9 @@ https://arxiv.org/pdf/1409.0252.pdf
 
 Although indentation delimited languages are somewhat uncommon, people speak highly of them (e.g. Haskell and Python). I am a proponent of this style for a number of reasons:
 1. Even without whitespace delimitation, people rely on indentation to read code, because it's very hard to read without[fn:25]. Why not leverage this visual structure?
-2. It cuts down on visual tokens and visual clutter.
+2. It reduces the number of tokens and visual clutter.
 3. It ends any discussion or inconsistency over whether opening braces should occur on a new line.
-4. It forces a one-to-one correspondence between the visual structure of the code (the indentation) and the actual structure of the code (the grouping by the parser), thereby reducing the potential for error and confusion.
+4. It reduces the potential for inconsistency between the visual and the semantic structure of the code, thereby reducing the potential for error and confusion.
 
 For these reasons, expressions in ~ripl~ may be grouped by indentation.
 
