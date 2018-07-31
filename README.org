@@ -566,7 +566,7 @@ Considered one of the defining features of object oriented programming, encapsul
 
 Expression orientation is a language feature that allows programmers to perform computations by composing expressions rather than directing control flow or mutating intermediary values. Expression orientation is a continuum, from assembly languages and compiler intermediary representations that are highly imperative, to imperative languages with both expressions and statements (like C++, C#, Java, etc.), to fully functional languages in which everything or nearly everything is an expression (like Haskell, Lisp, ML, Scala, etc.).
 
-Expression orientation helps to reduce the statefullness of a program by reducing the number of variables in scope and reducing the need to mutate these variables. Everything in ~ripl~ that is not a top-level definition is an expression.
+Expression orientation helps to reduce the statefullness of a program by reducing the number of variables in scope and reducing the need to mutate these variables. Everything in ~ripl~ that is not a top-level definition is an expression. Expression orientation is discussed from a usability perspective in section [[=+= Expression Oriented Syntax]].
 # Provide a link to expression orientation section under concise/intuitive
 
 
@@ -959,7 +959,9 @@ define (add-int-and-float (i32 x) (f32 y))
 The rules used for the selection of overloads in the presence of implicit conversions are described in [[=+= Name Overloading]].
 
 
-*** TODO =+= Expression Orientation
+*** =+= Expression Oriented Syntax
+
+Expression orientation is discussed within the context of the Robust design goal in section [[=+= Expression Orientation]], because it enables programming with fewer local variables thereby reducing statefullness within functions. Within the context of usability, I think that expression orientation lends itself to a more composable, ergonomic, elegant, and concise programming style. I would not be surprised if the tendency against expression orientation among imperative languages accounts for some of the verbosity of these languages that was found by Nanz and Furia [fn:23]. Everything in ~ripl~ that is not a top-level definition is an expression.
 
 
 *** TODO =+= Pattern Matching
