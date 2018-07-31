@@ -569,7 +569,7 @@ Expression orientation helps to reduce the statefullness of a program by reducin
 # Provide a link to expression orientation section under concise/intuitive
 
 
-*** =-= Modelling Mutation and Impurity With Monads
+*** =-= Monadic Statefullness and IO
 
 One way of constraining mutation, as seen in Haskell and Idris, is to limit mutation to occurring within monads (namely IO and ST, in both Haskell and Idris):
 
@@ -754,7 +754,7 @@ In a purely functional program you can tell how the pieces fit together from the
 3. It behaves the same way within the context of the program as it does when tested in isolation.
 4. It can be evaluated at compile time if its arguments are known at compile time.
 
-Even if a function performs computations with mutable state internally, as long as these internal mutations do not escape to the outside world, all of the above properties still hold. In pure functional languages like Haskell and Idris, this encapsulation of effects and separation of pure and impure code is done using monads (such as IO and ST), as discussed in section [[=-= Modelling Mutation and Impurity With Monads]]. As mentioned in that section, I think this encapsulation of effects is positive, but I have concerns about the complexity of this approach, both for the programmer and for the machine.
+Even if a function performs computations with mutable state internally, as long as these internal mutations do not escape to the outside world, all of the above properties still hold. In pure functional languages like Haskell and Idris, this encapsulation of effects and separation of pure and impure code is done using monads (such as IO and ST), as discussed in section [[=-= Monadic Statefullness and IO]]. As mentioned in that section, I think this encapsulation of effects is positive, but I have concerns about the complexity of this approach, both for the programmer and for the machine.
 
 **** Purity in D
 A great alternative solution to this problem in an impure language is employed in D, and is described very well by David Nadlinger[fn:20]. Combined with compile-time evaluation of pure functions and templates that can take arbitrary objects as arguments, this feature helps to provide a basis for powerful type-level programming, in addition to type-level constraints, in D.
