@@ -146,12 +146,12 @@
        tabsize=2,
        % dark theme
        backgroundcolor=\color{DarkGray},
-       basicstyle=\color{LightGray}\fontsize{10}{10}\ttfamily,
+       basicstyle=\linespread{1.1}\color{LightGray}\fontsize{10}{10}\ttfamily,
        keywordstyle=\color{LightBlue},
        commentstyle=\color{LightGreen},
        % light theme
        backgroundcolor=\color{LightGray},
-       basicstyle=\color{DarkGray}\fontsize{10}{10}\ttfamily,
+       basicstyle=\linespread{1.1}\color{DarkGray}\fontsize{10}{10}\ttfamily,
        keywordstyle=\color{DarkBlue},
        commentstyle=\color{DarkGreen},
   }
