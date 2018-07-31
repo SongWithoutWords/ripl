@@ -929,7 +929,7 @@ https://www.cs.umd.edu/~ben/papers/Miara1983Program.pdf
 *** TODO Templates
 # - Type level programming via templates and compile-time function evaluation
 
-*** TODO Compile-Time Function Evaluation
+*** TODO Compile-Time Evaluation
 
 *** TODO Type Classes
 # - Type-level traits, akin to Haskell type-classes
