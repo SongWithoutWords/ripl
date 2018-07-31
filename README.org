@@ -811,17 +811,37 @@ Syntax is the user interface of a language
 The parser is often the trickiest bit of a compiler
 #+END_QUOTE
 
-Indeed, there are some very large and measurable differences between various languages' syntaxes. A study by ETH Zurich of programs in Rosetta Code (a repository of solutions to over 700 programming tasks in hundreds of languages) found that[fn:23]:
+Although some syntax elements may be a matter of preference, there is one very large and measurable differences between various languages' syntaxes: verbosity. A study by ETH Zurich of programs in Rosetta Code (a repository of solutions to over 700 programming tasks in hundreds of languages) found that[fn:23]:
 
 #+BEGIN_QUOTE
 Languages are clearly divided into two groups: functional and scripting languages tend to provide the most concise code, whereas procedural and object-oriented languages are significantly more verbose. The absolute difference between the two groups is major; for instance, Java programs are on average 2.2–2.9 times longer than programs in functional and scripting languages.
 #+END_QUOTE
 
-As the user interface of a language, syntax warrants serious care and consideration. Nearly all aspects of ~ripl~'s syntax have changed radically over the course of its development thus far. This has been part of an ongoing process of development and, I hope, improvement.
+While these findings are consistent with my experiences, their magnitude exceeds my expectations (and validates my frustraion with certain verbose languages). Among the largest effects they found were that, of the programs they considered, programs in C# were on average 2.7 times as long as programs in Haskell and 3.6 times as long as programs in Python.
 
-~ripl~'s initial syntax was a [[https://github.com/SongWithoutWords/pidgin/blob/78205a910516c1defb62344e74a271cef4675a49/src/Parser.y][Python-like BNF grammar]] with C-style function application and whitespace delimited blocks. It had both statements and expressions, both if-expressions and if-statements (again like Python). As time went on, I started to think that this distinction between statements and expressions was redundant and inelegant. In a commit in January 2018, [[https://github.com/SongWithoutWords/pidgin/commit/51804e611d0d394a6f388b5b15e9f9bbd4ebcfcc][statements were removed from the grammar,]] and the language started to become expression oriented. By early June 2018, [[https://github.com/SongWithoutWords/ripl/blob/87b64d2ded8a0c88180e7fef701bb9015df46c7b/src/main/antlr4/RiplParser.g4][nearly all constructs had became expressions in the grammar]], including composite types like structs, unions and function types.
+Although I've heard apologists of verbose languages defend this verbosity by insisting that code is read more often than it is written, code that is 2-3 times longer is longer both to read and write. This is not to say that more concise is always better (adequately descriptive names are good), but I do not think that C++, C#, D, Java, etc. have gained any clarity in their verbosity: instead I think bugs lurk in their boilerplate.
 
- In mid-June 2018, I came across [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]. I was very impressed, and immediately set about changing ~ripl~ to incorporate this new syntax (examples of which can be seen in [[Minimal Example]] and [[=+= Type-Safe Discriminated Unions]]). I still have not entirely redesigned the languages grammar to account for these changes.
+*** TODO Brief History of =ripl='s Syntax
+
+As the user interface of a language (per Simon Peyton Jones[fn:22]), syntax warrants serious care and consideration. Nearly all aspects of ~ripl~'s syntax have changed radically over the course of its history thus far. This has been part of an ongoing process of development and, I hope, improvement.
+
+Following its inception February 2017, ~ripl~'s syntax was a [[https://github.com/SongWithoutWords/pidgin/blob/78205a910516c1defb62344e74a271cef4675a49/src/Parser.y][Python-like BNF grammar]] with C-style function application and whitespace delimited blocks. It had both statements and expressions, both if-expressions and if-statements (also like Python). As time went on, I started to think that this distinction between statements and expressions was redundant and inelegant. In a commit in January 2018, [[https://github.com/SongWithoutWords/pidgin/commit/51804e611d0d394a6f388b5b15e9f9bbd4ebcfcc][statements were removed from the grammar,]] and the language started to become expression oriented. By early June 2018, [[https://github.com/SongWithoutWords/ripl/blob/87b64d2ded8a0c88180e7fef701bb9015df46c7b/src/main/antlr4/RiplParser.g4][nearly all constructs had become expressions in the grammar]], including composite types like structs, unions and function types.
+
+In mid-June 2018, I came across [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4], and was very impressed by this notation, which combines the simplicity, elegance, generality, and homoiconicity (self-representing nature) of Lisp's S-expressions with the brevity and legibility of whitespace delimitation. I immediately set about changing ~ripl~ to use this new syntax (examples of which can be seen in [[Minimal Example]] and [[=+= Type-Safe Discriminated Unions]]).
+
+At the time of writing I have not yet ported all constructs from the old Python-like grammar to the new Lisp-inspired grammar. For example, I do not yet know what the syntax will be for multi-expression blocks, though it may be something like this:
+
+#+LATEX: \begin{minipage}{\linewidth}
+#+NAME: Multi-Expression Block in ~ripl~
+#+CAPTION: Multi-Expression Block in ~ripl~
+#+BEGIN_SRC racket
+define (power-of-8 (float x1))
+  block
+    let x2 (* x1 x1)
+    let x4 (* x2 x2)
+    * x4 x4
+#+END_SRC
+#+LATEX: \end{minipage}
 
 TODO: Rest
 
