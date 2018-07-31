@@ -9,7 +9,7 @@
 #+OPTIONS: title:nil
 
 # Can be used to enable unicode characters
-# #+LATEX_COMPILER: lualatex
+#+LATEX_COMPILER: lualatex
 # #+LATEX_HEADER: \usepackage{unicode-math}
 # #+LATEX_HEADER: \usepackage[utf8x]{inputenc}
 # #+LATEX_HEADER: \usepackage[mathletters]{ucs}
@@ -910,6 +910,26 @@ https://www.cs.umd.edu/~ben/papers/Miara1983Program.pdf
 
 [fn:28] The only reasons I can think of for doing so would be to embed ~ripl~ code within some other data format, to serialize it more compactly, or to operate on it with tools that are designed to work with S-expressions.
 
+
+*** =+= Type Inference
+
+Type inference makes it possible to omit some or all type annotations while maintaining the benefits of static typing. Broadly speaking, there are two styles of type inference: Hindley-Milner or full type inference and bidirectional or partial type inference. Hindley-Milner style type inference has the advantage that it can infer the types of /all/ expressions within the program, including function parameters.
+
+However, the syntactical unification algorithm often used for Hindley-Milner type inference[fn:29] is complicated by the presence of overloading. Furthermore, it breaks down in the presence of subtyping because the type constraints generated from the program no longer constitute a system of type equations that can be solved via substitution, but rather a system of subtyping relationships that are non-strict type inequalities (=T1 <: T2= being analogous to =a ≤ b=)[fn:26].
+
+Although alternative algorithms have been explored to support nearly-full type inference with subtyping[fn:27], ~ripl~ is proceding with bidirectional type inference for a number of reasons:
+1. Supplying type annotations for function parameters is not so burdensome, and is even considered good practice in languages like Haskell in which these types can be inferred.
+2. Another important feature of ~ripl~ is compile time evaluation to facilitate type-level programming using template, which may be hard to integrate with both subtyping and full Hindley-Milner style type inference.
+
+In summary, ~ripl~ trades full type inference, that could infer parameters types, for name overloading, subtyping and compile-time evaluation.
+
+[fn:26] ~ripl~ began without subtyping or overloading and used constraint generation and the unification algorithm for type inference. When I added overloading to ~ripl~, I continued to use the unification algorithm by deferring the unification of constraints with overloads until the types of the overloads and the types of the arguments were known, which worked. When I then added subtyping to the language it became clear that unification would no longer work, and I reverted to bidirectional type checking.
+
+[fn:29] Cornell University, CS3110, Type Inference and Unification,
+http://www.cs.cornell.edu/courses/cs3110/2011fa/supplemental/lec26-type-inference/type-inference.htm#3
+
+[fn:27] Dmitriy Traytel, Stefan Berghofer, and Tobias Nipkow, Extending Hindley-Milner Type Inference with Coercive Structural Subtyping,
+https://www21.in.tum.de/~nipkow/pubs/aplas11.pdf
 
 
 *** TODO Expression Orientation
