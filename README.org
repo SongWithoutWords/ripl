@@ -879,13 +879,6 @@ https://arxiv.org/pdf/1409.0252.pdf
 
 # Having worked full time doing game programming in C++ for 2.5 years, and having written in more ergonomic languages like  do not believe it met these goals.
 
-# There is a wide range in the degree to which different languages meet these goals.
-
-# Some languages meet these goals:
-
-
-
-
 # By emulating certain features of concise languages, like Haskell, Racket and Scala, it is hoped that this language can be made concise as well. What sets these languages apart from other more verbose languages?
 
 # Some languages are more ergonomic, concise and intuitive than others. Having worked for 2.5 years in C++, I'm fairly confident in the assertion that it is more verbose than Python. After translating an ~2000 line program at a job from Python to Scala, I found the Scala version to be ~20% shorter (in addition to being statically typed). After porting a complete set of LLVM bindings (llvm-hs) from Haskell to Scala (for this project), I found the Haskell version to be ~20% shorter as well.
