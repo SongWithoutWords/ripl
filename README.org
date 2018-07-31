@@ -199,9 +199,11 @@
 The source of this document and the compiler can be found at \url{https://github.com/SongWithoutWords/ripl}.
 #+END_EXPORT
 
+
 * Project Status
 The language and compiler are still in development and are not yet in a usable state.
 # TODO: provide link to detailed implementation status.
+
 
 * Features at a Glance
 - Compiled
@@ -221,6 +223,7 @@ The language and compiler are still in development and are not yet in a usable s
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]
 
 [fn:4] ~TODO: Source for Readable Lisp S-expressions~
+
 
 * Influence of Other Languages
 
@@ -815,6 +818,7 @@ Although they are referred to by many names (packages, modules, namespaces, and 
 
 As a statically-typed and compiled language with mutable data-structures, and without virtual functions, lazy evaluation, or implicit indirection (e.g. boxing), ~ripl~ is susceptible to a similar range of optimizations as languages like C++ and Rust. By using LLVM-IR as a compile target, as does the Rust compiler rustc, and C++ compiler Clang, ~ripl~ can leverage many of the same optimizations. If ~ripl~ adopts an ownership system inspired by Rust instead of garbage collection (a decision that is discussed in [[=+= Memory Safety]]), then ~ripl~ may have similar performance potential to C++ and Rust (though actual performance will depend on the implementation).
 
+
 ** Ergonomic, Intuitive, and Concise
 
 In order for a language to be enjoyable to use (or at least unobtrusive), it needs to be ergonomic, intuitive and concise. Although some people don't seem to take syntax very seriously (by dismissing it as superficial bike-shedding, describing it as a "solved problem", or wondering why discontent users of verbose languages are "afraid of typing"), I'm inclined to agree with Simon Peyton Jones, when he wrote in a presentation about Haskell's design[fn:22]:
@@ -868,6 +872,7 @@ http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.c
 
 [fn:23] Sebastian Nanz, Carlo A. Furia, A Comparative Study of Programming Languages in Rosetta Code, page 6,
 https://arxiv.org/pdf/1409.0252.pdf
+
 
 *** COMMENT Notes
 
@@ -953,6 +958,7 @@ define (add-int-and-float (i32 x) (f32 y))
 
 The rules used for the selection of overloads in the presence of implicit conversions are described in [[=+= Name Overloading]].
 
+
 *** TODO =+= Expression Orientation
 
 
@@ -970,14 +976,17 @@ The rules used for the selection of overloads in the presence of implicit conver
 *** TODO =+= Templates
 # - Type level programming via templates and compile-time function evaluation
 
+
 *** TODO =+= Compile-Time Evaluation
 
 
 *** TODO =+= Type Classes
 # - Type-level traits, akin to Haskell type-classes
 
+
 *** TODO =?= Lisp-style macros
 # - Lisp-style macros, enabled by the uniform syntax in combination with compile-time function evaluation
+
 
 ** TODO Notably Absent Features
 
@@ -1176,10 +1185,16 @@ The lexer of the ~ripl~ compiler is quite straightforward. It takes the string i
 
 
 * COMMENT TODO Motivation and Rationale
+#
+
 
 * COMMENT TODO Examples
+#
+
 
 * COMMENT TODO Usage
+#
+
 
 * COMMENT Misc TODO
 
@@ -1212,6 +1227,7 @@ The alternatives weren't as good as ward.d2
 
 ** TODO Use unicode sharp sign for C#
 # C♯
+
 
 
 * Footnotes
