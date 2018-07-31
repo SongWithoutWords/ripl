@@ -964,7 +964,32 @@ The rules used for the selection of overloads in the presence of implicit conver
 Expression orientation is discussed within the context of the Robust design goal in section [[=+= Expression Orientation]], because it enables programming with fewer local variables thereby reducing statefullness within functions. Within the context of usability, I think that expression orientation lends itself to a more composable, ergonomic, elegant, and concise programming style. I would not be surprised if the tendency against expression orientation among imperative languages accounts for some of the verbosity of these languages that was found by Nanz and Furia [fn:23]. Everything in ~ripl~ that is not a top-level definition is an expression.
 
 
-*** TODO =+= Pattern Matching
+*** =+= Pattern Matching
+
+Discriminated unions are a feature of ~ripl~ that is discussed in section [[=+= Type-Safe Discriminated Unions]]. Pattern matching is essentially a type-safe and ergonomic method of extracting information from discriminated unions that contain one of a number of types, and works behind the scenes by branching on type tags. In addition to type safety, pattern matching has the advantage that the structure of the data being matched tends to be very evident from the code. Below is an example of pattern matching in ~ripl~ used to write a simple evaluator for some floating point expressions:
+
+#+LATEX: \begin{minipage}{\linewidth}
+#+NAME: Pattern Matching in ~ripl~
+#+CAPTION: Pattern Matching in ~ripl~
+#+BEGIN_SRC racket
+;; the union keyword can be used to create type-safe discriminated union
+union expression
+  struct add (expression a) (expression b)
+  struct sub (expression a) (expression b)
+  struct mul (expression a) (expression b)
+  struct div (expression a) (expression b)
+  f32
+
+define (evaluate (expression e))
+  ;; the match keyword can be used to operate on unions
+  match e
+    (add a b) (+ (evaluate a) (evaluate b))
+    (sub a b) (- (evaluate a) (evaluate b))
+    (mul a b) (* (evaluate a) (evaluate b))
+    (div a b) (/ (evaluate a) (evaluate b))
+    (f32 val) val
+#+END_SRC
+#+LATEX: \end{minipage}
 
 
 *** TODO =+= Name Overloading
