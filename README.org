@@ -201,6 +201,17 @@ The source of this document and the compiler can be found at \url{https://github
 #+END_EXPORT
 
 
+* Notes on Language Specification
+
+Although this document describes many of ~ripl~'s features, it is not a language specification. Instead the compiler and accompanying unit tests serve as the language specification. This is done for a number of reasons:
+
+1. Code is more precise than English.
+2. A compiler may be tested to validate it, whereas an English language specification may not.
+3. The use of the compiler as the language specification reduces documentation overhead.
+
+Many of the features described in this document, even some of those that appear in code listings, have not yet been implemented and as such have not yet been specified.
+
+
 * Project Status
 The language and compiler are still in development and are not yet in a usable state. A detailed overview of the implementation status can be found in section [[Detailed Implementation Status]].
 
