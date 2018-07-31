@@ -297,9 +297,7 @@ Below is a list of languages mentioned in this document, ordered by the number o
 
 This section provides a quick introduction to the language in the form of a small ~ripl~ program that computes the factorial of 5, followed by a brief discussion:
 
-#+BEGIN_EXPORT latex
-\begin{minipage}{\linewidth}
-#+END_EXPORT
+#+LATEX: \begin{minipage}{\linewidth}
 #+NAME: factorial
 #+CAPTION: factorial
 #+BEGIN_SRC racket
@@ -310,9 +308,7 @@ define (factorial (int n)) int
     1
     * n (factorial (- n 1))
 #+END_SRC
-#+BEGIN_EXPORT latex
-\end{minipage}
-#+END_EXPORT
+#+LATEX: \end{minipage}
 
 Although small, this example demonstrates many of the language's defining characteristics:
 1. ~ripl~'s syntax is expression oriented in that most of its syntactic constructs produce values rather than directing control flow (like Haskell, Lisp, ML, Rust, Scala, etc., and unlike C, C++, C#, Java, JavaScript, Python, etc.).
@@ -475,9 +471,7 @@ When combined with type inference, these advantages can be leveraged with little
 
 Type-safe discriminated unions, or sum types, (as seen in Haskell, ML, Rust and Scala, among others) provide a very powerful and intuitive way of modelling polymorphic data and computations that may take one of a number of forms. Some examples in ~ripl~ are shown below:
 
-#+BEGIN_EXPORT latex
-\begin{minipage}{\linewidth}
-#+END_EXPORT
+#+LATEX: \begin{minipage}{\linewidth}
 #+NAME: discriminated-unions
 #+CAPTION: discriminated unions
 #+BEGIN_SRC racket
@@ -495,9 +489,7 @@ template (list a)
       a head
       (list a) tail
 #+END_SRC
-#+BEGIN_EXPORT latex
-\end{minipage}
-#+END_EXPORT
+#+LATEX: \end{minipage}
 
 Unlike untagged unions that do not record the type of the union's value, and non-type-safe discriminated unions in which a type tag is manually set and branched on by the programmer, type-safe discriminated unions include a type tag that is automatically set during construction and automatically branched on during pattern matching.
 
