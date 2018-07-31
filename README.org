@@ -101,7 +101,8 @@
 \lstdefinelanguage{ripl}{
     morekeywords=
       % definitions
-      { define
+      { block
+      , define
       , struct
       , template
       , union
