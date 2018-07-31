@@ -783,7 +783,7 @@ Below is a table comparing pure and impure function signatures in various langua
 #+LATEX: }
 #+LATEX: \end{table}
 
-A ~ripl~ function that does not take the global state parameter, but takes one or more mutable references is weakly pure; a ~ripl~ function that takes neither the global state parameter, nor any mutable reference is strongly pure[fn:24]. In addition to aiding the creation of robust programs as described throughout this section, this type-level information on function purity will help the ~ripl~ compiler determine what functions can be evaluated at compile time (as described in [[Compile-Time Evaluation]]), and may useful in directing optimizations in future.
+A ~ripl~ function that does not take the global state parameter, but takes one or more mutable references is weakly pure; a ~ripl~ function that takes neither the global state parameter, nor any mutable reference is strongly pure[fn:24]. In addition to aiding the creation of robust programs as described throughout this section, this type-level information on function purity will help the ~ripl~ compiler determine what functions can be evaluated at compile time (as described in [[=+= Compile-Time Evaluation]]), and may useful in directing optimizations in future.
 
 # TODO Of course, every useful program needs to perform effects, talk about three layer cake, onion architecture, thin layer of IO on top of functionally pure business logic.
 
@@ -807,6 +807,10 @@ Although they are referred to by many names (packages, modules, namespaces, and 
 
 
 *** TODO =+= Memory Safety
+
+
+*** TODO =?= Deterministic Destructor Calls (RAII)
+# for resource disposal
 
 
 ** Performant
@@ -932,36 +936,34 @@ http://www.cs.cornell.edu/courses/cs3110/2011fa/supplemental/lec26-type-inferenc
 https://www21.in.tum.de/~nipkow/pubs/aplas11.pdf
 
 
-*** TODO Subtyping via Implicit Conversion
+*** TODO =+= Subtyping via Implicit Conversion
 
 
-*** TODO Expression Orientation
+*** TODO =+= Expression Orientation
 
 
-*** TODO Pattern Matching
+*** TODO =+= Pattern Matching
 
 
-*** TODO Name Overloading
+*** TODO =+= Name Overloading
 
 
-*** TODO Minimal and Consistent Design
+*** TODO =+= Minimal and Consistent Design
 
 
 ** TODO Powerful
 
-*** TODO Templates
+*** TODO =+= Templates
 # - Type level programming via templates and compile-time function evaluation
 
-*** TODO Compile-Time Evaluation
+*** TODO =+= Compile-Time Evaluation
 
-*** TODO Type Classes
+
+*** TODO =+= Type Classes
 # - Type-level traits, akin to Haskell type-classes
 
-** TODO Minor Goals
-*** TODO Lisp-style macros
+*** TODO =?= Lisp-style macros
 # - Lisp-style macros, enabled by the uniform syntax in combination with compile-time function evaluation
-
-*** TODO Deterministic destructor calls for resource disposal (RAII)
 
 ** TODO Notably Absent Features
 *** TODO Object Oriented Programming
