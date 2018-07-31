@@ -863,7 +863,7 @@ define (power-of-8 (f32 x1))
 #+END_SRC
 #+LATEX: \end{minipage}
 
-TODO: Rest
+# TODO: Rest
 
 [fn:22] Simon Peyton Jones, Wearing the Hair Shirt: A Retrospective on Haskell, slide 9,
 http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
