@@ -1005,6 +1005,9 @@ define (evaluate (expression e))
 #+LATEX: \end{minipage}
 
 
+*** TODO =+= Infix Notation
+
+
 *** TODO =+= Name Overloading
 
 
