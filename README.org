@@ -304,7 +304,7 @@ This section provides a quick introduction to the language in the form of a smal
 #+BEGIN_SRC racket
 define (main) (factorial 5)
 
-define (factorial (int n)) int
+define (factorial (i32 n)) i32
   if (<= n 1)
     1
     * n (factorial (- n 1))
@@ -323,7 +323,7 @@ Although small, this example demonstrates many of the language's defining charac
    1. Two or more expressions on a line are grouped.
    2. Lines are extended to include all subsequent expressions at the next level of indentation.
 4. ~ripl~ does not distinguish between functions and operators, and as such names can be composed of unicode characters, with the exception of unicode control characters and a small set of reserved characters.
-5. ~ripl~ provides a number of built in forms (e.g. ~define~, ~if~), functions (e.g. ~*~, ~-~, ~<=~) and types (e.g. ~int~)
+5. ~ripl~ provides a number of built in forms (e.g. ~define~, ~if~), functions (e.g. ~*~, ~-~, ~<=~) and types (e.g. ~i32~)
 6. The entry point of a program is a function called ~main~.
 7. Type annotations are required for function parameters; most other types can be inferred.
 8. Return type annotations are required for recursive functions.
@@ -480,7 +480,7 @@ Type-safe discriminated unions, or sum types, (as seen in Haskell, ML, Rust and 
 union expression
   struct add (expression a) (expression b)
   struct sub (expression a) (expression b)
-  int
+  i32
 
 ; it can be combined with the template keyword to create a union with type parameters
 template (list a)
@@ -747,7 +747,7 @@ A great alternative solution to this problem in an impure language is employed i
 **** Purity in =ripl=
 ~ripl~'s method of constraining purity is similar to that of D, but differs in some respects. Rather than using a modifier keyword like D, ~ripl~ has a global state parameter =@=, that may be taken as a parameter to =main= and distributed to the rest of the program as an argument to other functions. In order to read global state (such as reading global variables, reading files, checking the current time, or using memory addresses in computations) functions must take =@= as a parameter. In order to modify global state (such as writing global variables, writing files, or writing to the console) functions must take =~@= as a parameter. =~@= may be substituted for =@= just as =^~T= may be substituted for =^T= as described in section [[=+= Type-Level Constraints on Mutability]]. The advantages of this approach include:
 1. It leverages the same syntax and scoping rules as function parameters, so should be intuitive.
-2. It is easily and intuitively encoded in function types, e.g. =main= may have type =(-> ~@ int)=.
+2. It is easily and intuitively encoded in function types, e.g. =main= may have type =(-> ~@ i32)=.
 3. Function purity is visible at the call site in addition to the signature (e.g. =println ~@ "Hello world!"=).
 4. It's possible to express the difference between read-only impurity =@= and read-write impurity =~@=.
 
@@ -836,7 +836,7 @@ At the time of writing I have not yet ported all constructs from the old Python-
 #+NAME: Multi-Expression Block in ~ripl~
 #+CAPTION: Multi-Expression Block in ~ripl~
 #+BEGIN_SRC racket
-define (power-of-8 (float x1))
+define (power-of-8 (f32 x1))
   block
     let x2 (* x1 x1)
     let x4 (* x2 x2)
