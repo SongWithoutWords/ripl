@@ -233,7 +233,8 @@ The language and compiler are still in development and are not yet in a usable s
 - Expression oriented
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]
 
-[fn:4] ~TODO: Source for Readable Lisp S-expressions~
+[fn:4] David A. Wheeler, Alan Manuel K. Gloria, Egil Möller, Readale Lisp S-expressions,
+https://sourceforge.net/p/readable/wiki/Home/
 
 
 * Influence of Other Languages
