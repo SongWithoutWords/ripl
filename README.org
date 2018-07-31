@@ -917,11 +917,11 @@ Type inference makes it possible to omit some or all type annotations while main
 
 However, the syntactical unification algorithm often used for Hindley-Milner type inference[fn:29] is complicated by the presence of overloading. Furthermore, it breaks down in the presence of subtyping because the type constraints generated from the program no longer constitute a system of type equations that can be solved via substitution, but rather a system of subtyping relationships that are non-strict type inequalities (=T1 <: T2= being analogous to =a ≤ b=)[fn:26].
 
-Although alternative algorithms have been explored to support nearly-full type inference with subtyping[fn:27], ~ripl~ is proceding with bidirectional type inference for a number of reasons:
-1. Supplying type annotations for function parameters is not so burdensome, and is even considered good practice in languages like Haskell in which these types can be inferred.
-2. Another important feature of ~ripl~ is compile time evaluation to facilitate type-level programming using template, which may be hard to integrate with both subtyping and full Hindley-Milner style type inference.
+Although alternative algorithms have been explored to support nearly-full type inference with subtyping[fn:27], ~ripl~ is proceding with bidirectional type inference for the following reasons:
+1. Because supplying type annotations for function parameters is not so burdensome, and is even considered good practice in languages like Haskell in which these types can be inferred.
+2. Because the combination of all of ~ripl~'s type level features: overloading, subtyping, type classes, compile time evaluation, and templates that take both values and types, probably constitute too big a departure from the Hindley-Milner type system to allow for Hindley-Milner style type inference.
 
-In summary, ~ripl~ trades full type inference, that could infer parameters types, for name overloading, subtyping and compile-time evaluation.
+In summary, ~ripl~ trades full type inference (that could infer parameters types) for overloading, subtyping, type classes, and compile time evaluation.
 
 [fn:26] ~ripl~ began without subtyping or overloading and used constraint generation and the unification algorithm for type inference. When I added overloading to ~ripl~, I continued to use the unification algorithm by deferring the unification of constraints with overloads until the types of the overloads and the types of the arguments were known, which worked. When I then added subtyping to the language it became clear that unification would no longer work, and I reverted to bidirectional type checking.
 
