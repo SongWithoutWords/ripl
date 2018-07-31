@@ -932,6 +932,9 @@ http://www.cs.cornell.edu/courses/cs3110/2011fa/supplemental/lec26-type-inferenc
 https://www21.in.tum.de/~nipkow/pubs/aplas11.pdf
 
 
+*** TODO Subtyping via Implicit Conversion
+
+
 *** TODO Expression Orientation
 
 
