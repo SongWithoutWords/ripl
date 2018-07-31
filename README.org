@@ -783,7 +783,7 @@ Below is a table comparing pure and impure function signatures in various langua
 #+LATEX: }
 #+LATEX: \end{table}
 
-A ~ripl~ function that does not take the global state parameter, but takes one or more mutable references is weakly pure; a ~ripl~ function that takes neither the global state parameter, nor any mutable reference is strongly pure[fn:24].
+A ~ripl~ function that does not take the global state parameter, but takes one or more mutable references is weakly pure; a ~ripl~ function that takes neither the global state parameter, nor any mutable reference is strongly pure[fn:24]. In addition to aiding the creation of robust programs as described throughout this section, this type-level information on function purity will help the ~ripl~ compiler determine what functions can be evaluated at compile time (as described in [[Compile-Time Evaluation]]), and may useful in directing optimizations in future.
 
 # TODO Of course, every useful program needs to perform effects, talk about three layer cake, onion architecture, thin layer of IO on top of functionally pure business logic.
 
