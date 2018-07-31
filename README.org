@@ -103,9 +103,6 @@
 
 \setlength\parindent{0pt} % sets indent to zero
 \setlength{\parskip}{6pt} % changes vertical space between paragraphs
-#+END_EXPORT
-
-#+BEGIN_EXPORT latex
 
 % Code listing settings
 \lstdefinelanguage{ripl}{
