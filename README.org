@@ -314,8 +314,8 @@ Below is a list of languages mentioned in this document, ordered by the number o
 This section provides a quick introduction to the language in the form of a small ~ripl~ program that computes the factorial of 5, followed by a brief discussion:
 
 #+LATEX: \begin{minipage}{\linewidth}
-#+NAME: factorial
-#+CAPTION: factorial
+#+NAME: Factorial in ~ripl~
+#+CAPTION: Factorial in ~ripl~
 #+BEGIN_SRC racket
 define (main) (factorial 5)
 
@@ -489,8 +489,8 @@ When combined with type inference, these advantages can be leveraged with little
 Type-safe discriminated unions, or sum types, (as seen in Haskell, ML, Rust and Scala, among others) provide a very powerful and intuitive way of modelling polymorphic data and computations that may take one of a number of forms. Some examples in ~ripl~ are shown below:
 
 #+LATEX: \begin{minipage}{\linewidth}
-#+NAME: discriminated-unions
-#+CAPTION: discriminated unions
+#+NAME: Discriminated Unions in ~ripl~
+#+CAPTION: Discriminated Unions in ~ripl~
 #+BEGIN_SRC racket
 ; the union keyword can be used to create a type-safe discriminated union
 union expression
@@ -854,8 +854,8 @@ In mid-June 2018, I came across [[https://sourceforge.net/p/readable/wiki/Home/]
 At the time of writing I have not yet ported all constructs from the old Python-like grammar to the new Lisp-inspired grammar. For example, I do not yet know what the syntax will be for multi-expression blocks, though it may be something like this:
 
 #+LATEX: \begin{minipage}{\linewidth}
-#+NAME: Multi-Expression Block in ~ripl~
-#+CAPTION: Multi-Expression Block in ~ripl~
+#+NAME: Multi-Expression Blocks in ~ripl~
+#+CAPTION: Multi-Expression Blocks in ~ripl~
 #+BEGIN_SRC racket
 define (power-of-8 (f32 x1))
   block
