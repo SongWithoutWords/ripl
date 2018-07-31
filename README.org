@@ -207,9 +207,9 @@ Although this document describes many of ~ripl~'s features, it is not a language
 
 1. Code is more precise than English.
 2. A compiler may be tested to validate it, whereas an English language specification may not.
-3. The use of the compiler as the language specification reduces documentation overhead.
+3. An English language specification would add significant documentation overhead, and this time is better spent implementing the language.
 
-Many of the features described in this document, even some of those that appear in code listings, have not yet been implemented and as such have not yet been specified.
+A number of the features described in this document and that appear in code listings have not yet been implemented, and as such have not yet been specified.
 
 
 * Project Status
