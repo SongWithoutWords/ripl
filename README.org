@@ -51,6 +51,10 @@
 
 #+LATEX_HEADER: \usepackage{titlesec}
 
+# enables highlighting on inline code
+# (requires redefining \texttt as well, see below)
+#+LATEX_HEADER: \usepackage{soul}
+
 # hyperlinke colors
 #+LATEX_HEADER: \hypersetup{ colorlinks=true, linkcolor=black, urlcolor=blue }
 
@@ -146,6 +150,11 @@
        keywordstyle=\color{DarkBlue},
        commentstyle=\color{DarkGreen},
   }
+
+% Inline code highlighting
+% \sethlcolor{LightGray}
+% \let\OldTexttt\texttt
+% \renewcommand{\texttt}[1]{\OldTexttt{\hl{#1}}}% will affect all \texttt
 
 % Surrounding commands remove page number from title page
 \clearpage\maketitle
