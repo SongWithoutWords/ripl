@@ -948,10 +948,11 @@ Subtyping is a common feature among object oriented programming languages, and m
 Although subtyping and implicit conversion have somewhat of a bad reputation (especially in languages like C in which they are rampant), I think that implicit conversions can still add value if chosen judiciously. Subtyping in ~ripl~ is achieved via implicit conversions. The ~ripl~ compiler provides a built-in conversions from integral numbers to floating point numbers, and may in future provide implicit conversions from the variants of a union to the union itself. Additionally, the compiler is structured to allow for user defined implicit conversions. Although the syntax for declaring user defined conversions has not yet been chosen, it will probably consist of defining a pure with a single input using a distinct keyword like ~implicit~ instead of the usual ~define~ keyword. An example of subtyping in ~ripl~ is given below:
 
 #+LATEX: \begin{minipage}{\linewidth}
-#+CAPTION: Example of Subtyping in ~ripl~
+#+NAME: Subtyping via Implicit Conversion in ~ripl~
+#+CAPTION: Subtyping via Implicit Conversion in ~ripl~
 #+BEGIN_SRC racket
-;; The only viable overload is (+ f32 f32), and so x is implicitly converted
 define (add-int-and-float (i32 x) (f32 y))
+  ;; The only viable overload is (+ f32 f32), and so x is implicitly converted
   + x y
 #+END_SRC
 #+LATEX: \end{minipage}
