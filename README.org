@@ -129,8 +129,8 @@
        % frame=single,
        % frame=half,
        % frame=leftline,
-       xleftmargin=0.3in,
-       xrightmargin=0.3in,
+       xleftmargin=0.2in,
+       xrightmargin=0.0in,
        captionpos=b,
        tabsize=2,
        % dark theme
