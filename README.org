@@ -103,6 +103,8 @@
 #+END_EXPORT
 
 #+BEGIN_EXPORT latex
+
+% Code listing settings
 \lstdefinelanguage{ripl}{
     morekeywords=
       % definitions
