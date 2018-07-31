@@ -1013,6 +1013,33 @@ define (evaluate (expression e))
 
 *** TODO =+= Minimal and Consistent Design
 
+I think there are two kinds of complexity that affect programming language designs. There is the inherent complexity of the problems the language is trying to solve, such as the complexity of data-races and memory management without garbage collection, which Rust solves with its ownership system. Then there is the accidental complexity of (in my experience) nearly everything in C++.
+A large part of designing a language that can be easily understood (I believe) is to avoid complicated and duplicate features wherever possible.
+
+A large part of maintaining a language design that can be easily understood (I believe) is to avoid complicated and duplicated features. Although 
+
+This may be easiest to demonstrate by comparison with C++:
+| Feature           | C++                                                                | ~ripl~          |
+|-------------------+--------------------------------------------------------------------+-----------------|
+| Code organization | Headers, namespaces and modules (expected in C++20[fn:31])         | Namespaces      |
+| Enumerations      | ~enum~ and ~enum class~                                            | ~union~         |
+| Looping           | ~for~, ~while~, ~do...while~, recursion, and range-based for       | Recursion       |
+| Functions         | Functions and methods                                              | Functions       |
+| Printing          | C-style printf and C++ style IO streams                            | ~println~       |
+| Indirection       | Pointers and references                                            | References      |
+| Initialization    | ~A a(b)~, ~A a{b}~ and ~A a = A(b)~                                | ~define a(A b)~ |
+| Metaprogramming   | Templates and textual macros                                       | Templates       |
+| Polymorphism      | Inheritance and templates                                          | Templates       |
+| Record types      | ~class~ and ~struct~                                               | ~struct~        |
+| Strings           | ~char[MAX_PATH]~, ~char*~, ~wchar*~, ~std::string~, ~std::wstring~ | ~string~        |
+| Type-aliases      | ~typedef~ and ~using~                                              | ~define~        |
+| Unions            | ~union~                                                            | ~union~         |
+
+# 28 10
+
+[fn:31] Dmitry Guzeev, A Few Words on C++ Modules,
+https://medium.com/@wrongway4you/brief-article-on-c-modules-f58287a6c64
+
 
 ** TODO Powerful
 
