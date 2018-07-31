@@ -110,6 +110,7 @@
       % definitions
       { block
       , define
+      , match
       , struct
       , template
       , union
