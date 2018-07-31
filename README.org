@@ -1142,7 +1142,7 @@ The lexer of the ~ripl~ compiler is quite straightforward. It takes the string i
 
 ** TODO LLVM-Bindings
 
-** TODO Detailed Implementation Progress
+** Detailed Implementation Status
 
 #+LATEX: \begin{multicols}{2}
 - [X] Lexing
