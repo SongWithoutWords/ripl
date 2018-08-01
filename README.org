@@ -922,7 +922,7 @@ Although indentation delimited languages are somewhat uncommon, people speak hig
 3. It ends any discussion or inconsistency over whether opening braces should occur on a new line.
 4. It reduces the potential for inconsistency between the visual and the semantic structure of the code, thereby reducing the potential for error and confusion.
 
-For these reasons, expressions in ~ripl~ /may/ be grouped by indentation. It is, however, possible to write ~ripl~ code that is explicitly delimited, because indent and dedent expressions are not emitted within S-expressions[fn:28].
+For these reasons, expressions in ~ripl~ /may/ be grouped by indentation. It is, however, possible to write ~ripl~ code that is explicitly delimited[fn:28], because indent and dedent expressions are not emitted within S-expressions.
 
 [fn:25] Richard J. Miara et al, Program Indentation and Comprehensibility,
 https://www.cs.umd.edu/~ben/papers/Miara1983Program.pdf
