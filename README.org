@@ -1038,6 +1038,7 @@ It's not uncommon in my experience that people (myself included) conceive of and
 
 Below is a table that compares various classes of features that can be used to accomplish the same goal in C++ and ~ripl~, which demonstrates that languages can vary pretty widely in terms of complexity:
 
+# The caption disables the footnotes :'(
 #+CAPTION: Comparison Between Various Constructs in C++ and ~ripl~
 | Feature           | C++                                                                          | ~ripl~           |
 |-------------------+------------------------------------------------------------------------------+------------------|
