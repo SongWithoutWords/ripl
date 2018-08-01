@@ -1007,7 +1007,20 @@ define (evaluate (expression e))
 #+LATEX: \end{minipage}
 
 
-*** TODO =+= Infix Notation
+*** TODO =+= Infix Notation, Selection Syntax, and Word Order
+
+Most object-oriented languages allow code to be written in subject-verb-object (SVO) order (e.g. =person.open(door)= or =map.contains(key)=) using methods, instead of the verb-subject-object (VSO) order of typical function application (e.g. =open person door= or =contains map key=).
+
+Word orders in which the verb comes first (VSO and VOS) are quite uncommon, and are believed to be spoken by only 12% of the human population[fn:34]. By contrast, languages with SVO order are spoken by 42% of the human population[fn:34], and include English, French, Mandarin, and Spanish.
+
+Although I find it pretty intuitive to add some terms by writing =(+ x y z)=, or to see if terms are ordered a certain way by writing =(< min mid max)=, programming languages with this ordering are renowned for being unintuitive[fn:35].
+
+Another aspect of programming languages and math that people are accustomed to is infix notation.
+
+[fn:34] Russell S. Tomlin, Basic word order. Functional principles. London: Croom Helm, 1986. Pp. 308, \newline
+https://www.cambridge.org/core/journals/journal-of-linguistics/article/russell-s-tomlin-basic-word-order-functional-principles-london-croom-helm-1986-pp-308/7542AFB4A8B28D651F6E109B810F4C04
+
+[fn:35] I used a programmable calculator (the HP 50g) in second year that used reverse Polish notation (e.g. =a b +=), which I found to be quite unintuitive, and some programming languages (notably Forth) use this ordering as well, which roughly corresponds to SOV ordering.
 
 
 *** TODO =+= Name Overloading
