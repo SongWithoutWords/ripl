@@ -1287,34 +1287,40 @@ The lexer of the ~ripl~ compiler is quite straightforward. It takes the string i
 
 * COMMENT Misc TODO
 
-** DONE Move R code into its own file (it sortof sucks writing it in org mode)
+** TODO Prose
+*** TODO Avoid usage of "great" as an adjective
+*** TODO Avoid shared text between abstract and introduction
+*** TODO Should write a summary
 
-** DONE Get rid of PCA, MDS is better
+** TODO Graphs
+*** DONE Move R code into its own file (it sortof sucks writing it in org mode)
 
-** DONE Exclude ripl from hierarchical clustering of features
+*** DONE Get rid of PCA, MDS is better
 
-** DONE Experiment with other hierarchical clustering methods
+*** DONE Exclude ripl from hierarchical clustering of features
+
+*** DONE Experiment with other hierarchical clustering methods
 The alternatives weren't as good as ward.d2
 
-** TODO Correlation analysis of language features
+*** TODO Correlation analysis of language features
 
-** DONE Ensure that heatmap agrees with hierarchical clustering
+*** DONE Ensure that heatmap agrees with hierarchical clustering
 
-** TODO Get rid of classic MDS
+*** TODO Get rid of classic MDS
 
-** TODO Scale the images appropriately for the paper, both for markdown and pdf export
+*** TODO Scale the images appropriately for the paper, both for markdown and pdf export
 
-** TODO Consider removing plot titles
+*** TODO Consider removing plot titles
 
-** DONE Spread language feature table across multiple pages for latex export
+*** DONE Spread language feature table across multiple pages for latex export
 
-** TODO Try adding footnotes to the table to provide additional information, does it work with csv and latex export?
+*** TODO Try adding footnotes to the table to provide additional information, does it work with csv and latex export?
 
-** TODO Consider adding Dart and Lua as additional languages
+*** TODO Consider adding Dart and Lua as additional languages
 
-** TODO Consider heatmaps and multidimensional scaling of language features
+*** TODO Consider heatmaps and multidimensional scaling of language features
 
-** TODO Use unicode sharp sign for C#
+*** TODO Use unicode sharp sign for C#
 # C♯
 
 
