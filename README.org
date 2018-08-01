@@ -1016,6 +1016,8 @@ define (evaluate (expression e))
 # Essential and accidental complexity was coined by Brooks
 # https://en.wikipedia.org/wiki/No_Silver_Bullet
 
+Writing in 1987, Fred Brooks It has been suggested that there are two kinds of complexity that affect software development: the essential complexity of the problem at hand and the accidental complexity of the language, the tools, and the design of the program[fn:32]. 
+
 I think there are two kinds of complexity that affect programming language designs. There is the inherent complexity of the problems the language is trying to solve, such as the complexity of data-races and memory management without garbage collection, which Rust solves with its ownership system. Then there is the accidental complexity of (in my experience) nearly everything in C++.
 A large part of designing a language that can be easily understood (I believe) is to avoid complicated and duplicate features wherever possible.
 
@@ -1043,6 +1045,8 @@ This may be easiest to demonstrate by comparison with C++:
 [fn:31] Dmitry Guzeev, A Few Words on C++ Modules,
 https://medium.com/@wrongway4you/brief-article-on-c-modules-f58287a6c64
 
+[fn:32] Frederick Brooks, No Silver Bullet - Essence and Accident in Software Engineering,
+http://worrydream.com/refs/Brooks-NoSilverBullet.pdf
 
 ** TODO Powerful
 
