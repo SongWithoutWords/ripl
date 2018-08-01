@@ -1023,7 +1023,7 @@ It's not uncommon in my experience that people (myself included) conceive of and
 4. Needless distinction between array access notation and function application.
 5. Needless distinction between functions and operators (solved).
 
-Below is a table that compares various classes of features that can be used to accomplish the same goal in c++ and ~ripl~, which demonstrates that languages can vary pretty widely in terms of complexity:
+Below is a table that compares various classes of features that can be used to accomplish the same goal in C++ and ~ripl~, which demonstrates that languages can vary pretty widely in terms of complexity:
 
 #+CAPTION: Comparison Between Various Constructs in C++ and ~ripl~
 | Feature           | C++                                                                          | ~ripl~           |
