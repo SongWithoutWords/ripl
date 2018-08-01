@@ -1078,6 +1078,9 @@ https://en.cppreference.com/w/cpp/keyword
 
 
 * Comparison with Other Languages
+
+# Should explain on what basis I chose these languages.
+
 In order to compare ~ripl~ with other languages in an objective way, I identified a number of quantifiable language features to be used as a basis for comparison. I then evaluated each language across these criteria, assigning a value of +1 for features that were present, a value of -1 for features that were absent, and a value of +0 for features that were not applicable, resulting in a language feature table.
 
 Although this table is useful in detailing the features of each language, it consists of 14 data-points in 31 dimensions, which makes it hard to visualize the high-level structure of the data and relationships between the languages by looking at the table itself. Fortunately, there are a number of data visualization methods that can help to visualize this higher dimensional data. The results of these methods are presented in the following sections.
