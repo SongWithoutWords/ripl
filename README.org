@@ -227,7 +227,7 @@ The language and compiler are still in development and are not yet in a usable s
 - Mutable data structures
 - Type-level constraints on the mutability of data and purity of functions
 - Name overloading
-- Subtyping via built-in and user defined implicit conversions
+- Subtyping via built-in and user-defined implicit conversions
 - Parametric polymorphism and type-level programming via templates
 - Compile time function evaluation
 - Expression oriented
@@ -239,7 +239,7 @@ https://sourceforge.net/p/readable/wiki/Home/
 
 * Influence of Other Languages
 
-Below is a list of languages mentioned in this document, ordered by the number of mentions. The order is consistent with my expectation, and provides some insight into the influence of other languages on ~ripl~'s design. It is worth mentioning that this influence doesn't necessarily suggest similarity, because ~ripl~'s design has been influenced both by example and counter-example.
+Below is a list of languages mentioned in this document, ordered by the number of mentions. The order is consistent with my expectation, and provides a rough proxy for the influence of other languages on ~ripl~'s design. This influence doesn't necessarily suggest similarity, because ~ripl~'s design has been influenced both by example and counter-example.
 
 #+BEGIN_SRC emacs-lisp :exports results
 (defun recursive-count (regex string start)
@@ -342,7 +342,7 @@ Although small, this example demonstrates many of the language's defining charac
 1. ~ripl~'s syntax is expression oriented in that most of its syntactic constructs produce values rather than directing control flow (like Haskell, Lisp, ML, Rust, Scala, etc., and unlike C, C++, C#, Java, JavaScript, Python, etc.).
 2. ~ripl~'s syntax is Lisp-like, and as such:
    1. Parentheses group expressions (expressions may also be grouped by whitespace, as described below).
-   2. Names are separated by whitespace, parenthesis, or one of a small number of reserved characters.
+   2. Names are separated by whitespace, parentheses, or one of a small number of reserved characters.
    3. Functions are applied by grouping as in Haskell, ML, and Lisp (i.e. ~(f x1 ... xn)~)[fn:1], as opposed to the traditional mathematical notation of languages with C-style syntax (i.e. ~f(x1, ... xn)~).
    4. The structure of the source code reflects the structure of the abstract syntax tree.
    5. Consequently, the language has no infix notation, operator precedence or associativity, an aspect of Lisp that is counter-intuitive for many (myself included), possibly because people are not accustomed to reading mathematical expressions without these conventions. ~ripl~ will ultimately have infix notation, though I'm presently considering two ways of doing this ~TODO: Link to section about this~.
@@ -358,7 +358,7 @@ Although small, this example demonstrates many of the language's defining charac
 
 Hopefully this example has helped to provide you with an intuition for the language, the features of which are discussed in more depth in the following sections.
 
-[fn:1] though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parenthesis
+[fn:1] though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parentheses
 
 
 * Design Goals and Related Features
@@ -424,11 +424,11 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 
 ** Robust
 
-# Should go somewhere:
-
-What's more, although Haskell's performance is legendary within the Haskell community, a third party comparative study of programming languages conducted by ETH Zuric found Haskell's performance to be average, and its memory usage to be the worst among any language considered (possibly as a result of laziness).
-
 *** COMMENT Notes
+
+# TODO Should go somewhere:
+
+# What's more, although Haskell's performance is legendary within the Haskell community, a third party comparative study of programming languages conducted by ETH Zuric found Haskell's performance to be average, and its memory usage to be the worst among any language considered (possibly as a result of laziness).
 
 # Having worked in the games industry for 2.5 years, in a 20 year old and approximately 4 million line C++ codebase, I've observed some patterns that have given rise to some problems, many of which I feel can be attributed to the language itself:
 # - Long compile times:
@@ -439,7 +439,7 @@ What's more, although Haskell's performance is legendary within the Haskell comm
 
 # One thing I feel I can say about Haskell with little hesitation, is that it's a very robust language, and that many of the bugs and anti-patterns that I've encountered working in the games industry
 
-# Having worked as a programmer in the games industry for 2.5 years, in a 20 year old, approximately 4 million line C++ codebase, a lot of the anti-patterns and bugs I encountered were related to imperative and object oriented programming:
+# Having worked as a programmer in the games industry for 2.5 years, in a 20 year old, approximately 4 million line C++ codebase, a lot of the anti-patterns and bugs I encountered were related to imperative and object-oriented programming:
 
 # In order to understand what is robust, it may be worth considering some bugs and anti-patterns found in the wild that are not robust.
 # - Singletons:
@@ -571,7 +571,7 @@ Although a number of languages have had a shaky history with temporary, local va
 
 *** =?= Encapsulation
 
-Considered one of the defining features of object oriented programming, encapsulation is another feature that helps to limit the scope of program state. Although I do not have concrete plans for encapsulation and access modifiers in ~ripl~, encapsulation warrants mentioning because it demonstrates that not only functional languages are concerned with limiting the scope of mutable state but also imperative and object oriented languages.
+Considered one of the defining features of object-oriented programming, encapsulation is another feature that helps to limit the scope of program state. Although I do not have concrete plans for encapsulation and access modifiers in ~ripl~, encapsulation warrants mentioning because it demonstrates that not only functional languages are concerned with limiting the scope of mutable state but also imperative and object-oriented languages.
 
 
 *** =+= Expression Orientation
@@ -607,7 +607,7 @@ In C++ and D, types can be made immutable using the ~const~ keyword, with some d
 1. ~const~ in C++ can be bypassed using ~const_cast~ or ~mutable~, which undermines its legitimacy.
 2. ~const~ in D applies recursively to all types that a composite type is composed of, a quality they refer to as transitive. This has the the disadvantage of reduces the range of types that can be expressed, and may force the use of entirely mutable types when only parts of these types need to be mutable. For example, a function that simulates interactions between entities might operate on an immutable list of references to mutable entities, thereby expressing its intent to modify the entities themselves, and not the container. Unfortunately, this distinction cannot be expressed with D's transitive ~const~.
 
-In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is /required/ to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust takes this a step further in a great way, and prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17] Whether ~ripl~ can achieve the same in future will depend on a choice between garbage collection and a Rust-style ownership system, a decision that hasn't been made yet. Although a Rust-style ownership system has many advantages, I am uncertain about the complexity this might add to the language and how difficult this would be to implement.
+In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is /required/ to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust then uses this feature to prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17] Whether ~ripl~ can achieve the same in future will depend on a choice between garbage collection and a Rust-style ownership system, a decision that hasn't been made yet. Although a Rust-style ownership system has many advantages, I am uncertain about the complexity this might add to the language and how difficult this would be to implement.
 
 The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was chosen because:
 1. It is not a commonly used symbol in programming.
@@ -955,7 +955,7 @@ https://www21.in.tum.de/~nipkow/pubs/aplas11.pdf
 
 *** =+= Subtyping via Implicit Conversion
 
-Subtyping is a common feature among object oriented programming languages. It is much less common among functional languages, possibly because of the complexity it adds to type inference, as discussed in section  [[=+= Type Inference]]. Although it is less essential in a language without inheritance (like ~ripl~), subtyping helps to reduce the need for explicit type conversions.
+Subtyping is a common feature among object-oriented programming languages. It is much less common among functional languages, possibly because of the complexity it adds to type inference, as discussed in section  [[=+= Type Inference]]. Although it is less essential in a language without inheritance (like ~ripl~), subtyping helps to reduce the need for explicit type conversions.
 
 Although subtyping and implicit conversion have somewhat of a bad reputation[fn:32], I think that implicit conversions can still add value if chosen judiciously. Subtyping in ~ripl~ is achieved via implicit conversions. The ~ripl~ compiler provides a built-in conversions from integral numbers to floating point numbers, and may in future provide implicit conversions from the variants of a union to the union itself. Additionally, the compiler is structured to allow for user-defined implicit conversions. Although the syntax for declaring user-defined implicit conversions has not yet been chosen, it will probably consist of defining a pure function with a single input using a distinct keyword like ~implicit~ instead of the usual ~define~ keyword. An example of subtyping in ~ripl~ is given below:
 
@@ -1058,7 +1058,7 @@ https://en.cppreference.com/w/cpp/keyword
 *** TODO =+= Templates
 # - Type level programming via templates and compile-time function evaluation
 
-Templates are like generics/regular parametric polymorphism, except that they can also take integral numeric parameters in C++ and any object in D and ~ripl~. ~TODO: Maybe provide an example of people using type-level peano numbers in Haskell~
+# Templates are like generics/regular parametric polymorphism, except that they can also take integral numeric parameters in C++ and any object in D and ~ripl~. ~TODO: Maybe provide an example of people using type-level peano numbers in Haskell~
 
 
 *** TODO =+= Compile-Time Evaluation
@@ -1074,13 +1074,13 @@ Templates are like generics/regular parametric polymorphism, except that they ca
 
 ** TODO Notably Absent Features
 
-*** TODO Object Oriented Programming
+*** TODO Object-Oriented Programming
 
 
 * Comparison with Other Languages
 In order to compare ~ripl~ with other languages in an objective way, I identified a number of quantifiable language features to be used as a basis for comparison. I then evaluated each language across these criteria, assigning a value of +1 for features that were present, a value of -1 for features that were absent, and a value of +0 for features that were not applicable, resulting in a language feature table.
 
-Although this table is useful in detailing the features of each language, because it consists of more than 12 data-points in more than 30 dimensions, it is hard to visualize the high-level structure of the data and relationships between the languages by looking at the table itself. Fortunately, there are a number of data visualization methods that can help to visualize this higher dimensional data. These methods are discussed in the following sections.
+Although this table is useful in detailing the features of each language, it consists of 14 data-points in 31 dimensions, which makes it hard to visualize the high-level structure of the data and relationships between the languages by looking at the table itself. Fortunately, there are a number of data visualization methods that can help to visualize this higher dimensional data. The results of these methods are presented in the following sections.
 
 ** Language Feature Table
 #+BEGIN_EXPORT latex
