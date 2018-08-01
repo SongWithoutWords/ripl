@@ -1026,7 +1026,7 @@ This may be easiest to demonstrate by comparison with C++:
 |-------------------+--------------------------------------------------------------------+-----------------|
 | Code organization | Headers, namespaces and modules (expected in C++20[fn:31])         | Namespaces      |
 | Enumerations      | ~enum~ and ~enum class~                                            | ~union~         |
-| Looping           | ~for~, ~while~, ~do...while~, recursion, and range-based for       | Recursion       |
+| Looping           | ~for~, range-based ~for~, ~while~, ~do...while~, and recursion | Recursion       |
 | Functions         | Functions and methods                                              | Functions       |
 | Printing          | C-style printf and C++ style IO streams                            | ~println~       |
 | Indirection       | Pointers and references                                            | References      |
