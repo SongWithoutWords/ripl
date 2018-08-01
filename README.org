@@ -1011,42 +1011,45 @@ define (evaluate (expression e))
 *** TODO =+= Name Overloading
 
 
-*** TODO =+= Minimal and Consistent Design
+*** =+= Simple and General Design
 
-# Essential and accidental complexity was coined by Brooks
-# https://en.wikipedia.org/wiki/No_Silver_Bullet
+It's not uncommon in my experience that people (myself included) conceive of and solve problems at a lower level of generality and abstraction than possible. When this occurs in programming language design, I think it introduces unnecessary complexity to the language. Some examples of this include:
 
-Writing in 1987, Fred Brooks It has been suggested that there are two kinds of complexity that affect software development: the essential complexity of the problem at hand and the accidental complexity of the language, the tools, and the design of the program[fn:32]. 
+1. Needless grammatical distinction between statements and expressions.
+2. Needless grammatical distinction between types and expressions.
+3. Needless distinction between non-virtual member methods and regular functions (solved either by universal function call syntax, as in D, or by not having methods, as in Haskell, ML, ~ripl~, Rust).
+4. Needless distinction between array access notation and function application.
+5. Needless distinction between functions and operators (solved).
 
-I think there are two kinds of complexity that affect programming language designs. There is the inherent complexity of the problems the language is trying to solve, such as the complexity of data-races and memory management without garbage collection, which Rust solves with its ownership system. Then there is the accidental complexity of (in my experience) nearly everything in C++.
-A large part of designing a language that can be easily understood (I believe) is to avoid complicated and duplicate features wherever possible.
+Below is a table that compares various classes of features that can be used to accomplish the same goal in c++ and ~ripl~, which demonstrates that languages can vary pretty widely in terms of complexity:
 
-A large part of maintaining a language design that can be easily understood (I believe) is to avoid complicated and duplicated features. Although 
+#+CAPTION: Comparison Between Various Constructs in C++ and ~ripl~
+| Feature           | C++                                                                          | ~ripl~           |
+|-------------------+------------------------------------------------------------------------------+------------------|
+| Code organization | Headers, namespaces and modules (expected in C++20[fn:31])                   | Namespaces       |
+| Conditions        | ~if~ statements and ternary expressions                                      | ~if~             |
+| Enumerations      | ~enum~ and ~enum class~                                                      | ~union~          |
+| Functions         | Functions and methods                                                        | Functions        |
+| Indirection       | Pointers and references                                                      | References       |
+| Initialization    | ~A a(b)~, ~A a{b}~, ~A a = {b}~ and ~A a = A(b)~                             | ~define a (A b)~ |
+| Iteration         | ~for~, range-based ~for~, ~while~, ~do...while~, and recursion               | Recursion        |
+| Metaprogramming   | Templates and textual macros                                                 | Templates        |
+| Polymorphism      | Inheritance and templates                                                    | Templates        |
+| Printing          | C-style ~printf~ and C++ style IO streams                                    | ~println~        |
+| Record types      | ~class~ and ~struct~                                                         | ~struct~         |
+| Strings           | ~char[MAX_PATH]~, ~char*~, ~wchar*~, ~std::string~, ~std::wstring~           | ~string~         |
+| Type conversions  | C-style cast, ~dynamic_cast~, ~reinterpret_cast~, ~static_cast~, etc.[fn:33] | Functions        |
+| Type-aliases      | ~typedef~ and ~using~                                                        | ~define~         |
+| Unions            | ~union~ and ~std::variant~                                                   | ~union~          |
 
-This may be easiest to demonstrate by comparison with C++:
-| Feature           | C++                                                                | ~ripl~          |
-|-------------------+--------------------------------------------------------------------+-----------------|
-| Code organization | Headers, namespaces and modules (expected in C++20[fn:31])         | Namespaces      |
-| Enumerations      | ~enum~ and ~enum class~                                            | ~union~         |
-| Looping           | ~for~, range-based ~for~, ~while~, ~do...while~, and recursion | Recursion       |
-| Functions         | Functions and methods                                              | Functions       |
-| Printing          | C-style printf and C++ style IO streams                            | ~println~       |
-| Indirection       | Pointers and references                                            | References      |
-| Initialization    | ~A a(b)~, ~A a{b}~ and ~A a = A(b)~                                | ~define a(A b)~ |
-| Metaprogramming   | Templates and textual macros                                       | Templates       |
-| Polymorphism      | Inheritance and templates                                          | Templates       |
-| Record types      | ~class~ and ~struct~                                               | ~struct~        |
-| Strings           | ~char[MAX_PATH]~, ~char*~, ~wchar*~, ~std::string~, ~std::wstring~ | ~string~        |
-| Type-aliases      | ~typedef~ and ~using~                                              | ~define~        |
-| Unions            | ~union~                                                            | ~union~         |
+By adopting more general solutions I think it's possible to reduce the complexity of a language. This is one of ~ripl~'s goals, and its design should be continually revised as new opportunities for generalization are discovered. If the language gets a user base in future this could be done with non-backwards compatible major versions whenever a suitable number of potential improvements have been identified.
 
-# 28 10
-
-[fn:31] Dmitry Guzeev, A Few Words on C++ Modules,
+[fn:31] Dmitry Guzeev, A Few Words on C++ Modules,\newline
 https://medium.com/@wrongway4you/brief-article-on-c-modules-f58287a6c64
 
-[fn:32] Frederick Brooks, No Silver Bullet - Essence and Accident in Software Engineering,
-http://worrydream.com/refs/Brooks-NoSilverBullet.pdf
+[fn:33] These casts are not functions but actual keywords within the language,
+https://en.cppreference.com/w/cpp/keyword
+
 
 ** TODO Powerful
 
