@@ -1086,6 +1086,10 @@ let dx
 
 *** TODO =+= Name Overloading
 
+Name overloading is not the kind of thing you notice when you have it.
+Absence of name overloading is really annoying.
+Add examples about Haskell's ~fmap~ vs ~map~, ~return~ vs ~pure~, and how much it would suck to add a vector class because ~+~ is a function of Num and Num doesn't have the right signatures for vector math.
+
 
 *** =+= Simple and General Design
 
