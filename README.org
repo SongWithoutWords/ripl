@@ -1084,11 +1084,25 @@ let dx
 #+END_SRC
 
 
-*** TODO =+= Name Overloading
+*** =+= Name Overloading
 
-Name overloading is not the kind of thing you notice when you have it.
-Absence of name overloading is really annoying.
-Add examples about Haskell's ~fmap~ vs ~map~, ~return~ vs ~pure~, and how much it would suck to add a vector class because ~+~ is a function of Num and Num doesn't have the right signatures for vector math.
+Overloading is a feature that is more likely to be noticed when absent than present. For example, in Haskell, which lacks overloading, you cannot have two functions with the same name, including simple accessors like =name= or =size=, without creating a type class that defines this function, and then implementing this type class for all types for which this function should be defined. As a result, when people use Haskell's record syntax, which automatically generates accessor functions, they often include the name of the type in the field name to avoid name-collisions, which is needlessly verbose.
+
+Not only is this clumsy, but it results in some inconveniences when using Haskell's standard prelude and libraries:
+1. The standard prelude defines =id= as the identity function, so the name =id= cannot be used for variables representing IDs.
+2. The standard prelude defines =map= on lists, so the more general operation of mapping over functors (including lists) needed to be called =fmap=.
+3. Because many collections, such as =Map= and =Set=, have operations with the same name, such as =size=, =null= and =empty=, it's usually necessary to import all of these modules qualified to avoid collisions, in which case they need to be referred to by a qualified name, such as =Set.size mySet= or =Map.size myMap=.
+4. Because the =Num= typeclass defines the following interface: =(+) :: Num a => a -> a -> a=, =(-) :: Num a => a -> a=, =(*) :: Num a => a -> a -> a=, and =(/) :: Num a => a -> a -> a=, use of the standard prelude forces all types to implement the =Num= class in order to use these symbols, including vectors for which this interface makes no sense (the typical mathematical notion of vector multiplication and division by scalars does not satisfy this interface).
+
+As much as I've heard overloading knocked (~TODO find examples~), the absence of overloading, as evidenced by Haskell, is quite inconvenient (so much so that there are a number of proposals within the Haskell community to fix this[fn:35]). In order to avoid these same inconveniences, ~ripl~ supports overloading, according to the following rules:
+1. When an overloaded name is type checked, all definitions to which this name refers are considered.
+2. The expression is type checked with each potential overload.
+3. The overloads are then sorted in ascending order, first by the number of errors, and then by the number of warnings they produce within this context.
+4. The first (best) overload is chosen.
+5. If there is a tie for first place, then the overload is ambiguous and an error is raised.
+
+[fn:35] https://wiki.haskell.org/TypeDirectedNameResolution,
+https://ghc.haskell.org/trac/ghc/wiki/SyntaxFreeTypeDirectedNameResolution
 
 
 *** =+= Simple and General Design
