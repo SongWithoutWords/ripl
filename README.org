@@ -971,7 +971,7 @@ define (add-int-and-float (i32 x) (f32 y))
 
 The rules used for the selection of overloads in the presence of implicit conversions are described in [[=+= Name Overloading]].
 
-[fn:32] This is especially true in languages like C, in which widespread and questionable implicit conversions allows some types to be used almost interchangeably that should not be, like integers, booleans and pointers.
+[fn:32] This is especially true in languages like C, in which widespread and questionable implicit conversions allows some types to be used almost interchangeably that should not be, like booleans, integers, and pointers.
 
 
 *** =+= Expression Oriented Syntax
