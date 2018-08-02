@@ -1009,18 +1009,79 @@ define (evaluate (expression e))
 
 *** TODO =+= Infix Notation, Selection Syntax, and Word Order
 
-Most object-oriented languages allow code to be written in subject-verb-object (SVO) order (e.g. =person.open(door)= or =map.contains(key)=) using methods, instead of the verb-subject-object (VSO) order of typical function application (e.g. =open person door= or =contains map key=).
+Most object-oriented languages allow code to be written in subject-verb-object (SVO) order (e.g. =map.contains(key)=) using methods, a word order that is used by 42% of the human population[fn:34], including speakers of English, French, Mandarin, and Spanish. By contrast, verb-subject-object (VSO) and verb-object-subject (VOS) order, which are used in traditional function application (e.g. =contains map key= or =contains key map=), are used by only 12% of the human population, including speakers of Arabic and Hebrew. The most popular word order, used by 45% of the world's population[fn:34], is subject-object-verb (SOV), but this order (as used by Forth and PostScript) is quite rare among programming languages.
 
-Word orders in which the verb comes first (VSO and VOS) are quite uncommon, and are believed to be spoken by only 12% of the human population[fn:34]. By contrast, languages with SVO order are spoken by 42% of the human population[fn:34], and include English, French, Mandarin, and Spanish.
+Another aspect of programming languages and math that people are accustomed to is infix notation, which, like the method syntax of object-oriented languages, allows some or all verbs to appear in infix position, as in SVO ordering. Altogether this raises a few questions about the value of these syntactic features:
 
-Although I find it pretty intuitive to add some terms by writing =(+ x y z)=, or to see if terms are ordered a certain way by writing =(< min mid max)=, programming languages with this ordering are renowned for being unintuitive[fn:35].
+1. *Is SVO ordering of source code more intuitive for speakers of SVO languages*
+2. *Is infix notation with precedence more intuitive in a mathematical context*
+3. *Is there some inherent value to SVO ordering*
 
-Another aspect of programming languages and math that people are accustomed to is infix notation.
+
+
+ Although I find it more convenient to add terms by writing =(+ x y z)= (as opposed to =(x + y + z)=), or to see if terms are ordered a certain way by writing =(< x y z)= (as opposed to =(x < y && y < z)=), programming languages with this ordering are famously unintuitive
+ # [fn:35].
+
+instead of the verb-subject-object (VSO) or verb-object-subject (VOS) order of typical function application (e.g. =contains map key= or =contains key map=).
+
+Word orders in which the verb comes first (VSO and VOS) are quite uncommon, and are believed to be spoken by only 12% of the human population[fn:34]. By contrast, languages with SVO order are spoken by 42% of the human population[fn:34], and include English, French, Mandarin, and Spanish. 
 
 [fn:34] Russell S. Tomlin, Basic word order. Functional principles. London: Croom Helm, 1986. Pp. 308, \newline
 https://www.cambridge.org/core/journals/journal-of-linguistics/article/russell-s-tomlin-basic-word-order-functional-principles-london-croom-helm-1986-pp-308/7542AFB4A8B28D651F6E109B810F4C04
 
-[fn:35] I used a programmable calculator (the HP 50g) in second year that used reverse Polish notation (e.g. =a b +=), which I found to be quite unintuitive, and some programming languages (notably Forth) use this ordering as well, which roughly corresponds to SOV ordering.
+Although I came across this blog after writing this section, this subject has been written about before: https://solsort.com/2015/11/14/word-order-in-programming-and-human-languages/
+
+Suggesting SVO is the most intuitive word order, even among speakers of SOV
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4534792/
+# [fn:35] I used a programmable calculator (the HP 50g) in second year that used reverse Polish notation (e.g. =a b +=), which I found to be quite unintuitive, and some programming languages (notably Forth) use this ordering as well, which roughly corresponds to SOV ordering.
+
+**** COMMENT Some code exploring syntactic differences between C-style expressions and Lisp
+
+#+BEGIN_SRC C++
+Array2D<Vector2> SobelFilter(const Array2D<float>& input)
+{
+  const size_t width = input.GetWidth();
+  const size_t height = input.GetHeight();
+
+  if (width <= 1 || height <= 1)
+  {
+    return {}; // return with default constructor
+  }
+
+  const size_t widthLessOne = width - 1;
+  const size_t heightLessOne = height - 1;
+
+  Array2D<Vector2> result{ width, height };
+  for (size_t y = 1; y < heightLessOne; ++y)
+  {
+    for (size_t x = 1; x < widthLessOne; ++x)
+    {
+      y0x0 = input.Get(x - 1, y - 1);
+      y0x1 = input.Get(x - 1, y - 1);
+
+      dx = (y0x0 + 2 * y1x0 + y2x0)
+         - (y0x2 + 2 * y1x2 + y2x2);
+
+    }
+  }
+  return result;
+}
+#+END_SRC
+
+
+#+BEGIN_SRC racket
+let dx
+  -
+    + y0x0 (* 2 y1x0) y2x0
+    + y0x2 (* 2 y1x2) y2x2
+#+END_SRC
+
+#+BEGIN_SRC racket
+(let dx
+  (-
+    (+ y0x0 (* 2 y1x0) y2x0)
+    (+ y0x2 (* 2 y1x2) y2x2)))
+#+END_SRC
 
 
 *** TODO =+= Name Overloading
