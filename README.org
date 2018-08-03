@@ -1107,7 +1107,7 @@ https://ghc.haskell.org/trac/ghc/wiki/SyntaxFreeTypeDirectedNameResolution
 
 *** =+= Simple and General Design
 
-It's not uncommon in my experience that people (myself included) conceive of and solve problems at a lower level of generality and abstraction than possible. When this occurs in programming language design, I think it introduces unnecessary complexity to the language. Some examples of this include:
+It's not uncommon in my experience that people (myself included) conceive of and solve problems at a lower level of generality and abstraction than possible. When this occurs in programming language design, it may introduce unnecessary complexity or limitation to the language. Some examples of this include:
 
 1. Needless grammatical distinction between statements and expressions.
 2. Needless grammatical distinction between types and expressions.
