@@ -944,7 +944,7 @@ Although alternative algorithms have been developed to support Hindley-Milner st
 
 In summary, ~ripl~ trades full type inference (that could infer parameters types) for overloading, subtyping, type classes, and compile time evaluation.
 
-[fn:26] ~ripl~ began without subtyping or overloading and used constraint generation and the unification algorithm for type inference. When I added overloading to ~ripl~, I continued to use the unification algorithm by deferring the unification of constraints with overloads until the types of the overloads and the types of the arguments were known, which worked. When I then added subtyping to the language it became clear that unification would no longer work, and I reverted to bidirectional type checking.
+[fn:26] ~ripl~ began without subtyping or overloading and used constraint generation and the unification algorithm for type inference. When I added overloading to ~ripl~, I continued to use the unification algorithm by deferring the unification of constraints with overloads until the types of the overloads and the types of the arguments were known. When I then added subtyping to the language it became clear that unification would no longer work, and I reverted to bidirectional type checking.
 
 [fn:29] Cornell University, CS3110, Type Inference and Unification,
 http://www.cs.cornell.edu/courses/cs3110/2011fa/supplemental/lec26-type-inference/type-inference.htm#3
