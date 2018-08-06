@@ -1329,7 +1329,9 @@ The lexer of the ~ripl~ compiler is quite straightforward. It takes the string i
 ** Parsing
 Although earlier versions of ~ripl~ with a more complicated grammar used a parser generator (Happy when the compiler was written in Haskell, and ANTLR after it was ported to Scala), since the adoption of a Lisp-like syntax inspired by   [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]    (as described in [[Brief History of =ripl='s Syntax]]), the parser is now written directly in Scala, and the implementation is about half the length it was with ANTLR.
 
-** TODO Post-Parsing
+
+** Post-Parsing
+Post parsing is a step that converts free-form s-expressions into ~ripl~'s untyped abstract syntax tree, and so performs conversions like =SExp(Name("if"), Name("a"), Name("b"), Name("c"))= to =If(Name("a"), Name("b"), Name("c"))=. It does such little work, that it might be wise in a future to fold it into the parsing step to cut down on unnecessary traversals. The only advantage of performing this as a separate step is that it is more modular and can be tested separately.
 
 ** TODO Reduction
 
