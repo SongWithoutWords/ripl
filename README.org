@@ -1174,7 +1174,7 @@ https://en.cppreference.com/w/cpp/keyword
 
 *** =+= Templates
 
-In statically typed languages, especially those without a base type (e.g. =Object= or =Any=), parametric polymorphism is necessary to write generic types (notably collections) and generic functions. Templates are like regular parametric polymorphism (often called generics), except that they can also take integral and enum values as parameters in C++, and values of any type as parameters in D and ~ripl~. The ability to use values in addition to types as template parameters, enables solutions to a number of problems that would be hard or impossible otherwise, including:
+In statically typed languages, especially those without a top type (e.g. =Object= in Java or =Any= in Scala), parametric polymorphism is necessary to write generic types (notably collections) and generic functions. Templates are like regular parametric polymorphism (often called generics), except that they can also take integral and enum values as parameters in C++, and values of any type as parameters in D and ~ripl~. The ability to use values in addition to types as template parameters, enables solutions to a number of problems that would be hard or impossible otherwise, including:
 
 1. Generic definitions of operations over static vectors and arrays of arbitrary length
 2. Compile time dimensional analysis
