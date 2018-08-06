@@ -1105,9 +1105,9 @@ let dx
 #+END_SRC
 
 
-*** TODO =?= Selection Syntax
+*** =+= Selection Syntax
 
-Somewhat related to word-order (as discussed in section [[=?= Infix Notation and Word Order]]) is selection syntax. 
+Somewhat related to word-order (as discussed in section [[=?= Infix Notation and Word Order]]) is selection syntax. The idea is to allow =a.b= as a left-associative shorthand for =(b a)=, so that it's possible to write things like =(math.bits.xor a b)= instead of =((xor (bits math)) a b)=, or =(- character.transform.position camera.transform.position)= instead of =(- (position (transform character)) (position (transform camera)))=. In the examples above, I find the expressions with selection syntax clearer and more readable.
 
 
 *** =+= Name Overloading
