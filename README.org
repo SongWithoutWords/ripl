@@ -1402,7 +1402,7 @@ The lexer of the ~ripl~ compiler is quite straightforward. It takes the string i
 - [X] LLVM-Bindings
   - [X] Representation of LLVM AST
   - [X] Serialization of LLVM AST
-#+Latex: \end{multicols}{2}
+#+Latex: \end{multicols}
 
 
 * COMMENT Misc TODO
