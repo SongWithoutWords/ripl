@@ -1277,20 +1277,19 @@ Although this table is useful in detailing the features of each language, it con
 #+BEGIN_SRC emacs-lisp :var table=language-feature-table :results none :colnames no
 (with-temp-file "doc/figures/language-features/table.csv"
   (insert (format "%s"
-    (mapconcat
-      (lambda (row)
-        (mapconcat
-          (lambda (cell)
-            (if (equal cell "") ""
-              (concat
-                (cond
-                  ((equal cell "=-=") "-1")
-                  ((equal cell "=?=") "+0")
-                  ((equal cell "=+=") "+1")
-                  (t cell))
-                ",")))
-          row ""))
-      table "\n"))))
+    (concat
+      (mapconcat
+        (lambda (row)
+          (mapconcat
+            (lambda (cell)
+              (cond
+                ((equal cell "=-=") "-1")
+                ((equal cell "=?=") "+0")
+                ((equal cell "=+=") "+1")
+                (t cell)))
+            (remove "" row) ","))
+        table "\n")
+    "\n"))))
 #+END_SRC
 
 ** Hierarchical Clustering of Languages
