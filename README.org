@@ -616,8 +616,7 @@ The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was ch
 
 The purpose of the mutable type modifier in ~ripl~ is to restrict mutation to a set of variables that are explicitly mutable within the present scope. Assignment between mutable and immutable values and references are handled according to the following table:
 
-#+CAPTION: Assignment Between Mutable and Immutable Values and References
-#+ATTR_LATEX: :align r|llll
+#+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Assignment Between Mutable and Immutable Values and References} \rowcolors{1}{}{gray!15}
 | Type  | Assign to =T= | Assign to =~T= | Assign to =^T=   | Assign to =^~T=  |
 |-------+---------------+----------------+------------------+------------------|
 | =T=   | value copied  | value copied   | value referenced | type error       |
@@ -1007,32 +1006,51 @@ define (evaluate (expression e))
 #+LATEX: \end{minipage}
 
 
-*** TODO =+= Infix Notation, Selection Syntax, and Word Order
+*** =?= Infix Notation and Word Order
 
-Most object-oriented languages allow code to be written in subject-verb-object (SVO) order (e.g. =map.contains(key)=) using methods, a word order that is used by 42% of the human population[fn:34], including speakers of English, French, Mandarin, and Spanish. By contrast, verb-subject-object (VSO) and verb-object-subject (VOS) order, which are used in traditional function application (e.g. =contains map key= or =contains key map=), are used by only 12% of the human population, including speakers of Arabic and Hebrew. The most popular word order, used by 45% of the world's population[fn:34], is subject-object-verb (SOV), but this order (as used by Forth and PostScript) is quite rare among programming languages.
+Word order (including subject-object-verb or SOV, subject-verb-object or SVO, and verb-subject-object or VSO) is a characteristic of the grammar of both human and programming languages, some aspects of which are summarised in the table below:
 
-Another aspect of programming languages and math that people are accustomed to is infix notation, which, like the method syntax of object-oriented languages, allows some or all verbs to appear in infix position, as in SVO ordering. Altogether this raises a few questions about the value of these syntactic features:
+#+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Word Order in Human and Programming Languages} \rowcolors{1}{}{gray!15}
+|     | Percent of human population[fn:34] | Human languages[fn:38] | Programming constructs  | Example code        |
+|-----+------------------------------------+------------------------+-------------------------+---------------------|
+| SOV |                                45% | Farsi, Hindi           | Reverse Polish notation | =map key contains=  |
+| SVO |                                42% | English, Mandarin      | Methods in OOP          | =map.contains(key)= |
+| VSO |                                 9% | Arabic, Hebrew         | Traditional functions   | =contains map key=  |
+| VOS |                                 3% | Baure, Malagasy        | Traditional functions   | =contains key map=  |
 
-1. *Is SVO ordering of source code more intuitive for speakers of SVO languages*
-2. *Is infix notation with precedence more intuitive in a mathematical context*
-3. *Is there some inherent value to SVO ordering*
+Some studies have found that people tend naturally to use subject-verb-object order when communicating with an established lexicon (even when they are accustomed to another order)[fn:39], and that people tend naturally to use subject-object-verb order when communicating with an improvised lexicon (even when they are accustomed to another order)[fn:40]. Combined with the relative unpopularity of verb-first word orders in human languages, the findings of these studies may suggest that verb-first word orders are less suited to human comprehension, and may even explain some of the popularity of object oriented languages (which allow subject-object-verb order by means of method syntax) and unpopularity of Lisps (which typically do not even allow infix notation).
+
+In addition to word order, many programming languages include infix notation with precedence and associativity (as used in conventional mathematical notation), which, like the method syntax of object-oriented languages, allows some or all verbs to appear in infix position, as in SVO ordering. Although I find it quite convenient to add terms by writing =(+ a b c d)= (as opposed to =(a + b + c + d)=), or to determine if terms are ordered a certain way by writing =(< a b c d)= (as opposed to =(a < b && b < c && c < d)=), programming languages with only function application and without infix notation or method syntax (notably Lisps) are often said to be unintuitive or hard to read (although I've been unnable to find any rigorous investigation of this).
+
+Together these observations pose a number of questions:
+1. How much influence does word order have on people's comprehension of programming languages?
+   1. If this influence is significant, to what degree does it depend on the word order people are accustomed to?
+   2. If this influence is significant, can it be overcome by continued use, or are some word orders inherently advantageous?
+2. How much influence does the presence of infix operators have on people's comprehension of programming languages?
+   1. If this influence is significant, can it be overcome by continued use, or is infix notation inherently advantageous?
+
+If allowing infix and subject-verb-object ordering is desirable (of which I'm still not entirely convinced) there are a number of ways in which this could be achieved in ~ripl~:
+
+1. Surround infix expressions in braces as proposed by Readable Lisp S-expressions[fn:4]. \newline For example ={a + b + c}= would be equivalent to =(+ a b c)=.
+2. Typecheck both orderings of the first two expressions of all s-expressions; if the result of typechecking the s-expression with the order of the first two expressions reversed is better (i.e. fewer errors and implicit conversions), then use this order.
+
+Because this is a rather complicated topic, and because either of the potential solutions mentioned above could be easily added, I am inclined to leave these features out for the time being, and add them in future if their absence is felt.
 
 
-
- Although I find it more convenient to add terms by writing =(+ x y z)= (as opposed to =(x + y + z)=), or to see if terms are ordered a certain way by writing =(< x y z)= (as opposed to =(x < y && y < z)=), programming languages with this ordering are famously unintuitive
- # [fn:35].
-
-instead of the verb-subject-object (VSO) or verb-object-subject (VOS) order of typical function application (e.g. =contains map key= or =contains key map=).
-
-Word orders in which the verb comes first (VSO and VOS) are quite uncommon, and are believed to be spoken by only 12% of the human population[fn:34]. By contrast, languages with SVO order are spoken by 42% of the human population[fn:34], and include English, French, Mandarin, and Spanish. 
-
-[fn:34] Russell S. Tomlin, Basic word order. Functional principles. London: Croom Helm, 1986. Pp. 308, \newline
+[fn:34] Russell S. Tomlin, Basic word order. Functional principles. London: Croom Helm, 1986. Page 308, \newline
 https://www.cambridge.org/core/journals/journal-of-linguistics/article/russell-s-tomlin-basic-word-order-functional-principles-london-croom-helm-1986-pp-308/7542AFB4A8B28D651F6E109B810F4C04
 
-Although I came across this blog after writing this section, this subject has been written about before: https://solsort.com/2015/11/14/word-order-in-programming-and-human-languages/
 
-Suggesting SVO is the most intuitive word order, even among speakers of SOV
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4534792/
+[fn:38] Wikipedia, Subject-verb-object, https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object
+
+
+[fn:39] Alan Langus, Marina Nespor, Cognitive systems struggling for word order, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4534792/
+
+
+[fn:40] Hannah Maro, Alan Langus, et al, A new perspective on word order preferences: the availability of a lexicon triggers the use of SVO word order, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4534792/#B23
+
+# Although I came across this blog after writing this section, this subject has been written about before: https://solsort.com/2015/11/14/word-order-in-programming-and-human-languages/
+
 # [fn:35] I used a programmable calculator (the HP 50g) in second year that used reverse Polish notation (e.g. =a b +=), which I found to be quite unintuitive, and some programming languages (notably Forth) use this ordering as well, which roughly corresponds to SOV ordering.
 
 **** COMMENT Some code exploring syntactic differences between C-style expressions and Lisp
