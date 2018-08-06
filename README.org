@@ -1333,8 +1333,10 @@ Although earlier versions of ~ripl~ with a more complicated grammar used a parse
 ** Post-Parsing
 Post parsing is a step that converts free-form s-expressions into ~ripl~'s untyped abstract syntax tree, and so performs conversions like =SExp(Name("if"), Name("a"), Name("b"), Name("c"))= to =If(Name("a"), Name("b"), Name("c"))=. It does such little work, that it might be wise in a future to fold it into the parsing step to cut down on unnecessary traversals. The only advantage of performing this as a separate step is that it is more modular and can be tested separately.
 
-** TODO Reduction
+** Reduction
+Reduction is by far the most complicated and important aspect of the ~ripl~ compiler. It is the semantic stage that is responsible for overload resolution, namespacing, compile time evaluation, type inference, and type checking. Presently it works by reducing all definitions in the AST lazily, so that evaluation of their results can be deferred until required by another definition.
 
+The only problem with this lazy approach occurs with recursive definitions, which would loop endlessly as each attempt to compute their result would trigger another computation of their result. This is resolved by maintaining a history of visited definitions to detect cycles, and requiring recursive functions to have an explicit return type.
 
 
 ** Code Generation
