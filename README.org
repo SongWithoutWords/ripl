@@ -1105,6 +1105,11 @@ let dx
 #+END_SRC
 
 
+*** TODO =?= Selection Syntax
+
+Somewhat related to word-order (as discussed in section [[=?= Infix Notation and Word Order]]) is selection syntax. 
+
+
 *** =+= Name Overloading
 
 Overloading is a feature that is more noticeable when absent than present. In Haskell, for example, (which lacks traditional overloading) you cannot have two functions with the same name (including simple accessors like =name= or =size=) without creating a type class that declares the function, and then implementing the type class for all required types. As such, name collisions in Haskell can be avoided either by using type classes (which introduces a fair amount of boilerplate), or by modifying the function's name to reflect the type of its parameters. This absence of traditional overloading is clumsy, and has made Haskell's standard prelude inconvenient to use in a number of ways:
