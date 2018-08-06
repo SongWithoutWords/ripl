@@ -1204,7 +1204,7 @@ https://en.cppreference.com/w/cpp/language/constraints
 
 *** =?= Lisp-style macros
 
-Because ~ripl~ has a number of things in common with Lisp, including evaluation of expressions before run time, and a uniform syntax, it may be possible to experiment with adding some Lisp-style macros and metaprogramming features in future.
+Because ~ripl~ has a number of things in common with Lisp, including evaluation of expressions before run time, and a uniform syntax, it should be possible to experiment with adding some Lisp-style macros in future. Lisp macro systems are actually somewhat diverse between Common Lisp and Scheme, so some research would need to be done if one of these were to be emulated in ~ripl~.
 
 
 ** TODO COMMENT Notably Absent Features
