@@ -818,11 +818,14 @@ https://tour.dlang.org/tour/en/gems/functional-programming
 Although they are referred to by many names (packages, modules, namespaces, and maybe others), and there is a lot of variety in their behaviour between languages, namespaces are essentially a system to restrict the visibility of names to avoid name collisions. This is important, and prevents the need to prefix every symbol name with the library that it comes from, as is often necessary in languages without this feature like C and some Lisps. ~ripl~'s namespace feature is inspired by and very similar to that of C#. In addition to this system, which is pretty simple, I would like to add a feature that will allow the compiler to infer namespaces from the directory structure, to reduce the potential for inconsistency between the two.
 
 
-*** TODO =+= Memory Safety
+*** =?= Garbage Collection
 
+Although garbage collection is the norm among most high-level programming languages, and memory safety is a major advantage, there are some disadvantages to garbage collection:
 
-*** TODO =?= Deterministic Destructor Calls (RAII)
-# for resource disposal
+1. Garbage collection may result in unexpected pauses which may not be suitable for real time and soft real time applications.
+2. Non-deterministic garbage collection prevents the use of destructors for deterministic resource disposal (a pattern called RAII), which is a useful pattern for managing both memory and other resources.
+
+Because ~ripl~ already has a number of things in common with Rust, like mutability modifiers and explicit indirection, I am inclined to try a Rust style ownership system, and will fall back on garbage collection if an ownership system does not work out well.
 
 
 ** Performant
