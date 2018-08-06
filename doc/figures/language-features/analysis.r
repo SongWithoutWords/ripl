@@ -6,8 +6,9 @@ library("ape")
 
 concat.strings = function(...){ paste(..., sep = "") }
 
-plot.to.png = function(filename, f, width = 540, height = 540) {
+plot.to.png = function(filename, f, width = 720, height = 720, cex = 1.6) {
   png(filename = filename, width = width, height = height)
+  par(cex = cex)
   plot.result = f()
   print(plot.result)
   dev.off()
@@ -29,15 +30,20 @@ languages.to.analyze = languages # statically.typed.languages
 
 languages.active = languages.to.analyze[, -(0:1)]
 
+# one of "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski"
 distance.method = "euclidean"
 
+# one of "pearson", "spearman" or "kendall".
 correlation.method = "pearson"
 
 # method is one of: "ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median" , "centroid"
 hclust.method = "ward.D2"
 
-plot.phylogram.to.png = function(file.name, title, languages) {
-
+plot.phylogram.to.png = function(
+  file.name,
+  ## title,
+  languages,
+  ...) {
   plot.to.png(file.name,
     function() {
 
@@ -49,33 +55,36 @@ plot.phylogram.to.png = function(file.name, title, languages) {
 
       plot(
         as.phylo(language.hierarchical.clustering),
-        main = title,
+        ## main = title,
         type = "phylogram",
-        cex = 1.2,
+        ## cex = cex,
         label.offset = 0.2,
         font = 1, # plain text, not bold or italic
         # xlab = "Height",
         # nodePar = nodePar,
         # horiz = TRUE
         )
-    }
-  )
+    },
+  ...)
 }
 
 plot.phylogram.to.png(
   "hierarchical-clustering-of-languages.png",
-  "Hierarchical Clustering of Languages by Language Features",
-  languages)
+  ## "Hierarchical Clustering of Languages by Language Features",
+  languages,
+  cex=1.2)
 
 plot.phylogram.to.png(
   "hierarchical-clustering-of-language-features.png",
-  "Hierarchical Clustering of Language Features by Language",
-  language.features)
+  ## "Hierarchical Clustering of Language Features by Language",
+  language.features,
+  cex=1.2)
 
 plot.phylogram.to.png(
   "hierarchical-clustering-of-language-features-excluding-ripl.png",
-  "Hierarchical Clustering of Language Features by Language Excluding Ripl",
-  language.features.excluding.ripl)
+  ## "Hierarchical Clustering of Language Features by Language Excluding Ripl",
+  language.features.excluding.ripl,
+  cex=1.2)
 
 plot.to.png("heatmap-of-language.png",
   function() {
@@ -153,8 +162,13 @@ plot.to.png("multidimensional-scaling-of-languages-classic.png",
     x = language.mds$points[,1]
     y = language.mds$points[,2]
 
-    plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2",
-      main="Classic MDS", type="n")
+    plot(
+      x,
+      y,
+      xlab="Coordinate 1",
+      ylab="Coordinate 2",
+      main="Classic MDS",
+      type="n")
     text(x, y, labels = row.names(languages), cex=.7)
   }
 )
@@ -170,8 +184,12 @@ plot.to.png("multidimensional-scaling-of-languages-non-metric.png",
     x = language.mds$points[,1]
     y = language.mds$points[,2]
 
-    plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2",
-      main="Nonmetric MDS", type="n")
+    plot(
+      x,
+      y,
+      xlab="Coordinate 1",
+      ylab="Coordinate 2",
+      type="n")
     text(x, y, labels = row.names(languages), cex=.7)
   }
 )
