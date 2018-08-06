@@ -815,7 +815,7 @@ https://tour.dlang.org/tour/en/gems/functional-programming
 
 *** =+= Namespaces
 
-Although they are referred to by many names (packages, modules, namespaces, and maybe others), and there is a lot of variety in their behaviour between languages, namespaces are essentially a system to restrict the visibility of names to avoid name collisions. This is important, and prevents the need to prefix every symbol name with the library that it comes from, as is often necessary in languages without this feature like C and some Lisps. ~ripl~'s namespace feature is inspired by and very similar to that of C#. In addition to this system, which is pretty simple, I would like to add a feature that will allow the compiler to infer namespaces from the directory structure, to reduce the potential for inconsistency between the two.
+Although they are referred to by many names (packages, modules, namespaces, and possibly others), and there are a lot of variations in their behaviour between languages, namespaces are essentially a system to restrict the visibility of names and avoid name collisions. This is important, and prevents the need to prefix every symbol name with the library that it comes from, as may be necessary in languages without this feature like C and some Lisps. ~ripl~'s namespace feature is inspired by and very similar to that of C#. In addition to this system, which is pretty simple, I would like to add a feature that will allow the compiler to infer namespaces from the directory structure, to reduce the potential for inconsistency between the namespace structure and directory structure of a project.
 
 
 *** =?= Garbage Collection
