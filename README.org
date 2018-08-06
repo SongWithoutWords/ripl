@@ -830,7 +830,7 @@ Because ~ripl~ already has a number of things in common with Rust, like mutabili
 
 ** Performant
 
-As a statically-typed and compiled language with mutable data-structures, and without virtual functions, lazy evaluation, or implicit indirection (e.g. boxing), ~ripl~ is susceptible to a similar range of optimizations as languages like C++ and Rust. By using LLVM-IR as a compile target, as does the Rust compiler rustc, and C++ compiler Clang, ~ripl~ can leverage many of the same optimizations. If ~ripl~ adopts an ownership system inspired by Rust instead of garbage collection (a decision that is discussed in [[=+= Memory Safety]]), then ~ripl~ may have similar performance potential to C++ and Rust (though actual performance will depend on the implementation).
+As a statically-typed and compiled language with mutable data-structures, and without virtual functions, lazy evaluation, or implicit indirection (e.g. boxing), ~ripl~ is susceptible to a similar range of optimizations as languages like C++ and Rust. By using LLVM-IR as a compile target, as does the Rust compiler rustc, and C++ compiler Clang, ~ripl~ can leverage many of the same optimizations. If ~ripl~ adopts an ownership system inspired by Rust instead of garbage collection (a decision that is discussed in [[=?= Garbage Collection]]), then ~ripl~ may have similar performance potential to C++ and Rust (though actual performance will depend on the implementation).
 
 
 ** Ergonomic, Intuitive, and Concise
