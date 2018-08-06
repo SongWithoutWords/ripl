@@ -1202,8 +1202,9 @@ Whereas template parameters in C++ and D are essentially duck-typed at compile t
 https://en.cppreference.com/w/cpp/language/constraints
 
 
-*** TODO =?= Lisp-style macros
-# - Lisp-style macros, enabled by the uniform syntax in combination with compile-time function evaluation
+*** =?= Lisp-style macros
+
+Because ~ripl~ has a number of things in common with Lisp, including evaluation of expressions before run time, and a uniform syntax, it may be possible to experiment with adding some Lisp-style macros and metaprogramming features in future.
 
 
 ** TODO COMMENT Notably Absent Features
