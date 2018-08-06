@@ -1274,7 +1274,7 @@ Although this table is useful in detailing the features of each language, it con
 #+END_EXPORT
 
 #+NAME: export-language-feature-table-to-csv
-#+BEGIN_SRC emacs-lisp :var table=language-feature-table :results none :colnames no
+#+BEGIN_SRC emacs-lisp :var table=language-feature-table :results none :exports none :colnames no
 (with-temp-file "doc/figures/language-features/table.csv"
   (insert (format "%s"
     (concat
