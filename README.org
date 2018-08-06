@@ -1182,7 +1182,11 @@ In statically typed languages, especially those without a base type (e.g. =Objec
 Although templates in ~ripl~ have not yet been implemented (and as such have not yet been specified), example syntax can be seen in section [[=+= Type-Safe Discriminated Unions]].
 
 
-*** TODO =+= Compile-Time Evaluation
+*** =+= Compile-Time Evaluation
+
+Compile-time evaluation (called compile-time function evaluation in D and constexpr in C++), is the ability to evaluate expressions without side-effects at compile time. This is not only useful for performing computations that would otherwise need to be performed at run time: when combined with templates, this is useful for type level programming.
+
+The intent for ~ripl~ is that the compiler will be able to evaluate all pure expressions and functions, as long as their parameters parameters can be computed at compile time, and that these functions can operate on types in addition to values.
 
 
 *** TODO =+= Type Classes
