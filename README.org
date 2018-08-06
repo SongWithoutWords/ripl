@@ -1323,7 +1323,7 @@ Important to keep in mind is that this is descriptive and not predictive statist
 * TODO Implementation
 
 ** Lexing
-The lexer of the ~ripl~ compiler is quite straightforward. It takes the string input of the source code to be compiled, and breaks it down into tokens, like symbols, strings, and numbers, in addition to tracking changes in indentation. These tokens, including indent and dedent tokens, are then passed off to the parser.
+The lexer of the ~ripl~ compiler is quite straightforward. It takes the string input of the source code to be compiled and breaks it down into tokens, such as symbols, strings, and numbers, in addition to tracking changes in indentation and emitting indent and dedent tokens. These tokens are then handed off to the parser.
 
 ** TODO Parsing
 
