@@ -1325,8 +1325,9 @@ Important to keep in mind is that this is descriptive and not predictive statist
 ** Lexing
 The lexer of the ~ripl~ compiler is quite straightforward. It takes the string input of the source code to be compiled and breaks it down into tokens, such as symbols, strings, and numbers, in addition to tracking changes in indentation and emitting indent and dedent tokens. These tokens are then handed off to the parser.
 
-** TODO Parsing
 
+** Parsing
+Although earlier versions of ~ripl~ with a more complicated grammar used a parser generator (Happy when the compiler was written in Haskell, and ANTLR after it was ported to Scala), since the adoption of a Lisp-like syntax inspired by   [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]    (as described in [[Brief History of =ripl='s Syntax]]), the parser is now written directly in Scala, and the implementation is about half the length it was with ANTLR.
 
 ** TODO Post-Parsing
 
