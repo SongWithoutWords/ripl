@@ -1415,7 +1415,7 @@ The lexer of the ~ripl~ compiler is quite straightforward. It takes the string i
 *** TODO Remove dashes in language feature variable names
 *** TODO Caption the figures (and remove titles from the figures themselves)
 *** TODO Specify somewhere that ^ means reference in ~ripl~
-
+*** TODO Spell-check before you submit
 ** TODO Graphs
 *** DONE Move R code into its own file (it sortof sucks writing it in org mode)
 
