@@ -504,19 +504,21 @@ Type-safe discriminated unions, or sum types, (as seen in Haskell, ML, Rust and 
 #+NAME: Discriminated Unions in ~ripl~
 #+CAPTION: Discriminated Unions in ~ripl~
 #+BEGIN_SRC racket
-; the union keyword can be used to create a type-safe discriminated union
+;; the union keyword can be used to create type-safe discriminated unions
 union expression
-  struct add (expression a) (expression b)
-  struct sub (expression a) (expression b)
-  i32
+  struct add (^expression a) (^expression b)
+  struct sub (^expression a) (^expression b)
+  struct mul (^expression a) (^expression b)
+  struct div (^expression a) (^expression b)
+  f32
 
-; it can be combined with the template keyword to create a union with type parameters
+;; it can be combined with the template keyword to create a parameterized union
 template (list a)
   union
     struct nil
     struct non-empty
       a head
-      (list a) tail
+      ^(list a) tail
 #+END_SRC
 #+LATEX: \end{minipage}
 
@@ -989,15 +991,15 @@ Discriminated unions are a feature of ~ripl~ that is discussed in section [[=+= 
 #+NAME: Pattern Matching in ~ripl~
 #+CAPTION: Pattern Matching in ~ripl~
 #+BEGIN_SRC racket
-;; the union keyword can be used to create type-safe discriminated union
+;; the union keyword can be used to create type-safe discriminated unions
 union expression
-  struct add (expression a) (expression b)
-  struct sub (expression a) (expression b)
-  struct mul (expression a) (expression b)
-  struct div (expression a) (expression b)
+  struct add (^expression a) (^expression b)
+  struct sub (^expression a) (^expression b)
+  struct mul (^expression a) (^expression b)
+  struct div (^expression a) (^expression b)
   f32
 
-define (evaluate (expression e))
+define (evaluate (^expression e))
   ;; the match keyword can be used to operate on unions
   match e
     (add a b) (+ (evaluate a) (evaluate b))
