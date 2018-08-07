@@ -184,9 +184,9 @@
 \end{small}
 
 \tableofcontents
-\listoffigures
-\listoftables
 \lstlistoflistings
+\listoftables
+\listoffigures
 
 \newpage
 
