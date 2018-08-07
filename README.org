@@ -297,7 +297,7 @@ Below is a list of languages mentioned in this document, ordered by the number o
     (mapcar 'occurences-in-buffer languages-to-search)
     (lambda (a b) (> (nth 1 a) (nth 1 b)))))
 #+END_SRC
-#+ATTR_LATEX: :placement [H] :caption \caption{Language Mentions as a Proxy for Influence on \texttt{ripl}'s Design} \rowcolors{2}{gray!30}{}
+#+ATTR_LATEX: :placement [H] :caption \caption{Language Mentions as a Proxy for Influence on \texttt{ripl}'s Design} \rowcolors{1}{}{gray!15}
 #+RESULTS:
 | Language                 | Mentions in this Document |
 |--------------------------+---------------------------|
@@ -787,6 +787,7 @@ Below is a table comparing pure and impure function signatures in various langua
 #+LATEX: \begin{table}[htbp]
 #+LATEX: \caption{Comparison of Pure and Impure Function Signatures in Various Languages}
 #+LATEX: \adjustbox{max width=\linewidth}{
+#+LATEX: \rowcolors{1}{}{gray!15}
 | Language | Potentially Impure | Pure with Mutable Arguments         | Pure                                  |
 |----------+--------------------+-------------------------------------+---------------------------------------|
 | C++      | =int main()=       | =void normalize(Vector& v)=         | =Point operator+(Point a, Point b)=   |
@@ -1016,7 +1017,7 @@ define (evaluate (^expression e))
 Word order (including subject-object-verb or SOV, subject-verb-object or SVO, and verb-subject-object or VSO) is a characteristic of the grammar of both human and programming languages, some aspects of which are summarised in the table below.
 
 #+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Word Order in Human and Programming Languages} \rowcolors{1}{}{gray!15}
-|     | Percent of human population[fn:34] | Example languages[fn:38] | Programming constructs  | Example code        |
+|     | Percent of Human Population[fn:34] | Example Languages[fn:38] | Programming Constructs  | Example Code        |
 |-----+------------------------------------+--------------------------+-------------------------+---------------------|
 | SOV |                                45% | Farsi, Hindi             | Reverse Polish notation | =map key contains=  |
 | SVO |                                42% | English, Mandarin        | Methods in OOP          | =map.contains(key)= |
@@ -1149,31 +1150,31 @@ It's not uncommon in my experience that people (myself included) conceive of and
 Below is a table that compares various classes of features that can be used to accomplish the same goal in C++ and ~ripl~, which demonstrates that languages can vary pretty widely in terms of complexity:
 
 # The caption disables the footnotes :'(
-#+CAPTION: Comparison Between Various Constructs in C++ and ~ripl~
-| Feature           | C++                                                                          | ~ripl~           |
-|-------------------+------------------------------------------------------------------------------+------------------|
-| Code organization | Headers, namespaces and modules (expected in C++20[fn:31])                   | Namespaces       |
-| Conditions        | ~if~ statements and ternary expressions                                      | ~if~             |
-| Enumerations      | ~enum~ and ~enum class~                                                      | ~union~          |
-| Functions         | Functions and methods                                                        | Functions        |
-| Indirection       | Pointers and references                                                      | References       |
-| Initialization    | ~A a(b)~, ~A a{b}~, ~A a = {b}~ and ~A a = A(b)~                             | ~define a (A b)~ |
-| Iteration         | ~for~, range-based ~for~, ~while~, ~do...while~, and recursion               | Recursion        |
-| Metaprogramming   | Templates and textual macros                                                 | Templates        |
-| Polymorphism      | Inheritance and templates                                                    | Templates        |
-| Printing          | C-style ~printf~ and C++ style IO streams                                    | ~println~        |
-| Record types      | ~class~ and ~struct~                                                         | ~struct~         |
-| Strings           | ~char[MAX_PATH]~, ~char*~, ~wchar*~, ~std::string~, ~std::wstring~           | ~string~         |
-| Type conversions  | C-style cast, ~dynamic_cast~, ~reinterpret_cast~, ~static_cast~, etc.[fn:33] | Functions        |
-| Type-aliases      | ~typedef~ and ~using~                                                        | ~define~         |
-| Unions            | ~union~ and ~std::variant~                                                   | ~union~          |
+# #+LATEX: rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :caption \caption{Comparison of Various Constructs in ~ripl~ and C++} \rowcolors{1}{}{gray!15}
+| Feature           | ~ripl~           | C++                                                                |
+|-------------------+------------------+--------------------------------------------------------------------|
+| Code organization | Namespaces       | Headers, namespaces, and modules (expected in C++20[fn:31])        |
+| Conditions        | ~if~             | ~if~ statements and ternary expressions                            |
+| Enumerations      | ~union~          | ~enum~ and ~enum class~                                            |
+| Functions         | Functions        | Functions and methods                                              |
+| Indirection       | References       | Pointers and references                                            |
+| Initialization    | ~define a (A b)~ | ~A a(b)~, ~A a{b}~, ~A a = {b}~, and ~A a = A(b)~                  |
+| Iteration         | Recursion        | ~for~, range-based ~for~, ~while~, ~do...while~, and recursion     |
+| Metaprogramming   | Templates        | Templates and textual macros                                       |
+| Printing          | ~println~        | C-style ~printf~ and C++ style IO streams                          |
+| Record types      | ~struct~         | ~class~ and ~struct~                                               |
+| Strings           | ~string~         | ~char[MAX_PATH]~, ~char*~, ~wchar*~, ~std::string~, ~std::wstring~ |
+| Type conversions  | Functions        | C-style, dynamic, reinterpret, static, and const casts[fn:33]      |
+| Type-aliases      | ~define~         | ~typedef~ and ~using~                                              |
+| Unions            | ~union~          | ~union~ and ~std::variant~                                         |
 
 By adopting more general solutions I think it's possible to reduce the complexity of a language. This is one of ~ripl~'s goals, and its design should be continually revised as new opportunities for generalization are discovered. If the language gets a user base in future this could be done with non-backwards compatible major versions whenever a suitable number of potential improvements have been identified.
 
 [fn:31] Dmitry Guzeev, A Few Words on C++ Modules,\newline
 https://medium.com/@wrongway4you/brief-article-on-c-modules-f58287a6c64
 
-[fn:33] These casts are not functions but actual keywords within the language,
+[fn:33] These casts are not functions but language level features,
 https://en.cppreference.com/w/cpp/keyword
 
 
@@ -1232,7 +1233,7 @@ Although this table is useful in detailing the features of each language, it con
 \begin{sidewaystable}[htbp]
 \caption{Language Feature Table}
 \resizebox{\textwidth}{!}{
-\rowcolors{2}{gray!30}{}
+\rowcolors{1}{}{gray!15}
 #+END_EXPORT
 #+NAME: language-feature-table
 |                                  | C   | C++ | C#  | D   | Haskell | Java | JavaScript | LLVM-IR | ML  | Python | Ripl | Rust | Scala | Scheme |
@@ -1384,7 +1385,8 @@ Based on the data:
 )
 #+END_SRC
 
-#+CAPTION: Languages Sorted by Euclidean Distance to ~ripl~, Calculated from Language Feature Table
+
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Euclidean Distance from \texttt{ripl}, Calculated from Language Feature Table} \rowcolors{1}{}{gray!15}
 #+RESULTS: distance-of-ripl-from-other-languages
 | Language   | Distance from ~ripl~ |
 |------------+----------------------|
