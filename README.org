@@ -1013,15 +1013,15 @@ define (evaluate (^expression e))
 
 *** =?= Infix Notation and Word Order
 
-Word order (including subject-object-verb or SOV, subject-verb-object or SVO, and verb-subject-object or VSO) is a characteristic of the grammar of both human and programming languages, some aspects of which are summarised in the table below:
+Word order (including subject-object-verb or SOV, subject-verb-object or SVO, and verb-subject-object or VSO) is a characteristic of the grammar of both human and programming languages, some aspects of which are summarised in the table below.
 
 #+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Word Order in Human and Programming Languages} \rowcolors{1}{}{gray!15}
-|     | Percent of human population[fn:34] | Human languages[fn:38] | Programming constructs  | Example code        |
-|-----+------------------------------------+------------------------+-------------------------+---------------------|
-| SOV |                                45% | Farsi, Hindi           | Reverse Polish notation | =map key contains=  |
-| SVO |                                42% | English, Mandarin      | Methods in OOP          | =map.contains(key)= |
-| VSO |                                 9% | Arabic, Hebrew         | Traditional functions   | =contains map key=  |
-| VOS |                                 3% | Baure, Malagasy        | Traditional functions   | =contains key map=  |
+|     | Percent of human population[fn:34] | Example languages[fn:38] | Programming constructs  | Example code        |
+|-----+------------------------------------+--------------------------+-------------------------+---------------------|
+| SOV |                                45% | Farsi, Hindi             | Reverse Polish notation | =map key contains=  |
+| SVO |                                42% | English, Mandarin        | Methods in OOP          | =map.contains(key)= |
+| VSO |                                 9% | Arabic, Hebrew           | Traditional functions   | =contains map key=  |
+| VOS |                                 3% | Baure, Malagasy          | Traditional functions   | =contains key map=  |
 
 Some studies have found that people tend naturally to use subject-verb-object order when communicating with an established lexicon (even when they are accustomed to another order)[fn:39], and that people tend naturally to use subject-object-verb order when communicating with an improvised lexicon (even when they are accustomed to another order)[fn:40]. Combined with the relative unpopularity of verb-first word orders in human languages, the findings of these studies may suggest that verb-first word orders are less suited to human comprehension, and may even explain some of the popularity of object oriented languages (which allow subject-object-verb order by means of method syntax) and unpopularity of Lisps (which typically do not even allow infix notation).
 
