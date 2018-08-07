@@ -1353,23 +1353,25 @@ Based on the data:
 (setq-local other-languages (seq-filter (lambda (list) (not (equal (car list) "Ripl"))) transpose))
 
 `(
-  ("Language" "Distance")
+  ("Language" "Distance from ~ripl~")
   hline
   ,@(cl-sort
     (mapcar
       (lambda (language)
         (list (car language)
-          (sqrt
-            (apply '+
-              (cl-mapcar
-                (lambda (language-feature ripl-feature)
-                  (- language-feature ripl-feature)
-                  (let ((difference (- language-feature ripl-feature)))
-                    (* difference difference)
+          (format "%0.2f"
+            (sqrt
+              (apply '+
+                (cl-mapcar
+                  (lambda (language-feature ripl-feature)
+                    (- language-feature ripl-feature)
+                    (let ((difference (- language-feature ripl-feature)))
+                      (* difference difference)
+                    )
                   )
+                  (cdr language)
+                  (cdr ripl)
                 )
-                (cdr language)
-                (cdr ripl)
               )
             )
           )
@@ -1377,28 +1379,28 @@ Based on the data:
       )
       other-languages
     )
-    (lambda (a b) (< (nth 1 a) (nth 1 b)))
+    (lambda (a b) (string< (nth 1 a) (nth 1 b)))
   )
 )
 #+END_SRC
 
 #+CAPTION: Languages Sorted by Euclidean Distance to ~ripl~, Calculated from Language Feature Table
 #+RESULTS: distance-of-ripl-from-other-languages
-| language   | mentions in this document |
-|------------+---------------------------|
-| Rust       |         5.830951894845301 |
-| Haskell    |         5.916079783099616 |
-| ML         |                       6.0 |
-| D          |         6.164414002968976 |
-| Scheme     |         6.928203230275509 |
-| Scala      |          7.14142842854285 |
-| C++        |         7.615773105863909 |
-| Python     |          8.18535277187245 |
-| JavaScript |         8.246211251235321 |
-| C#         |         8.426149773176359 |
-| Java       |         8.660254037844387 |
-| LLVM-IR    |         8.774964387392123 |
-| C          |         8.888194417315589 |
+| Language   | Distance from ~ripl~ |
+|------------+----------------------|
+| Rust       |                 5.83 |
+| Haskell    |                 5.92 |
+| ML         |                 6.00 |
+| D          |                 6.16 |
+| Scheme     |                 6.93 |
+| Scala      |                 7.14 |
+| C++        |                 7.62 |
+| Python     |                 8.19 |
+| JavaScript |                 8.25 |
+| C#         |                 8.43 |
+| Java       |                 8.66 |
+| LLVM-IR    |                 8.77 |
+| C          |                 8.89 |
 
 ** TODO Hierarchical Clustering of Language Features
 
