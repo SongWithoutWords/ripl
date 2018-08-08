@@ -1,4 +1,4 @@
-C,C++,C#,D,Haskell,Java,JavaScript,LLVM-IR,ML,Python,Ripl,Rust,Scala,Scheme
+C,C++,C#,D,Haskell,Java,JavaScript,LLVM-IR,ML,Python,ripl,Rust,Scala,Scheme
 garbage-collection,-1,-1,+1,+1,+1,+1,+1,+0,+1,+1,+0,-1,+1,+1
 explicit-indirection,+1,+1,-1,+1,-1,-1,-1,+1,-1,-1,+1,+1,-1,-1
 ownership-system,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,+0,+1,-1,-1

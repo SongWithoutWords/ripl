@@ -18,7 +18,7 @@ plot.to.png = function(filename, f, width = 720, height = 720, cex = 1.6) {
 
 language.features = read.csv(file="table.csv", head = TRUE, check.names = FALSE)
 
-language.features.excluding.ripl = subset(language.features, select = -c(Ripl))
+language.features.excluding.ripl = subset(language.features, select = -c(ripl))
 
 languages = as.data.frame(t(language.features))
 

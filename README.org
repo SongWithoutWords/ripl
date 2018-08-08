@@ -1241,39 +1241,39 @@ All distances calculated are Euclidean distances, all correlations are Pearson c
 \rowcolors{1}{}{gray!15}
 #+END_EXPORT
 #+NAME: language-feature-table
-|                                  | C   | C++ | C#  | D   | Haskell | Java | JavaScript | LLVM-IR | ML  | Python | Ripl | Rust | Scala | Scheme |
-|----------------------------------+-----+-----+-----+-----+---------+------+------------+---------+-----+--------+------+------+-------+--------|
-| garbage-collection               | =-= | =-= | =+= | =+= | =+=     | =+=  | =+=        | =?=     | =+= | =+=    | =?=  | =-=  | =+=   | =+=    |
-| explicit-indirection             | =+= | =+= | =-= | =+= | =-=     | =-=  | =-=        | =+=     | =-= | =-=    | =+=  | =+=  | =-=   | =-=    |
-| ownership-system                 | =-= | =-= | =-= | =-= | =-=     | =-=  | =-=        | =-=     | =-= | =-=    | =?=  | =+=  | =-=   | =-=    |
-| memory-safety                    | =-= | =-= | =+= | =+= | =+=     | =+=  | =+=        | =-=     | =+= | =+=    | =+=  | =+=  | =+=   | =+=    |
-| static-typing                    | =+= | =+= | =+= | =+= | =+=     | =+=  | =-=        | =+=     | =+= | =-=    | =+=  | =+=  | =+=   | =-=    |
-| type-inference                   | =-= | =+= | =+= | =+= | =+=     | =-=  | =?=        | =-=     | =+= | =?=    | =+=  | =+=  | =+=   | =?=    |
-| sub-typing                       | =+= | =+= | =+= | =+= | =-=     | =+=  | =+=        | =-=     | =-= | =+=    | =+=  | =-=  | =+=   | =-=    |
-| parametric-polymorphism          | =-= | =+= | =+= | =+= | =+=     | =+=  | =?=        | =-=     | =+= | =?=    | =+=  | =+=  | =+=   | =?=    |
-| type-classes                     | =-= | =-= | =-= | =-= | =+=     | =-=  | =?=        | =-=     | =+= | =-=    | =+=  | =+=  | =-=   | =-=    |
-| type-level-programming           | =-= | =+= | =-= | =+= | =+=     | =-=  | =?=        | =-=     | =+= | =?=    | =+=  | =-=  | =+=   | =?=    |
-| ad-hoc-polymorphism              | =-= | =+= | =+= | =+= | =-=     | =+=  | =?=        | =-=     | =-= | =?=    | =+=  | =-=  | =+=   | =?=    |
-| classical-inheritance            | =-= | =+= | =+= | =+= | =-=     | =+=  | =-=        | =-=     | =-= | =+=    | =-=  | =-=  | =+=   | =-=    |
-| prototypal-inheritance           | =-= | =-= | =-= | =-= | =-=     | =-=  | =+=        | =-=     | =-= | =-=    | =-=  | =-=  | =-=   | =-=    |
-| strict-evaluation                | =+= | =+= | =+= | =+= | =-=     | =+=  | =+=        | =+=     | =+= | =+=    | =+=  | =+=  | =+=   | =+=    |
-| type-safe-discriminated-unions   | =-= | =-= | =-= | =+= | =+=     | =-=  | =-=        | =-=     | =+= | =-=    | =+=  | =+=  | =+=   | =-=    |
-| null-safety                      | =-= | =-= | =-= | =-= | =+=     | =-=  | =-=        | =-=     | =+= | =-=    | =+=  | =+=  | =-=   | =+=    |
-| pattern-matching                 | =-= | =-= | =-= | =-= | =+=     | =-=  | =-=        | =-=     | =+= | =-=    | =+=  | =+=  | =+=   | =-=    |
-| mutable-data                     | =+= | =+= | =+= | =+= | =-=     | =+=  | =+=        | =+=     | =+= | =+=    | =+=  | =+=  | =+=   | =+=    |
-| immutable-data                   | =-= | =+= | =-= | =+= | =+=     | =-=  | =-=        | =-=     | =+= | =-=    | =+=  | =+=  | =+=   | =-=    |
-| constraints-on-mutability        | =-= | =+= | =-= | =+= | =-=     | =-=  | =-=        | =-=     | =-= | =-=    | =+=  | =+=  | =-=   | =-=    |
-| constraints-on-function-purity   | =-= | =-= | =-= | =+= | =+=     | =-=  | =-=        | =-=     | =-= | =-=    | =+=  | =-=  | =-=   | =-=    |
-| c-style-syntax                   | =+= | =+= | =+= | =+= | =-=     | =+=  | =+=        | =-=     | =-= | =+=    | =-=  | =+=  | =+=   | =-=    |
-| uses-header-files                | =+= | =+= | =-= | =-= | =-=     | =-=  | =-=        | =-=     | =-= | =-=    | =-=  | =-=  | =-=   | =-=    |
-| whitespace-sensitive             | =-= | =-= | =-= | =-= | =+=     | =-=  | =-=        | =-=     | =-= | =+=    | =+=  | =-=  | =-=   | =-=    |
-| uniform-syntax                   | =-= | =-= | =-= | =-= | =-=     | =-=  | =-=        | =-=     | =-= | =-=    | =+=  | =-=  | =-=   | =+=    |
-| expression-oriented              | =-= | =-= | =-= | =-= | =+=     | =-=  | =-=        | =-=     | =+= | =-=    | =+=  | =+=  | =+=   | =+=    |
-| top-level-functions              | =+= | =+= | =-= | =+= | =+=     | =-=  | =+=        | =+=     | =+= | =+=    | =+=  | =+=  | =-=   | =+=    |
-| methods                          | =-= | =+= | =+= | =+= | =-=     | =+=  | =+=        | =-=     | =?= | =+=    | =-=  | =-=  | =+=   | =-=    |
-| uniform-function-call-syntax     | =?= | =-= | =?= | =+= | =?=     | =?=  | =-=        | =-=     | =?= | =-=    | =+=  | =+=  | =?=   | =?=    |
-| compile-time-function-evaluation | =-= | =+= | =-= | =+= | =-=     | =-=  | =?=        | =-=     | =-= | =?=    | =+=  | =-=  | =-=   | =?=    |
-| closures                         | =-= | =+= | =+= | =+= | =+=     | =+=  | =+=        | =-=     | =+= | =+=    | =+=  | =+=  | =+=   | =+=    |
+|                                  | C   | C++ | C#  | D   | Haskell | Java | JavaScript | LLVM-IR | ML  | Python | ~ripl~ | Rust | Scala | Scheme |
+|----------------------------------+-----+-----+-----+-----+---------+------+------------+---------+-----+--------+--------+------+-------+--------|
+| garbage-collection               | =-= | =-= | =+= | =+= | =+=     | =+=  | =+=        | =?=     | =+= | =+=    | =?=    | =-=  | =+=   | =+=    |
+| explicit-indirection             | =+= | =+= | =-= | =+= | =-=     | =-=  | =-=        | =+=     | =-= | =-=    | =+=    | =+=  | =-=   | =-=    |
+| ownership-system                 | =-= | =-= | =-= | =-= | =-=     | =-=  | =-=        | =-=     | =-= | =-=    | =?=    | =+=  | =-=   | =-=    |
+| memory-safety                    | =-= | =-= | =+= | =+= | =+=     | =+=  | =+=        | =-=     | =+= | =+=    | =+=    | =+=  | =+=   | =+=    |
+| static-typing                    | =+= | =+= | =+= | =+= | =+=     | =+=  | =-=        | =+=     | =+= | =-=    | =+=    | =+=  | =+=   | =-=    |
+| type-inference                   | =-= | =+= | =+= | =+= | =+=     | =-=  | =?=        | =-=     | =+= | =?=    | =+=    | =+=  | =+=   | =?=    |
+| sub-typing                       | =+= | =+= | =+= | =+= | =-=     | =+=  | =+=        | =-=     | =-= | =+=    | =+=    | =-=  | =+=   | =-=    |
+| parametric-polymorphism          | =-= | =+= | =+= | =+= | =+=     | =+=  | =?=        | =-=     | =+= | =?=    | =+=    | =+=  | =+=   | =?=    |
+| type-classes                     | =-= | =-= | =-= | =-= | =+=     | =-=  | =?=        | =-=     | =+= | =-=    | =+=    | =+=  | =-=   | =-=    |
+| type-level-programming           | =-= | =+= | =-= | =+= | =+=     | =-=  | =?=        | =-=     | =+= | =?=    | =+=    | =-=  | =+=   | =?=    |
+| ad-hoc-polymorphism              | =-= | =+= | =+= | =+= | =-=     | =+=  | =?=        | =-=     | =-= | =?=    | =+=    | =-=  | =+=   | =?=    |
+| classical-inheritance            | =-= | =+= | =+= | =+= | =-=     | =+=  | =-=        | =-=     | =-= | =+=    | =-=    | =-=  | =+=   | =-=    |
+| prototypal-inheritance           | =-= | =-= | =-= | =-= | =-=     | =-=  | =+=        | =-=     | =-= | =-=    | =-=    | =-=  | =-=   | =-=    |
+| strict-evaluation                | =+= | =+= | =+= | =+= | =-=     | =+=  | =+=        | =+=     | =+= | =+=    | =+=    | =+=  | =+=   | =+=    |
+| type-safe-discriminated-unions   | =-= | =-= | =-= | =+= | =+=     | =-=  | =-=        | =-=     | =+= | =-=    | =+=    | =+=  | =+=   | =-=    |
+| null-safety                      | =-= | =-= | =-= | =-= | =+=     | =-=  | =-=        | =-=     | =+= | =-=    | =+=    | =+=  | =-=   | =+=    |
+| pattern-matching                 | =-= | =-= | =-= | =-= | =+=     | =-=  | =-=        | =-=     | =+= | =-=    | =+=    | =+=  | =+=   | =-=    |
+| mutable-data                     | =+= | =+= | =+= | =+= | =-=     | =+=  | =+=        | =+=     | =+= | =+=    | =+=    | =+=  | =+=   | =+=    |
+| immutable-data                   | =-= | =+= | =-= | =+= | =+=     | =-=  | =-=        | =-=     | =+= | =-=    | =+=    | =+=  | =+=   | =-=    |
+| constraints-on-mutability        | =-= | =+= | =-= | =+= | =-=     | =-=  | =-=        | =-=     | =-= | =-=    | =+=    | =+=  | =-=   | =-=    |
+| constraints-on-function-purity   | =-= | =-= | =-= | =+= | =+=     | =-=  | =-=        | =-=     | =-= | =-=    | =+=    | =-=  | =-=   | =-=    |
+| c-style-syntax                   | =+= | =+= | =+= | =+= | =-=     | =+=  | =+=        | =-=     | =-= | =+=    | =-=    | =+=  | =+=   | =-=    |
+| uses-header-files                | =+= | =+= | =-= | =-= | =-=     | =-=  | =-=        | =-=     | =-= | =-=    | =-=    | =-=  | =-=   | =-=    |
+| whitespace-sensitive             | =-= | =-= | =-= | =-= | =+=     | =-=  | =-=        | =-=     | =-= | =+=    | =+=    | =-=  | =-=   | =-=    |
+| uniform-syntax                   | =-= | =-= | =-= | =-= | =-=     | =-=  | =-=        | =-=     | =-= | =-=    | =+=    | =-=  | =-=   | =+=    |
+| expression-oriented              | =-= | =-= | =-= | =-= | =+=     | =-=  | =-=        | =-=     | =+= | =-=    | =+=    | =+=  | =+=   | =+=    |
+| top-level-functions              | =+= | =+= | =-= | =+= | =+=     | =-=  | =+=        | =+=     | =+= | =+=    | =+=    | =+=  | =-=   | =+=    |
+| methods                          | =-= | =+= | =+= | =+= | =-=     | =+=  | =+=        | =-=     | =?= | =+=    | =-=    | =-=  | =+=   | =-=    |
+| uniform-function-call-syntax     | =?= | =-= | =?= | =+= | =?=     | =?=  | =-=        | =-=     | =?= | =-=    | =+=    | =+=  | =?=   | =?=    |
+| compile-time-function-evaluation | =-= | =+= | =-= | =+= | =-=     | =-=  | =?=        | =-=     | =-= | =?=    | =+=    | =-=  | =-=   | =?=    |
+| closures                         | =-= | =+= | =+= | =+= | =+=     | =+=  | =+=        | =-=     | =+= | =+=    | =+=    | =+=  | =+=   | =+=    |
 
 #+BEGIN_EXPORT latex
 } % end resizebox
@@ -1291,6 +1291,7 @@ All distances calculated are Euclidean distances, all correlations are Pearson c
           (mapconcat
             (lambda (cell)
               (cond
+                ((equal cell "~ripl~") "ripl")
                 ((equal cell "=-=") "-1")
                 ((equal cell "=?=") "+0")
                 ((equal cell "=+=") "+1")
@@ -1354,9 +1355,9 @@ Based on the data:
 )
 (setq-local transpose (reverse (transpose* table (1- (length (nth 0 table))))))
 
-(setq-local ripl (assoc "Ripl" transpose))
+(setq-local ripl (assoc "~ripl~" transpose))
 
-(setq-local other-languages (seq-filter (lambda (list) (not (equal (car list) "Ripl"))) transpose))
+(setq-local other-languages (seq-filter (lambda (list) (not (equal (car list) "~ripl~"))) transpose))
 
 `(
   ("Language" "Distance from ~ripl~")
@@ -1391,7 +1392,7 @@ Based on the data:
 #+END_SRC
 
 
-#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Euclidean Distance from \texttt{ripl}, Calculated from Language Feature Table} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance from \texttt{ripl}, Calculated from Language Feature Table} \rowcolors{1}{}{gray!15}
 #+RESULTS: distance-of-ripl-from-other-languages
 | Language   | Distance from ~ripl~ |
 |------------+----------------------|
