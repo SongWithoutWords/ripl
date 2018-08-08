@@ -1300,7 +1300,7 @@ Although this table is useful in detailing the features of each language, it con
 One such visualization method is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups (in n-dimensional space) until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the criteria mentioned above:
 
 #+CAPTION: Hierarchical Clustering of Languages
-#+ATTR_LATEX: :width 12cm
+#+ATTR_LATEX: :width 12cm :placement [H]
 [[file:doc/figures/language-features/hierarchical-clustering-of-languages.png]]
 
 The results are consistent with my understanding of the languages considered, and help to place ripl in context. An annotated version of the tree above might look something like this:
@@ -1409,7 +1409,7 @@ Based on the data:
 Incidentally, by running hierarchical clustering on the transpose of our table, it's possible classify the language features it contains by the programming languages in which they occur:
 
 #+CAPTION: Hierarchical Clustering of Language Feature Correlation by Language Excluding ~ripl~
-#+ATTR_LATEX: :width 14cm
+#+ATTR_LATEX: :width 14cm :placement [H]
 [[file:doc/figures/language-features/hierarchical-clustering-of-language-features-excluding-ripl.png]]
 
 The result of this exercise provides some interesting insights: in particular, it suggests a strong correlation between garbage collection and memory safety (which may come as no surprise), and between pattern matching, type-safe discriminated unions and null-safety.
@@ -1417,20 +1417,20 @@ The result of this exercise provides some interesting insights: in particular, i
 ** TODO Heatmap of Languages
 
 #+CAPTION: Heatmap of Languages
-#+ATTR_LATEX: :width 16cm
+#+ATTR_LATEX: :width 16cm :placement [H]
 [[file:doc/figures/language-features/heatmap-of-language.png]]
 
 ** TODO Heatmap of Language Feature Correlations
 Important to keep in mind is that this is descriptive and not predictive statistics
 
 #+CAPTION: Heatmap of Language Feature Correlations
-#+ATTR_LATEX: :width 20cm
+#+ATTR_LATEX: :width 20cm :placement [H]
 [[file:doc/figures/language-features/language-feature-correlation-heatmap-pearson.png]]
 
 ** TODO Multidimensional Scaling of Languages
 
 #+CAPTION: Multidimensional Scaling of Languages
-#+ATTR_LATEX: :width 14cm
+#+ATTR_LATEX: :width 14cm :placement [H]
 [[file:doc/figures/language-features/multidimensional-scaling-of-languages-non-metric.png]]
 
 ** TODO Discussion of specific languages
