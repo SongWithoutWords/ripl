@@ -1306,7 +1306,7 @@ All distances calculated are Euclidean distances, all correlations are Pearson c
 
 ** Hierarchical Clustering of Languages
 
-One such visualization method is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups (in n-dimensional space) until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the criteria mentioned above:
+One method that is useful for visualizing higher-dimensional data is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups (in n-dimensional space) until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the features considered in the language features table:
 
 #+CAPTION: Hierarchical Clustering of Languages
 #+ATTR_LATEX: :width 12cm :placement [H]
