@@ -107,7 +107,7 @@ plot.to.png("heatmap-of-language.png",
       symm = TRUE,
       trace = "none",
       cellnote = format(round(language.distance.matrix, 2)),
-      key.xlab = "distance",
+      key.xlab = "Distance",
       )
   }
 )
@@ -149,6 +149,8 @@ plot.to.png(
       rowsep = 0:ncol(language.feature.cor),
       sepwidth = c(0.001, 0.001),
       sepcolor =  "black",
+
+      key.xlab = "Correlation",
 
       # attempt to place the histogram/colour key above the plot
       ## lmat=rbind(c(5, 4, 2), c(6, 1, 3)),
