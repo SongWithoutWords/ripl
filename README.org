@@ -1414,16 +1414,16 @@ Incidentally, by running hierarchical clustering on the transpose of our table, 
 
 The result of this exercise provides some interesting insights: in particular, it suggests a strong correlation between garbage collection and memory safety (which may come as no surprise), and between pattern matching, type-safe discriminated unions and null-safety.
 
-** TODO Heatmap of Languages
+** TODO Heatmap of Distances Between Languages
 
-#+CAPTION: Heatmap of Languages
+#+CAPTION: Heatmap of Distances Between Languages
 #+ATTR_LATEX: :width 16cm :placement [H]
 [[file:doc/figures/language-features/heatmap-of-language.png]]
 
-** TODO Heatmap of Language Feature Correlations
+** TODO Heatmap of Correlations Between Language Features
 Important to keep in mind is that this is descriptive and not predictive statistics
 
-#+CAPTION: Heatmap of Language Feature Correlations
+#+CAPTION: Heatmap of Correlations Between Language Features
 #+ATTR_LATEX: :width 20cm :placement [H]
 [[file:doc/figures/language-features/language-feature-correlation-heatmap-pearson.png]]
 
