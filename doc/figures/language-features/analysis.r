@@ -90,17 +90,24 @@ plot.to.png("heatmap-of-language.png",
   function() {
     language.distances = dist(languages, method = distance.method)
 
+    language.distance.matrix = data.matrix(language.distances)
+
     language.clusters = as.dendrogram(hclust(language.distances, method = hclust.method))
 
     library(gplots)
 
     heatmap.2(
-      data.matrix(language.distances),
+      ## data.matrix(language.distances),
+      language.distance.matrix,
       Rowv = language.clusters,
       Colv = language.clusters,
-      col = colorRampPalette(c("black", "white")),
+      col = colorRampPalette(c("blue", "white")),
+      tracecol = "black",
+      notecol = "black",
       symm = TRUE,
       trace = "none",
+      cellnote = format(round(language.distance.matrix, 2)),
+      key.xlab = "distance",
       )
   }
 )
