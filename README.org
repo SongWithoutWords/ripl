@@ -1378,7 +1378,9 @@ The results suggest that ~ripl~ is somewhat of an outlier:
 
 ** Distance of ~ripl~ from Other Languages
 
-Based on the data:
+By ordering the languages considered by increasing distance from ~ripl~, it is possible to rank them by their similarity to ~ripl~ based on the language features considered, as seen in the table below.
+# The languages considered in the language feature table can be ranked by their similarity to ~ripl~, by 
+# Based on the data in the language feature table, it's possible to calculate the distance of ~ripl~ from other languages. By ordering these languages by increasing distance it's possible to rank them by their similarity to ~ripl~, as seen in the table below.
 
 #+NAME: distance-of-ripl-from-other-languages
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
