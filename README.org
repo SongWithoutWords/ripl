@@ -1362,22 +1362,6 @@ One method that is useful for visualizing higher-dimensional data is hierarchica
 
 The results are consistent with my understanding of the languages considered, and help to place ripl in context. An annotated version of the tree above might look something like this:
 
-- Languages considered
-  - Statically typed, functional languages
-    - ML-like (ML, Haskell)
-    - Other (ripl, Rust)
-  - Languages that are not both statically typed and functional
-    - Low-level (C, LLVM-IR)
-    - Higher-level
-      - Dynamically typed
-        - Scheme
-        - Python, JavaScript
-      - Statically typed
-        - C++ and D (which was intended as a successor of C++)
-        - Java-derived languages
-          - Scala (the height at which it branches indicates it's disimilarity to C# and Java)
-          - Java and C# (the most similar of any two languages considered)
-
 
 ** Distance of ~ripl~ from Other Languages
 
