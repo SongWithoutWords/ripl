@@ -1392,11 +1392,11 @@ df = df[-1,-1]
 
 distance = as.matrix(dist(t(df)))
 
-from.ripl = data.frame(sort(distance["ripl",])[-1])
-from.ripl = cbind(rownames(from.ripl), from.ripl)
-colnames(from.ripl) = c("Language", "Distance from ~ripl~")
+dist.from.ripl = data.frame(sort(distance["ripl",])[-1])
+dist.from.ripl = cbind(rownames(dist.from.ripl), dist.from.ripl)
+colnames(dist.from.ripl) = c("Language", "Distance from ~ripl~")
 
-ascii(from.ripl, include.rownames=FALSE)
+ascii(dist.from.ripl, include.rownames=FALSE)
 #+END_SRC
 
 #+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance from \texttt{ripl}} \rowcolors{1}{}{gray!15}
