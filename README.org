@@ -1384,66 +1384,25 @@ The results are consistent with my understanding of the languages considered, an
 Based on the data:
 
 #+NAME: distance-of-ripl-from-other-languages
-#+BEGIN_SRC emacs-lisp :var table=language-feature-table :exports results :colnames no
-(defun transpose* (table remaining-cols)
-  (if (= 0 remaining-cols)
-    nil
-    (cons
-      (mapcar
-        (lambda (row)
-          (let ((cell (nth remaining-cols row)))
-              (cond
-                ((equal cell "=-=") -1)
-                ((equal cell "=?=") +0)
-                ((equal cell "=+=") +1)
-                (t cell))
-          )
-        )
-        table)
-      (transpose* table (- remaining-cols 1))
-    )
-  )
-)
-(setq-local transpose (reverse (transpose* table (1- (length (nth 0 table))))))
+#+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
+library(ascii)
+options(asciiType="org")
 
-(setq-local ripl (assoc "~ripl~" transpose))
+df = as.data.frame(language.feature.table)
+colnames(df) = df[1,]
+rownames(df) = df[,1]
+df = df[-1,-1]
 
-(setq-local other-languages (seq-filter (lambda (list) (not (equal (car list) "~ripl~"))) transpose))
+distance = as.matrix(dist(t(df)))
 
-`(
-  ("Language" "Distance from ~ripl~")
-  hline
-  ,@(cl-sort
-    (mapcar
-      (lambda (language)
-        (list (car language)
-          (format "%0.2f"
-            (sqrt
-              (apply '+
-                (cl-mapcar
-                  (lambda (language-feature ripl-feature)
-                    (- language-feature ripl-feature)
-                    (let ((difference (- language-feature ripl-feature)))
-                      (* difference difference)
-                    )
-                  )
-                  (cdr language)
-                  (cdr ripl)
-                )
-              )
-            )
-          )
-        )
-      )
-      other-languages
-    )
-    (lambda (a b) (string< (nth 1 a) (nth 1 b)))
-  )
-)
+from.ripl = data.frame(sort(distance["ripl",])[-1])
+from.ripl = cbind(rownames(from.ripl), from.ripl)
+colnames(from.ripl) = c("Language", "Distance from ~ripl~")
+
+ascii(from.ripl, include.rownames=FALSE)
 #+END_SRC
 
-
-#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance from \texttt{ripl}, Calculated from Language Feature Table} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance from \texttt{ripl}} \rowcolors{1}{}{gray!15}
 #+RESULTS: distance-of-ripl-from-other-languages
 | Language   | Distance from ~ripl~ |
 |------------+----------------------|
@@ -1460,6 +1419,7 @@ Based on the data:
 | Java       |                 8.66 |
 | LLVM-IR    |                 8.77 |
 | C          |                 8.89 |
+
 
 ** TODO Hierarchical Clustering of Language Features
 
