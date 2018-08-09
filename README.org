@@ -1354,13 +1354,15 @@ All distances calculated are Euclidean distances, all correlations are Pearson c
 
 ** Hierarchical Clustering of Languages
 
-One method that is useful for visualizing higher-dimensional data is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups (in n-dimensional space) until all data points have been organized into a binary tree. When applied to this data set, this process yields a taxonomy of programming languages based on the features considered in the language features table:
+One method that is useful for visualizing higher-dimensional data is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups, until all data points have been organized into a binary tree. The distances between languages are measured in n-dimensional space, where each dimension is a variable corresponding to one of the language features considered, and the criteria used to determine the distance between groups is called Ward's method. When applied to this data set, this process yields a taxonomy of programming languages based on the features considered in the language features table:
 
 #+CAPTION: Hierarchical Clustering of Languages
 #+ATTR_LATEX: :width 12cm :placement [H]
 [[file:doc/figures/language-features/hierarchical-clustering-of-languages.png]]
 
-The results are consistent with my understanding of the languages considered, and help to place ripl in context. An annotated version of the tree above might look something like this:
+The results suggest that ~ripl~ is part of a cluster of statically typed, functional languages, along with Haskell, ML, and Rust. Although this data visualization method is useful, it does not account for all of the distances between the languages considered, which can be seen in the heatmap in section [[Heatmap of Distances Between Languages]].
+\pagebreak
+
 ** Heatmap of Distances Between Languages
 
 The figure presented in this section is a heatmap of the distances between the languages considered. The languages are ordered using the same hierarchical clustering as discussed in the previous section.
