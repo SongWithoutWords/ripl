@@ -1392,9 +1392,47 @@ The results suggest that ~ripl~ is part of a cluster of statically typed, functi
 
 The figure presented in this section is a heatmap of the distances between the languages considered. The languages are ordered using the same hierarchical clustering as discussed in section [[Hierarchical Clustering of Languages]].
 
+#+NAME: heatmap-of-distances-between-languages
+#+HEADER: :width 768 :height 768
+#+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary :exports results :file doc/figures/heatmap-of-distances-between-languages.png  :results output graphics
+library(ape)
+library(gplots)
+
+options(asciiType="org")
+
+lft = as.data.frame(lft)
+colnames(lft) = lft[1,]
+rownames(lft) = lft[,1]
+lft = lft[-1,-1]
+
+distances = dist(t(lft))
+
+clustering = as.dendrogram(hclust(distances, method="ward.D2"))
+
+distance.matrix = data.matrix(distances)
+
+heatmap.2(
+  distance.matrix,
+  Rowv = clustering,
+  Colv = clustering,
+  col = colorRampPalette(c("dodgerblue3", "white")),
+  tracecol = "black",
+  notecol = "black",
+  symm = TRUE,
+  trace = "none",
+  cellnote = format(round(distance.matrix, 2)),
+  key.xlab = "Distance",
+  margins = c(8, 8),
+  cexRow = 1.6,
+  cexCol = 1.6,
+  notecex = 1.20,
+ )
+#+END_SRC
+
 #+CAPTION: Heatmap of Distances Between Languages
 #+ATTR_LATEX: :width 16cm :placement [H]
-[[file:doc/figures/language-features/heatmap-of-language.png]]
+#+RESULTS: heatmap-of-distances-between-languages
+[[file:doc/figures/heatmap-of-distances-between-languages.png]]
 
 The results suggest that ~ripl~ is somewhat of an outlier:
 # Some of these results, such as the similarity between C# and Java, and ML and Haskell, and Scala's similarity to both
