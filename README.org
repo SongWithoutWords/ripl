@@ -1486,9 +1486,9 @@ The blocks of colour along the diagonal reflect the same clusters as seen in the
 
 \pagebreak
 
-** TODO Analysis of Distances Between Languages
+** TODO Distances of Languages to Their Nearest Neighbours
 
-#+NAME: analysis-of-distances-between-languages
+#+NAME: distances-of-languages-to-their-nearest-neighbours
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
 library(ascii)
 options(asciiType="org")
@@ -1518,23 +1518,26 @@ ascii(min.distances, include.rownames=FALSE)
 #+END_SRC
 
 #+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance from \texttt{ripl}} \rowcolors{1}{}{gray!15}
-#+RESULTS: analysis-of-distances-between-languages
+#+RESULTS: distances-of-languages-to-their-nearest-neighbours
 | Language   | Nearest Neighbour | Distance |
 |------------+-------------------+----------|
 | C#         | Java              |     2.00 |
 | Java       | C#                |     2.00 |
-| JavaScript | Python            |     3.61 |
-| Python     | JavaScript        |     3.61 |
+| Kotlin     | C#                |     3.00 |
 | C          | LLVM-IR           |     3.74 |
 | LLVM-IR    | C                 |     3.74 |
-| Haskell    | ML                |     4.12 |
-| ML         | Haskell           |     4.12 |
+| Haskell    | Idris             |     4.00 |
+| Idris      | Haskell           |     4.00 |
+| JavaScript | Python            |     4.12 |
+| Python     | JavaScript        |     4.12 |
 | Scala      | C#                |     4.47 |
+| Go         | Python            |     4.58 |
+| ML         | Haskell           |     4.58 |
 | C++        | D                 |     4.90 |
 | D          | C++               |     4.90 |
 | Rust       | ML                |     5.10 |
-| Scheme     | JavaScript        |     5.48 |
-| ripl       | Rust              |     5.83 |
+| Scheme     | ML                |     5.48 |
+| ripl       | Idris             |     5.57 |
 
 
 ** Distance of ~ripl~ from Other Languages
