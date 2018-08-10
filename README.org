@@ -1375,6 +1375,56 @@ The results suggest that ~ripl~ is somewhat of an outlier:
 # Some of these results, such as the similarity between C# and Java, and ML and Haskell, and Scala's similarity to both 
 \pagebreak
 
+** TODO Analysis of Distances Between Languages
+
+#+NAME: analysis-of-distances-between-languages
+#+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
+library(ascii)
+options(asciiType="org")
+
+df = as.data.frame(language.feature.table)
+colnames(df) = df[1,]
+rownames(df) = df[,1]
+df = df[-1,-1]
+
+distance = data.frame(as.matrix(dist(t(df))))
+
+min.distances = data.frame(t(do.call(cbind, lapply(distance,
+  function(v) {
+    # The smallest distance is the language's distance to itself,
+    # the second smallest is its distance to its nearest neighbour
+    min.index = order(v)[2]
+    list(colnames(df)[min.index], v[min.index])
+  }))))
+
+min.distances = cbind(rownames(distance), min.distances)
+colnames(min.distances) = c("Language", "Nearest Neighbour", "Distance")
+
+min.distances$Distance = as.double(min.distances$Distance)
+
+min.distances = min.distances[order(unlist(min.distances$Distance)),]
+ascii(min.distances, include.rownames=FALSE)
+#+END_SRC
+
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance from \texttt{ripl}} \rowcolors{1}{}{gray!15}
+#+RESULTS: analysis-of-distances-between-languages
+| Language   | Nearest Neighbour | Distance |
+|------------+-------------------+----------|
+| C#         | Java              |     2.00 |
+| Java       | C#                |     2.00 |
+| JavaScript | Python            |     3.61 |
+| Python     | JavaScript        |     3.61 |
+| C          | LLVM-IR           |     3.74 |
+| LLVM-IR    | C                 |     3.74 |
+| Haskell    | ML                |     4.12 |
+| ML         | Haskell           |     4.12 |
+| Scala      | C#                |     4.47 |
+| C++        | D                 |     4.90 |
+| D          | C++               |     4.90 |
+| Rust       | ML                |     5.10 |
+| Scheme     | JavaScript        |     5.48 |
+| ripl       | Rust              |     5.83 |
+
 
 ** Distance of ~ripl~ from Other Languages
 
