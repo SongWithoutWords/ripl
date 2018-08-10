@@ -84,6 +84,9 @@
 # Prevent footnotes from being split across multiple pages
 #+LATEX_HEADER: \interfootnotelinepenalty=10000
 
+# Make margin of footnotes flush
+#+LATEX_HEADER: \usepackage[hang,flushmargin]{footmisc}
+
 # tabu enables footnotes in tables, though I haven't gotten it to work with resizebox
 # #+LATEX_HEADER: \usepackage{tabu}
 # #+LATEX_HEADER: \usepackage{tabularx}
