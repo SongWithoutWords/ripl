@@ -1201,7 +1201,7 @@ https://medium.com/@wrongway4you/brief-article-on-c-modules-f58287a6c64
 https://en.cppreference.com/w/cpp/keyword
 
 
-** TODO Powerful
+** Powerful
 
 *** =+= Templates
 
