@@ -1275,6 +1275,9 @@ All distances calculated are Euclidean distances, all correlations are Pearson c
 | Uniform Function Call Syntax     | =?= | =-= | =?= | =+= | =?=     | =?=   | =?=  | =-=        | =-=     | =?= | =-=    | =+=    | =+=  | =?=   | =?=    |
 | Compile Time Function Evaluation | =-= | =+= | =-= | =+= | =-=     | =+=   | =-=  | =?=        | =-=     | =-= | =?=    | =+=    | =-=  | =-=   | =?=    |
 | Closures                         | =-= | =+= | =+= | =+= | =+=     | =+=   | =+=  | =+=        | =-=     | =+= | =+=    | =+=    | =+=  | =+=   | =+=    |
+| Member Access Modifiers          | =-= | =+= | =+= | =+= | =-=     | =-=   | =+=  | =+=        | =-=     | =-= | =-=    | =-=    | =-=  | =+=   | =-=    |
+| Monadic IO                       | =-= | =-= | =-= | =-= | =+=     | =+=   | =-=  | =-=        | =-=     | =-= | =-=    | =-=    | =-=  | =-=   | =-=    |
+| Dependent Typing                 | =-= | =-= | =-= | =-= | =-=     | =+=   | =-=  | =-=        | =-=     | =-= | =-=    | =-=    | =-=  | =-=   | =-=    |
 
 #+BEGIN_EXPORT latex
 } % end resizebox
