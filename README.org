@@ -1391,7 +1391,7 @@ The language feature table symbols =+=, =?=, and =-= are converted to balanced t
 
 ** Hierarchical Clustering of Languages
 
-One method that is useful for visualizing higher-dimensional data is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups, until all data points have been organized into a binary tree called a dendrogram. The distances between languages are measured in n-dimensional space, where each dimension is a variable corresponding to one of the language features considered. When applied to this data set, this process yields a taxonomy of programming languages based on the features considered in the language features table:
+One method that is useful for visualizing higher-dimensional data is agglomerative hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups, until all data points have been organized into a binary tree, often displayed as a dendrogram. The distances between languages are measured in n-dimensional space, where each dimension is a variable corresponding to one of the language features considered. When applied to this data set, this process yields a taxonomy of programming languages based on the features considered in the language features table:
 
 #+NAME: hierarchical-clustering-of-languages
 #+HEADER: :width 768 :height 768
@@ -1422,7 +1422,13 @@ plot(
 #+RESULTS: hierarchical-clustering-of-languages
 [[file:doc/figures/hierarchical-clustering-of.png]]
 
-The results suggest that ~ripl~ is part of a cluster of statically typed, functional languages, including Haskell, Idris, ML, and Rust. Although this data visualization method is useful, it does not account for all of the distances between the languages considered. This fuller picture can be seen in the heatmap in section [[Heatmap of Distances Between Languages]].
+The results suggest that ~ripl~ is part of a cluster of statically typed, functional languages, including Haskell, Idris, ML, and Rust. Although this visualization method is useful, there are number of aspects of this dendrogram that surprise me:
+
+1. The major split in the data set occurs between statically typed, functional languages and all other languages, rather than between dynamically and statically typed languages as I expected.
+2. That based on the language features considered, statically typed, VM languages (namely C#, Java, Kotlin, and Scala) are more similar to dynamically typed languages than they are to C++ and D.
+3. That Go is grouped with the dynamically typed languages rather than with C (to which it is quite similar).
+
+A more nuanced picture that accounts for the pairwise distance between all languages can be seen in the heatmap in section [[Heatmap of Distances Between Languages]].
 \pagebreak
 
 ** Heatmap of Distances Between Languages
