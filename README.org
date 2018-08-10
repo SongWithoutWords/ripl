@@ -237,6 +237,7 @@ The language and compiler are still in development and are not yet in a usable s
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]
 
 [fn:4] David A. Wheeler, Alan Manuel K. Gloria, Egil Möller, Readale Lisp S-expressions,
+\newline
 https://sourceforge.net/p/readable/wiki/Home/
 
 
@@ -393,9 +394,13 @@ This is not to say that Haskell is not reasonably performant, because it is[fn:6
 
 [fn:2] The people I've heard voice these opinions are all C++, C#, Java, or Python programmers, so maybe they just haven't experienced the full diversity of programming languages.
 
-[fn:3] Edsger Dijkstra, EWD 340: The Humble Programmer, https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html
+[fn:3] Edsger Dijkstra, EWD 340: The Humble Programmer,
+\newline
+https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html
 
-[fn:5] Edsger Dijkstra, To the members of the Budget Council, https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html
+[fn:5] Edsger Dijkstra, To the members of the Budget Council,
+\newline
+https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html
 
 [fn:8] ~TODO: Monads can make stateful computations harder to reason about~
 
@@ -550,13 +555,17 @@ Although the unrestricted and potentially unsafe use of ~null~ is a significant 
 
 Between these options I prefer type-safe discriminated unions, because they're simpler than full-blown dependent typing (as seen in languages like Idris, which is roughly speaking a strictly evaluated and dependently typed Haskell), and because type-safe discriminated unions are much more widely applicable than the limited form of dependent typing seen in Kotlin. In support of this idea, Idris, which has both discriminated unions /and/ dependent typing, implements its ~Maybe~ type in terms of unions[fn:13]; ~ripl~ will do the same.
 
-[fn:10] Tony Hoare, Null References: The Billion Dollar Mistake, https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare
+[fn:10] Tony Hoare, Null References: The Billion Dollar Mistake,
+\newline
+https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare
 
 [fn:11] Kotlin Language Reference, Null Safety, https://kotlinlang.org/docs/reference/null-safety.html
 
 [fn:12] Although Scala has type safe discriminated unions and an option type, it is not null-safe. The following expression type checks correctly and produces a null pointer exception at runtime: ~Some(null) match { case Some(x) => x.toString; case _ => ""}~
 
-[fn:13] Idris Standard Library, Maybe, https://github.com/idris-lang/Idris-dev/blob/master/libs/prelude/Prelude/Maybe.idr
+[fn:13] Idris Standard Library, Maybe,
+\newline
+https://github.com/idris-lang/Idris-dev/blob/master/libs/prelude/Prelude/Maybe.idr
 
 
 *** COMMENT Type-Level Constraints on Mutability ~(this text should be somewhere else)~
@@ -816,6 +825,7 @@ A ~ripl~ function that does not take the global state parameter, but takes one o
 [fn:21] Creating new data is as close as we get to modifying data in place in Haskell, without resorting to ST monad which would be overkill in this case.
 
 [fn:24] This terminology is used by, and possibly introduced by, the D programming language:
+\newline
 https://tour.dlang.org/tour/en/gems/functional-programming
 
 
@@ -888,9 +898,11 @@ define (power-of-8 (f32 x1))
 # TODO: Rest
 
 [fn:22] Simon Peyton Jones, Wearing the Hair Shirt: A Retrospective on Haskell, slide 9,
+\newline
 http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.com/web
 
 [fn:23] Sebastian Nanz, Carlo A. Furia, A Comparative Study of Programming Languages in Rosetta Code, page 6,
+\newline
 https://arxiv.org/pdf/1409.0252.pdf
 
 
@@ -933,6 +945,7 @@ Although indentation delimited languages are somewhat uncommon, people speak hig
 For these reasons, expressions in ~ripl~ /may/ be grouped by indentation. It is, however, possible to write ~ripl~ code that is explicitly delimited[fn:28], because indent and dedent expressions are not emitted within S-expressions.
 
 [fn:25] Richard J. Miara et al, Program Indentation and Comprehensibility,
+\newline
 https://www.cs.umd.edu/~ben/papers/Miara1983Program.pdf
 
 [fn:28] The only reasons I can think of for doing so would be to embed ~ripl~ code within some other data format, to serialize it more compactly, or to operate on it with tools that are designed to work with S-expressions.
@@ -953,9 +966,11 @@ In summary, ~ripl~ trades full type inference (that could infer parameters types
 [fn:26] ~ripl~ began without subtyping or overloading and used constraint generation and the unification algorithm for type inference. When I added overloading to ~ripl~, I continued to use the unification algorithm by deferring the unification of constraints with overloads until the types of the overloads and the types of the arguments were known. When I then added subtyping to the language it became clear that unification would no longer work, and I reverted to bidirectional type checking.
 
 [fn:29] Cornell University, CS3110, Type Inference and Unification,
+\newline
 http://www.cs.cornell.edu/courses/cs3110/2011fa/supplemental/lec26-type-inference/type-inference.htm#3
 
 [fn:27] Dmitriy Traytel, Stefan Berghofer, and Tobias Nipkow, Extending Hindley-Milner Type Inference with Coercive Structural Subtyping,
+\newline
 https://www21.in.tum.de/~nipkow/pubs/aplas11.pdf
 
 [fn:30] Stephen Dolan, Algebraic Subtyping, https://www.cl.cam.ac.uk/~sd601/thesis.pdf
@@ -1046,14 +1061,18 @@ If allowing infix and subject-verb-object ordering is desirable (of which I'm st
 Because this is a rather complicated topic, and because either of the potential solutions mentioned above could be easily added, I am inclined to leave these features out for the time being, and add them in future if their absence is felt.
 
 
-[fn:34] Russell S. Tomlin, Basic word order. Functional principles. London: Croom Helm, 1986. Page 308, \newline
+[fn:34] Russell S. Tomlin, Basic word order. Functional principles. London: Croom Helm, 1986. Page 308,
+\newline
 https://www.cambridge.org/core/journals/journal-of-linguistics/article/russell-s-tomlin-basic-word-order-functional-principles-london-croom-helm-1986-pp-308/7542AFB4A8B28D651F6E109B810F4C04
 
 
 [fn:38] Wikipedia, Subject-verb-object, https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object
 
 
-[fn:39] Alan Langus, Marina Nespor, Cognitive systems struggling for word order, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4534792/
+[fn:39] Alan Langus, Marina Nespor, Cognitive systems struggling for word order,
+\newline
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4534792/
+
 
 
 [fn:40] Hannah Maro, Alan Langus, et al, A new perspective on word order preferences: the availability of a lexicon triggers the use of SVO word order, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4534792/#B23
@@ -1133,10 +1152,12 @@ Although the problems mentioned above can be circumvented using an alternate pre
 
 [fn:37] http://hackage.haskell.org/package/base-4.11.1.0/docs/Prelude.html#g:7
 
-[fn:36]http://hackage.haskell.org/package/classy-prelude, \newline
+[fn:36]http://hackage.haskell.org/package/classy-prelude,
+\newline
 https://github.com/sdiehl/protolude
 
-[fn:35] https://wiki.haskell.org/TypeDirectedNameResolution, \newline
+[fn:35] https://wiki.haskell.org/TypeDirectedNameResolution,
+\newline
 https://ghc.haskell.org/trac/ghc/wiki/SyntaxFreeTypeDirectedNameResolution
 
 
@@ -1172,7 +1193,8 @@ Below is a table that compares various classes of features that can be used to a
 
 By adopting more general solutions I think it's possible to reduce the complexity of a language. This is one of ~ripl~'s goals, and its design should be continually revised as new opportunities for generalization are discovered. If the language gets a user base in future this could be done with non-backwards compatible major versions whenever a suitable number of potential improvements have been identified.
 
-[fn:31] Dmitry Guzeev, A Few Words on C++ Modules,\newline
+[fn:31] Dmitry Guzeev, A Few Words on C++ Modules,
+\newline
 https://medium.com/@wrongway4you/brief-article-on-c-modules-f58287a6c64
 
 [fn:33] These casts are not functions but language level features,
@@ -1205,9 +1227,13 @@ Whereas template parameters in C++ and D are essentially duck-typed at compile t
 When combined with existential types, as in Haskell, type classes can be used to emulate OOP-style dynamic dispatch[fn:42]. OOP-style dynamic dispatch is possibly the only feature of object-oriented programming that I thought ~ripl~ might ultimately lack, so it's good to see that there is an established alternative method that does not require inheritance.
 
 [fn:41] A similiar construct called constraints and concepts is planned for C++20:
+\newline
 https://en.cppreference.com/w/cpp/language/constraints
 
-[fn:42] Haskell Wiki, Existential Type, Dynamic dispatch mechanism of OOP, https://wiki.haskell.org/Existential_type
+[fn:42] Haskell Wiki, Existential Type, Dynamic dispatch mechanism of OOP,
+\newline
+https://wiki.haskell.org/Existential_type#Dynamic_dispatch_mechanism_of_OOP
+
 
 *** =?= Lisp-style macros
 
