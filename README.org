@@ -1199,9 +1199,12 @@ The intent for ~ripl~ is that the compiler will be able to evaluate all pure exp
 
 Whereas template parameters in C++ and D are essentially duck-typed at compile time (supplying a type for which an operation is not defined to a template that requires this operation will fail during template expansion), generic parameters in some other languages can be constrained up front using a construct called type-classes in Haskell, called interfaces in Idris, and called traits in Rust. The type-class approach has a number of advantages over the duck-typing approach in that it can be used to inform clearer error messages (C++ template expansion error messages are notorious) and to establish clear type-level interfaces[fn:41].
 
+When combined with existential types, as in Haskell, type classes can be used to emulate OOP-style dynamic dispatch[fn:42]. OOP-style dynamic dispatch is possibly the only feature of object-oriented programming that I thought ~ripl~ might ultimately lack, so it's good to see that there is an established alternative method that does not require inheritance.
+
 [fn:41] A similiar construct called constraints and concepts is planned for C++20:
 https://en.cppreference.com/w/cpp/language/constraints
 
+[fn:42] Haskell Wiki, Existential Type, Dynamic dispatch mechanism of OOP, https://wiki.haskell.org/Existential_type
 
 *** =?= Lisp-style macros
 
