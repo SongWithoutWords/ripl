@@ -1372,7 +1372,7 @@ The figure presented in this section is a heatmap of the distances between the l
 [[file:doc/figures/language-features/heatmap-of-language.png]]
 
 The results suggest that ~ripl~ is somewhat of an outlier:
-# Some of these results, such as the similarity between C# and Java, and ML and Haskell, and Scala's similarity to both 
+# Some of these results, such as the similarity between C# and Java, and ML and Haskell, and Scala's similarity to both
 \pagebreak
 
 ** TODO Analysis of Distances Between Languages
