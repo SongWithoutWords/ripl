@@ -1391,7 +1391,7 @@ The results suggest that ~ripl~ is part of a cluster of statically typed, functi
 
 ** Heatmap of Distances Between Languages
 
-The figure presented in this section is a heatmap of the distances between the languages considered. The languages are ordered using the same hierarchical clustering as discussed in section [[Hierarchical Clustering of Languages]].
+The figure below is a heatmap of the distances between the languages considered. The languages are ordered along the axes using the same hierarchical clustering as discussed in section [[Hierarchical Clustering of Languages]].
 
 #+NAME: heatmap-of-distances-between-languages
 #+HEADER: :width 768 :height 768
