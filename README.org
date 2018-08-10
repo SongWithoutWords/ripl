@@ -1391,7 +1391,7 @@ The language feature table symbols =+=, =?=, and =-= are converted to balanced t
 
 ** Hierarchical Clustering of Languages
 
-One method that is useful for visualizing higher-dimensional data is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups, until all data points have been organized into a binary tree. The distances between languages are measured in n-dimensional space, where each dimension is a variable corresponding to one of the language features considered. When applied to this data set, this process yields a taxonomy of programming languages based on the features considered in the language features table:
+One method that is useful for visualizing higher-dimensional data is hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups, until all data points have been organized into a binary tree called a dendrogram. The distances between languages are measured in n-dimensional space, where each dimension is a variable corresponding to one of the language features considered. When applied to this data set, this process yields a taxonomy of programming languages based on the features considered in the language features table:
 
 #+NAME: hierarchical-clustering-of-languages
 #+HEADER: :width 768 :height 768
