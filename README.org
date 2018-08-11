@@ -1606,9 +1606,41 @@ Important to keep in mind is that this is descriptive and not predictive statist
 
 ** TODO Multidimensional Scaling of Languages
 
+# #+HEADER: :width 768 :height 768
+#+NAME: multidimensional-scaling-of-languages
+#+HEADER: :width 768 :height 768
+#+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary :exports results :file doc/figures/multidimensional-scaling-of-languages.png  :results output graphics
+library(ggplot2)
+library(ggrepel)
+library(MASS)
+
+lft = as.data.frame(lft)
+colnames(lft) = lft[1,]
+rownames(lft) = lft[,1]
+lft = lft[-1,-1]
+
+distances = dist(t(lft))
+mds = isoMDS(distances, k=2)
+
+x = mds$points[,1]
+y = mds$points[,2]
+
+set.seed(42)
+ggplot(data = as.data.frame(mds), aes(x = x, y = y)) +
+  theme_bw() +
+  theme(axis.text=element_text(size=18),
+        axis.title=element_text(size=20),
+    ) +
+  geom_point(color="black", size=1.0) +
+  geom_text_repel(aes(label = names(lft)), size=6) +
+  labs(x="Coordinate 1", y="Coordinate 2", size=6)
+#+END_SRC
+
 #+CAPTION: Multidimensional Scaling of Languages
 #+ATTR_LATEX: :width 14cm :placement [H]
-[[file:doc/figures/language-features/multidimensional-scaling-of-languages-non-metric.png]]
+#+RESULTS: multidimensional-scaling-of-languages
+[[file:doc/figures/multidimensional-scaling-of-languages.png]]
+
 
 ** TODO Discussion of specific languages
 
