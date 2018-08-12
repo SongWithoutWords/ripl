@@ -1489,7 +1489,9 @@ The blocks of colour along the diagonal reflect many of the same clusters as see
 
 \pagebreak
 
-** TODO Distances of Languages to Their Nearest Neighbours
+** Distances of Languages to Their Nearest Neighbours
+
+As observed in section [[Heatmap of Distances Between Languages]], ~ripl~ does not appear to be very close to any other languages. To see if this is true, I created a table with each languages' nearest neighbour, and sorted these nearest-neighbour relationships by distance:
 
 #+NAME: distances-of-languages-to-their-nearest-neighbours
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
@@ -1520,7 +1522,7 @@ min.distances = min.distances[order(unlist(min.distances$Distance)),]
 ascii(min.distances, include.rownames=FALSE)
 #+END_SRC
 
-#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance from \texttt{ripl}} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance to Their Nearest Neighbours} \rowcolors{1}{}{gray!15}
 #+RESULTS: distances-of-languages-to-their-nearest-neighbours
 | Language   | Nearest Neighbour | Distance |
 |------------+-------------------+----------|
@@ -1558,8 +1560,6 @@ distance = data.frame(as.matrix(dist(t(df))))
 
 min.distances = data.frame(t(do.call(cbind, lapply(distance,
   function(v) {
-    # The smallest distance is the language's distance to itself,
-    # the second smallest is its distance to its nearest neighbour
     min.index = order(v)[(length(v) - 1) / 2]
     list(colnames(df)[min.index], v[min.index])
   }))))
@@ -1608,15 +1608,7 @@ df = df[-1,-1]
 
 distance = data.frame(as.matrix(dist(t(df))))
 
-min.distances = data.frame(t(do.call(cbind, lapply(distance,
-  mean
-  ## function(v) {
-    # The smallest distance is the language's distance to itself,
-    # the second smallest is its distance to its nearest neighbour
-    ## min.index = mean(v) # order(v)[length(v) / 2]
-  ##   list(colnames(df)[min.index], v[min.index])
-  ## }
-))))
+min.distances = data.frame(t(do.call(cbind, lapply(distance, mean))))
 
 min.distances = cbind(rownames(distance), min.distances)
 colnames(min.distances) = c("Language", "Distance")
