@@ -1542,6 +1542,112 @@ ascii(min.distances, include.rownames=FALSE)
 | Scheme     | ML                |     5.48 |
 | ripl       | Idris             |     5.57 |
 
+The results indicate that ~ripl~ is further from its nearest neighbour than any other language considered. This is a positive result, because it suggests that ~ripl~ is /unique/, that it occupies a unique place in language design and is not a duplicate or near duplicate of the languages considered.
+
+#+NAME: median-distances-of-languages-to-others
+#+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
+library(ascii)
+options(asciiType="org")
+
+df = as.data.frame(language.feature.table)
+colnames(df) = df[1,]
+rownames(df) = df[,1]
+df = df[-1,-1]
+
+distance = data.frame(as.matrix(dist(t(df))))
+
+min.distances = data.frame(t(do.call(cbind, lapply(distance,
+  function(v) {
+    # The smallest distance is the language's distance to itself,
+    # the second smallest is its distance to its nearest neighbour
+    min.index = order(v)[(length(v) - 1) / 2]
+    list(colnames(df)[min.index], v[min.index])
+  }))))
+
+min.distances = cbind(rownames(distance), min.distances)
+colnames(min.distances) = c("Language", " Neighbour", "Distance")
+
+min.distances$Distance = as.double(min.distances$Distance)
+
+min.distances = min.distances[order(unlist(min.distances$Distance)),]
+ascii(min.distances, include.rownames=FALSE)
+#+END_SRC
+
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Median Distance from Other Languages} \rowcolors{1}{}{gray!15}
+#+RESULTS: median-distances-of-languages-to-others
+| Language   | Neighbour | Distance |
+|------------+-----------+----------|
+| Go         | LLVM-IR   |     5.00 |
+| Kotlin     | Lua       |     5.48 |
+| C#         | Lua       |     5.57 |
+| Java       | Lua       |     5.57 |
+| Lua        | Java      |     5.57 |
+| JavaScript | Scheme    |     5.83 |
+| Python     | Scheme    |     5.83 |
+| Scheme     | Kotlin    |     6.16 |
+| Scala      | Python    |     6.24 |
+| ML         | Lua       |     6.32 |
+| C++        | Python    |     6.48 |
+| D          | Python    |     6.48 |
+| C          | C++       |     6.71 |
+| LLVM-IR    | Java      |     6.78 |
+| Rust       | Scala     |     7.28 |
+| ripl       | Scala     |     7.42 |
+| Haskell    | Lua       |     7.68 |
+| Idris      | D         |     7.81 |
+
+#+NAME: mean-distances-of-languages-to-others
+#+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
+library(ascii)
+options(asciiType="org")
+
+df = as.data.frame(language.feature.table)
+colnames(df) = df[1,]
+rownames(df) = df[,1]
+df = df[-1,-1]
+
+distance = data.frame(as.matrix(dist(t(df))))
+
+min.distances = data.frame(t(do.call(cbind, lapply(distance,
+  mean
+  ## function(v) {
+    # The smallest distance is the language's distance to itself,
+    # the second smallest is its distance to its nearest neighbour
+    ## min.index = mean(v) # order(v)[length(v) / 2]
+  ##   list(colnames(df)[min.index], v[min.index])
+  ## }
+))))
+
+min.distances = cbind(rownames(distance), min.distances)
+colnames(min.distances) = c("Language", "Distance")
+
+min.distances$Distance = as.double(min.distances$Distance)
+
+min.distances = min.distances[order(unlist(min.distances$Distance)),]
+ascii(min.distances, include.rownames=FALSE)
+#+END_SRC
+
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Mean Distance from Other Languages} \rowcolors{1}{}{gray!15}
+#+RESULTS: mean-distances-of-languages-to-others
+| Language   | Distance |
+|------------+----------|
+| Kotlin     |     5.76 |
+| C#         |     5.76 |
+| Go         |     5.89 |
+| Python     |     5.90 |
+| Java       |     5.92 |
+| JavaScript |     5.98 |
+| Scala      |     6.17 |
+| ML         |     6.20 |
+| Scheme     |     6.29 |
+| D          |     6.43 |
+| LLVM-IR    |     6.67 |
+| C++        |     6.71 |
+| C          |     6.80 |
+| Rust       |     6.92 |
+| ripl       |     7.12 |
+| Haskell    |     7.18 |
+| Idris      |     7.25 |
 
 ** Distance of ~ripl~ from Other Languages
 
