@@ -1276,6 +1276,7 @@ The language feature table symbols =+=, =?=, and =-= are converted to balanced t
 \rowcolors{1}{}{gray!15}
 #+END_EXPORT
 #+NAME: language-feature-table
+#+ATTR_LATEX: :align l|ccccccccccccccccccc
 |                                  | C   | C++ | C#  | D   | Dart | Go  | Haskell | Idris | Java | JavaScript | Kotlin | LLVM-IR | Lua | ML  | Python | ~ripl~ | Rust | Scala | Scheme |
 |----------------------------------+-----+-----+-----+-----+------+-----+---------+-------+------+------------+--------+---------+-----+-----+--------+--------+------+-------+--------|
 | Garbage Collection               | =-= | =-= | =+= | =+= | =+=  | =+= | =+=     | =+=   | =+=  | =+=        | =+=    | =?=     | =+= | =+= | =+=    | =?=    | =-=  | =+=   | =+=    |
