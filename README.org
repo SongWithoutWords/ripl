@@ -1613,7 +1613,7 @@ ascii(min.distances, include.rownames=FALSE)
 | Haskell    |            8.43 |
 | Idris      |            8.43 |
 
-The results suggest that Dart and Go (both developed by Google) are the two most normal languages (i.e. most similar to the other languages considered), and that Haskell and Idris are the two most unusual languages (i.e. most disimilar to the other languages considered). Although these result are somewhat biased by the fact that this sample includes more imperative languages than functional languages, this biased sample is in keeping with the fact that imperative languages are /vastly/ more popular than functional languages[fn:43].
+The results indicate that Dart and Go (both developed by Google) are the two most normal languages (i.e. most similar to the other languages considered), and that Haskell and Idris are the two most unusual languages (i.e. most disimilar to the other languages considered). Although these result are somewhat biased by the fact that this sample includes more imperative languages than functional languages, this biased sample is in keeping with the fact that imperative languages are /vastly/ more popular than functional languages[fn:43].
 
 As in section [[Distances of Languages to Their Nearest Neighbours]] the results suggest that ~ripl~ is somewhat of an outlier (more normal only than Haskell and Idris), which again I think is a positive sign, because if it was highly similar to existing languages I might doubt it was bringing something new to the table.
 
