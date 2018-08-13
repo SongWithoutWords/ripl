@@ -1619,6 +1619,8 @@ As in section [[Distances of Languages to Their Nearest Neighbours]] the results
 
 [fn:43] https://www.tiobe.com/tiobe-index/
 
+\pagebreak
+
 
 ** COMMENT Mean Distances of Languages to Others
 
@@ -1713,6 +1715,8 @@ ascii(dist.from.ripl, include.rownames=FALSE)
 | JavaScript |                 8.94 |
 | C          |                 9.11 |
 | Java       |                 9.11 |
+
+\pagebreak
 
 
 ** TODO Multidimensional Scaling of Languages
