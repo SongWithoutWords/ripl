@@ -1426,14 +1426,20 @@ plot(
 #+RESULTS: hierarchical-clustering-of-languages
 [[file:doc/figures/hierarchical-clustering-of.png]]
 
-The results suggest that ~ripl~ is part of a cluster of statically typed, functional languages, including Haskell, Idris, ML, and Rust. Although this visualization method is useful, there are number of aspects of this dendrogram that surprise me:
+The results suggest that the languages considered fall into one of four clusters, or categories:
 
-1. The major split in the data set occurs between statically typed, functional languages and all other languages, rather than between dynamically and statically typed languages as I expected.
-2. That based on the language features considered, statically typed, VM languages (namely C#, Java, Kotlin, and Scala) are more similar to dynamically typed languages than they are to C++ and D.
-3. That Go is grouped with the dynamically typed languages rather than with C (to which it is quite similar).
+#+ATTR_LATEX: :placement [H] :caption \caption{Language Categories Observed in Hierarchical Clustering} \rowcolors{1}{}{gray!15}
+| Language Category                    | Languages                             |
+|--------------------------------------+---------------------------------------|
+| Dynamically-typed                    | JavaScript, Lua, Python, Scheme       |
+| Statically-typed and imperative      | Go, C, LLVM-IR                        |
+| Statically-typed and object-oriented | C++, C#, D, Dart, Java, Kotlin, Scala |
+| Statically-typed and functional      | Haskell, Idris, ML, ~ripl~, Rust      |
 
-A more nuanced picture that accounts for the pairwise distance between all languages can be seen in the heatmap in section [[Heatmap of Distances Between Languages]].
+A more nuanced picture that accounts for the pairwise distance between all languages considered can be seen in the heatmap in section [[Heatmap of Distances Between Languages]].
+
 \pagebreak
+
 
 ** Heatmap of Distances Between Languages
 
