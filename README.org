@@ -1576,45 +1576,46 @@ distance = data.frame(as.matrix(dist(t(df))))
 min.distances = data.frame(t(do.call(cbind, lapply(distance,
   function(v) {
     min.index = order(v)[(length(v) - 1) / 2]
-    list(colnames(df)[min.index], v[min.index])
+    v[min.index]
   }))))
 
 min.distances = cbind(rownames(distance), min.distances)
-colnames(min.distances) = c("Language", " Neighbour", "Distance")
+colnames(min.distances) = c("Language", "Distance")
 
 min.distances$Distance = as.double(min.distances$Distance)
 
 min.distances = min.distances[order(unlist(min.distances$Distance)),]
+colnames(min.distances)[2] = "Median Distance"
 ascii(min.distances, include.rownames=FALSE)
 #+END_SRC
 
 #+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Median Distance to Other Languages} \rowcolors{1}{}{gray!15}
 #+RESULTS: median-distances-of-languages-to-others
-| Language   | Neighbour | Distance |
-|------------+-----------+----------|
-| Dart       | Scala     |     5.39 |
-| Go         | Python    |     5.48 |
-| C#         | Go        |     5.74 |
-| JavaScript | Scheme    |     5.83 |
-| Kotlin     | Lua       |     5.83 |
-| Lua        | LLVM-IR   |     6.00 |
-| Python     | Scheme    |     6.16 |
-| Java       | Lua       |     6.24 |
-| Scala      | Python    |     6.56 |
-| D          | Python    |     6.78 |
-| Scheme     | Kotlin    |     6.78 |
-| C++        | Go        |     6.93 |
-| LLVM-IR    | Dart      |     7.07 |
-| ML         | Lua       |     7.21 |
-| C          | Dart      |     7.28 |
-| Rust       | LLVM-IR   |     7.62 |
-| ripl       | C++       |     7.87 |
-| Haskell    | Python    |     8.43 |
-| Idris      | Lua       |     8.43 |
+| Language   | Median Distance |
+|------------+-----------------|
+| Dart       |            5.39 |
+| Go         |            5.48 |
+| C#         |            5.74 |
+| JavaScript |            5.83 |
+| Kotlin     |            5.83 |
+| Lua        |            6.00 |
+| Python     |            6.16 |
+| Java       |            6.24 |
+| Scala      |            6.56 |
+| D          |            6.78 |
+| Scheme     |            6.78 |
+| C++        |            6.93 |
+| LLVM-IR    |            7.07 |
+| ML         |            7.21 |
+| C          |            7.28 |
+| Rust       |            7.62 |
+| ripl       |            7.87 |
+| Haskell    |            8.43 |
+| Idris      |            8.43 |
 
 The results suggest that Dart and Go (both developed by Google) are the two most normal languages (i.e. most similar to the other languages considered), and that Haskell and Idris are the two most unusual languages (i.e. most disimilar to the other languages considered). Although these result are somewhat biased by the fact that this sample includes more imperative languages than functional languages, this biased sample is in keeping with the fact that imperative languages are /vastly/ more popular than functional languages[fn:43].
 
-As in section [[Distances of Languages to Their Nearest Neighbours]] the results suggest that ~ripl~ is somewhat of an outlier (more normal only than Haskell and Idris), which again I think is a positive sign, because if it was highly similar to existing languages I would doubt it was bringing something new to the table.
+As in section [[Distances of Languages to Their Nearest Neighbours]] the results suggest that ~ripl~ is somewhat of an outlier (more normal only than Haskell and Idris), which again I think is a positive sign, because if it was highly similar to existing languages I might doubt it was bringing something new to the table.
 
 [fn:43] https://www.tiobe.com/tiobe-index/
 
