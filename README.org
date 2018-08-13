@@ -1393,6 +1393,7 @@ The language feature table symbols =+=, =?=, and =-= are converted to balanced t
 | Compile Time Function Evaluation | -1 |   1 | -1 |  1 |      -1 |   -1 |          0 |      -1 | -1 |      0 |    1 |   -1 |    -1 |      0 |
 | Closures                         | -1 |   1 |  1 |  1 |       1 |    1 |          1 |      -1 |  1 |      1 |    1 |    1 |     1 |      1 |
 
+
 ** Hierarchical Clustering of Languages
 
 One method that is useful for visualizing higher-dimensional data is agglomerative hierarchical clustering, which works by assigning each data point to its own group, and then repeatedly combining the two nearest groups, until all data points have been organized into a binary tree, often displayed as a dendrogram. The distances between languages are measured in n-dimensional space, where each dimension is a variable corresponding to one of the language features considered. When applied to this data set, this process yields a taxonomy of programming languages based on the features considered in the language features table:
@@ -1649,6 +1650,7 @@ ascii(min.distances, include.rownames=FALSE)
 | ripl       |     7.12 |
 | Haskell    |     7.18 |
 | Idris      |     7.25 |
+
 
 ** Distance of ~ripl~ from Other Languages
 
