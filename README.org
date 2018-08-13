@@ -1606,7 +1606,7 @@ ascii(min.distances, include.rownames=FALSE)
 | Idris      | D         |     7.81 |
 
 #+NAME: mean-distances-of-languages-to-others
-#+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
+#+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports none :results output raw
 library(ascii)
 options(asciiType="org")
 
