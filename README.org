@@ -1765,7 +1765,7 @@ ggplot(data = as.data.frame(mds), aes(x = x, y = y)) +
 These results are more nuanced than the hierarchical clustering in section [[Hierarchical Clustering of Languages]], and more easily interpreted than the heatmap in section [[Heatmap of Distances Between Languages]] (though not as precise), and place ~ripl~ roughly where it's intended to be: between Haskell, Rust and D.
 
 
-** TODO Hierarchical Clustering of Language Features
+** COMMENT TODO Hierarchical Clustering of Language Features
 
 Incidentally, by running hierarchical clustering on the transpose of our table, it's possible classify the language features it contains by the programming languages in which they occur:
 
@@ -1776,7 +1776,7 @@ Incidentally, by running hierarchical clustering on the transpose of our table, 
 The result of this exercise provides some interesting insights: in particular, it suggests a strong correlation between garbage collection and memory safety (which may come as no surprise), and between pattern matching, type-safe discriminated unions and null-safety.
 
 
-** TODO Heatmap of Correlations Between Language Features
+** COMMENT TODO Heatmap of Correlations Between Language Features
 Important to keep in mind is that this is descriptive and not predictive statistics
 
 #+CAPTION: Heatmap of Correlations Between Language Features
