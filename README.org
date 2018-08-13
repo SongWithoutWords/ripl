@@ -1498,7 +1498,7 @@ While the blocks of colour along the diagonal reflect the results of the hierarc
 
 ** Distances of Languages to Their Nearest Neighbours
 
-As observed in section [[Heatmap of Distances Between Languages]], ~ripl~ does not appear to be very close to any other languages. To see if this is true, I created a table with each languages' nearest neighbour, and sorted these nearest-neighbour relationships by distance:
+As observed in section [[Heatmap of Distances Between Languages]], ~ripl~ does not appear to be very close to any other languages. To see if this is true, I determined each language's nearest neighbour, and sorted these nearest-neighbour relationships by distance:
 
 #+NAME: distances-of-languages-to-their-nearest-neighbours
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
@@ -1533,25 +1533,27 @@ ascii(min.distances, include.rownames=FALSE)
 #+RESULTS: distances-of-languages-to-their-nearest-neighbours
 | Language   | Nearest Neighbour | Distance |
 |------------+-------------------+----------|
-| C#         | Java              |     2.00 |
-| Java       | C#                |     2.00 |
-| Kotlin     | C#                |     3.00 |
-| C          | LLVM-IR           |     3.74 |
-| LLVM-IR    | C                 |     3.74 |
+| C#         | Dart              |     2.24 |
+| Dart       | C#                |     2.24 |
+| Kotlin     | Dart              |     2.83 |
+| Java       | C#                |     3.46 |
+| JavaScript | Lua               |     3.74 |
+| Lua        | JavaScript        |     3.74 |
+| C          | LLVM-IR           |     3.87 |
+| LLVM-IR    | C                 |     3.87 |
 | Haskell    | Idris             |     4.00 |
 | Idris      | Haskell           |     4.00 |
-| JavaScript | Python            |     4.12 |
-| Python     | JavaScript        |     4.12 |
-| Scala      | C#                |     4.47 |
-| Go         | Python            |     4.58 |
-| ML         | Haskell           |     4.58 |
+| Python     | Dart              |     4.24 |
 | C++        | D                 |     4.90 |
 | D          | C++               |     4.90 |
-| Rust       | ML                |     5.10 |
-| Scheme     | ML                |     5.48 |
-| ripl       | Idris             |     5.57 |
+| Scala      | C#                |     4.90 |
+| Go         | C                 |     5.00 |
+| ML         | Haskell           |     5.00 |
+| Scheme     | Lua               |     5.29 |
+| ripl       | Rust              |     5.83 |
+| Rust       | ML                |     5.83 |
 
-The results indicate that ~ripl~ is further from its nearest neighbour than any other language considered. This is a positive result, because it suggests that ~ripl~ is /unique/, that it occupies a unique place in language design and is not a duplicate or near duplicate of the languages considered.
+The results indicate that Rust is equidistant between ML and ~ripl~, and that ~ripl~ and Rust are tied for furthest distance from their nearest neighbour. This is a positive result, because it suggests that ~ripl~ occupies a unique place in language design and is not a duplicate or near duplicate of any of the other languages considered.
 
 #+NAME: median-distances-of-languages-to-others
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
