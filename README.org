@@ -1559,6 +1559,8 @@ The results indicate that Rust is equidistant between ML and ~ripl~, and that ~r
 
 ** Median Distances of Languages to Others
 
+In order to get a sense of what languages are more or less similar to others, I sorted them by their median distances to other languages. Although this evaluation is somewhat unfair to languages in smaller clusters, I think it is a useful and interesting measure.
+
 #+NAME: median-distances-of-languages-to-others
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
 library(ascii)
@@ -1586,28 +1588,35 @@ min.distances = min.distances[order(unlist(min.distances$Distance)),]
 ascii(min.distances, include.rownames=FALSE)
 #+END_SRC
 
-#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Median Distance from Other Languages} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Median Distance to Other Languages} \rowcolors{1}{}{gray!15}
 #+RESULTS: median-distances-of-languages-to-others
 | Language   | Neighbour | Distance |
 |------------+-----------+----------|
-| Go         | LLVM-IR   |     5.00 |
-| Kotlin     | Lua       |     5.48 |
-| C#         | Lua       |     5.57 |
-| Java       | Lua       |     5.57 |
-| Lua        | Java      |     5.57 |
+| Dart       | Scala     |     5.39 |
+| Go         | Python    |     5.48 |
+| C#         | Go        |     5.74 |
 | JavaScript | Scheme    |     5.83 |
-| Python     | Scheme    |     5.83 |
-| Scheme     | Kotlin    |     6.16 |
-| Scala      | Python    |     6.24 |
-| ML         | Lua       |     6.32 |
-| C++        | Python    |     6.48 |
-| D          | Python    |     6.48 |
-| C          | C++       |     6.71 |
-| LLVM-IR    | Java      |     6.78 |
-| Rust       | Scala     |     7.28 |
-| ripl       | Scala     |     7.42 |
-| Haskell    | Lua       |     7.68 |
-| Idris      | D         |     7.81 |
+| Kotlin     | Lua       |     5.83 |
+| Lua        | LLVM-IR   |     6.00 |
+| Python     | Scheme    |     6.16 |
+| Java       | Lua       |     6.24 |
+| Scala      | Python    |     6.56 |
+| D          | Python    |     6.78 |
+| Scheme     | Kotlin    |     6.78 |
+| C++        | Go        |     6.93 |
+| LLVM-IR    | Dart      |     7.07 |
+| ML         | Lua       |     7.21 |
+| C          | Dart      |     7.28 |
+| Rust       | LLVM-IR   |     7.62 |
+| ripl       | C++       |     7.87 |
+| Haskell    | Python    |     8.43 |
+| Idris      | Lua       |     8.43 |
+
+The results suggest that Dart and Go (both developed by Google) are the two most normal languages (i.e. most similar to the other languages considered), and that Haskell and Idris are the two most unusual languages (i.e. most disimilar to the other languages considered). Although these result are somewhat biased by the fact that this sample includes more imperative languages than functional languages, this biased sample is in keeping with the fact that imperative languages are /vastly/ more popular than functional languages[fn:43].
+
+As in section [[Distances of Languages to Their Nearest Neighbours]] the results suggest that ~ripl~ is somewhat of an outlier (more normal only than Haskell and Idris), which again I think is a positive sign, because if it was highly similar to existing languages I would doubt it was bringing something new to the table.
+
+[fn:43] https://www.tiobe.com/tiobe-index/
 
 
 ** COMMENT Mean Distances of Languages to Others
