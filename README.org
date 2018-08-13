@@ -1793,7 +1793,7 @@ The statistical comparison of ~ripl~ with the other 18 languages considered reve
 4. ~ripl~ has the third highest median distance from other languages, suggesting that it is relatively unusual.
 
 
-* TODO Implementation
+* Implementation
 
 ** Lexing
 The lexer of the ~ripl~ compiler is quite straightforward. It takes the string input of the source code to be compiled and breaks it down into tokens, such as symbols, strings, and numbers, in addition to tracking changes in indentation and emitting indent and dedent tokens. These tokens are then handed off to the parser.
