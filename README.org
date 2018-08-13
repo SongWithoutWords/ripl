@@ -1556,6 +1556,9 @@ ascii(min.distances, include.rownames=FALSE)
 
 The results indicate that Rust is equidistant between ML and ~ripl~, and that ~ripl~ and Rust are tied for furthest distance from their nearest neighbour. This is a positive result, because it suggests that ~ripl~ occupies a unique place in language design and is not a duplicate or near duplicate of any of the other languages considered.
 
+
+** Median Distances of Languages to Others
+
 #+NAME: median-distances-of-languages-to-others
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
 library(ascii)
@@ -1605,6 +1608,9 @@ ascii(min.distances, include.rownames=FALSE)
 | ripl       | Scala     |     7.42 |
 | Haskell    | Lua       |     7.68 |
 | Idris      | D         |     7.81 |
+
+
+** COMMENT Mean Distances of Languages to Others
 
 #+NAME: mean-distances-of-languages-to-others
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports none :results output raw
