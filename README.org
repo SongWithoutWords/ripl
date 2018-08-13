@@ -1487,13 +1487,14 @@ heatmap.2(
 #+RESULTS: heatmap-of-distances-between-languages
 [[file:doc/figures/heatmap-of-distances-between-languages.png]]
 
-The blocks of colour along the diagonal reflect many of the same clusters as seen in the hierarchical clustering. What is not apparent in the hierarchical clustering, but can be seen here, are the more nuanced relationships that can be seen in the off-diagonal areas, for example:
-1. There is an off-diagonal block of similarity between statically and dynamically typed, garbage-collected, imperative languages.
+While the blocks of colour along the diagonal reflect the results of the hierarchical clustering, the full set of distances between all languages in the heatmap above reveals some relationships across clusters that are not visible from the hierarchical clustering, for example:
+1. There is a block of similarity between statically and dynamically typed, garbage-collected, imperative languages.
 2. Scheme is closer to the functional languages (especially ML) than its dynamically-typed neighbours.
 3. ML is closer to other languages that are not both statically typed and functional than its neighbours.
 4. ~ripl~ does not appear to be especially close to any particular language (discussed more in section [[Distances of Languages to Their Nearest Neighbours]]).
 
 \pagebreak
+
 
 ** Distances of Languages to Their Nearest Neighbours
 
