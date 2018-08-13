@@ -1897,6 +1897,7 @@ The alternatives weren't as good as ward.d2
 
 # Local Variables:
 # org-src-preserve-indentation: t
+# org-confirm-babel-evaluate: nil
 # org-src-fontify-natively: t
 # org-export-latex-listings: t
 # org-latex-listings: t
