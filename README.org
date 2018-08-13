@@ -247,7 +247,7 @@ https://sourceforge.net/p/readable/wiki/Home/
 
 * Influence of Other Languages
 
-Below is a list of languages mentioned in this document, ordered by the number of mentions. The order is consistent with my expectation, and provides a rough proxy for the influence of other languages on ~ripl~'s design. This influence doesn't necessarily suggest similarity, because ~ripl~'s design has been influenced both by example and counter-example. ~ripl~'s similarity to other languages is covered in section [[Distance of ~ripl~ from Other Languages]].
+Below is a list of programming languages ordered by the number of mentions in this document. The order provides a rough proxy for the influence of other languages on ~ripl~'s design, and is consistent with my expectations. This influence does not necessarily imply similarity, because ~ripl~'s design has been influenced both by example and counter-example. ~ripl~'s similarity to other languages is covered in section [[Distance of ~ripl~ from Other Languages]].
 
 #+BEGIN_SRC emacs-lisp :exports results
 (defun recursive-count (regex string start)
