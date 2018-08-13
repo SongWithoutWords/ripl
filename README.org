@@ -1249,13 +1249,13 @@ Because ~ripl~ has a number of things in common with Lisp, including evaluation 
 *** TODO Object-Oriented Programming
 
 
-* Comparison with Other Languages
+* Quantitative Comparison with Other Languages
 
 # Should explain on what basis I chose these languages.
 
 In order to compare ~ripl~ with other languages in an objective way, I identified a number of quantifiable language features to be used as a basis for comparison. I then evaluated each language across these criteria, assigning a value of =+= for features that were present, a value of =-= for features that were absent, and a value of =?= for features that were unclear or not applicable, resulting in the language feature table in section [[Language Feature Table]]. I chose to evaluate these languages using ternary values rather than more nuanced continuous values in an effort to reduce the subjectivity of the results.
 
-Although this table is useful in detailing the features of each language, because it consists of 16 data-points in 34 dimensions it is hard to visualize the high-level structure of the data and relationships between the languages by looking at the table itself. Fortunately, there are a number of data visualization and statistical methods that can help to understand this higher dimensional data. The results of these data visualization methods are presented in the following sections.
+Although the language feature table is useful in detailing the features of each language, because it consists of 19 data-points in 37 dimensions it is hard to visualize the high-level structure of the data and relationships between the languages by looking at the table itself. Fortunately, there are a number of data visualization and statistical methods that can help to understand this higher dimensional data. The results of these data visualization methods are presented in the following sections.
 
 
 ** Notes on Statistical Methods
