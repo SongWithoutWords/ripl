@@ -1554,7 +1554,7 @@ ascii(min.distances, include.rownames=FALSE)
 | ripl       | Rust              |     5.83 |
 | Rust       | ML                |     5.83 |
 
-The results indicate that Rust is equidistant between ML and ~ripl~, and that ~ripl~ and Rust are tied for furthest distance from their nearest neighbour. This is a positive result, because it suggests that ~ripl~ occupies a unique place in language design and is not a duplicate or near duplicate of any of the other languages considered.
+The results indicate that Rust is equidistant between its two nearest neighbours ML and ~ripl~, and that ~ripl~ and Rust are tied for furthest distance from their nearest neighbour. This is a positive result, because it suggests that ~ripl~ occupies a unique place in language design and is not a duplicate or near duplicate of any of the other languages considered.
 
 
 ** Median Distances of Languages to Others
