@@ -1430,7 +1430,7 @@ plot(
 The results suggest that the languages considered fall into one of four clusters, or categories:
 
 #+ATTR_LATEX: :placement [H] :caption \caption{Language Categories Observed in Hierarchical Clustering} \rowcolors{1}{}{gray!15}
-| Language Category                    | Languages                             |
+| Language Cluster                     | Languages                             |
 |--------------------------------------+---------------------------------------|
 | Dynamically-typed                    | JavaScript, Lua, Python, Scheme       |
 | Statically-typed and imperative      | Go, C, LLVM-IR                        |
