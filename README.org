@@ -212,7 +212,7 @@ The source of this document and the compiler can be found at \url{https://github
 
 Although this document describes many of ~ripl~'s features, it is not a language specification. Instead the compiler and accompanying unit tests serve as the language specification. This is done for a number of reasons:
 
-1. Code is more precise than English.
+1. Programming languages are more precise than human languages.
 2. A compiler may be tested to validate it, whereas an English language specification may not.
 3. An English language specification would add significant documentation overhead, and this time is better spent implementing the language.
 
