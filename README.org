@@ -1557,6 +1557,8 @@ ascii(min.distances, include.rownames=FALSE)
 
 The results indicate that Rust is equidistant between its two nearest neighbours ML and ~ripl~, and that ~ripl~ and Rust are tied for furthest distance from their nearest neighbour. This is a positive result, because it suggests that ~ripl~ occupies a unique place in language design and is not a duplicate or near duplicate of any of the other languages considered.
 
+\pagebreak
+
 
 ** Median Distances of Languages to Others
 
@@ -1618,9 +1620,10 @@ The results indicate that Dart and Go (both developed by Google) are the two mos
 
 As in section [[Distances of Languages to Their Nearest Neighbours]] the results suggest that ~ripl~ is somewhat of an outlier (more normal only than Haskell and Idris), which again I think is a positive sign, because if it was highly similar to existing languages I might doubt it was bringing something new to the table.
 
+\pagebreak
+
 [fn:43] https://www.tiobe.com/tiobe-index/
 
-\pagebreak
 
 
 ** COMMENT Mean Distances of Languages to Others
