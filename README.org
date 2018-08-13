@@ -1707,23 +1707,6 @@ ascii(dist.from.ripl, include.rownames=FALSE)
 | Java       |                 9.11 |
 
 
-** TODO Hierarchical Clustering of Language Features
-
-Incidentally, by running hierarchical clustering on the transpose of our table, it's possible classify the language features it contains by the programming languages in which they occur:
-
-#+CAPTION: Hierarchical Clustering of Language Feature Correlation by Language Excluding ~ripl~
-#+ATTR_LATEX: :width 14cm :placement [H]
-[[file:doc/figures/language-features/hierarchical-clustering-of-language-features-excluding-ripl.png]]
-
-The result of this exercise provides some interesting insights: in particular, it suggests a strong correlation between garbage collection and memory safety (which may come as no surprise), and between pattern matching, type-safe discriminated unions and null-safety.
-
-** TODO Heatmap of Correlations Between Language Features
-Important to keep in mind is that this is descriptive and not predictive statistics
-
-#+CAPTION: Heatmap of Correlations Between Language Features
-#+ATTR_LATEX: :width 20cm :placement [H]
-[[file:doc/figures/language-features/language-feature-correlation-heatmap-pearson.png]]
-
 ** TODO Multidimensional Scaling of Languages
 
 # #+HEADER: :width 768 :height 768
@@ -1760,6 +1743,25 @@ ggplot(data = as.data.frame(mds), aes(x = x, y = y)) +
 #+ATTR_LATEX: :width 14cm :placement [H]
 #+RESULTS: multidimensional-scaling-of-languages
 [[file:doc/figures/multidimensional-scaling-of-languages.png]]
+
+
+** TODO Hierarchical Clustering of Language Features
+
+Incidentally, by running hierarchical clustering on the transpose of our table, it's possible classify the language features it contains by the programming languages in which they occur:
+
+#+CAPTION: Hierarchical Clustering of Language Feature Correlation by Language Excluding ~ripl~
+#+ATTR_LATEX: :width 14cm :placement [H]
+[[file:doc/figures/language-features/hierarchical-clustering-of-language-features-excluding-ripl.png]]
+
+The result of this exercise provides some interesting insights: in particular, it suggests a strong correlation between garbage collection and memory safety (which may come as no surprise), and between pattern matching, type-safe discriminated unions and null-safety.
+
+
+** TODO Heatmap of Correlations Between Language Features
+Important to keep in mind is that this is descriptive and not predictive statistics
+
+#+CAPTION: Heatmap of Correlations Between Language Features
+#+ATTR_LATEX: :width 20cm :placement [H]
+[[file:doc/figures/language-features/language-feature-correlation-heatmap-pearson.png]]
 
 
 ** TODO Discussion of specific languages
