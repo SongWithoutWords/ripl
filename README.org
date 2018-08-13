@@ -1688,18 +1688,23 @@ ascii(dist.from.ripl, include.rownames=FALSE)
 | Language   | Distance from ~ripl~ |
 |------------+----------------------|
 | Rust       |                 5.83 |
-| Haskell    |                 5.92 |
-| ML         |                 6.00 |
-| D          |                 6.16 |
-| Scheme     |                 6.93 |
-| Scala      |                 7.14 |
-| C++        |                 7.62 |
-| Python     |                 8.19 |
-| JavaScript |                 8.25 |
-| C#         |                 8.43 |
-| Java       |                 8.66 |
-| LLVM-IR    |                 8.77 |
-| C          |                 8.89 |
+| Idris      |                 5.92 |
+| D          |                 6.48 |
+| Haskell    |                 6.56 |
+| ML         |                 6.63 |
+| Scala      |                 7.42 |
+| Scheme     |                 7.48 |
+| C++        |                 7.87 |
+| Lua        |                 8.25 |
+| Python     |                 8.25 |
+| Kotlin     |                 8.37 |
+| Go         |                 8.60 |
+| Dart       |                 8.83 |
+| LLVM-IR    |                 8.83 |
+| C#         |                 8.89 |
+| JavaScript |                 8.94 |
+| C          |                 9.11 |
+| Java       |                 9.11 |
 
 
 ** TODO Hierarchical Clustering of Language Features
