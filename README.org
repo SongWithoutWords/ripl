@@ -1500,7 +1500,7 @@ While the blocks of colour along the diagonal reflect the results of the hierarc
 
 ** Distances of Languages to Their Nearest Neighbours
 
-As observed in section [[Heatmap of Distances Between Languages]], ~ripl~ does not appear to be very close to any other languages. To see if this is true, I determined each language's nearest neighbour, and sorted these nearest-neighbour relationships by distance:
+As observed in the heatmap in section [[Heatmap of Distances Between Languages]], ~ripl~ does not appear to be very close to any other languages. To see if this is true, I determined each language's nearest neighbour, and sorted these nearest-neighbour relationships by distance:
 
 #+NAME: distances-of-languages-to-their-nearest-neighbours
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
@@ -1541,21 +1541,21 @@ ascii(min.distances, include.rownames=FALSE)
 | Java       | C#                |     3.46 |
 | JavaScript | Lua               |     3.74 |
 | Lua        | JavaScript        |     3.74 |
-| C          | LLVM-IR           |     3.87 |
-| LLVM-IR    | C                 |     3.87 |
 | Haskell    | Idris             |     4.00 |
 | Idris      | Haskell           |     4.00 |
 | Python     | Dart              |     4.24 |
+| C          | LLVM-IR           |     4.36 |
+| LLVM-IR    | C                 |     4.36 |
 | C++        | D                 |     4.90 |
 | D          | C++               |     4.90 |
 | Scala      | C#                |     4.90 |
 | Go         | C                 |     5.00 |
 | ML         | Haskell           |     5.00 |
-| Scheme     | Lua               |     5.29 |
-| ripl       | Rust              |     5.83 |
+| Scheme     | Lua               |     5.66 |
 | Rust       | ML                |     5.83 |
+| ripl       | Rust              |     6.16 |
 
-The results indicate that Rust is equidistant between its two nearest neighbours ML and ~ripl~, and that ~ripl~ and Rust are tied for furthest distance from their nearest neighbour. This is a positive result, because it suggests that ~ripl~ occupies a unique place in language design and is not a duplicate or near duplicate of any of the other languages considered.
+The results indicate that ~ripl~ is the most distant from its nearest neighbour of any language considered. This is a positive result, because it suggests that ~ripl~ occupies a unique place in language design and is not a duplicate or near duplicate of any of the other languages considered.
 
 \pagebreak
 
