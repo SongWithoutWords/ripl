@@ -135,7 +135,7 @@
 \definecolor{DarkBlue}    {rgb}{0.20, 0.40, 0.80}
 \definecolor{DarkGreen}   {rgb}{0.15, 0.50, 0.40}
 
-\definecolor{LightGray}   {rgb}{0.94, 0.96, 0.96}
+\definecolor{LightGray}   {rgb}{0.94, 0.96, 0.98}
 \definecolor{LightBlue}   {rgb}{0.40, 0.75, 1.00}
 \definecolor{LightGreen}  {rgb}{0.40, 0.80, 0.60}
 
