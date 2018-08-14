@@ -160,6 +160,7 @@
        commentstyle=\color{DarkGreen},
   }
 
+\definecolor{DodgerBlue3}   {rgb}{0.09, 0.45, 0.80}
 \colorlet{TableRowColor}{LightGray}
 % Inline code highlighting
 % \sethlcolor{LightGray}
@@ -1843,7 +1844,7 @@ This table is presented in a sparse format (without zeroes) to make it easier to
 
 #+HEADER: :colnames no
 #+NAME: complex-language-characteristics
-#+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary lfc=language-feature-characteristics :exports results :results output raw
+#+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary lfc=language-feature-characteristics :exports none :results output raw
 library(ascii)
 options(asciiType="org")
 
@@ -1893,6 +1894,22 @@ ascii(product, include.rownames = TRUE, include.colnames = TRUE)
 | Scala      |      0.64 |       0.50 |     0.53 |   0.50 |
 | Scheme     |      0.36 |       0.25 |     0.37 |   0.25 |
 
+
+#+NAME: color-coded-language-characteristic-table
+#+HEADER: :colnames no
+#+BEGIN_SRC emacs-lisp :var clc=complex-language-characteristics-result :exports results :results value
+(mapcar
+  (lambda (row)
+    (mapcar
+      (lambda (cell)
+        (if (numberp cell)
+          (concat "\\cellcolor{DodgerBlue3!" (number-to-string (truncate (* 50 cell))) "}" (number-to-string cell))
+          cell))
+      row))
+clc)
+#+END_SRC
+
+#+RESULTS: color-coded-language-characteristic-table
 
 # #+HEADER: :width 768 :height 768
 # #+BEGIN_SRC R :var clc=complex-language-characteristics :exports results :file doc/figures/heatmap-of-complex-language-characteristics.png :results output graphics
