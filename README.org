@@ -1799,48 +1799,48 @@ Performant: how performant can the resulting program be
 This table is presented in a sparse format (without zeroes) to make it easier to read; missing values are replaced with zeroes before it is used for computations.
 
 #+NAME: language-feature-characteristics
-#+ATTR_LATEX: :align l|rrrr :placement [H] :caption \caption{Complex Language Characteristics as Linear Combinations of Specific Features} \rowcolors{1}{}{TableRowColor}
-|                                   | Ergonomic | Performant | Powerful | Robust |
-|-----------------------------------+-----------+------------+----------+--------|
-| Garbage Collection                |       1.0 |       -0.5 |          |    1.0 |
-| Explicit Indirection              |      -0.5 |        0.5 |          |        |
-| Ownership System                  |           |            |          |    0.5 |
-| Static Typing                     |      -0.5 |        1.0 |     -0.5 |    1.0 |
-| Dynamic Typing                    |       0.0 |            |      0.0 |        |
-| Type Inference                    |       0.5 |            |          |        |
-| Sub-typing                        |       0.5 |            |          |        |
-| Parametric Polymorphism           |           |            |      0.5 |        |
-| Type Classes                      |           |            |      0.5 |        |
-| Type Level Programming            |           |            |      0.5 |    0.5 |
-| Ad-hoc Polymorphism               |       0.5 |            |          |        |
-| Classical Inheritance             |       0.5 |            |      0.5 |        |
-| Prototypal Inheritance            |       0.5 |            |      0.5 |        |
-| Strict Evaluation                 |           |        0.5 |          |        |
-| Type-safe Discriminated Unions    |           |            |      0.5 |    0.5 |
-| Null Safety                       |           |            |          |    0.5 |
-| Pattern Matching                  |       0.5 |            |          |    0.5 |
-| Mutable Data                      |           |        0.5 |     0.25 |        |
-| Immutable Data                    |           |            |          |    0.5 |
-| Constraints on Mutability         |           |            |          |    0.5 |
-| Constraints on Function Purity    |           |            |          |    0.5 |
-| C-style Syntax                    |           |            |          |        |
-| Lisp-style Syntax                 |           |            |          |        |
-| ML-style Syntax                   |           |            |          |        |
-| Header Files                      |      -0.5 |            |          |        |
-| Whitespace Sensitive              |       0.5 |            |          |        |
-| Expression Oriented               |       1.0 |            |          |        |
-| Top Level Functions               |       0.5 |            |          |        |
-| Methods                           |       0.5 |            |          |        |
-| Uniform Function Call Syntax      |       0.5 |            |          |        |
-| Compile Time Function Evaluation  |           |            |      0.5 |        |
-| Closures                          |       0.5 |            |      0.5 |        |
-| Member Access Modifiers           |           |            |          |    0.5 |
-| Monadic IO                        |      -0.5 |       -0.5 |          |    0.5 |
-| Dependent Typing                  |           |            |      0.5 |    0.5 |
-| Operator Precedence               |       0.5 |            |          |        |
-| Operator Overloading by User      |       0.5 |            |          |        |
-| Names Must Be Declared Before Use |      -0.5 |            |          |        |
-| Deterministic Destructor Calls    |           |            |          |    0.5 |
+#+ATTR_LATEX: :align l|rrrrr :placement [H] :caption \caption{Complex Language Characteristics as Linear Combinations of Specific Features} \rowcolors{1}{}{TableRowColor}
+|                                   | Ergonomic | Performant | Powerful | Robust | Simple |
+|-----------------------------------+-----------+------------+----------+--------+--------|
+| Garbage Collection                |       1.0 |       -0.5 |          |    1.0 |    1.0 |
+| Explicit Indirection              |      -0.5 |        0.5 |          |        |   -0.5 |
+| Ownership System                  |           |            |          |    0.5 |   -0.5 |
+| Static Typing                     |      -0.5 |        1.0 |     -0.5 |    1.0 |   -0.5 |
+| Dynamic Typing                    |           |            |          |        |        |
+| Type Inference                    |       0.5 |            |          |        |        |
+| Sub-typing                        |       0.5 |            |          |        |        |
+| Parametric Polymorphism           |           |            |      0.5 |        |  -0.25 |
+| Type Classes                      |           |            |      0.5 |        |  -0.25 |
+| Type Level Programming            |           |            |      0.5 |    0.5 |        |
+| Ad-hoc Polymorphism               |       0.5 |            |          |        |        |
+| Classical Inheritance             |      0.25 |            |      0.5 |        |  -0.25 |
+| Prototypal Inheritance            |      0.25 |            |      0.5 |        |  -0.25 |
+| Strict Evaluation                 |           |        0.5 |          |        |        |
+| Type-safe Discriminated Unions    |           |            |      0.5 |    0.5 |        |
+| Null Safety                       |           |            |          |    0.5 |        |
+| Pattern Matching                  |       0.5 |            |          |    0.5 |        |
+| Mutable Data                      |           |        0.5 |     0.25 |        |        |
+| Immutable Data                    |           |            |          |    0.5 |        |
+| Constraints on Mutability         |           |            |          |    0.5 |  -0.25 |
+| Constraints on Function Purity    |           |            |          |    0.5 |  -0.25 |
+| C-style Syntax                    |           |            |          |        |        |
+| Lisp-style Syntax                 |           |            |          |        |        |
+| ML-style Syntax                   |           |            |          |        |        |
+| Header Files                      |      -0.5 |            |          |        |  -0.25 |
+| Whitespace Sensitive              |       0.5 |            |          |        | -0.125 |
+| Expression Oriented               |       1.0 |            |          |        |   0.25 |
+| Top Level Functions               |       0.5 |            |          |        |  0.125 |
+| Methods                           |       0.5 |            |          |        |        |
+| Uniform Function Call Syntax      |       0.5 |            |          |        |        |
+| Compile Time Function Evaluation  |           |            |      0.5 |        |        |
+| Closures                          |       0.5 |            |      0.5 |        |        |
+| Member Access Modifiers           |           |            |          |    0.5 |        |
+| Monadic IO                        |      -0.5 |       -0.5 |          |    0.0 |  -0.25 |
+| Dependent Typing                  |           |            |      0.5 |    0.5 |  -0.25 |
+| Operator Precedence               |       0.5 |            |          |        |        |
+| Operator Overloading by User      |       0.5 |            |          |        |        |
+| Names Must Be Declared Before Use |      -0.5 |            |          |        |        |
+| Deterministic Destructor Calls    |           |            |          |   0.25 |        |
 
 
 #+HEADER: :colnames no
@@ -1872,27 +1872,27 @@ ascii(product, include.rownames = TRUE, include.colnames = TRUE)
 
 #+NAME: complex-language-characteristics-result
 #+RESULTS: complex-language-characteristics
-|            | Ergonomic | Performant | Powerful | Robust |
-|------------+-----------+------------+----------+--------|
-| C          |      0.00 |       1.00 |     0.00 |   0.00 |
-| C++        |      0.42 |       1.00 |     0.77 |   0.50 |
-| C#         |      0.77 |       0.60 |     0.46 |   0.30 |
-| D          |      0.81 |       0.80 |     0.92 |   0.80 |
-| Dart       |      0.81 |       0.60 |     0.46 |   0.30 |
-| Go         |      0.50 |       0.80 |     0.15 |   0.20 |
-| Haskell    |      0.77 |       0.00 |     0.69 |   0.90 |
-| Idris      |      0.77 |       0.20 |     1.00 |   1.00 |
-| Java       |      0.62 |       0.60 |     0.46 |   0.30 |
-| JavaScript |      0.65 |       0.20 |     0.77 |   0.15 |
-| Kotlin     |      0.81 |       0.60 |     0.46 |   0.40 |
-| LLVM-IR    |      0.00 |       1.00 |     0.00 |   0.00 |
-| Lua        |      0.65 |       0.20 |     0.69 |   0.05 |
-| ML         |      0.73 |       0.60 |     0.77 |   0.70 |
-| Python     |      0.81 |       0.20 |     0.77 |   0.05 |
-| ripl       |      0.81 |       0.90 |     0.92 |   0.90 |
-| Rust       |      0.58 |       1.00 |     0.62 |   0.70 |
-| Scala      |      1.00 |       0.60 |     0.77 |   0.70 |
-| Scheme     |      0.54 |       0.20 |     0.54 |   0.15 |
+|            | Ergonomic | Performant | Powerful | Robust | Simple |
+|------------+-----------+------------+----------+--------+--------|
+| C          |      0.00 |       1.00 |     0.00 |   0.00 |   0.24 |
+| C++        |      0.40 |       1.00 |     0.77 |   0.50 |   0.00 |
+| C#         |      0.76 |       0.60 |     0.46 |   0.33 |   0.60 |
+| D          |      0.80 |       0.80 |     0.92 |   0.89 |   0.32 |
+| Dart       |      0.80 |       0.60 |     0.46 |   0.33 |   0.64 |
+| Go         |      0.52 |       0.80 |     0.15 |   0.22 |   0.64 |
+| Haskell    |      0.80 |       0.00 |     0.69 |   0.89 |   0.52 |
+| Idris      |      0.80 |       0.20 |     1.00 |   1.00 |   0.44 |
+| Java       |      0.60 |       0.60 |     0.46 |   0.33 |   0.60 |
+| JavaScript |      0.64 |       0.20 |     0.77 |   0.17 |   0.80 |
+| Kotlin     |      0.80 |       0.60 |     0.46 |   0.44 |   0.64 |
+| LLVM-IR    |      0.00 |       1.00 |     0.00 |   0.00 |   0.32 |
+| Lua        |      0.64 |       0.20 |     0.69 |   0.06 |   0.80 |
+| ML         |      0.76 |       0.60 |     0.77 |   0.78 |   0.72 |
+| Python     |      0.80 |       0.20 |     0.77 |   0.06 |   0.76 |
+| ripl       |      0.84 |       0.90 |     0.92 |   0.97 |   0.12 |
+| Rust       |      0.60 |       1.00 |     0.62 |   0.72 |   0.00 |
+| Scala      |      1.00 |       0.60 |     0.77 |   0.78 |   0.68 |
+| Scheme     |      0.56 |       0.20 |     0.54 |   0.17 |   1.00 |
 
 
 #+NAME: color-coded-language-characteristic-table
