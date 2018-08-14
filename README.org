@@ -1839,19 +1839,21 @@ This table is presented in a sparse format (without zeroes) to make it easier to
 | Operator Overloading by User     |        |       1.0 |            |          |
 
 
-# #+HEADER: :colnames nil :rownames nil
+#+HEADER: :colnames no
 #+NAME: complex-language-characteristics
-#+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary lfc=language-feature-characteristics :exports none :results output raw
+#+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary lfc=language-feature-characteristics :exports results :results output raw
 library(ascii)
 options(asciiType="org")
 
+colnames(lft) = lft[1,]
 rownames(lft) = lft[,1]
-lft = lft[,-1]
+lft = lft[-1,-1]
 lft = data.matrix(lft)
 lft = (lft + 1) / 2
 
+colnames(lfc) = lfc[1,]
 rownames(lfc) = lfc[,1]
-lfc = lfc[,-1]
+lfc = lfc[-1,-1]
 lfc = data.matrix(lfc)
 lfc[is.na(lfc)] = 0
 
@@ -1860,30 +1862,34 @@ product = t(lft) %*% lfc
 # Normalize the language scores by the maximum possible score
 product = t(t(product) / colSums(abs(lfc)))
 
+product = data.frame(product)
+
 ascii(product, include.rownames = TRUE, include.colnames = TRUE)
 #+END_SRC
 
+#+NAME: complex-language-characteristics-result
 #+RESULTS: complex-language-characteristics
-|            | Robust | Ergonomic | Performant | Powerful |
-| C          |   0.05 |      0.14 |       0.86 |     0.13 |
-| C..        |   0.36 |      0.46 |       0.86 |     0.60 |
-| C.         |   0.27 |      0.57 |       0.57 |     0.47 |
-| D          |   0.64 |      0.64 |       0.86 |     0.67 |
-| Dart       |   0.27 |      0.61 |       0.57 |     0.47 |
-| Go         |   0.18 |      0.39 |       0.86 |     0.20 |
-| Haskell    |   0.68 |      0.54 |       0.00 |     0.47 |
-| Idris      |   0.73 |      0.61 |       0.29 |     0.67 |
-| Java       |   0.27 |      0.39 |       0.57 |     0.40 |
-| JavaScript |   0.25 |      0.46 |       0.43 |     0.57 |
-| Kotlin     |   0.36 |      0.57 |       0.57 |     0.40 |
-| LLVM.IR    |   0.07 |      0.12 |       0.86 |     0.07 |
-| Lua        |   0.16 |      0.46 |       0.43 |     0.50 |
-| ML         |   0.50 |      0.46 |       0.57 |     0.53 |
-| Python     |   0.16 |      0.61 |       0.43 |     0.57 |
-| ripl       |   0.70 |      0.62 |       0.86 |     0.73 |
-| Rust       |   0.59 |      0.50 |       0.86 |     0.47 |
-| Scala      |   0.50 |      0.64 |       0.57 |     0.53 |
-| Scheme     |   0.25 |      0.36 |       0.43 |     0.37 |
+|            | Ergonomic | Performant | Powerful | Robust |
+|------------+-----------+------------+----------+--------|
+| C          |      0.14 |       0.88 |     0.13 |   0.05 |
+| C++        |      0.46 |       0.88 |     0.60 |   0.36 |
+| C#         |      0.57 |       0.50 |     0.47 |   0.27 |
+| D          |      0.64 |       0.75 |     0.67 |   0.64 |
+| Dart       |      0.61 |       0.50 |     0.47 |   0.27 |
+| Go         |      0.39 |       0.75 |     0.20 |   0.18 |
+| Haskell    |      0.54 |       0.12 |     0.47 |   0.68 |
+| Idris      |      0.61 |       0.38 |     0.67 |   0.73 |
+| Java       |      0.39 |       0.50 |     0.40 |   0.27 |
+| JavaScript |      0.46 |       0.25 |     0.57 |   0.25 |
+| Kotlin     |      0.57 |       0.50 |     0.40 |   0.36 |
+| LLVM-IR    |      0.12 |       0.81 |     0.07 |   0.07 |
+| Lua        |      0.46 |       0.25 |     0.50 |   0.16 |
+| ML         |      0.46 |       0.50 |     0.53 |   0.50 |
+| Python     |      0.61 |       0.25 |     0.57 |   0.16 |
+| ripl       |      0.62 |       0.81 |     0.73 |   0.70 |
+| Rust       |      0.50 |       0.88 |     0.47 |   0.59 |
+| Scala      |      0.64 |       0.50 |     0.53 |   0.50 |
+| Scheme     |      0.36 |       0.25 |     0.37 |   0.25 |
 
 
 # #+HEADER: :width 768 :height 768
