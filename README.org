@@ -1765,6 +1765,164 @@ ggplot(data = as.data.frame(mds), aes(x = x, y = y)) +
 These results are more nuanced than the hierarchical clustering in section [[Hierarchical Clustering of Languages]], and more easily interpreted than the heatmap in section [[Heatmap of Distances Between Languages]] (though not as precise), and place ~ripl~ roughly where it's intended to be: between Haskell, Rust and D.
 
 
+** Quantifying Complex Language Characteristics as Linear Combinations of Specific Features
+
+Powerful: how abstract are the things that can be expressed
+Ergonomic: how easily can things be expressed
+Robust: how hard is it to make a mistake
+Performant: how performant can the resulting program be
+
+=[Languages x Language Features] [Language Features x Language Characteristics] -> [Languages x Language Characteristics]=
+
+This table is presented in a sparse format (without zeroes) to make it easier to read; missing values are replaced with zeroes before it is used for computations.
+
+#+NAME: language-feature-characteristics
+#+ATTR_LATEX: :align l|rrrr :placement [H] :caption \caption{Complex Language Characteristics as Linear Combinations of Specific Features} \rowcolors{1}{}{gray!15}
+|                                  | Robust | Ergonomic | Performant | Powerful |
+|----------------------------------+--------+-----------+------------+----------|
+| Garbage Collection               |    0.5 |       0.5 |            |          |
+| Explicit Indirection             |        |           |        1.0 |          |
+| Ownership System                 |    1.0 |           |            |          |
+| Memory Safety                    |    1.0 |           |            |          |
+| Static Typing                    |    0.5 |           |        0.5 |          |
+| Dynamic Typing                   |        |       0.5 |            |      0.5 |
+| Type Inference                   |        |       1.0 |            |          |
+| Sub-typing                       |        |       0.5 |            |      0.5 |
+| Parametric Polymorphism          |        |           |            |      1.0 |
+| Type Classes                     |        |           |            |      1.0 |
+| Type Level Programming           |    0.5 |           |            |      0.5 |
+| Ad-hoc Polymorphism              |        |       1.0 |            |          |
+| Classical Inheritance            |        |       0.5 |            |      0.5 |
+| Prototypal Inheritance           |        |       0.5 |            |      0.5 |
+| Strict Evaluation                |        |           |        1.0 |          |
+| Type-safe Discriminated Unions   |    0.5 |           |            |      0.5 |
+| Null Safety                      |    1.0 |           |            |          |
+| Pattern Matching                 |    0.5 |       0.5 |            |          |
+| Mutable Data                     |        |           |        0.5 |      0.5 |
+| Immutable Data                   |    1.0 |           |            |          |
+| Constraints on Mutability        |    1.0 |           |            |          |
+| Constraints on Function Purity   |    1.0 |           |            |          |
+| C-style Syntax                   |        |           |            |          |
+| Lisp-style Syntax                |        |           |            |          |
+| ML-style Syntax                  |        |           |            |          |
+| Header Files                     |        |      -1.0 |            |          |
+| Whitespace Sensitive             |        |       1.0 |            |          |
+| Expression Oriented              |        |       1.0 |            |          |
+| Top Level Functions              |        |       1.0 |            |          |
+| Methods                          |        |       1.0 |            |          |
+| Uniform Function Call Syntax     |        |       1.0 |            |          |
+| Compile Time Function Evaluation |        |           |            |      1.0 |
+| Closures                         |        |       0.5 |            |      0.5 |
+| Member Access Modifiers          |    1.0 |           |            |          |
+| Monadic IO                       |    1.0 |      -0.5 |       -0.5 |          |
+| Dependent Typing                 |    0.5 |           |            |      0.5 |
+| Operator Precedence              |        |       1.0 |            |          |
+| Operator Overloading by User     |        |       1.0 |            |          |
+
+
+# #+HEADER: :colnames nil :rownames nil
+#+NAME: complex-language-characteristics
+#+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary lfc=language-feature-characteristics :exports none :results output raw
+library(ascii)
+options(asciiType="org")
+
+rownames(lft) = lft[,1]
+lft = lft[,-1]
+lft = data.matrix(lft)
+lft = (lft + 1) / 2
+
+rownames(lfc) = lfc[,1]
+lfc = lfc[,-1]
+lfc = data.matrix(lfc)
+lfc[is.na(lfc)] = 0
+
+product = t(lft) %*% lfc
+
+# Normalize the language scores by the maximum possible score
+product = t(t(product) / colSums(abs(lfc)))
+
+ascii(product, include.rownames = TRUE, include.colnames = TRUE)
+#+END_SRC
+
+#+RESULTS: complex-language-characteristics
+|            | Robust | Ergonomic | Performant | Powerful |
+| C          |   0.05 |      0.14 |       0.86 |     0.13 |
+| C..        |   0.36 |      0.46 |       0.86 |     0.60 |
+| C.         |   0.27 |      0.57 |       0.57 |     0.47 |
+| D          |   0.64 |      0.64 |       0.86 |     0.67 |
+| Dart       |   0.27 |      0.61 |       0.57 |     0.47 |
+| Go         |   0.18 |      0.39 |       0.86 |     0.20 |
+| Haskell    |   0.68 |      0.54 |       0.00 |     0.47 |
+| Idris      |   0.73 |      0.61 |       0.29 |     0.67 |
+| Java       |   0.27 |      0.39 |       0.57 |     0.40 |
+| JavaScript |   0.25 |      0.46 |       0.43 |     0.57 |
+| Kotlin     |   0.36 |      0.57 |       0.57 |     0.40 |
+| LLVM.IR    |   0.07 |      0.12 |       0.86 |     0.07 |
+| Lua        |   0.16 |      0.46 |       0.43 |     0.50 |
+| ML         |   0.50 |      0.46 |       0.57 |     0.53 |
+| Python     |   0.16 |      0.61 |       0.43 |     0.57 |
+| ripl       |   0.70 |      0.62 |       0.86 |     0.73 |
+| Rust       |   0.59 |      0.50 |       0.86 |     0.47 |
+| Scala      |   0.50 |      0.64 |       0.57 |     0.53 |
+| Scheme     |   0.25 |      0.36 |       0.43 |     0.37 |
+
+
+# #+HEADER: :width 768 :height 768
+# #+BEGIN_SRC R :var clc=complex-language-characteristics :exports results :file doc/figures/heatmap-of-complex-language-characteristics.png :results output graphics
+
+#+NAME: heatmap-of-complex-language-characteristics
+#+HEADER: :colnames nil :rownames nil
+#+BEGIN_SRC R :var clc=complex-language-characteristics :exports results :results output raw
+## library(ape)
+## library(gplots)
+
+## options(asciiType="org")
+
+## rownames(clc) = clc[,1]
+## clc = clc[,-1]
+## clc = data.matrix(clc)
+class(clc)
+
+## library(ascii)
+## options(asciiType="org")
+## ascii(clc)
+
+## clc = as.data.frame(clc)
+## colnames(clc) = lft[1,]
+## rownames(lft) = lft[,1]
+## lft = lft[-1,-1]
+
+## distances = dist(t(lft))
+
+## clustering = as.dendrogram(hclust(distances, method="ward.D2"))
+
+## distance.matrix = data.matrix(distances)
+
+## heatmap(
+##   ## distance.matrix,
+##   clc,
+##   ## Rowv = clustering,
+##   ## Colv = clustering,
+##   col = colorRampPalette(c("dodgerblue3", "white")),
+##   tracecol = "black",
+##   notecol = "black",
+##   ## symm = TRUE,
+##   trace = "none",
+##   cellnote = format(round(clc, 2)),
+##   key.xlab = "Score",
+##   margins = c(8, 8),
+##   cexRow = 1.6,
+##   cexCol = 1.6,
+##   notecex = 1.15,
+## )
+#+END_SRC
+
+#+RESULTS: heatmap-of-complex-language-characteristics
+
+
+
+
+
 ** COMMENT TODO Hierarchical Clustering of Language Features
 
 Incidentally, by running hierarchical clustering on the transpose of our table, it's possible classify the language features it contains by the programming languages in which they occur:
