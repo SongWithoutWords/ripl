@@ -1911,61 +1911,6 @@ clc)
 
 #+RESULTS: color-coded-language-characteristic-table
 
-# #+HEADER: :width 768 :height 768
-# #+BEGIN_SRC R :var clc=complex-language-characteristics :exports results :file doc/figures/heatmap-of-complex-language-characteristics.png :results output graphics
-
-#+NAME: heatmap-of-complex-language-characteristics
-#+HEADER: :colnames nil :rownames nil
-#+BEGIN_SRC R :var clc=complex-language-characteristics :exports results :results output raw
-## library(ape)
-## library(gplots)
-
-## options(asciiType="org")
-
-## rownames(clc) = clc[,1]
-## clc = clc[,-1]
-## clc = data.matrix(clc)
-class(clc)
-
-## library(ascii)
-## options(asciiType="org")
-## ascii(clc)
-
-## clc = as.data.frame(clc)
-## colnames(clc) = lft[1,]
-## rownames(lft) = lft[,1]
-## lft = lft[-1,-1]
-
-## distances = dist(t(lft))
-
-## clustering = as.dendrogram(hclust(distances, method="ward.D2"))
-
-## distance.matrix = data.matrix(distances)
-
-## heatmap(
-##   ## distance.matrix,
-##   clc,
-##   ## Rowv = clustering,
-##   ## Colv = clustering,
-##   col = colorRampPalette(c("dodgerblue3", "white")),
-##   tracecol = "black",
-##   notecol = "black",
-##   ## symm = TRUE,
-##   trace = "none",
-##   cellnote = format(round(clc, 2)),
-##   key.xlab = "Score",
-##   margins = c(8, 8),
-##   cexRow = 1.6,
-##   cexCol = 1.6,
-##   notecex = 1.15,
-## )
-#+END_SRC
-
-#+RESULTS: heatmap-of-complex-language-characteristics
-
-
-
-
 
 ** COMMENT TODO Hierarchical Clustering of Language Features
 
