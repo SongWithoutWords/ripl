@@ -1787,14 +1787,14 @@ ggplot(data = as.data.frame(mds), aes(x = x, y = y)) +
 These results are more nuanced than the hierarchical clustering in section [[Hierarchical Clustering of Languages]], and more easily interpreted than the heatmap in section [[Heatmap of Distances Between Languages]] (though not as precise), and place ~ripl~ roughly where it's intended to be: between Haskell, Rust and D.
 
 
-** Quantifying Complex Language Characteristics as Linear Combinations of Specific Features
+** Complex Language Characteristics as Linear Combinations of Specific Features
 
 Powerful: how abstract are the things that can be expressed
 Ergonomic: how easily can things be expressed
 Robust: how hard is it to make a mistake
 Performant: how performant can the resulting program be
 
-=[Languages x Language Features] [Language Features x Language Characteristics] -> [Languages x Language Characteristics]=
+=[Languages x Features] [Features x Characteristics] -> [Languages x Characteristics]=
 
 This table is presented in a sparse format (without zeroes) to make it easier to read; missing values are replaced with zeroes before it is used for computations.
 
