@@ -1853,7 +1853,6 @@ colnames(lft) = lft[1,]
 rownames(lft) = lft[,1]
 lft = lft[-1,-1]
 lft = data.matrix(lft)
-lft = (lft + 1) / 2
 
 colnames(lfc) = lfc[1,]
 rownames(lfc) = lfc[,1]
@@ -1863,8 +1862,8 @@ lfc[is.na(lfc)] = 0
 
 product = t(lft) %*% lfc
 
-# Normalize the language scores by the maximum possible score
-product = t(t(product) / colSums(abs(lfc)))
+# Normalize the scores between 0 and 1
+product = apply(product, 2, function(col) { (col - min(col)) / (max(col) - min(col))})
 
 product = data.frame(product)
 
@@ -1875,25 +1874,25 @@ ascii(product, include.rownames = TRUE, include.colnames = TRUE)
 #+RESULTS: complex-language-characteristics
 |            | Ergonomic | Performant | Powerful | Robust |
 |------------+-----------+------------+----------+--------|
-| C          |      0.14 |       0.88 |     0.13 |   0.05 |
-| C++        |      0.46 |       0.88 |     0.60 |   0.36 |
-| C#         |      0.57 |       0.50 |     0.47 |   0.27 |
-| D          |      0.64 |       0.75 |     0.67 |   0.64 |
-| Dart       |      0.61 |       0.50 |     0.47 |   0.27 |
-| Go         |      0.39 |       0.75 |     0.20 |   0.18 |
-| Haskell    |      0.54 |       0.12 |     0.47 |   0.68 |
-| Idris      |      0.61 |       0.38 |     0.67 |   0.73 |
-| Java       |      0.39 |       0.50 |     0.40 |   0.27 |
-| JavaScript |      0.46 |       0.25 |     0.57 |   0.25 |
-| Kotlin     |      0.57 |       0.50 |     0.40 |   0.36 |
-| LLVM-IR    |      0.12 |       0.81 |     0.07 |   0.07 |
-| Lua        |      0.46 |       0.25 |     0.50 |   0.16 |
-| ML         |      0.46 |       0.50 |     0.53 |   0.50 |
-| Python     |      0.61 |       0.25 |     0.57 |   0.16 |
-| ripl       |      0.62 |       0.81 |     0.73 |   0.70 |
-| Rust       |      0.50 |       0.88 |     0.47 |   0.59 |
-| Scala      |      0.64 |       0.50 |     0.53 |   0.50 |
-| Scheme     |      0.36 |       0.25 |     0.37 |   0.25 |
+| C          |      0.00 |       1.00 |     0.00 |   0.00 |
+| C++        |      0.42 |       1.00 |     0.77 |   0.50 |
+| C#         |      0.77 |       0.60 |     0.46 |   0.30 |
+| D          |      0.81 |       0.80 |     0.92 |   0.80 |
+| Dart       |      0.81 |       0.60 |     0.46 |   0.30 |
+| Go         |      0.50 |       0.80 |     0.15 |   0.20 |
+| Haskell    |      0.77 |       0.00 |     0.69 |   0.90 |
+| Idris      |      0.77 |       0.20 |     1.00 |   1.00 |
+| Java       |      0.62 |       0.60 |     0.46 |   0.30 |
+| JavaScript |      0.65 |       0.20 |     0.77 |   0.15 |
+| Kotlin     |      0.81 |       0.60 |     0.46 |   0.40 |
+| LLVM-IR    |      0.00 |       1.00 |     0.00 |   0.00 |
+| Lua        |      0.65 |       0.20 |     0.69 |   0.05 |
+| ML         |      0.73 |       0.60 |     0.77 |   0.70 |
+| Python     |      0.81 |       0.20 |     0.77 |   0.05 |
+| ripl       |      0.81 |       0.90 |     0.92 |   0.90 |
+| Rust       |      0.58 |       1.00 |     0.62 |   0.70 |
+| Scala      |      1.00 |       0.60 |     0.77 |   0.70 |
+| Scheme     |      0.54 |       0.20 |     0.54 |   0.15 |
 
 
 #+NAME: color-coded-language-characteristic-table
