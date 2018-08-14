@@ -160,6 +160,7 @@
        commentstyle=\color{DarkGreen},
   }
 
+\colorlet{TableRowColor}{LightGray}
 % Inline code highlighting
 % \sethlcolor{LightGray}
 % \let\OldTexttt\texttt
@@ -363,7 +364,7 @@ Below is a list of programming languages ordered by the number of mentions in th
     (mapcar 'occurences-in-buffer languages-to-search)
     (lambda (a b) (> (nth 1 a) (nth 1 b)))))
 #+END_SRC
-#+ATTR_LATEX: :placement [H] :caption \caption{Language Mentions as a Proxy for Influence on \texttt{ripl}'s Design} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :caption \caption{Language Mentions as a Proxy for Influence on \texttt{ripl}'s Design} \rowcolors{1}{}{TableRowColor}
 #+RESULTS:
 | Language                 | Mentions in this Document |
 |--------------------------+---------------------------|
@@ -653,7 +654,7 @@ The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was ch
 
 The purpose of the mutable type modifier in ~ripl~ is to restrict mutation to a set of variables that are explicitly mutable within the present scope. Assignment between mutable and immutable values and references are handled according to the following table:
 
-#+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Assignment Between Mutable and Immutable Values and References} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Assignment Between Mutable and Immutable Values and References} \rowcolors{1}{}{TableRowColor}
 | Type  | Assign to =T= | Assign to =~T= | Assign to =^T=   | Assign to =^~T=  |
 |-------+---------------+----------------+------------------+------------------|
 | =T=   | value copied  | value copied   | value referenced | type error       |
@@ -822,7 +823,7 @@ Below is a table comparing pure and impure function signatures in various langua
 #+LATEX: \begin{table}[htbp]
 #+LATEX: \caption{Comparison of Pure and Impure Function Signatures in Various Languages}
 #+LATEX: \adjustbox{max width=\linewidth}{
-#+LATEX: \rowcolors{1}{}{gray!15}
+#+LATEX: \rowcolors{1}{}{TableRowColor}
 | Language | Potentially Impure | Pure with Mutable Arguments         | Pure                                  |
 |----------+--------------------+-------------------------------------+---------------------------------------|
 | C++      | =int main()=       | =void normalize(Vector& v)=         | =Point operator+(Point a, Point b)=   |
@@ -1057,7 +1058,7 @@ define (evaluate (^expression e))
 
 Word order (including subject-object-verb or SOV, subject-verb-object or SVO, and verb-subject-object or VSO) is a characteristic of the grammar of both human and programming languages, some aspects of which are summarised in the table below.
 
-#+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Word Order in Human and Programming Languages} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Word Order in Human and Programming Languages} \rowcolors{1}{}{TableRowColor}
 |     | Percent of Human Population[fn:34] | Example Languages[fn:38] | Programming Constructs  | Example Code        |
 |-----+------------------------------------+--------------------------+-------------------------+---------------------|
 | SOV |                                45% | Farsi, Hindi             | Reverse Polish notation | =map key contains=  |
@@ -1196,7 +1197,7 @@ It's not uncommon in my experience that people (myself included) conceive of and
 
 Below is a table that compares various classes of features that can be used to accomplish the same goal in C++ and ~ripl~, which demonstrates that languages can vary pretty widely in terms of complexity:
 
-#+ATTR_LATEX: :caption \caption{Comparison of Various Constructs in \texttt{ripl} and C++} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :caption \caption{Comparison of Various Constructs in \texttt{ripl} and C++} \rowcolors{1}{}{TableRowColor}
 | Feature           | ~ripl~           | C++                                                                |
 |-------------------+------------------+--------------------------------------------------------------------|
 | Code organization | Namespaces       | Headers, namespaces, and modules (expected in C++20[fn:31])        |
@@ -1292,7 +1293,7 @@ The language feature table symbols =+=, =?=, and =-= are converted to balanced t
 \begin{sidewaystable}[htbp]
 \caption{Language Feature Table}
 \resizebox{\textwidth}{!}{
-\rowcolors{1}{}{gray!15}
+\rowcolors{1}{}{TableRowColor}
 #+END_EXPORT
 #+NAME: language-feature-table
 #+ATTR_LATEX: :align l|ccccccccccccccccccc
@@ -1450,7 +1451,7 @@ plot(
 
 The results suggest that the languages considered fall into one of four clusters, or categories:
 
-#+ATTR_LATEX: :placement [H] :caption \caption{Language Categories Observed in Hierarchical Clustering} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :caption \caption{Language Categories Observed in Hierarchical Clustering} \rowcolors{1}{}{TableRowColor}
 | Language Cluster                     | Languages                             |
 |--------------------------------------+---------------------------------------|
 | Dynamically-typed                    | JavaScript, Lua, Python, Scheme       |
@@ -1551,7 +1552,7 @@ min.distances = min.distances[order(unlist(min.distances$Distance)),]
 ascii(min.distances, include.rownames=FALSE)
 #+END_SRC
 
-#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance to Their Nearest Neighbours} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance to Their Nearest Neighbours} \rowcolors{1}{}{TableRowColor}
 #+RESULTS: distances-of-languages-to-their-nearest-neighbours
 | Language   | Nearest Neighbour | Distance |
 |------------+-------------------+----------|
@@ -1612,7 +1613,7 @@ colnames(min.distances)[2] = "Median Distance"
 ascii(min.distances, include.rownames=FALSE)
 #+END_SRC
 
-#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Median Distance to Other Languages} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Median Distance to Other Languages} \rowcolors{1}{}{TableRowColor}
 #+RESULTS: median-distances-of-languages-to-others
 | Language   | Median Distance |
 |------------+-----------------|
@@ -1671,7 +1672,7 @@ min.distances = min.distances[order(unlist(min.distances$Distance)),]
 ascii(min.distances, include.rownames=FALSE)
 #+END_SRC
 
-#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Mean Distance from Other Languages} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Mean Distance from Other Languages} \rowcolors{1}{}{TableRowColor}
 #+RESULTS: mean-distances-of-languages-to-others
 | Language   | Distance |
 |------------+----------|
@@ -1717,7 +1718,7 @@ colnames(dist.from.ripl) = c("Language", "Distance from ~ripl~")
 ascii(dist.from.ripl, include.rownames=FALSE)
 #+END_SRC
 
-#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance from \texttt{ripl}} \rowcolors{1}{}{gray!15}
+#+ATTR_LATEX: :placement [H] :caption \caption{Languages Sorted by Distance from \texttt{ripl}} \rowcolors{1}{}{TableRowColor}
 #+RESULTS: distance-of-ripl-from-other-languages
 | Language   | Distance from ~ripl~ |
 |------------+----------------------|
