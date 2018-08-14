@@ -1799,47 +1799,48 @@ Performant: how performant can the resulting program be
 This table is presented in a sparse format (without zeroes) to make it easier to read; missing values are replaced with zeroes before it is used for computations.
 
 #+NAME: language-feature-characteristics
-#+ATTR_LATEX: :align l|rrrr :placement [H] :caption \caption{Complex Language Characteristics as Linear Combinations of Specific Features} \rowcolors{1}{}{gray!15}
-|                                  | Ergonomic | Performant | Powerful | Robust |
-|----------------------------------+-----------+------------+----------+--------|
-| Garbage Collection               |       0.5 |       -0.5 |          |    0.5 |
-| Explicit Indirection             |           |        1.0 |          |        |
-| Ownership System                 |           |            |          |    1.0 |
-| Memory Safety                    |           |            |          |    1.0 |
-| Static Typing                    |           |        1.0 |          |    0.5 |
-| Dynamic Typing                   |       0.5 |            |      0.5 |        |
-| Type Inference                   |       1.0 |            |          |        |
-| Sub-typing                       |       0.5 |            |      0.5 |        |
-| Parametric Polymorphism          |           |            |      1.0 |        |
-| Type Classes                     |           |            |      1.0 |        |
-| Type Level Programming           |           |            |      0.5 |    0.5 |
-| Ad-hoc Polymorphism              |       1.0 |            |          |        |
-| Classical Inheritance            |       0.5 |            |      0.5 |        |
-| Prototypal Inheritance           |       0.5 |            |      0.5 |        |
-| Strict Evaluation                |           |        1.0 |          |        |
-| Type-safe Discriminated Unions   |           |            |      0.5 |    0.5 |
-| Null Safety                      |           |            |          |    1.0 |
-| Pattern Matching                 |       0.5 |            |          |    0.5 |
-| Mutable Data                     |           |        0.5 |      0.5 |        |
-| Immutable Data                   |           |            |          |    1.0 |
-| Constraints on Mutability        |           |            |          |    1.0 |
-| Constraints on Function Purity   |           |            |          |    1.0 |
-| C-style Syntax                   |           |            |          |        |
-| Lisp-style Syntax                |           |            |          |        |
-| ML-style Syntax                  |           |            |          |        |
-| Header Files                     |      -1.0 |            |          |        |
-| Whitespace Sensitive             |       1.0 |            |          |        |
-| Expression Oriented              |       1.0 |            |          |        |
-| Top Level Functions              |       1.0 |            |          |        |
-| Methods                          |       1.0 |            |          |        |
-| Uniform Function Call Syntax     |       1.0 |            |          |        |
-| Compile Time Function Evaluation |           |            |      1.0 |        |
-| Closures                         |       0.5 |            |      0.5 |        |
-| Member Access Modifiers          |           |            |          |    1.0 |
-| Monadic IO                       |      -0.5 |            |          |    1.0 |
-| Dependent Typing                 |           |            |      0.5 |    0.5 |
-| Operator Precedence              |       1.0 |            |          |        |
-| Operator Overloading by User     |       1.0 |            |          |        |
+#+ATTR_LATEX: :align l|rrrr :placement [H] :caption \caption{Complex Language Characteristics as Linear Combinations of Specific Features} \rowcolors{1}{}{TableRowColor}
+|                                   | Ergonomic | Performant | Powerful | Robust |
+|-----------------------------------+-----------+------------+----------+--------|
+| Garbage Collection                |       1.0 |       -0.5 |          |    1.0 |
+| Explicit Indirection              |      -0.5 |        0.5 |          |        |
+| Ownership System                  |           |            |          |    0.5 |
+| Static Typing                     |      -0.5 |        1.0 |     -0.5 |    1.0 |
+| Dynamic Typing                    |       0.0 |            |      0.0 |        |
+| Type Inference                    |       0.5 |            |          |        |
+| Sub-typing                        |       0.5 |            |          |        |
+| Parametric Polymorphism           |           |            |      0.5 |        |
+| Type Classes                      |           |            |      0.5 |        |
+| Type Level Programming            |           |            |      0.5 |    0.5 |
+| Ad-hoc Polymorphism               |       0.5 |            |          |        |
+| Classical Inheritance             |       0.5 |            |      0.5 |        |
+| Prototypal Inheritance            |       0.5 |            |      0.5 |        |
+| Strict Evaluation                 |           |        0.5 |          |        |
+| Type-safe Discriminated Unions    |           |            |      0.5 |    0.5 |
+| Null Safety                       |           |            |          |    0.5 |
+| Pattern Matching                  |       0.5 |            |          |    0.5 |
+| Mutable Data                      |           |        0.5 |     0.25 |        |
+| Immutable Data                    |           |            |          |    0.5 |
+| Constraints on Mutability         |           |            |          |    0.5 |
+| Constraints on Function Purity    |           |            |          |    0.5 |
+| C-style Syntax                    |           |            |          |        |
+| Lisp-style Syntax                 |           |            |          |        |
+| ML-style Syntax                   |           |            |          |        |
+| Header Files                      |      -0.5 |            |          |        |
+| Whitespace Sensitive              |       0.5 |            |          |        |
+| Expression Oriented               |       1.0 |            |          |        |
+| Top Level Functions               |       0.5 |            |          |        |
+| Methods                           |       0.5 |            |          |        |
+| Uniform Function Call Syntax      |       0.5 |            |          |        |
+| Compile Time Function Evaluation  |           |            |      0.5 |        |
+| Closures                          |       0.5 |            |      0.5 |        |
+| Member Access Modifiers           |           |            |          |    0.5 |
+| Monadic IO                        |      -0.5 |       -0.5 |          |    0.5 |
+| Dependent Typing                  |           |            |      0.5 |    0.5 |
+| Operator Precedence               |       0.5 |            |          |        |
+| Operator Overloading by User      |       0.5 |            |          |        |
+| Names Must Be Declared Before Use |      -0.5 |            |          |        |
+| Deterministic Destructor Calls    |           |            |          |    0.5 |
 
 
 #+HEADER: :colnames no
