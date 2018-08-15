@@ -1,3 +1,10 @@
+# Readme display broke with the following commit. Nothing seems out of the ordinary with this commit,
+# so it may be that github has an internal size or length threshold over which it will not display org files.
+# https://github.com/SongWithoutWords/ripl/commit/6c8e8ce877ccb9eb967fb4297c6db0c13753ee77
+
+# Though github's documentation suggests that it renders documents under 400KB, and this document is ~140KB
+# https://developer.github.com/v3/markdown/
+
 # Can be used to toggle the export of footnotes
 #+OPTIONS: f:t
 
