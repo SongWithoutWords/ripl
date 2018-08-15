@@ -219,7 +219,6 @@ This is not to say that Haskell's performance is not suitable for many purposes,
 As such, ~ripl~ exists to combine the robust constraints of a language like Haskell, with the straightforward imperative capabilities of a language like C++ or Rust, and the type-level and compile-time programming capabilities of a language like Idris or D. If ~ripl~ can achieve these goals, it will be something like a more functional D, a more high-level Rust, or a more imperative Idris, and I believe a language along these lines would be well worth using.
 
 [fn:2] The people I've heard say these things are C++, Java, and Python programmers, so the languags they use may be fairly homogenous.
-# [fn:2] The people I've heard say these things are C++, Java and Python imperative/object-oriented programmers, so the languags they use may be fairly homogenous.
 
 [fn:3] Edsger Dijkstra, EWD 340: The Humble Programmer,
 \newline
@@ -422,8 +421,6 @@ Hopefully this example has helped to provide you with an intuition for the langu
 
 
 * Design Goals and Related Features
-
-
 
 ** COMMENT Notes
 
