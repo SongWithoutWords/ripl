@@ -1337,26 +1337,6 @@ The language feature table symbols =+=, =?=, and =-= are converted to balanced t
 \pagebreak % without this pagebreak, the table may not land in the right section
 #+END_EXPORT
 
-#+NAME: export-language-feature-table-to-csv
-#+BEGIN_SRC emacs-lisp :var table=language-feature-table :results none :exports none :colnames no
-(with-temp-file "doc/figures/language-features/table.csv"
-  (insert (format "%s"
-    (concat
-      (mapconcat
-        (lambda (row)
-          (mapconcat
-            (lambda (cell)
-              (cond
-                ((equal cell "~ripl~") "ripl")
-                ((equal cell "=-=") "-1")
-                ((equal cell "=?=") "+0")
-                ((equal cell "=+=") "+1")
-                (t cell)))
-            (remove "" row) ","))
-        table "\n")
-    "\n"))))
-#+END_SRC
-
 #+NAME: language-feature-table-balanced-ternary
 #+BEGIN_SRC emacs-lisp :var table=language-feature-table :results value :exports none :colnames no
 (mapcar
