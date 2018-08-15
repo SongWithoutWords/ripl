@@ -468,9 +468,9 @@ Hopefully the discussion of this example has helped to provide you with an intui
 
 *** =+= Static Typing
 
-Static typing has a wide range of applications and advantages. It can catch errors earlier in the development process and nearer to the source than the corresponding run-time errors, can improve performance by informing optimizations and reducing the number of run-time checks because data types are known in advance, can be used to disambiguate names via overload resolution (as in C++, C#, D, Java, and Scala), can ensure that only certain functions have side effects (as in D and Haskell), can ensure that only certain aspects of certain variables can be modified (as in C++, D and Rust), and can be used as a basis for metaprogramming (as in C++, D and Haskell).
+Static typing has a wide range of applications and advantages. It can catch errors earlier in the development process and nearer to the source than the corresponding run-time errors, can improve performance by informing optimizations and reducing the number of run-time checks required, can be used to disambiguate names via overload resolution (as in C++, C#, D, Idris, Java, and Scala), can ensure that only certain functions have side effects (as in D, Idris, and Haskell), can ensure that only certain aspects of certain variables can be modified (as in C++, D, and Rust), and can be used as a basis for compile-time programming and metaprogramming (as in C++, D, Idris, and Haskell).
 
-When combined with type inference, these advantages can be leveraged with little-to-no increase in program length or programmer effort. As such the primary motivation for ~ripl~ is to embrace static typing and to extend the range of invariants that can be encoded within the type system at compile time, so that the language can be used to develop robust programs with predictable behaviour at any scale.
+When combined with type inference, these advantages can be had with little increase in program length or programmer effort. As such one of ~ripl~'s primary goals is to embrace static typing and to extend the range of invariants that can be encoded within the type system, so that the language can be used to develop robust programs with predictable behaviour at scale.
 
 
 *** =+= Type-Safe Discriminated Unions
