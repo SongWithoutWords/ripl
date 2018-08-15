@@ -503,8 +503,6 @@ Unlike untagged unions that do not record the type of the union's value, and non
 
 Although discriminated unions are analogous in some respects to OOP style inheritance subtyping (which can even be used as a basis for discriminated unions, as in Scala), I would argue that type-safe discriminated unions when used in conjunction with pattern matching, result in code that is more robust, precise, straightforward and less tightly coupled than OOP style inheritance. As such, discriminated unions are an important feature of ~ripl~'s design, the advantages of which are highlighted in the following section on null-safety, for which they provide an excellent solution.
 
-# Discriminated unions are a powerful tool for authoring and composing data types, and are analogous in some respects to OOP style inheritance and subtyping (in Scala, for example, discriminated unions are created using inheritance). They provide a very powerful and intuitive way of modelling data and computations that may take one of a number of forms,
-
 
 *** =+= Type-Level Constraints on Existence (null safety)
 
