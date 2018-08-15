@@ -415,7 +415,7 @@ Below is a table of ~ripl~'s keywords.
 | =template=  | Defines a type-level function introducing one or more type-level variables. Example in section [[=+= Type-Safe Discriminated Unions]]. |
 | =union=     | Creates a union type from a number of other types.                                                                                 |
 
-The language also provides arithmetic functions overloaded for built-in numeric types (=+=, =-=, =*=, =/=, and =%=), logical functions for booleans (=and=, =or=, and =not=), and comparison functions overloaded for built in types (=<=, =<==, ====, =/==, =>=, =>==). These are all regular functions and can be overloaded like other names as described in section [[=+= Name Overloading]].
+The language also provides arithmetic functions overloaded for built-in numeric types (=+=, =-=, =*=, =/=, and =%=), logical functions for booleans (=and=, =or=, and =not=), and comparison functions overloaded for built in types (=<=, =<==, ====, =/==, =>=, =>==). These are regular functions and can be overloaded like other names as described in section [[=+= Name Overloading]].
 
 
 * Minimal Example
