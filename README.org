@@ -1911,7 +1911,7 @@ ascii(product, include.rownames = TRUE, include.colnames = TRUE)
     (mapcar
       (lambda (cell)
         (if (numberp cell)
-          (concat "\\cellcolor{DodgerBlue3!" (number-to-string (truncate (* 50 cell))) "}" (number-to-string cell))
+          (concat "\\cellcolor{DodgerBlue3!" (number-to-string (truncate (* 50 cell))) "}" (format "%.2f" cell))
           cell))
       row))
 clc)
