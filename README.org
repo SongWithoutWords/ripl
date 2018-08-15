@@ -123,6 +123,7 @@
       % definitions
       { block
       , define
+      , let
       , match
       , struct
       , template
