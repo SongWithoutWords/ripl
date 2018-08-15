@@ -175,9 +175,18 @@
 % \let\OldTexttt\texttt
 % \renewcommand{\texttt}[1]{\OldTexttt{\hl{#1}}}% will affect all \texttt
 
+\date{\parbox{\linewidth}{\centering%
+  University of British Columbia\endgraf
+  CPEN 499B\endgraf\bigskip
+  Supervisor: Dr. Sathish Gopalakrishnan\endgraf\bigskip
+  \today\endgraf\bigskip
+  }}
+
 % Surrounding commands remove page number from title page
 \clearpage\maketitle
 \thispagestyle{empty}
+\vfill
+\centerline{\textcopyright Ian McCall, 2018}
 
 \pagebreak
 
