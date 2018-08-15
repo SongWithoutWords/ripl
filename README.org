@@ -1414,7 +1414,7 @@ One method that is useful for visualizing higher-dimensional data is agglomerati
 
 #+NAME: hierarchical-clustering-of-languages
 #+HEADER: :width 768 :height 768
-#+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary :exports results :file doc/figures/hierarchical-clustering-of.png  :results output graphics
+#+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary :exports results :file doc/figures/hierarchical-clustering-of-languages.png  :results output graphics
 library(ape)
 
 options(asciiType="org")
@@ -1439,7 +1439,7 @@ plot(
 #+CAPTION: Hierarchical Clustering of Languages
 #+ATTR_LATEX: :width 12cm :placement [H]
 #+RESULTS: hierarchical-clustering-of-languages
-[[file:doc/figures/hierarchical-clustering-of.png]]
+[[file:doc/figures/hierarchical-clustering-of-languages.png]]
 
 The results suggest that the languages considered fall into one of four clusters, or categories:
 
