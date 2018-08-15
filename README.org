@@ -1981,7 +1981,7 @@ The lexer of the ~ripl~ compiler is quite straightforward. It takes the string i
 
 
 ** Parsing
-Although earlier versions of ~ripl~ with a more complicated grammar used a parser generator (Happy when the compiler was written in Haskell, and ANTLR after it was ported to Scala), since the adoption of a Lisp-like syntax inspired by   [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]    (as described in [[Brief History of =ripl='s Syntax]]), the parser is now written directly in Scala, and the implementation is about half the length it was with ANTLR.
+Although earlier versions of ~ripl~ with a more complicated grammar used a parser generator (Happy when the compiler was written in Haskell, and ANTLR after it was ported to Scala), since the adoption of a Lisp-like syntax inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4] (as described in [[Brief History of =ripl='s Syntax]]), the parser is now written directly in Scala, and the implementation is about half the length it was with ANTLR.
 
 
 ** Post-Parsing
