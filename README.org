@@ -206,34 +206,26 @@
 
 Although I've heard it said that programming languages are "just tools", that any language can be "learned in a week", that the choice of language "doesn't matter" and that the differences between programming languages are superficial or primarily syntactic[fn:2], I think that the differences between languages are substantial and important. To quote Edsger Dijkstra, "the tools we are trying to use and the language or notation we are using to express or record our thoughts, are the major factors determining what we can think or express at all"[fn:3].
 
-Certain kinds of bugs, problems, and anti-patterns (such as null pointer exceptions, memory leaks, hidden side-effects, and shared or global mutable state), issues that can slow development, block teams, produce unpredictable programs, negatively impact users, and cost thousands of dollars, affect only some languages. Just as importantly, and as mentioned by Dijkstra, the ability to express certain thoughts and ideas is contingent on the features of the language in use.
+Certain kinds of bugs, problems, and anti-patterns (such as null pointer exceptions, memory leaks, hidden side-effects, and shared or global mutable state), issues that can slow development, block teams, produce unpredictable programs, negatively impact users, and cost thousands of dollars, effect only some languages. Just as importantly, and as mentioned by Dijkstra, the ability to express certain thoughts and ideas is contingent on the features of the language in use.
 
-One language that prevents many of the problems mentioned above while providing many expressive constructs, is Haskell, a language which ([[https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html][to quote Dijkstra again]]) "though not perfect, is of a quality that is several orders of magnitude higher than Java, which is a mess"[fn:5]. Before making any criticisms of Haskell, it's worth mentioning that I think it is a very elegant and enlightening language, that it has taught me to think of many programming patterns in a more abstract and general way (with type-classes and discriminated unions), and that the highest quality open-source libraries that I have read or used have been written in Haskell.
-# that allows the user to operate at a higher level of abstraction than many other languages (with type classes in particular), Additionally, I find the libraries to be superb.
+One language that prevents many of the problems mentioned above while providing many expressive constructs, is Haskell, a language which ([[https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html][to quote Dijkstra again]]) "though not perfect, is of a quality that is several orders of magnitude higher than Java, which is a mess"[fn:5]. Before making any criticisms of Haskell, it is worth mentioning that I think very highly of it, that it has taught me to think of many programming patterns in a more abstract and general way (with type-classes and discriminated unions), and that the highest quality open-source libraries that I have read or used have been written in Haskell.
 
-Unfortunately, by confining side-effects and mutation to specific monads (namely IO and ST), Haskell solves the problems associated with side effects and mutation at the cost of prohibiting straightforward and performant imperative programming, which can be beneficial or necessary when writing computationally intensive or highly statefule and interactive programs. The combined abstractions of lazy evaluation, implicit indirection, and monads make it much harder (in my experience) to optimize or reason about computationally intensive, highly stateful and highly interactive programs in Haskell than it is in other languages, especially languages that are designed for this purpose like C++ and Rust.
+Unfortunately, by confining side-effects and mutation to specific monads (namely IO and ST), Haskell solves the problems associated with side effects and mutation at the cost of prohibiting straightforward and performant imperative programming, which can be beneficial or necessary when writing computationally intensive, highly stateful, or highly interactive programs. The combined abstractions of lazy evaluation, implicit indirection, and monads make it much harder (in my experience) to optimize or reason about computationally intensive, highly stateful and highly interactive programs in Haskell than it is in other languages, especially languages that are designed for this purpose like C++ and Rust.
 
 What's more, although Haskell's performance is often promoted as one of its strengths[fn:6], a comparative study of programming languages (namely C, C#, F#, Go, Haskell, Java, and Python) conducted by Sebastian Nanz and Carlo A. Furia of ETH Zuric found Haskell to be the second slowest language considered at computationally intensive tasks (after Ruby), and found that it used the second largest amount of memory of the languages considered (after F#).
 
-This is not to say that Haskell's performance is not suitable for many purposes, because it is, or that monads are not useful, because they are[fn:7], but rather that there are other ways to impose constraints on the mutability of data (as seen in C++, D, and Rust) and purity of functions (as seen in D), that do not require the additional levels of complexity and abstraction of monads, lazy evaluation, and implicit indirection. As such, ~ripl~ exists to combine the robust constraints of a language like Haskell, with the straight forward imperative capabilities of a language like C++ or Rust, and the type-level and compile-time programming capabilities of a language like Idris or D.
+This is not to say that Haskell's performance is not suitable for many purposes, because it is, or that monads are not useful, because they are, but rather that there are other ways to impose constraints on the mutability of data (as seen in C++, D, and Rust) and purity of functions (as seen in D), that do not require the additional levels of complexity and abstraction of monads, lazy evaluation, and implicit indirection.
 
-# Similar methods are employed in ~ripl~ and are described in the following section.
-# As such ~ripl~'s reason to exist, 
+As such, ~ripl~ exists to combine the robust constraints of a language like Haskell, with the straightforward imperative capabilities of a language like C++ or Rust, and the type-level and compile-time programming capabilities of a language like Idris or D. If ~ripl~ can achieve these goals, it will be something like a more functional D, a more high-level Rust, or a more imperative Idris, and I believe a language along these lines would be well worth using.
 
-# Unfortunately Haskell solves the problems posed by side-effects and mutation in a way that prohibits straightforward and performant imperative programming, which can be beneficial or necessary when writing computationally intensive or highly interactive programs. By confining side-effects and mutation to specific monads (namely IO and ST). Although this achieves the aim of differentiating between pure and impure computations, and does so in an elegant way, the combined abstractions of lazy evaluation, implicit indirection, and monads make it much harder (in my experience[fn:8]) to optimize or reason about computationally intensive, highly stateful and highly interactive programs in Haskell than it is in other languages, especially languages that are designed for this purpose like C++ and Rust.
-
-#+BEGIN_EXPORT latex
-The source of this document and the compiler can be found at \url{https://github.com/SongWithoutWords/ripl}.
-#+END_EXPORT
-
-
-[fn:2] The people I've heard voice these opinions are all C++, C#, Java, or Python programmers, so maybe they just haven't experienced the full diversity of programming languages.
+[fn:2] The people I've heard say these things are C++, Java, and Python programmers, so the languags they use may be fairly homogenous.
+# [fn:2] The people I've heard say these things are C++, Java and Python imperative/object-oriented programmers, so the languags they use may be fairly homogenous.
 
 [fn:3] Edsger Dijkstra, EWD 340: The Humble Programmer,
 \newline
 https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html
 
-[fn:5] Edsger Dijkstra, To the members of the Budget Council,
+[fn:5] Edsger Dijkstra, On Haskell,
 \newline
 https://www.cs.utexas.edu/users/EWD/transcriptions/OtherDocs/Haskell.html
 
@@ -245,13 +237,11 @@ https://arxiv.org/pdf/1409.0252.pdf
 \newline
 https://arxiv.org/pdf/1409.0252.pdf
 
-[fn:6] ~TODO: Can I find a source that makes this claim?~
-
-[fn:8] ~TODO: Monads can make stateful computations harder to reason about~
-
-[fn:7] ~TODO: Monads are useful~
-
-# [fn:6] ~TODO: Haskell reasonably performant~
+[fn:6] There have been some benchmarks that suggest Haskell is /faster/ than C, but these are largely suspect or have been debunked:
+\newline
+https://medium.com/@n0mad/when-competing-with-c-fudge-the-benchmark-16d3a91b437c
+\newline
+https://news.ycombinator.com/item?id=5080210
 
 
 * COMMENT Old Introductory Text
@@ -281,7 +271,9 @@ A number of the features described in this document and that appear in code list
 
 * Project Status
 The language and compiler are still in development and are not yet in a usable state. A detailed overview of the implementation status can be found in section [[Detailed Implementation Status]].
-
+#+BEGIN_EXPORT latex
+The source of this document and the compiler can be found at \url{https://github.com/SongWithoutWords/ripl}.
+#+END_EXPORT
 
 * Features at a Glance
 - Compiled
