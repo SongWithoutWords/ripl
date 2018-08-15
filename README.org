@@ -1797,7 +1797,7 @@ The attributes considered are as follows:
 The table on the following page expresses these attributes as linear combinations of the language features considered in section [[Language Feature Table]].
 
 #+NAME: language-feature-attributes
-#+ATTR_LATEX: :align l|rrrrrr :placement [H] :caption \caption{Language Feature Attributes} \rowcolors{1}{}{TableRowColor}
+#+ATTR_LATEX: :align l|rrrrrr :placement [H] :caption \caption{Language Feature Attribute Coefficients} \rowcolors{1}{}{TableRowColor}
 |                                   | Ergonomic | Functional | Imperative | Powerful | Robust | Simple |
 |-----------------------------------+-----------+------------+------------+----------+--------+--------|
 | Garbage Collection                |       1.0 |        0.5 |       -0.5 |          |    1.0 |    1.0 |
@@ -1817,7 +1817,7 @@ The table on the following page expresses these attributes as linear combination
 | Type-safe Discriminated Unions    |           |        0.5 |            |      0.5 |    0.5 |        |
 | Null Safety                       |           |            |            |          |    0.5 |        |
 | Pattern Matching                  |       0.5 |        0.5 |            |          |    0.5 |        |
-| Mutable Data                      |           |            |        0.5 |          |        |        |
+| Mutable Data                      |           |            |        0.5 |          |   -0.5 |        |
 | Immutable Data                    |           |       0.25 |            |          |    0.5 |        |
 | Constraints on Mutability         |           |            |            |          |    0.5 |  -0.25 |
 | Constraints on Function Purity    |           |            |            |          |    0.5 |  -0.25 |
@@ -1833,12 +1833,12 @@ The table on the following page expresses these attributes as linear combination
 | Compile Time Function Evaluation  |           |            |            |      0.5 |        |        |
 | Closures                          |       0.5 |        0.5 |       -0.5 |      0.5 |        |        |
 | Member Access Modifiers           |           |            |            |          |    0.5 |        |
-| Monadic IO                        |      -0.5 |            |       -0.5 |          |    0.0 |  -0.25 |
+| Monadic IO                        |      -0.5 |            |       -0.5 |          |        |  -0.25 |
 | Dependent Typing                  |           |            |            |      0.5 |    0.5 |  -0.25 |
 | Operator Precedence               |       0.5 |            |            |          |        |        |
 | Operator Overloading by User      |       0.5 |            |            |          |        |        |
 | Names Must Be Declared Before Use |      -0.5 |            |            |          |        |        |
-| Deterministic Destructor Calls    |           |            |            |          |   0.25 |        |
+| Deterministic Destructor Calls    |           |            |            |          |   0.5 |        |
 | Textual Macros                    |           |            |            |     0.25 |  -0.25 | -0.125 |
 | Lisp-style Macros                 |           |            |            |      0.5 |        |  -0.25 |
 
@@ -1877,24 +1877,24 @@ ascii(product, include.rownames = TRUE, include.colnames = TRUE)
 |            | Ergonomic | Functional | Imperative | Powerful | Robust | Simple |
 |------------+-----------+------------+------------+----------+--------+--------|
 | C          |      0.00 |       0.00 |       1.00 |     0.07 |   0.00 |   0.30 |
-| C++        |      0.40 |       0.22 |       0.86 |     0.79 |   0.47 |   0.00 |
-| C#         |      0.84 |       0.28 |       0.57 |     0.43 |   0.32 |   0.80 |
-| D          |      0.80 |       0.44 |       0.71 |     0.86 |   0.89 |   0.45 |
-| Dart       |      0.88 |       0.39 |       0.57 |     0.43 |   0.32 |   0.85 |
-| Go         |      0.52 |       0.33 |       0.71 |     0.14 |   0.26 |   0.85 |
-| Haskell    |      0.80 |       1.00 |       0.00 |     0.71 |   0.89 |   0.70 |
+| C++        |      0.40 |       0.22 |       0.86 |     0.79 |   0.48 |   0.00 |
+| C#         |      0.84 |       0.28 |       0.57 |     0.43 |   0.29 |   0.80 |
+| D          |      0.80 |       0.44 |       0.71 |     0.86 |   0.81 |   0.45 |
+| Dart       |      0.88 |       0.39 |       0.57 |     0.43 |   0.29 |   0.85 |
+| Go         |      0.52 |       0.33 |       0.71 |     0.14 |   0.24 |   0.85 |
+| Haskell    |      0.80 |       1.00 |       0.00 |     0.71 |   0.90 |   0.70 |
 | Idris      |      0.80 |       1.00 |       0.14 |     1.00 |   1.00 |   0.60 |
-| Java       |      0.60 |       0.17 |       0.57 |     0.43 |   0.37 |   0.80 |
-| JavaScript |      0.72 |       0.42 |       0.29 |     0.57 |   0.16 |   0.85 |
-| Kotlin     |      0.80 |       0.39 |       0.57 |     0.43 |   0.47 |   0.85 |
+| Java       |      0.60 |       0.17 |       0.57 |     0.43 |   0.33 |   0.80 |
+| JavaScript |      0.72 |       0.42 |       0.29 |     0.57 |   0.14 |   0.85 |
+| Kotlin     |      0.80 |       0.39 |       0.57 |     0.43 |   0.43 |   0.85 |
 | LLVM-IR    |      0.00 |       0.11 |       1.00 |     0.00 |   0.05 |   0.45 |
 | Lua        |      0.72 |       0.42 |       0.29 |     0.50 |   0.05 |   0.85 |
-| ML         |      0.76 |       1.00 |       0.43 |     0.71 |   0.79 |   0.95 |
+| ML         |      0.76 |       1.00 |       0.43 |     0.71 |   0.71 |   0.95 |
 | Python     |      0.88 |       0.36 |       0.29 |     0.57 |   0.05 |   0.80 |
-| ripl       |      0.84 |       0.72 |       0.64 |     0.86 |   0.97 |   0.20 |
-| Rust       |      0.60 |       0.78 |       0.71 |     0.57 |   0.74 |   0.05 |
-| Scala      |      1.00 |       0.67 |       0.43 |     0.71 |   0.79 |   0.90 |
-| Scheme     |      0.64 |       0.61 |       0.14 |     0.50 |   0.16 |   1.00 |
+| ripl       |      0.84 |       0.72 |       0.64 |     0.86 |   0.90 |   0.20 |
+| Rust       |      0.60 |       0.78 |       0.71 |     0.57 |   0.71 |   0.05 |
+| Scala      |      1.00 |       0.67 |       0.43 |     0.71 |   0.71 |   0.90 |
+| Scheme     |      0.64 |       0.61 |       0.14 |     0.50 |   0.14 |   1.00 |
 
 
 #+NAME: color-coded-language-attributes
