@@ -1842,7 +1842,7 @@ The table on the following page expresses these attributes as linear combination
 | Textual Macros                    |           |            |            |     0.25 |  -0.25 | -0.125 |
 | Lisp-style Macros                 |           |            |            |      0.5 |        |  -0.25 |
 
-The values of the coefficients chosen are largely subjective, but do provide a uniform rubric that can be used to evaluate the languages considered across the attributes chose. The table is presented in a sparse format (without zeroes) to make it easier to read, and the missing values are replaced with zeroes before use.
+The values of the coefficients chosen are largely subjective, but do provide a uniform rubric that can be used to evaluate the languages considered across the attributes chosen. The table is presented in a sparse format (without zeroes) to make it easier to read, and the missing values are replaced with zeroes before use.
 
 #+HEADER: :colnames no
 #+NAME: language-attributes
