@@ -388,6 +388,36 @@ Below is a list of programming languages ordered by the number of mentions in th
 | Go                       |                         0 |
 
 
+* Keywords and Symbols
+
+Below is a table of ~ripl~'s keywords.
+
+| Symbol      | Description                                                                                                                        |
+|-------------+------------------------------------------------------------------------------------------------------------------------------------|
+| =~=         | Prefix type modifier used to designate mutable types. Discussed in section [[=+= Type-Level Constraints on Mutability]].               |
+| =^=         | Prefix type modifier, used to designate reference types. Discussed in section [[=+= Type-Level Constraints on Mutability]].            |
+| =@=         | World-state parameter, used to designate impure functions. Discussed in section [[=+= Type-Level Constraints on Purity]].              |
+| =.=         | Applies two expressions from right to left, e.g. =list.length= is equivalent to =(length list)=                                    |
+| =->=        | Creates a function type, e.g. =(-> i32 i32 point)= is a function from two =i32='s to a point.                                      |
+| =bool=      | The type of boolean values.                                                                                                        |
+| =block=     | Creates a block of expressions that are evaluated in order; the last expression is the result of the block.                        |
+| =define=    | Defines a constant, variable, or function within a namespace or the top level of a file.                                           |
+| =f32=       | The type of 32-bit floating-point values.                                                                                          |
+| =f64=       | The type of 64-bit floating-point values.                                                                                          |
+| =i32=       | The type of 32-bit integral values.                                                                                                |
+| =i64=       | The type of 64-bit integral values.                                                                                                |
+| =if=        | Creates an if-expression from a boolean condition and two alternative expressions.                                                 |
+| =let=       | Defines a name as an expression within a block. Example in section [[Brief History of =ripl='s Syntax]]                                |
+| =match=     | Pattern matches an expression (especially applicable to unions). Discussed in section [[=+= Pattern Matching]].                        |
+| =namespace= | Creates a namespace composed of definitions and other namespaces.                                                                  |
+| =string=    | The type of string values.                                                                                                         |
+| =struct=    | Creates a record type composed of members variables, each consisting of a type and a name.                                         |
+| =template=  | Defines a type-level function introducing one or more type-level variables. Example in section [[=+= Type-Safe Discriminated Unions]]. |
+| =union=     | Creates a union type from a number of other types.                                                                                 |
+
+The language also provides arithmetic functions overloaded for built-in numeric types (=+=, =-=, =*=, =/=, and =%=), logical functions for booleans (=and=, =or=, and =not=), and comparison functions overloaded for built in types (=<=, =<==, ====, =/==, =>=, =>==). These are all regular functions and can be overloaded like other names as described in section [[=+= Name Overloading]].
+
+
 * Minimal Example
 
 This section provides a quick introduction to the language in the form of a small ~ripl~ program that computes the factorial of 5, followed by a brief discussion:
