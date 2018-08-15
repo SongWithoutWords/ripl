@@ -475,7 +475,7 @@ When combined with type inference, these advantages can be had with little incre
 
 *** =+= Type-Safe Discriminated Unions
 
-Type-safe discriminated unions, or sum types, (as seen in Haskell, ML, Rust and Scala, among others) provide a very powerful and intuitive way of modelling polymorphic data and computations that may take one of a number of forms. Some examples in ~ripl~ are shown below:
+Type-safe discriminated unions, or sum types, (as seen in Haskell, ML, Rust and Scala, among others) provide a powerful and intuitive way of modelling polymorphic data and computations that may take one of a number of forms. Some examples in ~ripl~ are shown below:
 
 #+LATEX: \begin{minipage}{\linewidth}
 #+NAME: Discriminated Unions in ~ripl~
