@@ -441,7 +441,7 @@ Although small, this example demonstrates many of the language's defining charac
    2. Names are separated by whitespace, parentheses, or one of a small number of reserved characters.
    3. Functions are applied by grouping as in Haskell, ML, and Lisp (i.e. ~(f x1 ... xn)~)[fn:1], as opposed to the traditional mathematical notation of languages with C-style syntax (i.e. ~f(x1, ... xn)~).
    4. The structure of the source code reflects the structure of the abstract syntax tree.
-   5. Consequently, the language has no infix notation, operator precedence or associativity, an aspect of Lisp that is counter-intuitive for many (myself included), possibly because people are not accustomed to reading mathematical expressions without these conventions. ~ripl~ will ultimately have infix notation, though I'm presently considering two ways of doing this ~TODO: Link to section about this~.
+   5. Consequently, ~ripl~ does not have infix notation, operator precedence, or associativity, the absence of which (as seen in Lisp) is counter-intuitive for many (myself included), due possibly to the fact that people are not accustomed to reading mathematical expressions without these syntactic conveniences. Whether ~ripl~ ultimately will have infix notation is still unclear, and section [[=?= Infix Notation and Word Order]] discusses two ways in which this might be done.
 3. ~ripl~'s syntax includes some extensions over traditional Lisp syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]:
    1. Two or more expressions on a line are grouped.
    2. Lines are extended to include all subsequent expressions at the next level of indentation.
