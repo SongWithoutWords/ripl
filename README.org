@@ -20,6 +20,7 @@
 # #+LATEX_HEADER: \usepackage{unicode-math}
 # #+LATEX_HEADER: \usepackage[utf8x]{inputenc}
 # #+LATEX_HEADER: \usepackage[mathletters]{ucs}
+#+EXPORT_FILE_NAME: Ian-McCall-CPEN499B-Robust-Intuitive-Programming-Language
 
 #+LATEX_HEADER: \setcounter{secnumdepth}{5}
 
