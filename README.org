@@ -390,8 +390,9 @@ Below is a list of programming languages ordered by the number of mentions in th
 
 * Keywords and Symbols
 
-Below is a table of ~ripl~'s keywords.
+Below is a table of ~ripl~'s keywords and symbols. The language also provides arithmetic functions overloaded for built-in numeric types (=+=, =-=, =*=, =/=, and =%=), logical functions for booleans (=and=, =or=, and =not=), comparison functions overloaded for built in types (=<=, =<==, ====, =/==, =>=, =>==), in addition to other low-level conversions and operations. These built-in functions can be overloaded like other names as described in section [[=+= Name Overloading]].
 
+#+ATTR_LATEX: :placement [H] :caption \caption{\texttt{ripl} Keywords and Symbols} \rowcolors{1}{}{TableRowColor}
 | Symbol      | Description                                                                                                                        |
 |-------------+------------------------------------------------------------------------------------------------------------------------------------|
 | =~=         | Prefix type modifier used to designate mutable types. Discussed in section [[=+= Type-Level Constraints on Mutability]].               |
@@ -414,8 +415,6 @@ Below is a table of ~ripl~'s keywords.
 | =struct=    | Creates a record type composed of members variables, each consisting of a type and a name.                                         |
 | =template=  | Defines a type-level function introducing one or more type-level variables. Example in section [[=+= Type-Safe Discriminated Unions]]. |
 | =union=     | Creates a union type from a number of other types.                                                                                 |
-
-The language also provides arithmetic functions overloaded for built-in numeric types (=+=, =-=, =*=, =/=, and =%=), logical functions for booleans (=and=, =or=, and =not=), and comparison functions overloaded for built in types (=<=, =<==, ====, =/==, =>=, =>==). These are regular functions and can be overloaded like other names as described in section [[=+= Name Overloading]].
 
 
 * Minimal Example
