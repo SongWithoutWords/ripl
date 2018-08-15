@@ -1792,7 +1792,7 @@ The attributes considered are as follows:
 - *Robust*: features that make programming less error prone, such as garbage collection and null safety.
 - *Simple*: features that reduce complexity and the absence of features that introduce complexity.
 
-The table on the following page expresses these attributes as linear combinations of the language features considered in section [[Language Feature Table]]. The values of the coefficients chosen are largely subjective, but do provide a uniform rubric that can be used to evaluate the languages considered across the five attributes mentioned above. The table is presented in a sparse format (without zeroes) to make it easier to read, and the missing values are replaced with zeroes before use.
+The table on the following page expresses these attributes as linear combinations of the language features considered in section [[Language Feature Table]].
 
 #+NAME: language-feature-attributes
 #+ATTR_LATEX: :align l|rrrrrr :placement [H] :caption \caption{Language Feature Attributes} \rowcolors{1}{}{TableRowColor}
@@ -1838,6 +1838,7 @@ The table on the following page expresses these attributes as linear combination
 | Names Must Be Declared Before Use |      -0.5 |            |            |          |        |        |
 | Deterministic Destructor Calls    |           |            |            |          |   0.25 |        |
 
+The values of the coefficients chosen are largely subjective, but do provide a uniform rubric that can be used to evaluate the languages considered across the attributes chose. The table is presented in a sparse format (without zeroes) to make it easier to read, and the missing values are replaced with zeroes before use.
 
 #+HEADER: :colnames no
 #+NAME: language-attributes
@@ -1906,7 +1907,7 @@ ascii(product, include.rownames = TRUE, include.colnames = TRUE)
 lar)
 #+END_SRC
 
-#+ATTR_LATEX: :align lrrrrrr :placement [H] :caption \caption{Language Attribute Scores}
+#+ATTR_LATEX: :align lrrrrrr :placement [H] :caption \caption{Normalized Language Attribute Scores}
 #+RESULTS: color-coded-language-attributes
 
 #+NAME: language-attribute-rankings
@@ -1956,7 +1957,7 @@ ascii(data.frame(rankings), include.rownames = TRUE, include.colnames = TRUE)
 | 18 | C, 0.00          | LLVM-IR, 0.11    | Scheme, 0.14     | C, 0.00          | C, 0.00          | C++, 0.00        |
 | 19 | LLVM-IR, 0.00    | C, 0.00          | Haskell, 0.00    | LLVM-IR, 0.00    | LLVM-IR, 0.00    | Rust, 0.00       |
 
-As mentioned in the introduction, the results suggest that ~ripl~ can be thought of as something like a more functional D, a more powerful Rust, or a more imperative Idris. Additionally, they suggest that ~ripl~ is not a master of any particular domain, and that it sacrifices conceptual simplicity in favour of being robust, powerful, and ergonomic.
+As mentioned in the introduction, the results suggest that ~ripl~ can be thought of as something like a more functional D, a more powerful Rust, or a more imperative Idris. Additionally, they suggest that ~ripl~ is not a master of any particular domain, that it sacrifices conceptual simplicity in favour of being robust, powerful, and ergonomic, and that it strikes a fairly even balance between imperative and functional programming.
 
 ** COMMENT TODO Hierarchical Clustering of Language Features
 
