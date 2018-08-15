@@ -644,7 +644,7 @@ The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was ch
 
 The purpose of the mutable type modifier in ~ripl~ is to restrict mutation to a set of variables that are explicitly mutable within the present scope. Assignment between mutable and immutable values and references are handled according to the following table:
 
-#+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Assignment Between Mutable and Immutable Values and References} \rowcolors{1}{}{TableRowColor}
+#+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Assignment Between Mutable and Immutable Values and References in \texttt{ripl}} \rowcolors{1}{}{TableRowColor}
 | Type  | Assign to =T= | Assign to =~T= | Assign to =^T=   | Assign to =^~T=  |
 |-------+---------------+----------------+------------------+------------------|
 | =T=   | value copied  | value copied   | value referenced | type error       |
