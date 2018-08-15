@@ -1458,7 +1458,7 @@ A more nuanced picture that accounts for the pairwise distance between all langu
 
 ** Heatmap of Distances Between Languages
 
-The figure below is a heatmap of the distances between the languages considered. The languages are ordered along the axes using the same hierarchical clustering as discussed in section [[Hierarchical Clustering of Languages]].
+Below is a heatmap of the distances between the languages considered. The languages are ordered along the axes using the hierarchical clustering seen in section [[Hierarchical Clustering of Languages]]. It is worth noting that languages can be close due both to having similar features (e.g. Haskell and Idris) and lacking similar features (e.g. LLVM-IR and Scheme).
 
 #+NAME: heatmap-of-distances-between-languages
 #+HEADER: :width 768 :height 768
@@ -1502,11 +1502,11 @@ heatmap.2(
 #+RESULTS: heatmap-of-distances-between-languages
 [[file:doc/figures/heatmap-of-distances-between-languages.png]]
 
-While the blocks of colour along the diagonal reflect the results of the hierarchical clustering, the full set of distances between all languages in the heatmap above reveals some relationships across clusters that are not visible from the hierarchical clustering, for example:
+While the blocks of colour along the diagonal reflect the same clusters as in the hierarchical clustering, the full set of distances between all languages in the heatmap reveal additional relationships across clusters, such as:
 1. There is a block of similarity between statically-typed, garbage-collected, imperative languages, and dynamically-typed, garbage-collected, imperative languages.
 2. Scheme is closer to the functional languages (especially ML) than its dynamically-typed neighbours.
 3. ML is closer to other languages that are not both statically typed and functional than its neighbours.
-4. ~ripl~ does not appear to be especially close to any particular language (discussed more in section [[Distances of Languages to Their Nearest Neighbours]]).
+4. ~ripl~ does not appear to be very close to any particular language (discussed more in section [[Distances of Languages to Their Nearest Neighbours]]).
 
 \pagebreak
 
