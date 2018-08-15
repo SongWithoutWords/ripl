@@ -1934,29 +1934,29 @@ ascii(data.frame(rankings), include.rownames = TRUE, include.colnames = TRUE)
 
 #+ATTR_LATEX: :align lrrrrrr :placement [H] :caption \caption{Language Characteristic Rankings} \rowcolors{1}{}{TableRowColor}
 #+RESULTS: language-characteristic-rankings
-|    | Ergonomic         | Functional        | Imperative        | Powerful          | Robust            | Simple            |
-|----+-------------------+-------------------+-------------------+-------------------+-------------------+-------------------|
-|  1 | Scala - 5.75      | Haskell - 4.00    | C - 2.50          | Idris - 3.00      | Idris - 5.50      | Scheme - 1.38     |
-|  2 | D - 4.75          | Idris - 4.00      | C++ - 2.50        | D - 2.75          | D - 5.00          | JavaScript - 0.88 |
-|  3 | Dart - 4.75       | ML - 4.00         | LLVM-IR - 2.50    | ripl - 2.75       | Haskell - 5.00    | Lua - 0.88        |
-|  4 | Kotlin - 4.75     | Rust - 3.00       | ripl - 2.50       | C++ - 2.25        | ML - 4.50         | Python - 0.75     |
-|  5 | Haskell - 4.50    | ripl - 2.50       | Rust - 2.50       | ML - 2.25         | ripl - 4.50       | ML - 0.38         |
-|  6 | Idris - 4.50      | Scala - 2.50      | D - 2.00          | Scala - 2.25      | Scala - 4.50      | Scala - 0.25      |
-|  7 | ripl - 4.50       | Scheme - 2.00     | Go - 2.00         | Haskell - 2.00    | Rust - 4.25       | Dart - 0.12       |
-|  8 | C# - 4.25         | D - 1.50          | C# - 1.50         | Rust - 1.75       | C++ - 3.25        | Go - 0.12         |
-|  9 | Python - 4.25     | Dart - 1.25       | Dart - 1.50       | C# - 1.25         | Kotlin - 3.00     | Kotlin - 0.12     |
-| 10 | ML - 4.00         | Kotlin - 1.25     | Java - 1.50       | Dart - 1.25       | C# - 2.50         | C# - 0.00         |
-| 11 | Rust - 3.50       | Go - 1.00         | Kotlin - 1.50     | Java - 1.25       | Dart - 2.50       | Java - 0.00       |
-| 12 | Java - 3.25       | JavaScript - 1.00 | ML - 1.50         | JavaScript - 1.25 | Java - 2.50       | Haskell - -0.25   |
-| 13 | JavaScript - 3.25 | Lua - 1.00        | Scala - 1.50      | Kotlin - 1.25     | Go - 2.00         | Idris - -0.50     |
-| 14 | Lua - 3.25        | C# - 0.75         | Idris - 0.50      | Lua - 1.25        | JavaScript - 1.50 | D - -0.88         |
-| 15 | Go - 3.00         | Python - 0.75     | JavaScript - 0.50 | Python - 1.25     | Scheme - 1.50     | LLVM-IR - -0.88   |
-| 16 | Scheme - 2.50     | C++ - 0.50        | Lua - 0.50        | Scheme - 0.75     | C - 1.00          | C - -1.12         |
-| 17 | C++ - 2.25        | Java - 0.25       | Python - 0.50     | Go - 0.25         | LLVM-IR - 1.00    | ripl - -1.75      |
-| 18 | C - -0.50         | LLVM-IR - 0.00    | Scheme - 0.50     | C - -0.25         | Lua - 1.00        | C++ - -1.88       |
-| 19 | LLVM-IR - -0.50   | C - -0.50         | Haskell - 0.00    | LLVM-IR - -0.25   | Python - 1.00     | Rust - -1.88      |
+|    | Ergonomic        | Functional       | Imperative       | Powerful         | Robust           | Simple           |
+|----+------------------+------------------+------------------+------------------+------------------+------------------|
+|  1 | Scala, 1.00      | Haskell, 1.00    | C, 1.00          | Idris, 1.00      | Idris, 1.00      | Scheme, 1.00     |
+|  2 | ripl, 0.84       | Idris, 1.00      | LLVM-IR, 1.00    | D, 0.86          | ripl, 0.97       | JavaScript, 0.80 |
+|  3 | D, 0.80          | ML, 1.00         | C++, 0.86        | ripl, 0.86       | D, 0.89          | Lua, 0.80        |
+|  4 | Dart, 0.80       | Rust, 0.78       | D, 0.71          | C++, 0.71        | Haskell, 0.89    | Python, 0.76     |
+|  5 | Haskell, 0.80    | ripl, 0.72       | Go, 0.71         | Haskell, 0.71    | ML, 0.78         | ML, 0.72         |
+|  6 | Idris, 0.80      | Scala, 0.67      | Rust, 0.71       | ML, 0.71         | Scala, 0.78      | Scala, 0.68      |
+|  7 | Kotlin, 0.80     | Scheme, 0.61     | ripl, 0.64       | Scala, 0.71      | Rust, 0.72       | Dart, 0.64       |
+|  8 | Python, 0.80     | D, 0.44          | C#, 0.57         | JavaScript, 0.57 | C++, 0.50        | Go, 0.64         |
+|  9 | C#, 0.76         | JavaScript, 0.42 | Dart, 0.57       | Python, 0.57     | Kotlin, 0.44     | Kotlin, 0.64     |
+| 10 | ML, 0.76         | Lua, 0.42        | Java, 0.57       | Rust, 0.57       | C#, 0.33         | C#, 0.60         |
+| 11 | JavaScript, 0.64 | Dart, 0.39       | Kotlin, 0.57     | Lua, 0.50        | Dart, 0.33       | Java, 0.60       |
+| 12 | Lua, 0.64        | Kotlin, 0.39     | ML, 0.43         | C#, 0.43         | Java, 0.33       | Haskell, 0.52    |
+| 13 | Java, 0.60       | Python, 0.36     | Scala, 0.43      | Dart, 0.43       | Go, 0.22         | Idris, 0.44      |
+| 14 | Rust, 0.60       | Go, 0.33         | JavaScript, 0.29 | Java, 0.43       | JavaScript, 0.17 | D, 0.32          |
+| 15 | Scheme, 0.56     | C#, 0.28         | Lua, 0.29        | Kotlin, 0.43     | Scheme, 0.17     | LLVM-IR, 0.32    |
+| 16 | Go, 0.52         | C++, 0.22        | Python, 0.29     | Scheme, 0.36     | Lua, 0.06        | C, 0.24          |
+| 17 | C++, 0.40        | Java, 0.17       | Idris, 0.14      | Go, 0.14         | Python, 0.06     | ripl, 0.12       |
+| 18 | C, 0.00          | LLVM-IR, 0.11    | Scheme, 0.14     | C, 0.00          | C, 0.00          | C++, 0.00        |
+| 19 | LLVM-IR, 0.00    | C, 0.00          | Haskell, 0.00    | LLVM-IR, 0.00    | LLVM-IR, 0.00    | Rust, 0.00       |
 
-The results suggest that ~ripl~ can be thought of as something like a more functional D, a more powerful Rust, or a more imperative Idris. If the language can realize these goals, then I think it really will be worth using.
+As mentioned in the introduction, the results suggest that ~ripl~ can be thought of as something like a more functional D, a more powerful Rust, or a more imperative Idris. Additionally, they suggest that ~ripl~ is not a master of any particular domain, and that it sacrifices conceptual simplicity in favour of being robust, powerful, and ergonomic.
 
 ** COMMENT TODO Hierarchical Clustering of Language Features
 
@@ -1984,6 +1984,7 @@ The statistical comparison of ~ripl~ with the other 18 languages considered reve
 2. ~ripl~ is most similar to Rust, Idris, D, and Haskell in that order.
 3. ~ripl~ is the language most distant from its nearest neighbour, suggesting that it is unique.
 4. ~ripl~ has the third highest median distance from other languages, suggesting that it is relatively unusual.
+5. ~ripl~ emphasizes being robust, powerful and ergonomic over conceptual simplicity.
 
 
 * Implementation
