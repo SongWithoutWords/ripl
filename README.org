@@ -201,9 +201,9 @@
 \end{adjustwidth}
 
 \tableofcontents
-\lstlistoflistings
 \listoftables
 \listoffigures
+\lstlistoflistings
 
 \newpage
 
