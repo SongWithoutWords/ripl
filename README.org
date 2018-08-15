@@ -1936,12 +1936,8 @@ language.names = rownames(clc)
 rankings = apply(clc, 2, function(column){
   indices = order(-column)
   sapply(indices, function(index){
-    ## score.rounded = 
-    ## paste(language.names[index], " (", format(round(column[index], 2), nsmall=2), ")", sep="")
     paste(language.names[index], " - ", format(round(column[index], 2), nsmall=2), sep="")
   })
-  ## rownames(clc)[order(-column)]
-  ## ranks
 })
 
 ascii(data.frame(rankings), include.rownames = TRUE, include.colnames = TRUE)
