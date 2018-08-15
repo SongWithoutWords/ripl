@@ -1251,7 +1251,7 @@ https://wiki.haskell.org/Existential_type#Dynamic_dispatch_mechanism_of_OOP
 
 *** =?= Lisp-style macros
 
-Because ~ripl~ has a number of things in common with Lisp, including evaluation of expressions before run time, and a uniform syntax, it should be possible to experiment with adding some Lisp-style macros in future. Lisp macro systems are actually somewhat diverse between Common Lisp and Scheme, so some research would need to be done if one of these were to be emulated in ~ripl~.
+Because ~ripl~ has a number of things in common with Lisp, including partial evaluation of expressions before they are executed, and a uniform syntax, it may be possible to add some Lisp-style macros in future. Lisp macro systems seem to be somewhat diverse between Common Lisp, Scheme, and Racket, so some research would need to be done if one of these were to be emulated in ~ripl~.
 
 
 ** TODO COMMENT Notably Absent Features
