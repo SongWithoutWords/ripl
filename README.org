@@ -289,7 +289,6 @@ The source of this document and the compiler can be found at \url{https://github
 #+END_EXPORT
 
 * Features at a Glance
-- Compiled
 - Strong, static typing
 - Type inference
 - Strict evaluation
@@ -302,7 +301,7 @@ The source of this document and the compiler can be found at \url{https://github
 - Subtyping via built-in and user-defined implicit conversions
 - Parametric polymorphism and type-level programming via templates
 - Compile time function evaluation
-- Expression oriented
+- Expression orientation
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]
 
 [fn:4] David A. Wheeler, Alan Manuel K. Gloria, Egil Möller, Readable Lisp S-expressions,
