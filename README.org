@@ -1985,7 +1985,9 @@ The statistical comparison of ~ripl~ with the other 18 languages considered reve
 2. ~ripl~ is most similar to Rust, Idris, D, and Haskell in that order.
 3. ~ripl~ is the language most distant from its nearest neighbour, suggesting that it is unique.
 4. ~ripl~ has the third highest median distance from other languages, suggesting that it is relatively unusual.
-5. ~ripl~ emphasizes being robust, powerful and ergonomic over conceptual simplicity.
+5. ~ripl~ is not a master of any particular domain.
+6. ~ripl~ emphasizes being robust, powerful and ergonomic over conceptual simplicity.
+7. ~ripl~ strikes a balance between imperative and functional programming.
 
 
 * Implementation
