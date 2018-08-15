@@ -419,7 +419,7 @@ Below is a table of ~ripl~'s keywords and symbols. The language also provides ar
 | =string=    | The type of string values.                                                                                                         |
 | =struct=    | Creates a record type composed of members variables, each consisting of a type and a name.                                         |
 | =template=  | Defines a type-level function introducing one or more type-level variables. Example in section [[=+= Type-Safe Discriminated Unions]]. |
-| =union=     | Creates a union type from a number of other types.                                                                                 |
+| =union=     | Creates a union type from a number of other types. Discussed in section [[=+= Type-Safe Discriminated Unions]].                        |
 
 
 * Minimal Example
