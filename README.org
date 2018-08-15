@@ -212,7 +212,7 @@
 
 * Introduction
 
-Although I've heard it said that programming languages are "just tools", that any language can be "learned in a week", that the choice of language "doesn't matter" and that the differences between programming languages are superficial or primarily syntactic[fn:2], I think that the differences between languages are substantial and important. To quote Edsger Dijkstra, "the tools we are trying to use and the language or notation we are using to express or record our thoughts, are the major factors determining what we can think or express at all"[fn:3].
+Although I have heard it said that programming languages are "just tools", that any language can be "learned in a week", that the choice of language "does not matter" and that the differences between programming languages are superficial or primarily syntactic[fn:2], I think that the differences between languages are substantial and important. To quote Edsger Dijkstra, "the tools we are trying to use and the language or notation we are using to express or record our thoughts, are the major factors determining what we can think or express at all"[fn:3].
 
 Certain kinds of bugs, problems, and anti-patterns (such as null pointer exceptions, memory leaks, hidden side-effects, and shared or global mutable state), issues that can slow development, block teams, produce unpredictable programs, negatively impact users, and cost thousands of dollars, effect only some languages. Just as importantly, and as mentioned by Dijkstra, the ability to express certain thoughts and ideas is contingent on the features of the language in use.
 
@@ -226,7 +226,7 @@ This is not to say that Haskell's performance is not suitable for many purposes,
 
 As such, ~ripl~ exists to combine the robust constraints of a language like Haskell, with the straightforward imperative capabilities of a language like C++ or Rust, and the type-level and compile-time programming capabilities of a language like Idris or D. If ~ripl~ can achieve these goals, it will be something like a more functional D, a more high-level Rust, or a more imperative Idris, and I believe a language along these lines would be well worth using.
 
-[fn:2] The people I've heard say these things are C++, Java, and Python programmers, so the languags they use may be fairly homogenous.
+[fn:2] The people I've heard say these things are C++, Java, and Python programmers, so the languages they use may be fairly homogeneous.
 
 [fn:3] Edsger Dijkstra, EWD 340: The Humble Programmer,
 \newline
@@ -299,7 +299,7 @@ The source of this document and the compiler can be found at \url{https://github
 - Expression oriented
 - Readable, uniform syntax that is suitable for metaprogramming, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4]
 
-[fn:4] David A. Wheeler, Alan Manuel K. Gloria, Egil Möller, Readale Lisp S-expressions,
+[fn:4] David A. Wheeler, Alan Manuel K. Gloria, Egil Möller, Readable Lisp S-expressions,
 \newline
 https://sourceforge.net/p/readable/wiki/Home/
 
@@ -314,7 +314,7 @@ Below is a list of programming languages ordered by the number of mentions in th
       (+ 1 (recursive-count regex string (match-end 0)))
       0))
 
-(defun count-occurences (regex string)
+(defun count-occurrences (regex string)
   (recursive-count regex string 0))
 
 ;; Search for words in the ASCII export so that we don't pick up on words in code blocks, comments, etc.
@@ -323,14 +323,14 @@ Below is a list of programming languages ordered by the number of mentions in th
     (insert-file-contents "README.txt")
     (buffer-string)))
 
-(defun occurences-in-buffer (language-and-regex)
+(defun occurrences-in-buffer (language-and-regex)
   (list
     (nth 0 language-and-regex) ; the name
     (-
-      (count-occurences
+      (count-occurrences
         (nth 1 language-and-regex) ; the pattern
         ascii-export-contents)
-      ; subtract the occurences of the name in this program and the resulting table
+      ; subtract the occurrences of the name in this program and the resulting table
       (nth 2 language-and-regex))))
 
 (setq case-fold-search nil)
@@ -361,7 +361,7 @@ Below is a list of programming languages ordered by the number of mentions in th
   ("Language" "Mentions in this Document")
   hline
   ,@(cl-sort
-    (mapcar 'occurences-in-buffer languages-to-search)
+    (mapcar 'occurrences-in-buffer languages-to-search)
     (lambda (a b) (> (nth 1 a) (nth 1 b)))))
 #+END_SRC
 #+ATTR_LATEX: :placement [H] :caption \caption{Language Mentions as a Proxy for Influence on \texttt{ripl}'s Design} \rowcolors{1}{}{TableRowColor}
@@ -390,7 +390,7 @@ Below is a list of programming languages ordered by the number of mentions in th
 
 * Keywords and Symbols
 
-Below is a table of ~ripl~'s keywords and symbols. The language also provides arithmetic functions overloaded for built-in numeric types (=+=, =-=, =*=, =/=, and =%=), logical functions for booleans (=and=, =or=, and =not=), comparison functions overloaded for built in types (=<=, =<==, ====, =/==, =>=, =>==), in addition to other low-level conversions and operations. These built-in functions can be overloaded like other names as described in section [[=+= Name Overloading]].
+Below is a table of ~ripl~'s keywords and symbols. The language also provides arithmetic functions overloaded for built-in numeric types (=+=, =-=, =*=, =/=, and =%=), logical functions for boolean values (=and=, =or=, and =not=), comparison functions overloaded for built in types (=<=, =<==, ====, =/==, =>=, =>==), in addition to other low-level conversions and operations. These built-in functions can be overloaded like other names as described in section [[=+= Name Overloading]].
 
 #+ATTR_LATEX: :placement [H] :caption \caption{\texttt{ripl} Keywords and Symbols} \rowcolors{1}{}{TableRowColor}
 | Symbol      | Description                                                                                                                        |
@@ -472,13 +472,11 @@ Hopefully this example has helped to provide you with an intuition for the langu
 # Haskell does an excellent job of preventing a wide range of bugs and sources of error. Unfortunately, it does so in some cases by sacrificing some capabilities, such as mutation,
 # Haskell creator jokes about
 
-# Although some developers I've spoken with are under the impression that programming languages are "just tools", that the choice of language "doesn't matter", and that the differences between programming languages are superficial or primarily syntactic, I think that the differences are substantial and important.
-
 # Because certain kinds of bugs, problems and anti-patterns are only possible in certain languages, and because these issues can impede or block teams, thereby slowing development and wasting potentially thousands of dollars the choice of language is important.
 
 # The following section provides an overview of ~ripl~'s design goals and the language features that are intended to achieve these goals.
 
-# Games are often at the forefront of what hardware can do, and although it would be a very expensive experiment (to attempt to implement a state of the art 3d game or game engine in Haskell), I do not have confidence that Haskell would be as fit for this purpose as a language like C++ or Rust, though for many or most other purposes I think Haskell would be superior.
+# Games are often at the forefront of what hardware can do, and although it would be a very expensive experiment (to attempt to implement a state of the art 3D game or game engine in Haskell), I do not have confidence that Haskell would be as fit for this purpose as a language like C++ or Rust, though for many or most other purposes I think Haskell would be superior.
 
 
 ** Robust
@@ -538,7 +536,7 @@ Hopefully this example has helped to provide you with an intuition for the langu
 
 *** =+= Static Typing
 
-Static typing has a wide range of applications and advantages. It can catch errors earlier in the development process and nearer to the source than the corresponding runtime errors, can improve performance by informing optimizations and reducing the number of runtime checks because data types are known in advance, can be used to disambiguate names via overload resolution (as in C++, C#, D, Java, and Scala), can ensure that only certain functions have side effects (as in D and Haskell), can ensure that only certain aspects of certain variables can be modified (as in C++, D and Rust), and can be used as a basis for metaprogramming (as in C++, D and Haskell).
+Static typing has a wide range of applications and advantages. It can catch errors earlier in the development process and nearer to the source than the corresponding run-time errors, can improve performance by informing optimizations and reducing the number of run-time checks because data types are known in advance, can be used to disambiguate names via overload resolution (as in C++, C#, D, Java, and Scala), can ensure that only certain functions have side effects (as in D and Haskell), can ensure that only certain aspects of certain variables can be modified (as in C++, D and Rust), and can be used as a basis for metaprogramming (as in C++, D and Haskell).
 
 When combined with type inference, these advantages can be leveraged with little-to-no increase in program length or programmer effort. As such the primary motivation for ~ripl~ is to embrace static typing and to extend the range of invariants that can be encoded within the type system at compile time, so that the language can be used to develop robust programs with predictable behaviour at any scale.
 
@@ -621,7 +619,7 @@ https://github.com/idris-lang/Idris-dev/blob/master/libs/prelude/Prelude/Maybe.i
 
 *** COMMENT Type-Level Constraints on Mutability ~(this text should be somewhere else)~
 
-Unconstrained or underconstrained mutability is problematic. The more state a program has, and the more widely this state can be modified, the harder it is to reason about. Fortunately, there are a number of ways in which programming languages can enable programmers to limit the amount and scope of a program's state:
+Unconstrained or under-constrained mutability is problematic. The more state a program has, and the more widely this state can be modified, the harder it is to reason about. Fortunately, there are a number of ways in which programming languages can enable programmers to limit the amount and scope of a program's state:
 
 # How much harder would math be if it was stateful and the meaning of operations was subject to change in real time? That is what imperative programming with shared mutable state is like.
 
@@ -728,7 +726,7 @@ These rules can be applied recursively to composite types like functions and tem
 #   set e.health (+ e.health 10) ; compile error: attempt to modify an immutable value
 
 # ;; This does not compile: it attempts to mutate its immutable parameter
-# define (is-woundend (^entity e))
+# define (is-wounded (^entity e))
 #   recover-stamina e            ; compile error: type conflict between attempt to modify an immutable value
 
 #   < e.stamina 50
@@ -847,7 +845,7 @@ A solution to this problem in an impure language can be found in D, and is descr
 
 Below is a table comparing pure and impure function signatures in various languages. Of the languages considered, D, Haskell and ~ripl~ are able to express the difference between pure and impure functions and C++ and Rust are not. The ability to express this difference is actually quite rare among languages, and the only others that I know of in which this is possible to express are purely functional languages like Idris, Clean and Frege. ~ripl~ is the only language I know of that uses a global state parameter, and can express the difference between read-only and read-write impurity.
 
-#+LATEX: \begin{table}[htbp]
+#+LATEX: \begin{table}[H]
 #+LATEX: \caption{Comparison of Pure and Impure Function Signatures in Various Languages}
 #+LATEX: \adjustbox{max width=\linewidth}{
 #+LATEX: \rowcolors{1}{}{TableRowColor}
@@ -920,7 +918,7 @@ Although some syntax elements may be a matter of preference, there is one very l
 Languages are clearly divided into two groups: functional and scripting languages tend to provide the most concise code, whereas procedural and object-oriented languages are significantly more verbose. The absolute difference between the two groups is major; for instance, Java programs are on average 2.2–2.9 times longer than programs in functional and scripting languages.
 #+END_QUOTE
 
-While these findings are consistent with my own experiences, their magnitude exceeds my expectations (and validates my frustraion with certain verbose languages). Among the largest effects in their study, they found that, of the programs in their data set, programs in C# were on average 2.7 times as long as programs in Haskell and 3.6 times as long as programs in Python.
+While these findings are consistent with my own experiences, their magnitude exceeds my expectations (and validates my frustration with certain verbose languages). Among the largest effects in their study, they found that, of the programs in their data set, programs in C# were on average 2.7 times as long as programs in Haskell and 3.6 times as long as programs in Python.
 
 Although I've heard apologists of verbose languages defend their verbosity by insisting that code is read more often than it is written, code that is 2-3 times longer is longer both to read and write. This is not to say that more concise is always better (adequately descriptive names are good), but I do not think that C++, C#, D, Java, etc. have gained any clarity in their verbosity: instead I think bugs lurk in their boilerplate.
 
@@ -1008,7 +1006,7 @@ Type inference makes it possible to omit some or all type annotations while main
 
 However, the syntactical unification algorithm often used for Hindley-Milner type inference[fn:29] is complicated by the presence of overloading. Furthermore, it breaks down in the presence of subtyping[fn:26] because the type constraints generated from the program no longer constitute a system of type equations that can be solved via substitution, but rather a system of subtyping relationships that are non-strict type inequalities (=T1 <: T2= being analogous to ~a <= b~).
 
-Although alternative algorithms have been developed to support Hindley-Milner style type inference with subtyping[fn:27]\textsuperscript{,} [fn:30], ~ripl~ is proceding with bidirectional type inference for the following reasons:
+Although alternative algorithms have been developed to support Hindley-Milner style type inference with subtyping[fn:27]\textsuperscript{,} [fn:30], ~ripl~ is proceeding with bidirectional type inference for the following reasons:
 1. Because supplying type annotations for function parameters is not so burdensome, and is even considered good practice in languages like Haskell in which these types can be inferred.
 2. Because bidirectional subtyping operates on the level of expressions rather than type constraints, it's relatively easy to combine with compile time evaluation, another desired feature of ~ripl~ (see section [[=+= Compile-Time Evaluation]])
 
@@ -1083,7 +1081,7 @@ define (evaluate (^expression e))
 
 *** =?= Infix Notation and Word Order
 
-Word order (including subject-object-verb or SOV, subject-verb-object or SVO, and verb-subject-object or VSO) is a characteristic of the grammar of both human and programming languages, some aspects of which are summarised in the table below.
+Word order (including subject-object-verb or SOV, subject-verb-object or SVO, and verb-subject-object or VSO) is a characteristic of the grammar of both human and programming languages, some aspects of which are summarized in the table below.
 
 #+ATTR_LATEX: :placement [H] :align l|rlll :caption \caption{Word Order in Human and Programming Languages} \rowcolors{1}{}{TableRowColor}
 |     | Percent of Human Population[fn:34] | Example Languages[fn:38] | Programming Constructs  | Example Code        |
@@ -1095,7 +1093,7 @@ Word order (including subject-object-verb or SOV, subject-verb-object or SVO, an
 
 Some studies have found that people tend naturally to use subject-verb-object order when communicating with an established lexicon (even when they are accustomed to another order)[fn:39], and that people tend naturally to use subject-object-verb order when communicating with an improvised lexicon (even when they are accustomed to another order)[fn:40]. Combined with the relative unpopularity of verb-first word orders in human languages, the findings of these studies may suggest that verb-first word orders are less suited to human comprehension, and may even explain some of the popularity of object oriented languages (which allow subject-object-verb order by means of method syntax) and unpopularity of Lisps (which typically do not even allow infix notation).
 
-In addition to word order, many programming languages include infix notation with precedence and associativity (as used in conventional mathematical notation), which, like the method syntax of object-oriented languages, allows some or all verbs to appear in infix position, as in SVO ordering. Although I find it quite convenient to add terms by writing =(+ a b c d)= (as opposed to =(a + b + c + d)=), or to determine if terms are ordered a certain way by writing =(< a b c d)= (as opposed to =(a < b && b < c && c < d)=), programming languages with only function application and without infix notation or method syntax (notably Lisps) are often said to be unintuitive or hard to read (although I've been unnable to find any rigorous investigation of this).
+In addition to word order, many programming languages include infix notation with precedence and associativity (as used in conventional mathematical notation), which, like the method syntax of object-oriented languages, allows some or all verbs to appear in infix position, as in SVO ordering. Although I find it quite convenient to add terms by writing =(+ a b c d)= (as opposed to =(a + b + c + d)=), or to determine if terms are ordered a certain way by writing =(< a b c d)= (as opposed to =(a < b && b < c && c < d)=), programming languages with only function application and without infix notation or method syntax (notably Lisps) are often said to be unintuitive or hard to read (although I've been unable to find any rigorous investigation of this).
 
 Together these observations pose a number of questions:
 1. How much influence does word order have on people's comprehension of programming languages?
@@ -1190,7 +1188,7 @@ Somewhat related to word-order (as discussed in section [[=?= Infix Notation and
 
 Overloading is a feature that is more noticeable when absent than present. In Haskell, for example, (which lacks traditional overloading) you cannot have two functions with the same name (including simple accessors like =name= or =size=) without creating a type class that declares the function, and then implementing the type class for all required types. As such, name collisions in Haskell can be avoided either by using type classes (which introduces a fair amount of boilerplate), or by modifying the function's name to reflect the type of its parameters. This absence of traditional overloading is clumsy, and has made Haskell's standard prelude inconvenient to use in a number of ways:
 1. The standard prelude defines =id= as the identity function, so the name =id= cannot be used for variables that represent numeric identifiers (a common convention).
-2. The standard prelude defines =map= on lists, so the more general operation of mapping over functors (including lists) needed to be called something else, and was caled =fmap=.
+2. The standard prelude defines =map= on lists, so the more general operation of mapping over functors (including lists) needed to be called something else, and was called =fmap=.
 3. Because many collections, such as =Map= and =Set=, have operations with the same name, such as =size=, =null=, and =empty=, it's often necessary to import these modules qualified to avoid name collisions, in which case their contents must be referred to by a qualified name, such as =Set.size mySet= or =Map.size myMap=.
 4. Because the =Num= type classes in Haskell's standard prelude declares =+=, =-=, =*=, and the =Fractional= type class extends the =Num= type class with =/= (among other operations)[fn:37], any type for which these operations are defined must implement all of the operations declared by these type classes. The way that these operations are defined, in addition to some of the other operations declared by these type classes, do not make sense for vector math, and so use of these symbols for vector math is incompatible with Haskell's standard prelude.
 
@@ -1268,7 +1266,7 @@ Although templates in ~ripl~ have not yet been implemented (and as such have not
 
 Compile-time evaluation (called compile-time function evaluation in D and constexpr in C++), is the ability to evaluate expressions without side-effects at compile time. This is not only useful for performing computations that would otherwise need to be performed at run time: when combined with templates, this is useful for type level programming.
 
-The intent for ~ripl~ is that the compiler will be able to evaluate all pure expressions and functions, as long as their parameters parameters can be computed at compile time, and that these functions can operate on types in addition to values.
+The intent for ~ripl~ is that the compiler will be able to evaluate all pure expressions and functions, as long as their parameters can be computed at compile time, and that these functions can operate on types in addition to values.
 
 
 *** =+= Type Classes
@@ -1277,7 +1275,7 @@ Whereas template parameters in C++ and D are essentially duck-typed at compile t
 
 When combined with existential types, as in Haskell, type classes can be used to emulate OOP-style dynamic dispatch[fn:42]. OOP-style dynamic dispatch is possibly the only feature of object-oriented programming that I thought ~ripl~ might ultimately lack, so it's good to see that there is an established alternative method that does not require inheritance.
 
-[fn:41] A similiar construct called constraints and concepts is planned for C++20:
+[fn:41] A similar construct called constraints and concepts is planned for C++20:
 \newline
 https://en.cppreference.com/w/cpp/language/constraints
 
@@ -1646,7 +1644,7 @@ ascii(min.distances, include.rownames=FALSE)
 | Haskell    |            8.43 |
 | Idris      |            8.43 |
 
-The results indicate that Dart and Go (both developed by Google) are the two most normal languages (i.e. most similar to the other languages considered), and that Haskell and Idris are the two most unusual languages (i.e. most disimilar to the other languages considered). Although these result are somewhat biased by the fact that this sample includes more imperative languages than functional languages, this biased sample is in keeping with the fact that imperative languages are /vastly/ more popular than functional languages[fn:43].
+The results indicate that Dart and Go (both developed by Google) are the two most normal languages (i.e. most similar to the other languages considered), and that Haskell and Idris are the two most unusual languages (i.e. most dissimilar to the other languages considered). Although these result are somewhat biased by the fact that this sample includes more imperative languages than functional languages, this biased sample is in keeping with the fact that imperative languages are /vastly/ more popular than functional languages[fn:43].
 
 As in section [[Distances of Languages to Their Nearest Neighbours]] the results suggest that ~ripl~ is somewhat of an outlier (more normal only than Haskell and Idris), which again I think is a positive sign, because if it was highly similar to existing languages I might doubt it was bringing something new to the table.
 
@@ -1706,7 +1704,7 @@ ascii(min.distances, include.rownames=FALSE)
 
 ** Distance of ~ripl~ from Other Languages
 
-In order to determine what languages ~ripl~ is most similar to, I ordered the other languages by their distance from ~ripl~. The results suggest that ~ripl~ is most similar to Rust, Idris, and D (in that order), and most disimilar to JavaScript, C, and Java.
+In order to determine what languages ~ripl~ is most similar to, I ordered the other languages by their distance from ~ripl~. The results suggest that ~ripl~ is most similar to Rust, Idris, and D (in that order), and most dissimilar to JavaScript, C, and Java.
 
 #+NAME: distance-of-ripl-from-other-languages
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
@@ -2025,7 +2023,7 @@ Although earlier versions of ~ripl~ with a more complicated grammar used a parse
 Post parsing is a step that converts free-form s-expressions into ~ripl~'s untyped abstract syntax tree, and so performs conversions like =SExp(Name("if"), Name("a"), Name("b"), Name("c"))= to =If(Name("a"), Name("b"), Name("c"))=. It does such little work, that it might be wise in a future to fold it into the parsing step to cut down on unnecessary traversals. The only advantage of performing this as a separate step is that it is more modular and can be tested separately.
 
 ** Reduction
-Reduction is by far the most complicated and important aspect of the ~ripl~ compiler. It is the semantic stage that is responsible for overload resolution, namespacing, compile time evaluation, type inference, and type checking. Presently it works by reducing all definitions in the AST lazily, so that evaluation of their results can be deferred until required by another definition.
+Reduction is by far the most complicated and important aspect of the ~ripl~ compiler. It is the semantic stage that is responsible for overload resolution, namespace resolution, compile-time evaluation, type inference, and type checking. Presently it works by reducing all definitions in the AST lazily, so that evaluation of their results can be deferred until required by another definition.
 
 The only problem with this lazy approach occurs with recursive definitions, which would loop endlessly as each attempt to compute their result would trigger another computation of their result. This is resolved by maintaining a history of visited definitions to detect cycles, and requiring recursive functions to have an explicit return type.
 
@@ -2120,7 +2118,7 @@ The LLVM-bindings are a port of the llvm-hs bindings and llvm-hs-pretty printer 
 *** TODO Specify somewhere that ^ means reference in ~ripl~
 *** TODO Spell-check before you submit
 ** TODO Graphs
-*** DONE Move R code into its own file (it sortof sucks writing it in org mode)
+*** DONE Move R code into its own file (it sort of sucks writing it in org mode)
 
 *** DONE Get rid of PCA, MDS is better
 
