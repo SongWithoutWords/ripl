@@ -472,18 +472,6 @@ Static typing has a wide range of applications and advantages. It can catch erro
 
 When combined with type inference, these advantages can be leveraged with little-to-no increase in program length or programmer effort. As such the primary motivation for ~ripl~ is to embrace static typing and to extend the range of invariants that can be encoded within the type system at compile time, so that the language can be used to develop robust programs with predictable behaviour at any scale.
 
-# Although some statically-typed languages like C++ and Java are notoriously verbose and awkward, with concise and elegant, statically-typed languages like Haskell and Scala on offer, it's hard to understand the appeal of dynamic typing. The only case I can think of in which the flexibility of dynamic typing might be necessary is in enabling Lisp-style macros: a feature that is present only in a small minority of relatively unpopular dynamically typed languages, namely Lisp, Scheme and Racket.
-
-# Why then, the popularity of dynamically typed languages like Python, JavaScript and PHP? I don't know, any more than I can explain the popularity of Java, C and C++.
-
-# The only advantage I can think of that dynamic typing might provide, are the advantages that dynamic typing  confer to
-
-# If the only statically typed languages on offer were verbose and unwieldy imperative languages like C++ and Java,
-# Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,
-
-# Having used dynamically typed languages like Emacs Lisp, JavaScript, Python, R and Racket, I've never really understood the appeal of dynamic typing. If the only statically typed alternatives were verbose and unwieldy imperative languages like C++ and Java, then I might understand, but with concise and elegant functional languages like Haskell and Scala on offer,
-# Personally I am a strong proponent of static typing and don't really understand the appeal of dynamic typing.
-
 
 *** =+= Type-Safe Discriminated Unions
 
