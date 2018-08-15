@@ -234,7 +234,7 @@ What's more, although Haskell's performance is often promoted as one of its stre
 
 This is not to say that Haskell's performance is not suitable for many purposes, because it is, or that monads are not useful, because they are, but rather that there are other ways to impose constraints on the mutability of data (as seen in C++, D, and Rust) and purity of functions (as seen in D), that do not require the additional levels of complexity and abstraction of monads, lazy evaluation, and implicit indirection.
 
-As such, ~ripl~ exists to combine the robust constraints of a language like Haskell, with the straightforward imperative capabilities of a language like C++ or Rust, and the type-level and compile-time programming capabilities of a language like Idris or D. If ~ripl~ can achieve these goals, it will be something like a more functional D, a more high-level Rust, or a more imperative Idris, and I believe a language of this kind would be well worth using.
+Consequently, ~ripl~ exists to combine the robust constraints of a language like Haskell, with the straightforward imperative capabilities of a language like C++ or Rust, and the type-level and compile-time programming capabilities of a language like Idris or D. If ~ripl~ can achieve these goals, it will be something like a more functional D, a more high-level Rust, or a more imperative Idris, and I believe a language of this kind would be well worth using.
 
 [fn:2] The people I've heard say these things are C++, Java, and Python programmers, so the languages they use may be fairly homogeneous.
 
@@ -279,7 +279,7 @@ Although this document describes many of ~ripl~'s features, it is not a language
 2. A compiler may be tested to validate it, whereas an English language specification may not.
 3. An English language specification would add significant documentation overhead, and this time is better spent implementing the language.
 
-A number of the features described in this document and that appear in code listings have not yet been implemented, and as such have not yet been specified.
+A number of the features described in this document and that appear in code listings have not yet been implemented, and thus have not yet been specified.
 
 
 * Project Status
@@ -450,7 +450,7 @@ Although small, this example demonstrates many of the language's defining charac
 3. ~ripl~'s syntax includes some extensions over traditional Lisp syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]:
    1. Two or more expressions on a line are grouped.
    2. Lines are extended to include all subsequent expressions at the next level of indentation.
-4. ~ripl~ does not distinguish between functions and operators, and as such names can be composed of unicode characters, with the exception of unicode control characters and a small set of reserved characters.
+4. ~ripl~ does not distinguish between functions and operators, and thus names can be composed of unicode characters, with the exception of unicode control characters and a small set of reserved characters.
 5. ~ripl~ provides a number of built in forms (e.g. ~define~, ~if~), functions (e.g. ~*~, ~-~, ~<=~) and types (e.g. ~i32~)
 6. The entry point of a program is a function called ~main~.
 7. Type annotations are required for function parameters; most other types can be inferred.
@@ -470,7 +470,7 @@ Hopefully the discussion of this example has helped to provide you with an intui
 
 Static typing has a wide range of applications and advantages. It can catch errors earlier in the development process and nearer to the source than the corresponding run-time errors, can improve performance by informing optimizations and reducing the number of run-time checks required, can be used to disambiguate names via overload resolution (as in C++, C#, D, Idris, Java, and Scala), can ensure that only certain functions have side effects (as in D, Idris, and Haskell), can ensure that only certain aspects of certain variables can be modified (as in C++, D, and Rust), and can be used as a basis for compile-time programming and metaprogramming (as in C++, D, Idris, and Haskell).
 
-When combined with type inference, these advantages can be had with little increase in program length or programmer effort. As such one of ~ripl~'s primary goals is to embrace static typing and to extend the range of invariants that can be encoded within the type system, so that the language can be used to develop robust programs with predictable behaviour at scale.
+When combined with type inference, these advantages can be had with little increase in program length or programmer effort. Consequently, one of ~ripl~'s primary goals is to embrace static typing and to extend the range of invariants that can be encoded within the type system, so that the language can be used to develop robust programs with predictable behaviour at scale.
 
 
 *** =+= Type-Safe Discriminated Unions
@@ -501,7 +501,7 @@ template (list a)
 
 Unlike untagged unions that do not record the type of the union's value, and non-type-safe discriminated unions in which a type tag is manually set and branched on by the programmer, type-safe discriminated unions include a type tag that is automatically set during construction and automatically branched on during pattern matching. An example of pattern matching in ~ripl~ can be seen in section [[=+= Pattern Matching]].
 
-Although discriminated unions are analogous in some respects to OOP style inheritance subtyping (which can even be used as a basis for discriminated unions, as in Scala), I would argue that type-safe discriminated unions when used in conjunction with pattern matching, result in code that is more robust, precise, straightforward and less tightly coupled than OOP style inheritance. As such, discriminated unions are an important feature of ~ripl~'s design, the advantages of which are highlighted in the following section on null-safety, for which they provide an excellent solution.
+Although discriminated unions are analogous in some respects to OOP style inheritance subtyping (which can even be used as a basis for discriminated unions, as in Scala), I would argue that type-safe discriminated unions when used in conjunction with pattern matching, result in code that is more robust, precise, straightforward and less tightly coupled than OOP style inheritance. Consequently, discriminated unions are an important feature of ~ripl~'s design, the advantages of which are highlighted in the following section on null-safety, for which they provide an excellent solution.
 
 
 *** =+= Type-Level Constraints on Existence (null safety)
@@ -1104,7 +1104,7 @@ Somewhat related to word-order (as discussed in section [[=?= Infix Notation and
 
 *** =+= Name Overloading
 
-Overloading is a feature that is more noticeable when absent than present. In Haskell, for example, (which lacks traditional overloading) you cannot have two functions with the same name (including simple accessors like =name= or =size=) without creating a type class that declares the function, and then implementing the type class for all required types. As such, name collisions in Haskell can be avoided either by using type classes (which introduces a fair amount of boilerplate), or by modifying the function's name to reflect the type of its parameters. This absence of traditional overloading is clumsy, and has made Haskell's standard prelude inconvenient to use in a number of ways:
+Overloading is a feature that is more noticeable when absent than present. In Haskell, for example, (which lacks traditional overloading) you cannot have two functions with the same name (including simple accessors like =name= or =size=) without creating a type class that declares the function, and then implementing the type class for all required types. Thus, name collisions in Haskell can be avoided either by using type classes (which introduces a fair amount of boilerplate), or by modifying the function's name to reflect the type of its parameters. This absence of traditional overloading is clumsy, and has made Haskell's standard prelude inconvenient to use in a number of ways:
 1. The standard prelude defines =id= as the identity function, so the name =id= cannot be used for variables that represent numeric identifiers (a common convention).
 2. The standard prelude defines =map= on lists, so the more general operation of mapping over functors (including lists) needed to be called something else, and was called =fmap=.
 3. Because many collections, such as =Map= and =Set=, have operations with the same name, such as =size=, =null=, and =empty=, it's often necessary to import these modules qualified to avoid name collisions, in which case their contents must be referred to by a qualified name, such as =Set.size mySet= or =Map.size myMap=.
@@ -1177,7 +1177,7 @@ In statically typed languages, especially those without a top type (e.g. =Object
 1. Generic definitions of operations over static vectors and arrays of arbitrary length
 2. Compile time dimensional analysis
 
-Although templates in ~ripl~ have not yet been implemented (and as such have not yet been specified), example syntax can be seen in section [[=+= Type-Safe Discriminated Unions]].
+Although templates in ~ripl~ have not yet been implemented (and thus have not yet been specified), example syntax can be seen in section [[=+= Type-Safe Discriminated Unions]].
 
 
 *** =+= Compile-Time Evaluation
