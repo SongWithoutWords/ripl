@@ -1789,62 +1789,69 @@ These results are more nuanced than the hierarchical clustering in section [[Hie
 
 ** Complex Language Characteristics as Linear Combinations of Specific Features
 
-Powerful: how abstract are the things that can be expressed
-Ergonomic: how easily can things be expressed
-Robust: how hard is it to make a mistake
-Performant: how performant can the resulting program be
+In the previous sections we looked at visualizations and analyses of the distances between languages. Although it is possible to infer some complex characteristics from these distance based methods (such as by identifying and describing clusters of related languages), these methods in general do not provide much insight into the more complex characteristics of the languages considered.
 
-=[Languages x Features] [Features x Characteristics] -> [Languages x Characteristics]=
+In an effort to measure these more complex characteristics, I expressed them as linear combinations of specific language features, by which they can be computed using matrix multiplication according to the following equation:
 
-This table is presented in a sparse format (without zeroes) to make it easier to read; missing values are replaced with zeroes before it is used for computations.
+=[Languages x Features] [Features x Characteristics] = [Languages x Characteristics]=
+
+The complex characteristics considered are as follows:
+- *Ergonomic*: features that make programming easier and more productive.
+- *Functional*: features commonly associated with functional programming.
+- *Imperative*: features commonly associated with imperative programming.
+- *Powerful*: features that enable the expression of abstract ideas, such as meta and type-level programming.
+- *Robust*: features that make programming less error prone, such as garbage collection and null safety.
+- *Simple*: features that reduce complexity, and the absence of features that increase complexity.
+
+The table on the following page expresses these characteristics as linear combinations of the language features considered in section [[Language Feature Table]]. The values chosen are largely subjective, but do provide a uniform rubric that can be used to evaluate the languages considered across the five characteristics mentioned above. The table is presented in a sparse format (without zeroes) to make it easier to read, and the missing values are replaced with zeroes before use.
 
 #+NAME: language-feature-characteristics
-#+ATTR_LATEX: :align l|rrrrr :placement [H] :caption \caption{Complex Language Characteristics as Linear Combinations of Specific Features} \rowcolors{1}{}{TableRowColor}
-|                                   | Ergonomic | Performant | Powerful | Robust | Simple |
-|-----------------------------------+-----------+------------+----------+--------+--------|
-| Garbage Collection                |       1.0 |       -0.5 |          |    1.0 |    1.0 |
-| Explicit Indirection              |      -0.5 |        0.5 |          |        |   -0.5 |
-| Ownership System                  |           |            |          |    0.5 |   -0.5 |
-| Static Typing                     |      -0.5 |        1.0 |     -0.5 |    1.0 |   -0.5 |
-| Dynamic Typing                    |           |            |          |        |        |
-| Type Inference                    |       0.5 |            |          |        |        |
-| Sub-typing                        |       0.5 |            |          |        |        |
-| Parametric Polymorphism           |           |            |      0.5 |        |  -0.25 |
-| Type Classes                      |           |            |      0.5 |        |  -0.25 |
-| Type Level Programming            |           |            |      0.5 |    0.5 |        |
-| Ad-hoc Polymorphism               |       0.5 |            |          |        |        |
-| Classical Inheritance             |      0.25 |            |      0.5 |        |  -0.25 |
-| Prototypal Inheritance            |      0.25 |            |      0.5 |        |  -0.25 |
-| Strict Evaluation                 |           |        0.5 |          |        |        |
-| Type-safe Discriminated Unions    |           |            |      0.5 |    0.5 |        |
-| Null Safety                       |           |            |          |    0.5 |        |
-| Pattern Matching                  |       0.5 |            |          |    0.5 |        |
-| Mutable Data                      |           |        0.5 |     0.25 |        |        |
-| Immutable Data                    |           |            |          |    0.5 |        |
-| Constraints on Mutability         |           |            |          |    0.5 |  -0.25 |
-| Constraints on Function Purity    |           |            |          |    0.5 |  -0.25 |
-| C-style Syntax                    |           |            |          |        |        |
-| Lisp-style Syntax                 |           |            |          |        |        |
-| ML-style Syntax                   |           |            |          |        |        |
-| Header Files                      |      -0.5 |            |          |        |  -0.25 |
-| Whitespace Sensitive              |       0.5 |            |          |        | -0.125 |
-| Expression Oriented               |       1.0 |            |          |        |   0.25 |
-| Top Level Functions               |       0.5 |            |          |        |  0.125 |
-| Methods                           |       0.5 |            |          |        |        |
-| Uniform Function Call Syntax      |       0.5 |            |          |        |        |
-| Compile Time Function Evaluation  |           |            |      0.5 |        |        |
-| Closures                          |       0.5 |            |      0.5 |        |        |
-| Member Access Modifiers           |           |            |          |    0.5 |        |
-| Monadic IO                        |      -0.5 |       -0.5 |          |    0.0 |  -0.25 |
-| Dependent Typing                  |           |            |      0.5 |    0.5 |  -0.25 |
-| Operator Precedence               |       0.5 |            |          |        |        |
-| Operator Overloading by User      |       0.5 |            |          |        |        |
-| Names Must Be Declared Before Use |      -0.5 |            |          |        |        |
-| Deterministic Destructor Calls    |           |            |          |   0.25 |        |
+#+ATTR_LATEX: :align l|rrrrrr :placement [H] :caption \caption{Language Feature Characteristic} \rowcolors{1}{}{TableRowColor}
+|                                   | Ergonomic | Functional | Imperative | Powerful | Robust | Simple |
+|-----------------------------------+-----------+------------+------------+----------+--------+--------|
+| Garbage Collection                |       1.0 |        0.5 |       -0.5 |          |    1.0 |    1.0 |
+| Explicit Indirection              |      -0.5 |       -0.5 |        0.5 |          |        |   -0.5 |
+| Ownership System                  |           |            |            |          |    0.5 |   -0.5 |
+| Static Typing                     |      -0.5 |            |        1.0 |          |    1.0 |        |
+| Dynamic Typing                    |           |            |            |          |        |        |
+| Type Inference                    |       0.5 |        0.5 |            |          |        |        |
+| Sub-typing                        |       0.5 |       -0.5 |            |          |        |        |
+| Parametric Polymorphism           |           |            |            |      0.5 |        |  -0.25 |
+| Type Classes                      |           |       0.25 |            |      0.5 |        |  -0.25 |
+| Type Level Programming            |           |            |            |      0.5 |    0.5 |        |
+| Ad-hoc Polymorphism               |       0.5 |            |            |          |        |        |
+| Classical Inheritance             |      0.25 |      -0.25 |            |      0.5 |        |  -0.25 |
+| Prototypal Inheritance            |      0.25 |            |            |      0.5 |        |  -0.25 |
+| Strict Evaluation                 |           |            |        0.5 |          |        |        |
+| Type-safe Discriminated Unions    |           |        0.5 |            |      0.5 |    0.5 |        |
+| Null Safety                       |           |            |            |          |    0.5 |        |
+| Pattern Matching                  |       0.5 |        0.5 |            |          |    0.5 |        |
+| Mutable Data                      |           |            |        0.5 |          |        |        |
+| Immutable Data                    |           |       0.25 |            |          |    0.5 |        |
+| Constraints on Mutability         |           |            |            |          |    0.5 |  -0.25 |
+| Constraints on Function Purity    |           |            |            |          |    0.5 |  -0.25 |
+| C-style Syntax                    |           |            |            |          |        |        |
+| Lisp-style Syntax                 |           |            |            |          |        |        |
+| ML-style Syntax                   |           |            |            |          |        |        |
+| Header Files                      |      -0.5 |            |            |          |        |  -0.25 |
+| Whitespace Sensitive              |       0.5 |            |            |          |        | -0.125 |
+| Expression Oriented               |       1.0 |        0.5 |       -0.5 |          |        |   0.25 |
+| Top Level Functions               |       0.5 |        0.5 |            |          |        |  0.125 |
+| Methods                           |       0.5 |            |            |          |        |        |
+| Uniform Function Call Syntax      |       0.5 |            |            |          |        |        |
+| Compile Time Function Evaluation  |           |            |            |      0.5 |        |        |
+| Closures                          |       0.5 |        0.5 |       -0.5 |      0.5 |        |        |
+| Member Access Modifiers           |           |            |            |          |    0.5 |        |
+| Monadic IO                        |      -0.5 |            |       -0.5 |          |    0.0 |  -0.25 |
+| Dependent Typing                  |           |            |            |      0.5 |    0.5 |  -0.25 |
+| Operator Precedence               |       0.5 |            |            |          |        |        |
+| Operator Overloading by User      |       0.5 |            |            |          |        |        |
+| Names Must Be Declared Before Use |      -0.5 |            |            |          |        |        |
+| Deterministic Destructor Calls    |           |            |            |          |   0.25 |        |
 
 
 #+HEADER: :colnames no
-#+NAME: complex-language-characteristics
+#+NAME: language-characteristics
 #+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary lfc=language-feature-characteristics :exports none :results output raw
 library(ascii)
 options(asciiType="org")
@@ -1867,32 +1874,33 @@ product = apply(product, 2, function(col) { (col - min(col)) / (max(col) - min(c
 
 product = data.frame(product)
 
+## product
 ascii(product, include.rownames = TRUE, include.colnames = TRUE)
 #+END_SRC
 
 #+NAME: complex-language-characteristics-result
-#+RESULTS: complex-language-characteristics
-|            | Ergonomic | Performant | Powerful | Robust | Simple |
-|------------+-----------+------------+----------+--------+--------|
-| C          |      0.00 |       1.00 |     0.00 |   0.00 |   0.24 |
-| C++        |      0.40 |       1.00 |     0.77 |   0.50 |   0.00 |
-| C#         |      0.76 |       0.60 |     0.46 |   0.33 |   0.60 |
-| D          |      0.80 |       0.80 |     0.92 |   0.89 |   0.32 |
-| Dart       |      0.80 |       0.60 |     0.46 |   0.33 |   0.64 |
-| Go         |      0.52 |       0.80 |     0.15 |   0.22 |   0.64 |
-| Haskell    |      0.80 |       0.00 |     0.69 |   0.89 |   0.52 |
-| Idris      |      0.80 |       0.20 |     1.00 |   1.00 |   0.44 |
-| Java       |      0.60 |       0.60 |     0.46 |   0.33 |   0.60 |
-| JavaScript |      0.64 |       0.20 |     0.77 |   0.17 |   0.80 |
-| Kotlin     |      0.80 |       0.60 |     0.46 |   0.44 |   0.64 |
-| LLVM-IR    |      0.00 |       1.00 |     0.00 |   0.00 |   0.32 |
-| Lua        |      0.64 |       0.20 |     0.69 |   0.06 |   0.80 |
-| ML         |      0.76 |       0.60 |     0.77 |   0.78 |   0.72 |
-| Python     |      0.80 |       0.20 |     0.77 |   0.06 |   0.76 |
-| ripl       |      0.84 |       0.90 |     0.92 |   0.97 |   0.12 |
-| Rust       |      0.60 |       1.00 |     0.62 |   0.72 |   0.00 |
-| Scala      |      1.00 |       0.60 |     0.77 |   0.78 |   0.68 |
-| Scheme     |      0.56 |       0.20 |     0.54 |   0.17 |   1.00 |
+#+RESULTS: language-characteristics
+|            | Ergonomic | Functional | Imperative | Powerful | Robust | Simple |
+|------------+-----------+------------+------------+----------+--------+--------|
+| C          |      0.00 |       0.00 |       1.00 |     0.00 |   0.00 |   0.24 |
+| C++        |      0.40 |       0.22 |       0.86 |     0.71 |   0.50 |   0.00 |
+| C#         |      0.76 |       0.28 |       0.57 |     0.43 |   0.33 |   0.60 |
+| D          |      0.80 |       0.44 |       0.71 |     0.86 |   0.89 |   0.32 |
+| Dart       |      0.80 |       0.39 |       0.57 |     0.43 |   0.33 |   0.64 |
+| Go         |      0.52 |       0.33 |       0.71 |     0.14 |   0.22 |   0.64 |
+| Haskell    |      0.80 |       1.00 |       0.00 |     0.71 |   0.89 |   0.52 |
+| Idris      |      0.80 |       1.00 |       0.14 |     1.00 |   1.00 |   0.44 |
+| Java       |      0.60 |       0.17 |       0.57 |     0.43 |   0.33 |   0.60 |
+| JavaScript |      0.64 |       0.42 |       0.29 |     0.57 |   0.17 |   0.80 |
+| Kotlin     |      0.80 |       0.39 |       0.57 |     0.43 |   0.44 |   0.64 |
+| LLVM-IR    |      0.00 |       0.11 |       1.00 |     0.00 |   0.00 |   0.32 |
+| Lua        |      0.64 |       0.42 |       0.29 |     0.50 |   0.06 |   0.80 |
+| ML         |      0.76 |       1.00 |       0.43 |     0.71 |   0.78 |   0.72 |
+| Python     |      0.80 |       0.36 |       0.29 |     0.57 |   0.06 |   0.76 |
+| ripl       |      0.84 |       0.72 |       0.64 |     0.86 |   0.97 |   0.12 |
+| Rust       |      0.60 |       0.78 |       0.71 |     0.57 |   0.72 |   0.00 |
+| Scala      |      1.00 |       0.67 |       0.43 |     0.71 |   0.78 |   0.68 |
+| Scheme     |      0.56 |       0.61 |       0.14 |     0.36 |   0.17 |   1.00 |
 
 
 #+NAME: color-coded-language-characteristic-table
@@ -1909,8 +1917,61 @@ ascii(product, include.rownames = TRUE, include.colnames = TRUE)
 clc)
 #+END_SRC
 
+#+ATTR_LATEX: :align lrrrrrr :placement [H] :caption \caption{Language Characteristic Scores}
 #+RESULTS: color-coded-language-characteristic-table
 
+#+NAME: language-characteristic-rankings
+#+HEADER: :colnames no
+#+BEGIN_SRC R :var clc=complex-language-characteristics-result :exports results :results output raw
+library(ascii)
+options(asciiType="org")
+
+colnames(clc) = clc[1,]
+rownames(clc) = clc[,1]
+clc = clc[-1,-1]
+clc = data.matrix(clc)
+
+language.names = rownames(clc)
+
+rankings = apply(clc, 2, function(column){
+  indices = order(-column)
+  sapply(indices, function(index){
+    ## score.rounded = 
+    ## paste(language.names[index], " (", format(round(column[index], 2), nsmall=2), ")", sep="")
+    paste(language.names[index], " - ", format(round(column[index], 2), nsmall=2), sep="")
+  })
+  ## rownames(clc)[order(-column)]
+  ## ranks
+})
+
+ascii(data.frame(rankings), include.rownames = TRUE, include.colnames = TRUE)
+#+END_SRC
+
+#+ATTR_LATEX: :align lrrrrrr :placement [H] :caption \caption{Language Characteristic Rankings} \rowcolors{1}{}{TableRowColor}
+#+RESULTS: language-characteristic-rankings
+|    | Ergonomic         | Functional        | Imperative        | Powerful          | Robust            | Simple            |
+|----+-------------------+-------------------+-------------------+-------------------+-------------------+-------------------|
+|  1 | Scala - 5.75      | Haskell - 4.00    | C - 2.50          | Idris - 3.00      | Idris - 5.50      | Scheme - 1.38     |
+|  2 | D - 4.75          | Idris - 4.00      | C++ - 2.50        | D - 2.75          | D - 5.00          | JavaScript - 0.88 |
+|  3 | Dart - 4.75       | ML - 4.00         | LLVM-IR - 2.50    | ripl - 2.75       | Haskell - 5.00    | Lua - 0.88        |
+|  4 | Kotlin - 4.75     | Rust - 3.00       | ripl - 2.50       | C++ - 2.25        | ML - 4.50         | Python - 0.75     |
+|  5 | Haskell - 4.50    | ripl - 2.50       | Rust - 2.50       | ML - 2.25         | ripl - 4.50       | ML - 0.38         |
+|  6 | Idris - 4.50      | Scala - 2.50      | D - 2.00          | Scala - 2.25      | Scala - 4.50      | Scala - 0.25      |
+|  7 | ripl - 4.50       | Scheme - 2.00     | Go - 2.00         | Haskell - 2.00    | Rust - 4.25       | Dart - 0.12       |
+|  8 | C# - 4.25         | D - 1.50          | C# - 1.50         | Rust - 1.75       | C++ - 3.25        | Go - 0.12         |
+|  9 | Python - 4.25     | Dart - 1.25       | Dart - 1.50       | C# - 1.25         | Kotlin - 3.00     | Kotlin - 0.12     |
+| 10 | ML - 4.00         | Kotlin - 1.25     | Java - 1.50       | Dart - 1.25       | C# - 2.50         | C# - 0.00         |
+| 11 | Rust - 3.50       | Go - 1.00         | Kotlin - 1.50     | Java - 1.25       | Dart - 2.50       | Java - 0.00       |
+| 12 | Java - 3.25       | JavaScript - 1.00 | ML - 1.50         | JavaScript - 1.25 | Java - 2.50       | Haskell - -0.25   |
+| 13 | JavaScript - 3.25 | Lua - 1.00        | Scala - 1.50      | Kotlin - 1.25     | Go - 2.00         | Idris - -0.50     |
+| 14 | Lua - 3.25        | C# - 0.75         | Idris - 0.50      | Lua - 1.25        | JavaScript - 1.50 | D - -0.88         |
+| 15 | Go - 3.00         | Python - 0.75     | JavaScript - 0.50 | Python - 1.25     | Scheme - 1.50     | LLVM-IR - -0.88   |
+| 16 | Scheme - 2.50     | C++ - 0.50        | Lua - 0.50        | Scheme - 0.75     | C - 1.00          | C - -1.12         |
+| 17 | C++ - 2.25        | Java - 0.25       | Python - 0.50     | Go - 0.25         | LLVM-IR - 1.00    | ripl - -1.75      |
+| 18 | C - -0.50         | LLVM-IR - 0.00    | Scheme - 0.50     | C - -0.25         | Lua - 1.00        | C++ - -1.88       |
+| 19 | LLVM-IR - -0.50   | C - -0.50         | Haskell - 0.00    | LLVM-IR - -0.25   | Python - 1.00     | Rust - -1.88      |
+
+The results suggest that ~ripl~ can be thought of as something like a more functional D, a more powerful Rust, or a more imperative Idris. If the language can realize these goals, then I think it really will be worth using.
 
 ** COMMENT TODO Hierarchical Clustering of Language Features
 
