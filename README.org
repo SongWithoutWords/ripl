@@ -790,12 +790,22 @@ Although they are referred to by many names (packages, modules, namespaces, and 
 
 *** =?= Garbage Collection
 
-Although garbage collection is the norm among most high-level programming languages, and memory safety is a major advantage, there are some disadvantages to garbage collection:
+The choice of memory management technique is a nuanced decision, as evidenced by the fact that new languages are emerging both with garbage collection (e.g. Dart and Go), without (e.g. Rust and Swift), and with optional garbage collection (e.g. D). A comparison of these approaches is shown below:
 
-1. Garbage collection may result in unexpected pauses which may not be suitable for real time and soft real time applications.
-2. Non-deterministic garbage collection prevents the use of destructors for deterministic resource disposal (a pattern called RAII), which is a useful pattern for managing both memory and other resources.
+#+ATTR_LATEX: :placement [H] :align ll :caption \caption{Comparison of Memory Management Techniques} \rowcolors{1}{}{TableRowColor}
+| Garbage Collection                             | Deterministic Destructor Calls                                   |
+|------------------------------------------------+------------------------------------------------------------------|
+| ~+~ Robust                                     | ~-~ Potentially error prone                                      |
+| ~+~ Handles cycles well                        | ~-~ Does not handle cycles well                                  |
+| ~+~ Performed automatically                    | ~-~ May require use of smart pointers and writing of destructors |
+| ~+~ Better amortized efficiency                | ~-~ Worse amortized efficiency                                   |
+| ~+~ Better memory locality via heap compaction | ~-~ Allocations likely fragmented without manual slab allocation |
+| ~-~ Unpredictable latency                      | ~+~ Predictable latency                                          |
+| ~-~ Limited to memory management               | ~+~ Can be used to manage other resources via RAII               |
 
-Because ~ripl~ already has a number of things in common with Rust, like mutability modifiers and explicit indirection, I am inclined to try a Rust style ownership system, and will fall back on garbage collection if an ownership system does not work out well.
+With the exception of real-time and soft real-time applications, I think that garbage collection is undoubtedly better, because it frees the programmer from needing to manage memory using destructors and smart pointers (or god forbid by using malloc and free). Furthermore, the inability of reference counting to adequately manage potentially cyclic data structures is a major disadvantage because recursive and mutually-recursive data types provide such a powerful and natural way of describing common data structures like lists, trees, and graphs, and manifestations thereof, such as abstract syntax trees, file systems, JSON, S-expressions, and XML.
+
+Because ~ripl~ is intended to be suitable for game development, and because I do not know whether the improved memory locality and amortized efficiency of garbage collection can compensate for its potentially unpredictable latency in soft real time applications like games, I have not yet decided whether ~ripl~ should be garbage collected or not.
 
 
 ** Performant
