@@ -1512,29 +1512,29 @@ ascii(min.distances, include.rownames=FALSE)
 #+RESULTS: median-distances-of-languages-to-others
 | Language   | Median Distance |
 |------------+-----------------|
-| Dart       |            5.39 |
-| Go         |            5.48 |
-| C#         |            5.74 |
-| JavaScript |            5.83 |
-| Kotlin     |            5.83 |
-| Lua        |            6.00 |
-| Python     |            6.16 |
-| Java       |            6.24 |
-| Scala      |            6.56 |
-| D          |            6.78 |
-| Scheme     |            6.78 |
-| C++        |            6.93 |
-| LLVM-IR    |            7.07 |
-| ML         |            7.21 |
-| C          |            7.28 |
-| Rust       |            7.62 |
-| ripl       |            7.87 |
-| Haskell    |            8.43 |
+| Dart       |            5.48 |
+| Go         |            5.83 |
+| C#         |            5.92 |
+| Kotlin     |            6.00 |
+| Java       |            6.40 |
+| JavaScript |            6.48 |
+| Lua        |            6.56 |
+| Python     |            6.78 |
+| D          |            6.93 |
+| Scala      |            7.00 |
+| C++        |            7.28 |
+| ML         |            7.35 |
+| LLVM-IR    |            7.42 |
+| C          |            7.55 |
+| Scheme     |            7.62 |
+| Rust       |            8.00 |
 | Idris      |            8.43 |
+| ripl       |            8.43 |
+| Haskell    |            8.54 |
 
-The results indicate that Dart and Go (both developed by Google) are the two most normal languages (i.e. most similar to the other languages considered), and that Haskell and Idris are the two most unusual languages (i.e. most dissimilar to the other languages considered). Although these result are somewhat biased by the fact that this sample includes more imperative languages than functional languages, this biased sample is in keeping with the fact that imperative languages are /vastly/ more popular than functional languages[fn:43].
+The results indicate that Dart and Go (both developed by Google) are the two most normal languages (i.e. most similar to the other languages considered), and that Haskell, Idris, and ~ripl~ are the three most unusual languages (i.e. most dissimilar to the other languages considered). Although these result are somewhat biased by the fact that this sample includes more imperative languages than functional languages, this biased sample is in keeping with the fact that imperative languages are /vastly/ more popular than functional languages[fn:43].
 
-As in section [[Distances of Languages to Their Nearest Neighbours]] the results suggest that ~ripl~ is somewhat of an outlier (more normal only than Haskell and Idris), which again I think is a positive sign, because if it was highly similar to existing languages I might doubt it was bringing something new to the table.
+Like the results in the section [[Distances of Languages to Their Nearest Neighbours]] which suggest that ~ripl~ is unique, I think these results suggesting that ~ripl~ is unusual are also positive, because if ~ripl~ was highly similar to existing languages I might doubt it could provide something new.
 
 \pagebreak
 
