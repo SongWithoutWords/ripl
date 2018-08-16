@@ -901,12 +901,13 @@ https://arxiv.org/pdf/1409.0252.pdf
 *** =+= Whitespace Delimitation
 
 Although indentation delimited languages are somewhat uncommon, people speak highly of them (e.g. Haskell and Python). I am a proponent of this style for a number of reasons:
-1. Even without whitespace delimitation, people rely on indentation to read code, because it's very hard to read without[fn:25]. Why not leverage this visual structure?
-2. It reduces the number of tokens and visual clutter.
-3. It ends any discussion or inconsistency over whether opening braces should occur on a new line.
-4. It reduces the potential for inconsistency between the visual and the semantic structure of the code, thereby reducing the potential for error and confusion.
+# 1. Even with delimiting tokens, people rely on indentation to read code. Why not use this visual structure?
+2. It leverages the visual structure that people /rely on/[fn:25] to read code effectively.
+3. It reduces the number of tokens and visual clutter.
+4. It ends any discussion or inconsistency over whether opening braces should occur on a new line.
+5. It prevents inconsistency between the visual and the semantic structure of the code, thereby reducing the potential for error.
 
-For these reasons, expressions in ~ripl~ /may/ be grouped by indentation. It is, however, possible to write ~ripl~ code that is explicitly delimited[fn:28], because indent and dedent expressions are not emitted within S-expressions.
+For these reasons, expressions in ~ripl~ /may/ be grouped by indentation. It is, however, possible to write ~ripl~ code that is explicitly delimited[fn:28], because indent and dedent tokens are not emitted within S-expressions.
 
 [fn:25] Richard J. Miara et al, Program Indentation and Comprehensibility,
 \newline
