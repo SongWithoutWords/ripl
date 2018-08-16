@@ -1100,17 +1100,17 @@ https://ghc.haskell.org/trac/ghc/wiki/SyntaxFreeTypeDirectedNameResolution
 
 *** =+= Simple and General Design
 
-It's not uncommon in my experience that people (myself included) conceive of and solve problems at a lower level of generality and abstraction than possible. When this occurs in programming language design, it may introduce unnecessary complexity or limitation to the language. Some examples of this include:
+It's not uncommon in my experience that people (myself included) conceive of and solve problems at a lower level of generality and abstraction than possible. When this occurs in programming language design, it may introduce unnecessary complexity and limitations. Some examples of this include:
 
 1. Needless grammatical distinction between statements and expressions.
 2. Needless grammatical distinction between types and expressions.
-3. Needless distinction between invocations of non-virtual member methods and regular functions (solved either by universal function call syntax, as in D, or by not having methods, as in Haskell, ML, ~ripl~, Rust).
-4. Needless distinction between array access notation and function application.
+3. Needless distinction between invocations of non-virtual member methods and regular functions (solved either by universal function call syntax, as in D, or by not having methods, as in C, Haskell, ML, ~ripl~, Rust, and Scheme).
+4. Needless distinction between array access and function application.
 5. Needless distinction between functions and operators (solved either by allowing all functions to be invoked normally or in infix, as in Haskell and Scala, or by not having infix notation as in Lisp).
 
 Below is a table that compares various classes of features that can be used to accomplish the same goal in C++ and ~ripl~, which demonstrates that languages can vary pretty widely in terms of complexity:
 
-#+ATTR_LATEX: :caption \caption{Comparison of Various Constructs in \texttt{ripl} and C++} \rowcolors{1}{}{TableRowColor}
+#+ATTR_LATEX: :placement [H] :caption \caption{Comparison of Various Constructs in \texttt{ripl} and C++} \rowcolors{1}{}{TableRowColor}
 | Feature           | ~ripl~           | C++                                                                |
 |-------------------+------------------+--------------------------------------------------------------------|
 | Code organization | Namespaces       | Headers, namespaces, and modules (expected in C++20[fn:31])        |
@@ -1128,7 +1128,7 @@ Below is a table that compares various classes of features that can be used to a
 | Type-aliases      | ~define~         | ~typedef~ and ~using~                                              |
 | Unions            | ~union~          | ~union~ and ~std::variant~                                         |
 
-By adopting more general solutions I think it's possible to reduce the complexity of a language. This is one of ~ripl~'s goals, and its design should be continually revised as new opportunities for generalization are discovered. If the language gets a user base in future this could be done with non-backwards compatible major versions whenever a suitable number of potential improvements have been identified.
+By adopting more general solutions I think it's possible to reduce the complexity of a language. This is one of ~ripl~'s goals, and its design should be continually revised as new way to generalize it are discovered. If the language gets a user base in future this could be done with non-backwards compatible major versions whenever a suitable number of potential improvements have been identified.
 
 [fn:31] Dmitry Guzeev, A Few Words on C++ Modules,
 \newline
