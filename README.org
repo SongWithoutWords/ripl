@@ -1453,12 +1453,12 @@ plot(
 The results suggest that the languages considered fall into one of four clusters, or categories:
 
 #+ATTR_LATEX: :placement [H] :caption \caption{Language Categories Observed in Hierarchical Clustering} \rowcolors{1}{}{TableRowColor}
-| Language Cluster                     | Languages                             |
-|--------------------------------------+---------------------------------------|
-| Dynamically-typed                    | JavaScript, Lua, Python, Scheme       |
-| Statically-typed and imperative      | Go, C, LLVM-IR                        |
-| Statically-typed and object-oriented | C++, C#, D, Dart, Java, Kotlin, Scala |
-| Statically-typed and functional      | Haskell, Idris, ML, ~ripl~, Rust      |
+| Language Cluster                     | Languages                                    |
+|--------------------------------------+----------------------------------------------|
+| Dynamically-typed                    | JavaScript, Lua, Python, Scheme              |
+| Statically-typed and imperative      | C, Go, LLVM-IR                               |
+| Statically-typed and object-oriented | C++, C#, D, Dart, Java, Kotlin, Scala, Swift |
+| Statically-typed and functional      | Haskell, Idris, ML, ~ripl~, Rust             |
 
 A more nuanced picture that accounts for the pairwise distance between all languages considered can be seen in the heatmap in [[Heatmap of Distances Between Languages]].
 
