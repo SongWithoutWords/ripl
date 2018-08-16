@@ -1973,7 +1973,7 @@ ascii(data.frame(rankings), include.rownames = TRUE, include.colnames = TRUE)
 | 18 | C, 0.00          | LLVM-IR, 0.11    | Scheme, 0.14     | C, 0.00          | C, 0.00          | C++, 0.00        |
 | 19 | LLVM-IR, 0.00    | C, 0.00          | Haskell, 0.00    | LLVM-IR, 0.00    | LLVM-IR, 0.00    | Rust, 0.00       |
 
-The results suggest that ~ripl~ can be thought of as something like a more functional D, a more powerful Rust, or a more imperative Idris. Additionally, they suggest that ~ripl~ is not a master of any particular domain, that it sacrifices conceptual simplicity in favour of being robust, powerful, and ergonomic (in that order), and that it strikes a fairly even balance between functional and imperative programming.
+The results suggest that ~ripl~ can be thought of as something like a more functional D, a more powerful Rust, or a more imperative Idris. Additionally, they suggest that ~ripl~ is not a master of any one domain, that it sacrifices conceptual simplicity in favour of being robust, powerful, and ergonomic (in that order), and that it strikes a fairly even balance between functional and imperative programming.
 
 
 ** COMMENT TODO Hierarchical Clustering of Language Features
@@ -2002,7 +2002,7 @@ The statistical comparison of ~ripl~ with the other 18 languages considered reve
 2. ~ripl~ is most similar to Rust, Idris, D, and Haskell in that order.
 3. ~ripl~ is the language most distant from its nearest neighbour, suggesting that it is unique.
 4. ~ripl~ is tied for second highest median distance from other languages, suggesting that it is unusual.
-5. ~ripl~ is not a master of any particular domain.
+5. ~ripl~ is not a master of any one domain.
 6. ~ripl~ sacrifices conceptual simplicity in favour of being robust, powerful and ergonomic (in that order).
 7. ~ripl~ strikes a balance between functional and imperative programming.
 
