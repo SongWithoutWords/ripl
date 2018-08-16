@@ -346,6 +346,7 @@ Below is a list of programming languages ordered by the number of mentions in th
     ("Python" "Python" 1)
     ("Rust" "Rust" 1)
     ("Scala" "Scala" 1)
+    ("Swift" "Swift" 1)
 ))
 
 `(
