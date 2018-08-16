@@ -1643,7 +1643,6 @@ ascii(dist.from.ripl, include.rownames=FALSE)
 
 Another data visualization method (that is similar to principal component analysis, but produces better results with this data set) is multidimensional scaling. The purpose of multidimensional scaling is to reduce a higher dimensional data set to a lower dimensionality while aiming to preserve the distances between the points. The results of this procedure on the data from the language feature table can be seen below:
 
-# #+HEADER: :width 768 :height 768
 #+NAME: multidimensional-scaling-of-languages
 #+HEADER: :width 768 :height 768
 #+BEGIN_SRC R :var lft=language-feature-table-balanced-ternary :exports results :file doc/figures/multidimensional-scaling-of-languages.png  :results output graphics
