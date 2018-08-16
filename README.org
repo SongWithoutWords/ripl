@@ -1866,6 +1866,7 @@ ascii(data.frame(rankings), include.rownames = TRUE, include.colnames = TRUE)
 
 The results suggest that ~ripl~ can be thought of as something like a more functional D, a more powerful Rust, or a more imperative Idris. Additionally, they suggest that ~ripl~ is not a master of any particular domain, that it sacrifices conceptual simplicity in favour of being robust, powerful, and ergonomic (in that order), and that it strikes a fairly even balance between functional and imperative programming.
 
+
 ** COMMENT TODO Hierarchical Clustering of Language Features
 
 Incidentally, by running hierarchical clustering on the transpose of our table, it's possible classify the language features it contains by the programming languages in which they occur:
