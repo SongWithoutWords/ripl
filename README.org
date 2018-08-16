@@ -1786,7 +1786,7 @@ These results are more nuanced than the hierarchical clustering in section [[Hie
 \pagebreak
 
 
-** Qualitative Language Attributes as Linear Combinations of Specific Features
+** Qualitative Language Attributes as Linear Combinations of Features
 
 In the previous sections we looked at visualizations and analyses of the distances between languages. Although it is possible to infer some more qualitative information from these distance based methods (such as the language clusters identified in [[Hierarchical Clustering of Languages]]), these methods in general do not provide much insight into the more qualitative attributes of the languages considered.
 
