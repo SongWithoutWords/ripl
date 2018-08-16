@@ -30,8 +30,8 @@
 #+LATEX_HEADER: \usepackage[margin=0.6in]{geometry}
 
 #+LATEX_HEADER: \usepackage[T1]{fontenc}
-#+LATEX_HEADER: \usepackage{cmbright}
-# #+LATEX_HEADER: \usepackage[scale=0.9]{sourcecodepro}
+# #+LATEX_HEADER: \usepackage{cmbright} # Uncomment for sans-serif font
+
 #+LATEX_HEADER: \usepackage{sourcecodepro}
 
 #+LATEX_HEADER: \setcounter{tocdepth}{4}
