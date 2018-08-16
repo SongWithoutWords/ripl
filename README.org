@@ -1193,7 +1193,7 @@ Although the language feature table is useful in detailing the features of each 
 
 ** Notes on Statistical Methods
 
-The language feature table symbols =+=, =?=, and =-= are converted to balanced ternary values of +1, 0, and -1 for statistical use. All distances calculated are Euclidean distances, all correlations are Pearson correlations, and all hierarchical clustering is done with the Ward-2 linkage method. The R code used to produce the figures in this document can be found embedded in the source of this document at https://github.com/SongWithoutWords/ripl/blob/master/README.org.
+The language feature table symbols =+=, =?=, and =-= are converted to balanced ternary values of +1, 0, and -1 for statistical use. All distances calculated are Euclidean distances, and hierarchical clustering is done with the Ward-2 linkage method. The R code used to produce the figures in this document can be found embedded in this document's source at https://github.com/SongWithoutWords/ripl/blob/master/README.org.
 
 
 ** Language Feature Table
