@@ -1176,8 +1176,104 @@ https://wiki.haskell.org/Existential_type#Dynamic_dispatch_mechanism_of_OOP
 
 Because ~ripl~ has a number of things in common with Lisp, including partial evaluation of expressions before they are executed, and a uniform syntax, it may be possible to add some Lisp-style macros in future. There seems to be a fair bit of diversity between the macro systems of Common Lisp, Scheme, and Racket, so some research would need to be done if one of these were to be emulated in ~ripl~.
 
+\pagebreak
 
 
+* Implementation
+
+** Lexing
+The lexer of the ~ripl~ compiler is quite straightforward. It takes the string input of the source code to be compiled and breaks it down into tokens, such as symbols, strings, and numbers, in addition to tracking changes in indentation and emitting indent and dedent tokens. These tokens are then handed off to the parser.
+
+
+** Parsing
+Although earlier versions of ~ripl~ with a more complicated grammar used a parser generator (Happy when the compiler was written in Haskell, and ANTLR after it was ported to Scala), since the adoption of a Lisp-like syntax inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4] (as described in [[Brief History of =ripl='s Syntax]]), the parser is now written directly in Scala, and the implementation is about half the length it was with ANTLR.
+
+
+** Post-Parsing
+Post parsing is a step that converts free-form s-expressions into ~ripl~'s untyped abstract syntax tree, and so performs conversions like =SExp(Name("if"), Name("a"), Name("b"), Name("c"))= to =If(Name("a"), Name("b"), Name("c"))=. It does such little work, that it might be wise in a future to fold it into the parsing step to cut down on unnecessary traversals. The only advantage of performing this as a separate step is that it is more modular and can be tested separately.
+
+** Reduction
+Reduction is by far the most complicated and important aspect of the ~ripl~ compiler. It is the semantic stage that is responsible for overload resolution, namespace resolution, compile-time evaluation, type inference, and type checking. Presently it works by reducing all definitions in the AST lazily, so that evaluation of their results can be deferred until required by another definition.
+
+The only problem with this lazy approach occurs with recursive definitions, which would loop endlessly as each attempt to compute their result would trigger another computation of their result. This is resolved by maintaining a history of visited definitions to detect cycles, and requiring recursive functions to have an explicit return type.
+
+
+** Code Generation
+Code generation is the process of translating the post-reduction ~ripl~ AST into the LLVM-IR AST. It is pretty straightforward and relies on a monad ported from llvm-hs called ~IRBuilder~ to keep track of a name supply, local bindings, and blocks.
+
+
+** LLVM-Bindings
+The LLVM-bindings are a port of the llvm-hs bindings and llvm-hs-pretty printer from Haskell to Scala, that enable the LLVM-IR AST to be represented and serialized as text.
+
+\pagebreak
+** Detailed Implementation Status
+
+#+LATEX: \begin{multicols}{2}
+- [X] Lexing
+  - [X] Comments
+  - [X] Indentation
+  - [X] Numbers
+  - [X] Names
+  - [X] Special symbols (e.g. =~=, =@=, =^=)
+  - [X] Strings
+- [-] Parsing
+  - [X] S-expressions
+  - [X] S-expressions delimited by whitespace
+  - [ ] Infix notation (e.g. ={x + y}=)
+  - [ ] Prefix modifiers (e.g. =~=, =^=)
+  - [ ] Selection syntax (e.g. =math.pi=)
+- [-] Post-Parsing
+  - [X] Application
+  - [X] Function definition
+  - [X] Global variables/constants
+  - [X] If-expressions
+  - [X] Structs
+  - [ ] Implicit conversions
+  - [ ] Local Variables
+  - [ ] Pattern matching
+  - [ ] Prefix modifiers (e.g. =~=, =^=)
+  - [ ] Templates
+  - [ ] Type Classes
+  - [ ] Unions
+- [-] Reduction
+  - [X] Built-in arithmetic and logic
+  - [X] Compile-time expression evaluation
+  - [X] If-expressions
+  - [X] Implicit conversions
+  - [X] Lambdas
+  - [X] Overloading
+  - [X] Namespaces
+  - [X] Recursive functions
+  - [X] Selection
+  - [X] Structs
+  - [X] Type-checking
+  - [X] Type-inference
+  - [ ] Arrays
+  - [ ] Compile-time function evaluation
+  - [ ] Constraints on purity
+  - [ ] Constraints on mutability
+  - [ ] Local variables
+  - [ ] Pattern Matching
+  - [ ] Templates
+  - [ ] Type Classes
+  - [ ] Unions
+- [-] Code Generation
+  - [X] Application
+  - [X] Built-in arithmetic and logic
+  - [X] Functions
+  - [X] If-expressions
+  - [X] Structs
+  - [ ] Arrays
+  - [ ] Closure and lambdas
+  - [ ] Local Variables
+  - [ ] Pattern matching
+  - [ ] Strings
+  - [ ] Templates
+  - [ ] Unions
+- [X] LLVM-Bindings
+  - [X] Representation of LLVM AST
+  - [X] Serialization of LLVM AST
+#+Latex: \end{multicols}
 
 
 * Quantitative Comparison with Other Languages
@@ -1895,103 +1991,6 @@ The statistical comparison of ~ripl~ with the other 18 languages considered reve
 5. ~ripl~ is not a master of any particular domain.
 6. ~ripl~ sacrifices conceptual simplicity in favour of being robust, powerful and ergonomic (in that order).
 7. ~ripl~ strikes a balance between functional and imperative programming.
-
-
-* Implementation
-
-** Lexing
-The lexer of the ~ripl~ compiler is quite straightforward. It takes the string input of the source code to be compiled and breaks it down into tokens, such as symbols, strings, and numbers, in addition to tracking changes in indentation and emitting indent and dedent tokens. These tokens are then handed off to the parser.
-
-
-** Parsing
-Although earlier versions of ~ripl~ with a more complicated grammar used a parser generator (Happy when the compiler was written in Haskell, and ANTLR after it was ported to Scala), since the adoption of a Lisp-like syntax inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4] (as described in [[Brief History of =ripl='s Syntax]]), the parser is now written directly in Scala, and the implementation is about half the length it was with ANTLR.
-
-
-** Post-Parsing
-Post parsing is a step that converts free-form s-expressions into ~ripl~'s untyped abstract syntax tree, and so performs conversions like =SExp(Name("if"), Name("a"), Name("b"), Name("c"))= to =If(Name("a"), Name("b"), Name("c"))=. It does such little work, that it might be wise in a future to fold it into the parsing step to cut down on unnecessary traversals. The only advantage of performing this as a separate step is that it is more modular and can be tested separately.
-
-** Reduction
-Reduction is by far the most complicated and important aspect of the ~ripl~ compiler. It is the semantic stage that is responsible for overload resolution, namespace resolution, compile-time evaluation, type inference, and type checking. Presently it works by reducing all definitions in the AST lazily, so that evaluation of their results can be deferred until required by another definition.
-
-The only problem with this lazy approach occurs with recursive definitions, which would loop endlessly as each attempt to compute their result would trigger another computation of their result. This is resolved by maintaining a history of visited definitions to detect cycles, and requiring recursive functions to have an explicit return type.
-
-
-** Code Generation
-Code generation is the process of translating the post-reduction ~ripl~ AST into the LLVM-IR AST. It is pretty straightforward and relies on a monad ported from llvm-hs called ~IRBuilder~ to keep track of a name supply, local bindings, and blocks.
-
-
-** LLVM-Bindings
-The LLVM-bindings are a port of the llvm-hs bindings and llvm-hs-pretty printer from Haskell to Scala, that enable the LLVM-IR AST to be represented and serialized as text.
-
-\pagebreak
-** Detailed Implementation Status
-
-#+LATEX: \begin{multicols}{2}
-- [X] Lexing
-  - [X] Comments
-  - [X] Indentation
-  - [X] Numbers
-  - [X] Names
-  - [X] Special symbols (e.g. =~=, =@=, =^=)
-  - [X] Strings
-- [-] Parsing
-  - [X] S-expressions
-  - [X] S-expressions delimited by whitespace
-  - [ ] Infix notation (e.g. ={x + y}=)
-  - [ ] Prefix modifiers (e.g. =~=, =^=)
-  - [ ] Selection syntax (e.g. =math.pi=)
-- [-] Post-Parsing
-  - [X] Application
-  - [X] Function definition
-  - [X] Global variables/constants
-  - [X] If-expressions
-  - [X] Structs
-  - [ ] Implicit conversions
-  - [ ] Local Variables
-  - [ ] Pattern matching
-  - [ ] Prefix modifiers (e.g. =~=, =^=)
-  - [ ] Templates
-  - [ ] Type Classes
-  - [ ] Unions
-- [-] Reduction
-  - [X] Built-in arithmetic and logic
-  - [X] Compile-time expression evaluation
-  - [X] If-expressions
-  - [X] Implicit conversions
-  - [X] Lambdas
-  - [X] Overloading
-  - [X] Namespaces
-  - [X] Recursive functions
-  - [X] Selection
-  - [X] Structs
-  - [X] Type-checking
-  - [X] Type-inference
-  - [ ] Arrays
-  - [ ] Compile-time function evaluation
-  - [ ] Constraints on purity
-  - [ ] Constraints on mutability
-  - [ ] Local variables
-  - [ ] Pattern Matching
-  - [ ] Templates
-  - [ ] Type Classes
-  - [ ] Unions
-- [-] Code Generation
-  - [X] Application
-  - [X] Built-in arithmetic and logic
-  - [X] Functions
-  - [X] If-expressions
-  - [X] Structs
-  - [ ] Arrays
-  - [ ] Closure and lambdas
-  - [ ] Local Variables
-  - [ ] Pattern matching
-  - [ ] Strings
-  - [ ] Templates
-  - [ ] Unions
-- [X] LLVM-Bindings
-  - [X] Representation of LLVM AST
-  - [X] Serialization of LLVM AST
-#+Latex: \end{multicols}
 
 
 * COMMENT Misc TODO
