@@ -924,7 +924,7 @@ However, the syntactical unification algorithm often used for Hindley-Milner typ
 
 Although alternative algorithms have been developed to support Hindley-Milner style type inference with subtyping[fn:27]\textsuperscript{,} [fn:30], ~ripl~ is proceeding with bidirectional type inference for the following reasons:
 1. Because supplying type annotations for function parameters is not so burdensome, and is even considered good practice in languages like Haskell in which these types can be inferred.
-2. Because bidirectional subtyping operates on the level of expressions rather than type constraints, it's relatively easy to combine with compile time evaluation, another desired feature of ~ripl~ (see section [[=+= Compile-Time Evaluation]])
+2. Because bidirectional subtyping operates on the level of expressions rather than type constraints, it's relatively easy to combine with compile time evaluation (a feature of ~ripl~ discussed in section [[=+= Compile-Time Evaluation]]).
 
 In summary, ~ripl~ trades full type inference (that could infer parameters types) for overloading, subtyping, type classes, and compile time evaluation.
 
