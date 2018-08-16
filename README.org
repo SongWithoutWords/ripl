@@ -2007,8 +2007,16 @@ The statistical comparison of ~ripl~ with the 19 other languages considered sugg
 
 * Conclusion
 
-# Writing about a subject in this detail 
-# This paper has outlined the motivation, design, and implementation 
+Programming languages are complex, as evidenced by the 42 features that were used to compare them in [[Quantitative Comparison with Other Languages]], and the fact that these features do not fully describe them (though they were useful in comparing them).
+
+Programming languages are diverse, as evidenced by the four clusters that were formed by the 20 languages considered in [[Hierarchical Clustering of Languages]] (namely statically-typed functional, statically-typed object-oriented, statically-typed imperative, and dynamically typed), and the high degree of diversity within these clusters that is exemplified by the heterogeneous pairs they contain, such as Idris and Rust, C++ and Scala, Go and LLVM-IR, and Python and Scheme.
+
+Programming languages continue to improve, as evidenced by the ongoing evolution of older language like C++ and Haskell, and the emergence of new and innovative languages like D, Idris, Racket, Rust, Scala, and Swift.
+
+This complexity, diversity, and ongoing improvement suggests to me that there is still room for new languages, both for the purpose of adoption and practical use, and as experiments that can inspire and influence other languages. The results of [[Distances of Languages to Their Nearest Neighbours]] and [[Median Distances of Languages to Others]] indicate that ~ripl~'s feature set is both unique and unusual among the languages considered in [[Quantitative Comparison with Other Languages]], which suggests that ~ripl~ may have a niche among programming languages. My hope for ~ripl~ is that it will encompass the features that I value (detailed in [[Design Goals and Related Features]]), while maintaining a simple and general design (discussed in [[=+= Simple and General Design]]), and striking a balance between low-level and high-level features so that it can be used comfortably and effectively across a broad range of applications.
+
+So far 32 of the 58 compiler features identified in [[Detailed Implementation Status]] have been completed, and it is likely that additional work will be discovered during implementation of the remaining features. Some aspects of ~ripl~'s design that will be interesting to explore more in future include type-level functions (mentioned briefly in [[=+= Templates]]), Lisp style macros (discussed in [[=?= Lisp-style Macros]]), or possibly a more general concept that can encompass both of these features. If and when the ~ripl~ compiler is fully implemented and the language has some standard library functionality, dependent typing would be an interesting new avenue for continued improvement to the robustness and power of the language.
+
 
 
 * COMMENT Misc TODO
