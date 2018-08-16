@@ -38,7 +38,7 @@
 
 # increase space between table and caption
 #+LATEX_HEADER: \usepackage{caption}
-#+LATEX_HEADER: \captionsetup[table]{skip=10pt}
+#+LATEX_HEADER: \captionsetup[table]{skip=7pt}
 
 # allows use of the H option for force a float to Here
 #+LATEX_HEADER: \usepackage{float}
@@ -176,6 +176,14 @@
 % \let\OldTexttt\texttt
 % \renewcommand{\texttt}[1]{\OldTexttt{\hl{#1}}}% will affect all \texttt
 
+% Include section symbol for section references
+% The "gobble" prevents spaces between the section and section symbols
+\renewcommand{\sectionautorefname}{\S\,\@gobble}
+\renewcommand{\subsectionautorefname}{\S\,\@gobble}
+\renewcommand{\subsubsectionautorefname}{\S\,\@gobble}
+
+\renewcommand{\ref}{\autoref}
+
 \date{\parbox{\linewidth}{\centering%
   University of British Columbia\endgraf
   CPEN 499B\endgraf\bigskip
@@ -269,7 +277,7 @@ A number of the features described in this document and that appear in code list
 
 
 * Project Status
-The language and compiler are still in development and are not yet in a usable state. A detailed overview of the implementation status can be found in section [[Detailed Implementation Status]].
+The language and compiler are still in development and are not yet in a usable state. A detailed overview of the implementation status can be found in [[Detailed Implementation Status]].
 #+BEGIN_EXPORT latex
 The source of this document and the compiler can be found at \url{https://github.com/SongWithoutWords/ripl}.
 #+END_EXPORT
@@ -297,7 +305,7 @@ https://sourceforge.net/p/readable/wiki/Home/
 
 * Influence of Other Languages
 
-Below is a list of programming languages ordered by the number of mentions in this document. The order provides a rough proxy for the influence of other languages on ~ripl~'s design, and is consistent with my expectations. This influence does not necessarily imply similarity, because ~ripl~'s design has been influenced both by example and counter-example. ~ripl~'s similarity to other languages is covered in section [[Distance of ~ripl~ from Other Languages]].
+Below is a list of programming languages ordered by the number of mentions in this document. The order provides a rough proxy for the influence of other languages on ~ripl~'s design, and is consistent with my expectations. This influence does not necessarily imply similarity, because ~ripl~'s design has been influenced both by example and counter-example. ~ripl~'s similarity to other languages is covered in [[Distance of ~ripl~ from Other Languages]].
 
 #+BEGIN_SRC emacs-lisp :exports results
 (defun recursive-count (regex string start)
@@ -382,14 +390,14 @@ Below is a list of programming languages ordered by the number of mentions in th
 
 * Keywords and Symbols
 
-Below is a table of ~ripl~'s keywords and symbols. The language also provides arithmetic functions overloaded for built-in numeric types (=+=, =-=, =*=, =/=, and =%=), logical functions for boolean values (=and=, =or=, and =not=), comparison functions overloaded for built in types (=<=, =<==, ====, =/==, =>=, =>==), in addition to other low-level conversions and operations. These built-in functions can be overloaded like other names as described in section [[=+= Name Overloading]].
+Below is a table of ~ripl~'s keywords and symbols. The language also provides arithmetic functions overloaded for built-in numeric types (=+=, =-=, =*=, =/=, and =%=), logical functions for boolean values (=and=, =or=, and =not=), comparison functions overloaded for built in types (=<=, =<==, ====, =/==, =>=, =>==), in addition to other low-level conversions and operations. These built-in functions can be overloaded like other names as described in [[=+= Name Overloading]].
 
 #+ATTR_LATEX: :placement [H] :caption \caption{\texttt{ripl} Keywords and Symbols} \rowcolors{1}{}{TableRowColor}
 | Symbol      | Description                                                                                                                        |
 |-------------+------------------------------------------------------------------------------------------------------------------------------------|
-| =~=         | Prefix type modifier used to designate mutable types. Discussed in section [[=+= Type-Level Constraints on Mutability]].               |
-| =^=         | Prefix type modifier, used to designate reference types. Discussed in section [[=+= Type-Level Constraints on Mutability]].            |
-| =@=         | World-state parameter, used to designate impure functions. Discussed in section [[=+= Type-Level Constraints on Purity]].              |
+| =~=         | Prefix type modifier used to designate mutable types. Discussed in [[=+= Type-Level Constraints on Mutability]].               |
+| =^=         | Prefix type modifier, used to designate reference types. Discussed in [[=+= Type-Level Constraints on Mutability]].            |
+| =@=         | World-state parameter, used to designate impure functions. Discussed in [[=+= Type-Level Constraints on Purity]].              |
 | =.=         | Applies two expressions from right to left, e.g. =list.length= is equivalent to =(length list)=                                    |
 | =->=        | Creates a function type, e.g. =(-> i32 i32 point)= is a function from two =i32='s to a point.                                      |
 | =bool=      | The type of boolean values.                                                                                                        |
@@ -400,13 +408,13 @@ Below is a table of ~ripl~'s keywords and symbols. The language also provides ar
 | =i32=       | The type of 32-bit integral values.                                                                                                |
 | =i64=       | The type of 64-bit integral values.                                                                                                |
 | =if=        | Creates an if-expression from a boolean condition and two alternative expressions.                                                 |
-| =let=       | Defines a name as an expression within a block. Example in section [[Brief History of =ripl='s Syntax]]                                |
-| =match=     | Pattern matches an expression (especially applicable to unions). Discussed in section [[=+= Pattern Matching]].                        |
+| =let=       | Defines a name as an expression within a block. Example in [[Brief History of =ripl='s Syntax]]                                |
+| =match=     | Pattern matches an expression (especially applicable to unions). Discussed in [[=+= Pattern Matching]].                        |
 | =namespace= | Creates a namespace composed of definitions and other namespaces.                                                                  |
 | =string=    | The type of string values.                                                                                                         |
 | =struct=    | Creates a record type composed of members variables, each consisting of a type and a name.                                         |
-| =template=  | Defines a type-level function introducing one or more type-level variables. Example in section [[=+= Type-Safe Discriminated Unions]]. |
-| =union=     | Creates a union type from a number of other types. Discussed in section [[=+= Type-Safe Discriminated Unions]].                        |
+| =template=  | Defines a type-level function introducing one or more type-level variables. Example in [[=+= Type-Safe Discriminated Unions]]. |
+| =union=     | Creates a union type from a number of other types. Discussed in [[=+= Type-Safe Discriminated Unions]].                        |
 
 
 * Minimal Example
@@ -433,7 +441,7 @@ Although small, this example demonstrates many of the language's defining charac
    2. Names are separated by whitespace, parentheses, or one of a small number of reserved characters.
    3. Functions are applied by grouping as in Haskell, ML, and Lisp (i.e. ~(f x1 ... xn)~)[fn:1], as opposed to the traditional mathematical notation of languages with C-style syntax (i.e. ~f(x1, ... xn)~).
    4. The structure of the source code reflects the structure of the abstract syntax tree.
-   5. Consequently, ~ripl~ does not have infix notation, operator precedence, or associativity. The absence of these features (as seen in Lisp) is counter-intuitive for many (myself included), due possibly to the fact that people are accustomed to this syntax for mathematical expressions from a young age. Whether ~ripl~ will include infix notation in future is unclear. Two potential methods for adding infix notation to a Lisp-like syntax are discussed in section [[=?= Infix Notation and Word Order]].
+   5. Consequently, ~ripl~ does not have infix notation, operator precedence, or associativity. The absence of these features (as seen in Lisp) is counter-intuitive for many (myself included), due possibly to the fact that people are accustomed to this syntax for mathematical expressions from a young age. Whether ~ripl~ will include infix notation in future is unclear. Two potential methods for adding infix notation to a Lisp-like syntax are discussed in [[=?= Infix Notation and Word Order]].
 3. ~ripl~'s syntax includes some extensions over traditional Lisp syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]:
    1. Two or more expressions on a line are grouped.
    2. Lines are extended to include all subsequent expressions at the next level of indentation.
@@ -444,7 +452,7 @@ Although small, this example demonstrates many of the language's defining charac
 8. Return type annotations are required for recursive functions.
 9. Names may be referenced in source files before they are defined.
 
-Hopefully the discussion of this example has helped to provide you with an intuition for the language, the features of which are discussed in more detail in the following sections.
+Hopefully the discussion of this example has helped to provide you with an intuition for the language, the features of which are discussed in more detail in [[Design Goals and Related Features]].
 
 [fn:1] though in Haskell and ML expressions are often grouped by the parser rather than explicitly by parentheses
 
@@ -486,9 +494,9 @@ template (list a)
 #+END_SRC
 #+LATEX: \end{minipage}
 
-Unlike untagged unions that do not record the type of the union's value, and non-type-safe discriminated unions in which a type tag is manually maintained and branched on by the programmer, type-safe discriminated unions include a type tag that is automatically maintained and automatically branched on during pattern matching. An example of pattern matching in ~ripl~ can be seen in section [[=+= Pattern Matching]].
+Unlike untagged unions that do not record the type of the union's value, and non-type-safe discriminated unions in which a type tag is manually maintained and branched on by the programmer, type-safe discriminated unions include a type tag that is automatically maintained and automatically branched on during pattern matching. An example of pattern matching in ~ripl~ can be seen in [[=+= Pattern Matching]].
 
-Although discriminated unions are analogous in some respects to OOP style inheritance subtyping (which can even be used as a basis for discriminated unions, as in Scala), I would argue that type-safe discriminated unions when used in conjunction with pattern matching, result in code that is more robust, precise, straightforward and less tightly coupled than OOP style inheritance. Consequently, discriminated unions are an important feature of ~ripl~'s design, the advantages of which are highlighted in the following section on null-safety, for which they provide an excellent solution.
+Although discriminated unions are analogous in some respects to OOP style inheritance subtyping (which can even be used as a basis for discriminated unions, as in Scala), I would argue that type-safe discriminated unions when used in conjunction with pattern matching, result in code that is more robust, precise, straightforward and less tightly coupled than OOP style inheritance. Consequently, discriminated unions are an important feature of ~ripl~'s design, the advantages of which are highlighted in [[=+= Type-Level Constraints on Existence (null safety)]] on null-safety, for which they provide an excellent solution.
 
 
 *** =+= Type-Level Constraints on Existence (null safety)
@@ -505,7 +513,7 @@ Although the unrestricted and potentially unsafe use of ~null~ is a significant 
 
 1. *Dependent Typing:* dependent typing is a language feature in which the type of an expression may depend on its value. Kotlin employs a limited form of dependent typing to differentiate between nullable and non-nullable pointers at compile time, based on type annotations in addition to control flow[fn:11].
 
-2. *Type-Safe Discriminated Unions:* discriminated unions, as discussed in section [[=+= Type-Safe Discriminated Unions]], provide a very robust and safe way of representing polymorphic types, and is employed by Haskell, ML, and Rust, among others, to represent potentially non-existent values in a type safe way[fn:12].
+2. *Type-Safe Discriminated Unions:* discriminated unions, as discussed in [[=+= Type-Safe Discriminated Unions]], provide a very robust and safe way of representing polymorphic types, and is employed by Haskell, ML, and Rust, among others, to represent potentially non-existent values in a type safe way[fn:12].
 
 Between these options I prefer type-safe discriminated unions, because they are simpler than full-blown dependent typing (as seen in languages like Idris, which is roughly speaking a strictly evaluated and dependently typed Haskell), and because they are much more widely applicable than the limited form of dependent typing seen in Kotlin. In support of this idea, Idris, which has both discriminated unions /and/ dependent typing, implements its ~Maybe~ type as a union[fn:13]; ~ripl~ will do the same.
 
@@ -546,8 +554,7 @@ Considered one of the defining features of object-oriented programming, encapsul
 
 Expression orientation is a language feature that allows programmers to perform computations by composing expressions rather than directing control flow or mutating intermediary values. Expression orientation is a continuum, from assembly languages and compiler intermediary representations that are highly imperative, to imperative languages with both expressions and statements (like C++, C#, Java, etc.), to fully functional languages in which everything or nearly everything is an expression (like Haskell, Lisp, ML, Scala, etc.).
 
-Expression orientation helps to reduce the statefullness of a program by reducing the number of variables in scope and reducing the need to mutate these variables. Everything in ~ripl~ that is not a top-level definition is an expression. Expression orientation is discussed from a usability perspective in section [[=+= Expression Oriented Syntax]].
-# Provide a link to expression orientation section under concise/intuitive
+Expression orientation helps to reduce the statefullness of a program by reducing the number of variables in scope and reducing the need to mutate these variables. Everything in ~ripl~ that is not a top-level definition is an expression. Expression orientation is discussed from a usability perspective in [[=+= Expression Oriented Syntax]].
 
 
 *** =-= Monadic Statefullness and IO
@@ -562,7 +569,7 @@ Although I agree with the designers of these languages that it's important to se
 
 For example, during the semantic phase of the ~ripl~ compiler, every untyped expression is reduced to a value, a type, or a typed expression. Most expressions will depend on other definitions in the program, and these definitions can occur in any order. To deal with this, I reduce the abstract syntax tree lazily, and feed the result back into the ~reduce~ function (a process called "tying the knot") so that the type or value of each definition can be computed in terms of others. Although this works perfectly in many cases, in order to handle cyclic dependencies the computation must be stateful and track the definitions it has already visited so that it does not loop infinitely. After two weeks of trying to get this to work in Haskell with the ST monad, I tried it in Scala, got it to work in a single afternoon, and subsequently ported the entire compiler to Scala.
 
-Although this anecdote does not demonstrate that the above problem could not be solved with laziness and monads in Haskell, or that this problem could not be solved without resorting to mutation at all, it is an example in which Haskell's approach to statefullness made a problem intractable for a user. While constraints on mutability and function purity are important, straightforward imperative and stateful programming is also valuable, and at times necessary. ~ripl~'s approach to encoding these constraints while preserving the ability to perform straightforward stateful programming is discussed in the following two sections: [[=+= Type-Level Constraints on Mutability]] and [[=+= Type-Level Constraints on Purity]].
+Although this anecdote does not demonstrate that the above problem could not be solved with laziness and monads in Haskell, or that this problem could not be solved without resorting to mutation at all, it is an example in which Haskell's approach to statefullness made a problem intractable for a user. While constraints on mutability and function purity are important, straightforward imperative and stateful programming is also valuable, and at times necessary. ~ripl~'s approach to encoding these constraints while preserving the ability to perform straightforward stateful programming is discussed in [[=+= Type-Level Constraints on Mutability]] and [[=+= Type-Level Constraints on Purity]].
 
 [fn:15] Haskell Website, Purely Functional, https://www.haskell.org/
 
@@ -575,7 +582,7 @@ In C++ and D, types can be made immutable using the ~const~ keyword, with some d
 1. ~const~ in C++ can be bypassed using ~const_cast~ or ~mutable~, which undermines its legitimacy.
 2. ~const~ in D applies recursively to all types that a composite type is composed of, a quality they refer to as transitive. This has the disadvantage of reducing the range of types that can be expressed, and may force the use of entirely mutable types when only parts of these types need to be mutable. For example, a function that simulates interactions between entities might operate on an immutable list of references to mutable entities, thereby expressing its intent to modify the entities themselves, and not the container. Unfortunately, this distinction cannot be expressed with D's transitive ~const~.
 
-In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is /required/ to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust then uses this feature to prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17] Whether ~ripl~ can achieve the same in future will depend on a choice between garbage collection and a Rust-style ownership system, a decision that is discussed in section [[=?= Garbage Collection]].
+In Rust, types can be made mutable using the ~mut~ keyword. The advantage of immutability by default, is that the keyword is /required/ to mutate a value; whereas in C++ and D data can be mutated or not mutated without the need to specify. Rust then uses this feature to prevents data races at compile time with the following rule: "At any given time, you can have /either/ one mutable reference /or/ any number of immutable references."[fn:17] Whether ~ripl~ can achieve the same in future will depend on a choice between garbage collection and a Rust-style ownership system, a decision that is discussed in [[=?= Garbage Collection]].
 
 The equivalent in ~ripl~ of Rust's ~mut~ keyword is the =~= symbol, which was chosen because:
 1. It is not a commonly used symbol in programming.
@@ -734,13 +741,13 @@ In a purely functional program you can tell how the pieces fit together from the
 3. It behaves the same way within the context of the program as it does when tested in isolation.
 4. It can be evaluated at compile time if its arguments are known at compile time.
 
-Even if a function performs computations with mutable state internally, as long as these internal mutations do not escape to the outside world, all of the above properties still hold. In pure functional languages like Haskell and Idris, this encapsulation of effects and separation of pure and impure code is done using monads (such as IO and ST), as discussed in section [[=-= Monadic Statefullness and IO]]. As mentioned in that section, I think this encapsulation of effects is positive, but I have concerns about the complexity of this approach, both for the programmer and for the machine.
+Even if a function performs computations with mutable state internally, as long as these internal mutations do not escape to the outside world, all of the above properties still hold. In pure functional languages like Haskell and Idris, this encapsulation of effects and separation of pure and impure code is done using monads (such as IO and ST), as discussed in [[=-= Monadic Statefullness and IO]]. As mentioned in that section, I think this encapsulation of effects is positive, but I have concerns about the complexity of this approach, both for the programmer and for the machine.
 
 **** Purity in D
 A solution to this problem in an impure language can be found in D, and is described quite well by David Nadlinger[fn:20]. D allows functions to be annotated using a ~pure~ keyword, which prevents them from performing impure computations or calling other impure functions. Combined with compile-time evaluation of pure functions and templates that can take values of any type arguments, this feature provide a basis for powerful type-level programming and type-level constraints on purity in D.
 
 **** Purity in =ripl=
-~ripl~'s method of constraining purity is similar to that of D, but differs in some respects. Rather than using a modifier keyword like D, ~ripl~ has a global state parameter =@=, that may be taken as a parameter to =main= and distributed to the rest of the program as an argument to other functions. In order to read global state (such as reading global variables, reading files, checking the current time, or using memory addresses in computations) functions must take =@= as a parameter. In order to modify global state (such as writing global variables, writing files, or writing to the console) functions must take =~@= as a parameter. =~@= may be substituted for =@= just as =^~T= may be substituted for =^T= as described in section [[=+= Type-Level Constraints on Mutability]]. The advantages of this approach include:
+~ripl~'s method of constraining purity is similar to that of D, but differs in some respects. Rather than using a modifier keyword like D, ~ripl~ has a global state parameter =@=, that may be taken as a parameter to =main= and distributed to the rest of the program as an argument to other functions. In order to read global state (such as reading global variables, reading files, checking the current time, or using memory addresses in computations) functions must take =@= as a parameter. In order to modify global state (such as writing global variables, writing files, or writing to the console) functions must take =~@= as a parameter. =~@= may be substituted for =@= just as =^~T= may be substituted for =^T= as described in [[=+= Type-Level Constraints on Mutability]]. The advantages of this approach include:
 1. It leverages the same syntax and scoping rules as function parameters, so should be intuitive.
 2. It is easily and intuitively encoded in function types, e.g. =main= may have type =(-> ~@ i32)=.
 3. Function purity is visible at the call site in addition to the signature (e.g. =println ~@ "Hello world!"=).
@@ -843,7 +850,7 @@ As the user interface of a language (per Simon Peyton Jones[fn:22]), syntax warr
 
 Following its inception in February 2017, ~ripl~'s syntax was a [[https://github.com/SongWithoutWords/pidgin/blob/78205a910516c1defb62344e74a271cef4675a49/src/Parser.y][Python-like BNF grammar]] with C-style function application and whitespace delimited blocks. It had both statements and expressions, and both if-expressions and if-statements (also like Python). As time went on, I started to think that this distinction between statements and expressions was redundant and inelegant. In a commit in January 2018, [[https://github.com/SongWithoutWords/pidgin/commit/51804e611d0d394a6f388b5b15e9f9bbd4ebcfcc][statements were removed from the grammar,]] and the language started to become expression oriented. By early June 2018, [[https://github.com/SongWithoutWords/ripl/blob/87b64d2ded8a0c88180e7fef701bb9015df46c7b/src/main/antlr4/RiplParser.g4][nearly all constructs had become expressions in the grammar]], including composite types like structs, unions, and function types.
 
-In mid-June 2018, I came across [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4], and was very impressed by this notation, which combines the simplicity, elegance, generality, and homoiconicity (self-representing nature) of Lisp's S-expressions with the brevity and legibility of whitespace delimitation. I immediately set about changing ~ripl~ to use this new syntax (examples of which can be seen in this section, and in sections [[Minimal Example]] and [[=+= Type-Safe Discriminated Unions]]).
+In mid-June 2018, I came across [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]][fn:4], and was very impressed by this notation, which combines the simplicity, elegance, generality, and homoiconicity (self-representing nature) of Lisp's S-expressions with the brevity and legibility of whitespace delimitation. I immediately set about changing ~ripl~ to use this new syntax (examples of which can be seen in this section, and in [[Minimal Example]] and [[=+= Type-Safe Discriminated Unions]]).
 
 At the time of writing I have not yet ported all constructs from the old Python-like grammar to the new Lisp-inspired grammar. For example, I do not yet know what the syntax will be for multi-expression blocks, though it may be something like this:
 
@@ -896,7 +903,7 @@ However, the syntactical unification algorithm often used for Hindley-Milner typ
 
 Although alternative algorithms have been developed to support Hindley-Milner style type inference with subtyping[fn:27]\textsuperscript{,} [fn:30], ~ripl~ is proceeding with bidirectional type inference for the following reasons:
 1. Because supplying type annotations for function parameters is not so burdensome, and is even considered good practice in languages like Haskell in which these types can be inferred.
-2. Because bidirectional subtyping operates on the level of expressions rather than type constraints, it's relatively easy to combine with compile time evaluation (a feature of ~ripl~ discussed in section [[=+= Compile-Time Evaluation]]).
+2. Because bidirectional subtyping operates on the level of expressions rather than type constraints, it's relatively easy to combine with compile time evaluation (a feature of ~ripl~ discussed in [[=+= Compile-Time Evaluation]]).
 
 In summary, ~ripl~ trades full type inference (that could infer parameters types) for overloading, subtyping, type classes, and compile time evaluation.
 
@@ -915,7 +922,7 @@ https://www21.in.tum.de/~nipkow/pubs/aplas11.pdf
 
 *** =+= Subtyping via Implicit Conversion
 
-Subtyping is a common feature among object-oriented programming languages. It is much less common among functional languages, possibly because of the complexity it adds to type inference, as discussed in section  [[=+= Type Inference]]. Although it is less essential in a language without inheritance (like ~ripl~), subtyping helps to reduce the need for explicit type conversions.
+Subtyping is a common feature among object-oriented programming languages. It is much less common among functional languages, possibly because of the complexity it adds to type inference, as discussed in [[=+= Type Inference]]. Although it is less essential in a language without inheritance (like ~ripl~), subtyping helps to reduce the need for explicit type conversions.
 
 Although subtyping and implicit conversion have somewhat of a bad reputation[fn:32], I think that implicit conversions can add value if chosen judiciously. Subtyping in ~ripl~ is achieved via implicit conversions. The ~ripl~ compiler provides a built-in conversions from integral numbers to floating point numbers, and may in future provide implicit conversions from the variants of a union to the union itself. Additionally, the compiler is structured to allow for user-defined implicit conversions. Although the syntax for declaring user-defined implicit conversions has not yet been chosen, it will probably consist of defining a pure function with a single input using a distinct keyword like ~implicit~ instead of the usual ~define~ keyword. An example of subtyping in ~ripl~ is given below:
 
@@ -936,12 +943,12 @@ The rules used for the selection of overloads in the presence of implicit conver
 
 *** =+= Expression Oriented Syntax
 
-Expression orientation is discussed within the context of the Robust design goal in section [[=+= Expression Orientation]], because it enables programming with fewer local variables thereby reducing statefullness within functions. Within the context of usability, I think that expression orientation lends itself to a more composable, ergonomic, elegant, and concise programming style. I would not be surprised if the tendency against expression orientation among imperative languages accounts for some of the verbosity of these languages that was found by Nanz and Furia[fn:23]. Everything in ~ripl~ that is not a top-level definition is an expression.
+Expression orientation is discussed within the context of the Robust design goal in [[=+= Expression Orientation]], because it enables programming with fewer local variables thereby reducing statefullness within functions. Within the context of usability, I think that expression orientation lends itself to a more composable, ergonomic, elegant, and concise programming style. I would not be surprised if the tendency against expression orientation among imperative languages accounts for some of the verbosity of these languages that was found by Nanz and Furia[fn:23]. Everything in ~ripl~ that is not a top-level definition is an expression.
 
 
 *** =+= Pattern Matching
 
-Discriminated unions are a feature of ~ripl~ that is discussed in section [[=+= Type-Safe Discriminated Unions]]. Although pattern matching may be extended in a number of ways, at minimum it provides a type-safe and ergonomic method of extracting information from discriminated unions, and works behind the scenes by branching on type tags. In addition to type safety, pattern matching has the advantage of producing code that tends to reflect the structure of the data. Below is an example of pattern matching in ~ripl~ used to write a simple evaluator for some floating point expressions:
+Discriminated unions are a feature of ~ripl~ that is discussed in [[=+= Type-Safe Discriminated Unions]]. Although pattern matching may be extended in a number of ways, at minimum it provides a type-safe and ergonomic method of extracting information from discriminated unions, and works behind the scenes by branching on type tags. In addition to type safety, pattern matching has the advantage of producing code that tends to reflect the structure of the data. Below is an example of pattern matching in ~ripl~ used to write a simple evaluator for some floating point expressions:
 
 #+LATEX: \begin{minipage}{\linewidth}
 #+NAME: Pattern Matching in ~ripl~
@@ -1069,7 +1076,7 @@ let dx
 
 *** =+= Selection Syntax
 
-Somewhat related to word-order (as discussed in section [[=?= Infix Notation and Word Order]]) is selection syntax. The idea is to allow =a.b= as a left-associative shorthand for =(b a)=, so that it's possible to write things like =(math.bits.xor a b)= instead of =((xor (bits math)) a b)=, or =(- character.transform.position camera.transform.position)= instead of =(- (position (transform character)) (position (transform camera)))=. In the examples above, I find the expressions with selection syntax clearer and more readable.
+Somewhat related to word-order (discussed in [[=?= Infix Notation and Word Order]]) is selection syntax. The idea is to allow =a.b= as a left-associative shorthand for =(b a)=, so that it's possible to write things like =(math.bits.xor a b)= instead of =((xor (bits math)) a b)=, or =(- character.transform.position camera.transform.position)= instead of =(- (position (transform character)) (position (transform camera)))=. In the examples above, I find the expressions with selection syntax clearer and more readable.
 
 
 *** =+= Name Overloading
@@ -1147,7 +1154,7 @@ In statically typed languages, especially those without a top type (e.g. =Object
 1. Generic definitions of operations over vectors and arrays of arbitrary static length
 2. Compile time dimensional analysis
 
-Although templates in ~ripl~ have not yet been implemented (and thus have not yet been specified), example syntax can be seen in section [[=+= Type-Safe Discriminated Unions]].
+Although templates in ~ripl~ have not yet been implemented (and thus have not yet been specified), example syntax can be seen in [[=+= Type-Safe Discriminated Unions]].
 
 
 *** =+= Compile-Time Evaluation
@@ -1282,7 +1289,7 @@ The LLVM-bindings are a port of the llvm-hs bindings and llvm-hs-pretty printer 
 
 * Quantitative Comparison with Other Languages
 
-In order to compare ~ripl~ with other languages in an objective way, so that it can be understood in relation to them, I identified 41 quantifiable language features to be used as a basis for comparison. I then evaluated each language by assigning ternary values of =+=, =?=, and =-= for features that were present, uncertain or not applicable, and absent respectively, resulting in the language feature table in section [[Language Feature Table]].
+In order to compare ~ripl~ with other languages in an objective way, so that it can be understood in relation to them, I identified 41 quantifiable language features to be used as a basis for comparison. I then evaluated each language by assigning ternary values of =+=, =?=, and =-= for features that were present, uncertain or not applicable, and absent respectively, resulting in the language feature table in [[Language Feature Table]].
 
 I chose ternary values and more quantitative features over continuous values and more qualitative features in an effort to reduce the subjectivity of the results. Language features were not weighted differently, because although some features are more important in differentiating languages than others, choosing weights to account for this would introduce more subjectivity. Languages were chosen on the basis of my familiarity with them.
 
@@ -1453,7 +1460,7 @@ The results suggest that the languages considered fall into one of four clusters
 | Statically-typed and object-oriented | C++, C#, D, Dart, Java, Kotlin, Scala |
 | Statically-typed and functional      | Haskell, Idris, ML, ~ripl~, Rust      |
 
-A more nuanced picture that accounts for the pairwise distance between all languages considered can be seen in the heatmap in section [[Heatmap of Distances Between Languages]].
+A more nuanced picture that accounts for the pairwise distance between all languages considered can be seen in the heatmap in [[Heatmap of Distances Between Languages]].
 
 \pagebreak
 
@@ -1783,7 +1790,7 @@ These results are more nuanced than the hierarchical clustering in section [[Hie
 
 ** Qualitative Language Attributes as Linear Combinations of Specific Features
 
-In the previous sections we looked at visualizations and analyses of the distances between languages. Although it is possible to infer some more qualitative information from these distance based methods (such as the language clusters identified in section [[Hierarchical Clustering of Languages]]), these methods in general do not provide much insight into the more qualitative attributes of the languages considered.
+In the previous sections we looked at visualizations and analyses of the distances between languages. Although it is possible to infer some more qualitative information from these distance based methods (such as the language clusters identified in [[Hierarchical Clustering of Languages]]), these methods in general do not provide much insight into the more qualitative attributes of the languages considered.
 
 In an effort to measure these more qualitative attributes, I expressed them as linear combinations of specific language features, by which they can be computed using matrix multiplication according to the following equation:
 
@@ -1797,7 +1804,7 @@ The attributes considered are as follows:
 - *Robust*: features that make programming less error prone, such as garbage collection and null safety.
 - *Simple*: features that reduce complexity and the absence of features that introduce complexity.
 
-The table on the following page expresses these attributes as linear combinations of the language features considered in section [[Language Feature Table]].
+The table on the following page expresses these attributes as linear combinations of the language features considered in [[Language Feature Table]].
 
 #+NAME: language-feature-attributes
 #+ATTR_LATEX: :align l|rrrrrr :placement [H] :caption \caption{Language Feature Attribute Coefficients} \rowcolors{1}{}{TableRowColor}
