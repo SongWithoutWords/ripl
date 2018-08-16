@@ -1184,7 +1184,7 @@ Because ~ripl~ has a number of things in common with Lisp, including partial eva
 
 * Quantitative Comparison with Other Languages
 
-In order to compare ~ripl~ with other languages in an objective way, I identified 41 quantifiable language features to be used as a basis for comparison. I then evaluated each language by assigning ternary values of =+=, =?=, and =-= for features that were present, uncertain or not applicable, and absent respectively, resulting in the language feature table in section [[Language Feature Table]].
+In order to compare ~ripl~ with other languages in an objective way, so that it can be understood in relation to them, I identified 41 quantifiable language features to be used as a basis for comparison. I then evaluated each language by assigning ternary values of =+=, =?=, and =-= for features that were present, uncertain or not applicable, and absent respectively, resulting in the language feature table in section [[Language Feature Table]].
 
 I chose ternary values and more quantitative features over continuous values and more qualitative features in an effort to reduce the subjectivity of the results. Language features were not weighted differently, because although some features are more important in differentiating languages than others, choosing weights to account for this would introduce more subjectivity. Languages were chosen on the basis of my familiarity with them.
 
