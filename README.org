@@ -1995,7 +1995,7 @@ Important to keep in mind is that this is descriptive and not predictive statist
 
 ** Summary of Findings
 
-The statistical comparison of ~ripl~ with the other 18 languages considered revealed the following:
+The statistical comparison of ~ripl~ with the 19 other languages considered suggests the following:
 1. ~ripl~ is part of a cluster of statically-typed, functional languages.
 2. ~ripl~ is most similar to Rust, Idris, D, and Haskell in that order.
 3. ~ripl~ is the language most distant from its nearest neighbour, suggesting that it is unique.
