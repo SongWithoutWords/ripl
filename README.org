@@ -870,34 +870,6 @@ http://www.cs.nott.ac.uk/~pszgmh/appsem-slides/peytonjones.ppt?ref=driverlayer.c
 https://arxiv.org/pdf/1409.0252.pdf
 
 
-*** COMMENT Notes
-
-# Before we get into the specifics of how ~ripl~'s design endeavours to achieve these goals, it may be worth discussing other languages from this perspective:
-# - *C++*
-# - *D*
-#   - ~Pro~ compile-time function evaluation is a good alternative to template meta-programming.
-# - *Haskell*
-#   - ~Pro~
-#   - ~Con~ lack of name overloading
-#   - ~Con~ poor module system
-# - *Idris*
-# - *Lisp*
-
-# Having worked full time doing game programming in C++ for 2.5 years, and having written in more ergonomic languages like  do not believe it met these goals.
-
-# By emulating certain features of concise languages, like Haskell, Racket and Scala, it is hoped that this language can be made concise as well. What sets these languages apart from other more verbose languages?
-
-# Some languages are more ergonomic, concise and intuitive than others. Having worked for 2.5 years in C++, I'm fairly confident in the assertion that it is more verbose than Python. After translating an ~2000 line program at a job from Python to Scala, I found the Scala version to be ~20% shorter (in addition to being statically typed). After porting a complete set of LLVM bindings (llvm-hs) from Haskell to Scala (for this project), I found the Haskell version to be ~20% shorter as well.
-
-# After 2.5 years working full time in C++, for example, I would place this language at the bottom of this spectrum. Slightly better, I would suggest, are languages like C# and Python.
-# - Type inference
-# - Subtyping via implicit conversions
-# - Name overloading
-# - Expression oriented
-# - Pattern matching
-# - Readable, uniform syntax, inspired by [[https://sourceforge.net/p/readable/wiki/Home/][Readable Lisp S-expressions]]
-
-
 *** =+= Whitespace Delimitation
 
 Although indentation delimited languages are somewhat uncommon, people speak highly of them (e.g. Haskell and Python). I am a proponent of this style for a number of reasons:
