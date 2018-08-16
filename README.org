@@ -1592,7 +1592,7 @@ ascii(min.distances, include.rownames=FALSE)
 
 ** Distance of ~ripl~ from Other Languages
 
-In order to determine what languages ~ripl~ is most similar to, I ordered the other languages by their distance from ~ripl~. The results suggest that ~ripl~ is most similar to Rust, Idris, and D (in that order), and most dissimilar to JavaScript, C, and Java.
+In order to determine what languages ~ripl~ is most similar to, I ordered the other languages by their distance from ~ripl~. The results suggest that ~ripl~ is most similar to Rust, Idris, D, and Haskell (in that order), and most dissimilar to C, JavaScript, and Java.
 
 #+NAME: distance-of-ripl-from-other-languages
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
