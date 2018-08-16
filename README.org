@@ -1277,6 +1277,8 @@ The LLVM-bindings are a port of the llvm-hs bindings and llvm-hs-pretty printer 
   - [X] Serialization of LLVM AST
 #+Latex: \end{multicols}
 
+\pagebreak
+
 
 * Quantitative Comparison with Other Languages
 
