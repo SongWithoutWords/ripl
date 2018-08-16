@@ -1206,6 +1206,8 @@ Code generation is the process of translating the post-reduction ~ripl~ AST into
 The LLVM-bindings are a port of the llvm-hs bindings and llvm-hs-pretty printer from Haskell to Scala, that enable the LLVM-IR AST to be represented and serialized as text.
 
 \pagebreak
+
+
 ** Detailed Implementation Status
 
 #+LATEX: \begin{multicols}{2}
