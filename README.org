@@ -964,7 +964,7 @@ The rules used for the selection of overloads in the presence of implicit conver
 
 *** =+= Expression Oriented Syntax
 
-Expression orientation is discussed within the context of the Robust design goal in section [[=+= Expression Orientation]], because it enables programming with fewer local variables thereby reducing statefullness within functions. Within the context of usability, I think that expression orientation lends itself to a more composable, ergonomic, elegant, and concise programming style. I would not be surprised if the tendency against expression orientation among imperative languages accounts for some of the verbosity of these languages that was found by Nanz and Furia [fn:23]. Everything in ~ripl~ that is not a top-level definition is an expression.
+Expression orientation is discussed within the context of the Robust design goal in section [[=+= Expression Orientation]], because it enables programming with fewer local variables thereby reducing statefullness within functions. Within the context of usability, I think that expression orientation lends itself to a more composable, ergonomic, elegant, and concise programming style. I would not be surprised if the tendency against expression orientation among imperative languages accounts for some of the verbosity of these languages that was found by Nanz and Furia[fn:23]. Everything in ~ripl~ that is not a top-level definition is an expression.
 
 
 *** =+= Pattern Matching
