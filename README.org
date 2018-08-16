@@ -827,7 +827,7 @@ Syntax is the user interface of a language
 The parser is often the trickiest bit of a compiler
 #+END_QUOTE
 
-Although some syntax elements may be a matter of preference, there is one very large and measurable differences between various languages' syntaxes: verbosity. A study by Sebastian Nanz and Carlo A. Furia of ETH Zurich, of programs in Rosetta Code (a repository of solutions to over 700 programming tasks in hundreds of languages), found that[fn:23]:
+Although some syntax elements may be a matter of preference, there is at least one measurable aspect of syntax with a high degree of variation: verbosity. A study by Sebastian Nanz and Carlo A. Furia of ETH Zurich, of 7087 programs in Rosetta Code (referenced also in the introduction), found that[fn:23]:
 
 #+BEGIN_QUOTE
 Languages are clearly divided into two groups: functional and scripting languages tend to provide the most concise code, whereas procedural and object-oriented languages are significantly more verbose. The absolute difference between the two groups is major; for instance, Java programs are on average 2.2–2.9 times longer than programs in functional and scripting languages.
@@ -835,7 +835,7 @@ Languages are clearly divided into two groups: functional and scripting language
 
 While these findings are consistent with my own experiences, their magnitude exceeds my expectations (and validates my frustration with certain verbose languages). Among the largest effects in their study, they found that, of the programs in their data set, programs in C# were on average 2.7 times as long as programs in Haskell and 3.6 times as long as programs in Python.
 
-Although I've heard apologists of verbose languages defend their verbosity by insisting that code is read more often than it is written, code that is 2-3 times longer is longer both to read and write. This is not to say that more concise is always better (adequately descriptive names are good), but I do not think that C++, C#, D, Java, etc. have gained any clarity in their verbosity: instead I think bugs lurk in their boilerplate.
+Although I've heard apologists of verbose languages defend their verbosity by insisting that code is read more often than it is written, code that is 2-3 times longer is longer both to read and to write. This is not to say that more concise is always better (adequately descriptive names are good), but I do not think that C++, C#, D, Java, etc. have gained any clarity by their verbosity: instead I think that this excessive verbosity and boilerplate obscures the logic of the program and any errors it may contain.
 
 *** Brief History of =ripl='s Syntax
 
