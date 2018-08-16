@@ -1680,6 +1680,8 @@ ggplot(data = as.data.frame(mds), aes(x = x, y = y)) +
 
 These results are more nuanced than the hierarchical clustering in section [[Hierarchical Clustering of Languages]], and more easily interpreted than the heatmap in section [[Heatmap of Distances Between Languages]] (though not as precise), and place ~ripl~ roughly where it's intended to be: between Haskell, Rust and D.
 
+\pagebreak
+
 
 ** Qualitative Language Attributes as Linear Combinations of Specific Features
 
