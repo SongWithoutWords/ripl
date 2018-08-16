@@ -569,7 +569,7 @@ Although this anecdote does not demonstrate that the above problem could not be 
 
 *** =+= Type-Level Constraints on Mutability
 
-A middle ground between the unconstrained or under-constrained mutability and impurity of languages like C#, Java, ML, and Scala, and the functional purity of languages like Haskell and Idris, are per-variable type-level constraints on mutability, as seen in C++, D and Rust. This is a really great feature in my view, because it removes the ambiguity of what can be modified within what scope, while still allowing mutation where necessary.
+A middle ground between the unconstrained or under-constrained mutability and impurity of languages like C#, Java, ML, and Scala, and the functional purity of languages like Haskell and Idris, are per-variable type-level constraints on mutability, as seen in C++, D, and Rust. This approach has the advantage of constraining what variables can be modified within what scopes, while still allowing mutation where necessary.
 
 In C++ and D, types can be made immutable using the ~const~ keyword, with some differences[fn:16]:
 1. ~const~ in C++ can be bypassed using ~const_cast~ or ~mutable~, which undermines its legitimacy.
