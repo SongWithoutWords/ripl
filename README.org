@@ -1186,7 +1186,7 @@ Because ~ripl~ has a number of things in common with Lisp, including partial eva
 
 In order to compare ~ripl~ with other languages in an objective way, I identified 41 quantifiable language features to be used as a basis for comparison. I then evaluated each language by assigning ternary values of =+=, =?=, and =-= for features that were present, uncertain or not applicable, and absent respectively, resulting in the language feature table in section [[Language Feature Table]].
 
-I chose to use ternary values and more quantitative features rather than continuous values and more qualitative features in an effort to reduce the subjectivity of the results. Languages were chosen on the basis of my familiarity with them.
+I chose ternary values and more quantitative features over continuous values and more qualitative features in an effort to reduce the subjectivity of the results. Language features were not weighted differently, because although some features are more important in differentiating languages than others, choosing weights to account for this would introduce more subjectivity. Languages were chosen on the basis of my familiarity with them.
 
 Although the language feature table is useful in detailing the features of each language, because it consists of 19 data-points in 41 dimensions it is hard to visualize the high-level structure of the data and relationships between the languages by looking at the table itself. Fortunately, there are a number of data visualization and statistical methods that can help to understand this higher dimensional data. The results of these data visualization methods are presented in the following sections.
 
