@@ -2007,7 +2007,7 @@ The statistical comparison of ~ripl~ with the 19 other languages considered sugg
 
 * Future Work
 
-So far 32 of the 58 compiler features identified in [[Detailed Implementation Status]] have been completed, and it is likely that additional work will be discovered during implementation of the remaining features. Some aspects of ~ripl~'s design that will be interesting to explore more in future include type-level functions (mentioned briefly in [[=+= Templates]]), Lisp style macros (discussed in [[=?= Lisp-style Macros]]), and decisions around garbage collection (discussed in [[=?= Garbage Collection]]) or a potential Rust-style ownership system. If and when the ~ripl~ compiler is fully implemented and the language has some standard library functionality, dependent typing would be an interesting new avenue for continued improvement to the robustness and power of the language.
+So far 32 of the 58 compiler features identified in [[Detailed Implementation Status]] have been completed, and it is likely that additional work will be discovered during implementation of the remaining features. Some aspects of ~ripl~'s design that will be interesting to explore more in future include type-level functions (mentioned briefly in [[=+= Templates]]), Lisp style macros (discussed in [[=?= Lisp-style Macros]]), a potential Rust-style ownership system, and decisions around garbage collection (discussed in [[=?= Garbage Collection]]). If and when the ~ripl~ compiler is fully implemented and the language has some standard library functionality, dependent typing would be an interesting and promising avenue for future development.
 
 
 * Conclusion
