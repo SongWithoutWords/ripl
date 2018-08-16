@@ -257,20 +257,6 @@ https://medium.com/@n0mad/when-competing-with-c-fudge-the-benchmark-16d3a91b437c
 https://news.ycombinator.com/item?id=5080210
 
 
-* COMMENT Old Introductory Text
-~ripl~ is a nascent programming language and the subject of my undergraduate thesis at UBC. It is intended to combine the safety and purity of a language like Haskell, with the efficient, low-level capabilities of a language like C++ or Rust, and the metaprogramming capabilities of a language like Racket or D. The ~ripl~ compiler is written in Scala with an LLVM backend, and is still in development.
-
-This document provides an overview of ~ripl~'s motivation, design and implementation, in addition to a quantitative comparison with other languages. It begins by discussing the language's specification, the status of the project, the language's features, the influence of other languages, and by providing a small example. It then delves into the design goals of the language with detailed descriptions and discussions of the features and design decisions intended to satisfy these goals. This paper then provides a brief of ~ripl~'s compiler pipeline, along with a detailed implementation status.
-
-Quantify ~ripl~'s relationship with other languages
-
-Touch briefly on the language specification
-
-Describes the project status
-
-Provides an overview of the language features
-
-
 * Notes on Language Specification
 
 Although this document describes many of ~ripl~'s features, it is not a language specification. Instead the compiler and accompanying unit tests serve as the language specification. This is done for a number of reasons:
