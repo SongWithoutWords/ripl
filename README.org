@@ -1021,8 +1021,6 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4534792/
 
 [fn:40] Hannah Maro, Alan Langus, et al, A new perspective on word order preferences: the availability of a lexicon triggers the use of SVO word order, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4534792/#B23
 
-# Although I came across this blog after writing this section, this subject has been written about before: https://solsort.com/2015/11/14/word-order-in-programming-and-human-languages/
-
 # [fn:35] I used a programmable calculator (the HP 50g) in second year that used reverse Polish notation (e.g. =a b +=), which I found to be quite unintuitive, and some programming languages (notably Forth) use this ordering as well, which roughly corresponds to SOV ordering.
 
 **** COMMENT Some code exploring syntactic differences between C-style expressions and Lisp
