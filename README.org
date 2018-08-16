@@ -969,7 +969,7 @@ Expression orientation is discussed within the context of the Robust design goal
 
 *** =+= Pattern Matching
 
-Discriminated unions are a feature of ~ripl~ that is discussed in section [[=+= Type-Safe Discriminated Unions]]. Pattern matching is essentially a type-safe and ergonomic method of extracting information from discriminated unions that contain one of a number of types, and works behind the scenes by branching on type tags. In addition to type safety, pattern matching has the advantage that the structure of the data being matched tends to be very evident from the code. Below is an example of pattern matching in ~ripl~ used to write a simple evaluator for some floating point expressions:
+Discriminated unions are a feature of ~ripl~ that is discussed in section [[=+= Type-Safe Discriminated Unions]]. Although pattern matching may be extended in a number of ways, at minimum it provides a type-safe and ergonomic method of extracting information from discriminated unions, and works behind the scenes by branching on type tags. In addition to type safety, pattern matching has the advantage of producing code that tends to reflect the structure of the data. Below is an example of pattern matching in ~ripl~ used to write a simple evaluator for some floating point expressions:
 
 #+LATEX: \begin{minipage}{\linewidth}
 #+NAME: Pattern Matching in ~ripl~
