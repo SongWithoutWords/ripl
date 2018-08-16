@@ -1009,21 +1009,21 @@ Word order (including subject-object-verb or SOV, subject-verb-object or SVO, an
 
 Some studies have found that people tend naturally to use subject-verb-object order when communicating with an established lexicon (even when they are accustomed to another order)[fn:39], and that people tend naturally to use subject-object-verb order when communicating with an improvised lexicon (even when they are accustomed to another order)[fn:40]. Combined with the relative unpopularity of verb-first word orders in human languages, the findings of these studies may suggest that verb-first word orders are less suited to human comprehension, and may even explain some of the popularity of object oriented languages (which allow subject-object-verb order by means of method syntax) and unpopularity of Lisps (which typically do not even allow infix notation).
 
-In addition to word order, many programming languages include infix notation with precedence and associativity (as used in conventional mathematical notation), which, like the method syntax of object-oriented languages, allows some or all verbs to appear in infix position, as in SVO ordering. Although I find it quite convenient to add terms by writing =(+ a b c d)= (as opposed to =(a + b + c + d)=), or to determine if terms are ordered a certain way by writing =(< a b c d)= (as opposed to =(a < b && b < c && c < d)=), programming languages with only function application and without infix notation or method syntax (notably Lisps) are often said to be unintuitive or hard to read (although I've been unable to find any rigorous investigation of this).
+In addition to word order, many programming languages include infix notation with precedence and associativity (as used in conventional mathematical notation), which, like the method syntax of object-oriented languages, allows some or all verbs to appear in infix position, as in SVO ordering. Although I find it quite convenient to add terms by writing =(+ a b c d)=, as opposed to =(a + b + c + d)=, or to determine if terms are ordered a certain way by writing =(< a b c d)=, as opposed to =(a < b && b < c && c < d)=, programming languages with only function application and without infix notation or method syntax (notably Lisps) are often said to be unintuitive or hard to read (although I've been unable to find any rigorous evidence of this).
 
 Together these observations pose a number of questions:
-1. How much influence does word order have on people's comprehension of programming languages?
-   1. If this influence is significant, to what degree does it depend on the word order people are accustomed to?
-   2. If this influence is significant, can it be overcome by continued use, or are some word orders inherently advantageous?
-2. How much influence does the presence of infix operators have on people's comprehension of programming languages?
-   1. If this influence is significant, can it be overcome by continued use, or is infix notation inherently advantageous?
+2. Does word order have a significant influence on people's comprehension of programming languages?
+   1. If so, to what degree does it depend on the word order people are accustomed to?
+   2. If so, can it be overcome by continued use, or are some word orders inherently advantageous?
+3. Does infix notation have a significant influence on people's comprehension of programming languages?
+   1. If so, can its absence be overcome by continued use, or is infix notation inherently advantageous?
 
 If allowing infix and subject-verb-object ordering is desirable (of which I'm still not entirely convinced) there are a number of ways in which this could be achieved in ~ripl~:
 
 1. Surround infix expressions in braces as proposed by Readable Lisp S-expressions[fn:4]. \newline For example ={a + b + c}= would be equivalent to =(+ a b c)=.
-2. Typecheck both orderings of the first two expressions of all s-expressions; if the result of typechecking the s-expression with the order of the first two expressions reversed is better (i.e. fewer errors and implicit conversions), then use this order.
+2. Typecheck S-expressions with the first two expressions reversed, and use the reversed order if it results in fewer errors and implicit conversions than the non-reversed order (analogous to an implicit conversion).
 
-Because this is a rather complicated topic, and because either of the potential solutions mentioned above could be easily added, I am inclined to leave these features out for the time being, and add them in future if their absence is felt.
+Because this is a rather complicated topic, and because both of the potential solutions above could be easily added, I am inclined to leave them out for the time being, and add them in future if their absence is felt.
 
 
 [fn:34] Russell S. Tomlin, Basic word order. Functional principles. London: Croom Helm, 1986. Page 308,
