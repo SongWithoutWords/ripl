@@ -1147,10 +1147,11 @@ https://en.cppreference.com/w/cpp/keyword
 
 *** =+= Templates
 
-In statically typed languages, especially those without a top type (e.g. =Object= in Java or =Any= in Scala), parametric polymorphism is necessary to write generic types (notably collections) and generic functions. Templates are like regular generics, except that they can also take integral and enum values as parameters in C++, and values of any type as parameters in D and ~ripl~. The ability to use values in addition to types as template parameters enables solutions to a number of problems that would be hard or impossible to solve otherwise, including:
+In statically typed languages, especially those without a top type (e.g. =Object= in Java or =Any= in Scala), parametric polymorphism is necessary to write generic functions and generic types (notably collections). Templates in C++ and D are like generics in other languages, with the addition of features that enable them to be used as a basis for type-level programming and compile-time metaprogramming. These capabilities enable the solution of problems that are be hard or impossible to solve otherwise, including:
 
 1. Generic definitions of operations over vectors and arrays of arbitrary static length
-2. Compile time dimensional analysis
+2. Compile time dimensional analysis (for type-safe programming with physical quantities)
+3. Emulation of type-safe discriminated unions without language-level support (as per C++17's std::variant)
 
 Although templates in ~ripl~ have not yet been implemented (and thus have not yet been specified), example syntax can be seen in [[=+= Type-Safe Discriminated Unions]].
 
