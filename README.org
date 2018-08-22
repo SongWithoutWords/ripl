@@ -200,7 +200,7 @@
 \pagebreak
 
 \begin{abstract}
-
+\noindent
 \texttt{ripl} is a programming language that is intended to combine the safety and purity of a language like Haskell, with the efficient, low-level capabilities of a language like C++ or Rust, and the type-level and compile-time programming capabilities of a language like Idris or D. The \texttt{ripl} compiler is written in Scala with an LLVM backend, and is still in development. This document provides an overview of \texttt{ripl}'s motivation, design and implementation, in addition to a quantitative comparison with 19 other languages over 42 language features. The results of this comparison suggest that \texttt{ripl}'s feature set is highly unique, and I believe it will offer a robust, intuitive, powerful, and performant middle-ground between high-level purely-functional languages and lower-level imperative languages, with some interesting new features as well.
 \end{abstract}
 \pagebreak
