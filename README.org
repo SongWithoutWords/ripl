@@ -1521,7 +1521,7 @@ While the blocks of colour along the diagonal reflect the same clusters as in th
 
 ** Distances of Languages to Their Nearest Neighbours
 
-As observed in the heatmap in section [[Heatmap of Distances Between Languages]], ~ripl~ does not appear to be very close to any other languages. To see if this is true, I determined each language's nearest neighbour, and sorted these nearest-neighbour relationships by distance:
+In the heatmap in [[Heatmap of Distances Between Languages]], ~ripl~ does not appear to be very close to any other languages. To see if this is true, I determined each language's nearest neighbour, and sorted these nearest-neighbour relationships by distance:
 
 #+NAME: distances-of-languages-to-their-nearest-neighbours
 #+BEGIN_SRC R :var language.feature.table=language-feature-table-balanced-ternary :exports results :results output raw
@@ -1559,24 +1559,25 @@ ascii(min.distances, include.rownames=FALSE)
 | C#         | Dart              |     2.24 |
 | Dart       | C#                |     2.24 |
 | Kotlin     | Dart              |     2.83 |
-| Java       | C#                |     3.46 |
 | JavaScript | Lua               |     3.74 |
 | Lua        | JavaScript        |     3.74 |
-| Haskell    | Idris             |     4.00 |
-| Idris      | Haskell           |     4.00 |
-| Python     | Dart              |     4.24 |
-| C          | LLVM-IR           |     4.36 |
-| LLVM-IR    | C                 |     4.36 |
-| C++        | D                 |     4.90 |
-| D          | C++               |     4.90 |
+| Java       | C#                |     4.00 |
+| Python     | Lua               |     4.24 |
+| Haskell    | Idris             |     4.47 |
+| Idris      | Haskell           |     4.47 |
 | Scala      | C#                |     4.90 |
-| Go         | C                 |     5.00 |
 | ML         | Haskell           |     5.00 |
-| Scheme     | Lua               |     5.66 |
-| Rust       | ML                |     5.83 |
-| ripl       | Rust              |     6.16 |
+| C          | LLVM-IR           |     5.10 |
+| LLVM-IR    | C                 |     5.10 |
+| Swift      | Kotlin            |     5.29 |
+| D          | Scala             |     5.39 |
+| Go         | C                 |     5.39 |
+| C++        | D                 |     6.00 |
+| Rust       | ML                |     6.16 |
+| ripl       | Rust              |     6.24 |
+| Scheme     | Lua               |     6.32 |
 
-The results indicate that ~ripl~ is the most distant from its nearest neighbour of any language considered. This is a positive result, because it suggests that ~ripl~ occupies a unique place in language design and is not a duplicate or near duplicate of any of the other languages considered.
+The results indicate that ~ripl~ is the second most distant from its nearest neighbour of the languages considered. This is a positive result, because it suggests that ~ripl~ occupies a unique place in the feature-space considered and is not a duplicate or near duplicate of any of the other languages considered.
 
 \pagebreak
 
@@ -1617,25 +1618,26 @@ ascii(min.distances, include.rownames=FALSE)
 #+RESULTS: median-distances-of-languages-to-others
 | Language   | Median Distance |
 |------------+-----------------|
-| Dart       |            5.48 |
-| Go         |            5.83 |
-| C#         |            5.92 |
-| Kotlin     |            6.00 |
-| Java       |            6.40 |
-| JavaScript |            6.48 |
-| Lua        |            6.56 |
-| Python     |            6.78 |
-| D          |            6.93 |
-| Scala      |            7.00 |
+| Dart       |            5.66 |
+| Kotlin     |            5.83 |
+| C#         |            6.08 |
+| Go         |            6.16 |
+| Java       |            6.71 |
+| JavaScript |            6.78 |
+| Lua        |            6.86 |
+| Python     |            6.86 |
+| Scala      |            6.86 |
+| Swift      |            7.00 |
+| D          |            7.07 |
 | C++        |            7.28 |
 | ML         |            7.35 |
-| LLVM-IR    |            7.42 |
-| C          |            7.55 |
-| Scheme     |            7.62 |
+| LLVM-IR    |            7.68 |
+| C          |            7.81 |
+| Scheme     |            7.81 |
 | Rust       |            8.00 |
-| Idris      |            8.43 |
-| ripl       |            8.43 |
-| Haskell    |            8.54 |
+| ripl       |            8.19 |
+| Haskell    |            8.66 |
+| Idris      |            8.66 |
 
 The results indicate that Dart and Go (both developed by Google) are the two most normal languages (i.e. most similar to the other languages considered), and that Haskell, Idris, and ~ripl~ are the three most unusual languages (i.e. most dissimilar to the other languages considered). Although these result are somewhat biased by the fact that this sample includes more imperative languages than functional languages, this biased sample is in keeping with the fact that imperative languages are /vastly/ more popular than functional languages[fn:43].
 
@@ -1999,8 +2001,8 @@ Important to keep in mind is that this is descriptive and not predictive statist
 The statistical comparison of ~ripl~ with the 19 other languages considered suggests the following:
 1. ~ripl~ is part of a cluster of statically-typed, functional languages ([[Hierarchical Clustering of Languages]]).
 2. ~ripl~ is most similar to Rust, Idris, D, and Haskell in that order ([[Distance of ~ripl~ from Other Languages]]).
-3. ~ripl~ is the language most distant from its nearest neighbour, suggesting that it is unique ([[Distances of Languages to Their Nearest Neighbours]]).
-4. ~ripl~ is tied for second highest median distance from other languages, suggesting that it is unusual ([[Median Distances of Languages to Others]]).
+3. ~ripl~ is the second most distant from its nearest neighbour, suggesting it it unique ([[Distances of Languages to Their Nearest Neighbours]]).
+4. ~ripl~ has the third highest median distance from other languages, suggesting that it is unusual ([[Median Distances of Languages to Others]]).
 5. ~ripl~ is not a master of any one domain ([[Qualitative Language Attributes as Linear Combinations of Features]]).
 6. ~ripl~ sacrifices conceptual simplicity in favour of being robust, powerful and ergonomic ([[Qualitative Language Attributes as Linear Combinations of Features]]).
 7. ~ripl~ strikes a balance between functional and imperative programming ([[Qualitative Language Attributes as Linear Combinations of Features]]).
