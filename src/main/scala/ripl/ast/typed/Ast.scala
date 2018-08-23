@@ -47,6 +47,9 @@ case class Block(exps: List[Exp]) extends Exp {
 
 // Used to represent type constraints on expressions, such as variable type annotations
 case class Cons(t: Type, e: Exp) extends Exp
+case class Constructor(struct: Struct) extends Exp {
+  def t = TFun(struct.fields.map(_._2), struct)
+}
 case class If(a: Exp, b: Exp, c: Exp) extends Exp {
   // TODO: make this a bit more sophisticated (find common super type)
   def t = b.t
