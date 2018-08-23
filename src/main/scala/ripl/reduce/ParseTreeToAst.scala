@@ -66,6 +66,8 @@ case object ParseTreeToAst {
           }
         case (f :: exps) => App(mapExp(f), exps.map(mapExp))
       }
+    case p.Select(a, b) =>
+      Select(mapExp(a), mapExp(b) match { case Name(n) => n; case _ => ??? })
   }
 
   private def mapParam(exp: p.Exp): Param = exp match {
