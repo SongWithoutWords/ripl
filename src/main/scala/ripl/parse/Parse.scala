@@ -57,6 +57,15 @@ case object Parse {
       val (sExp, remaining) = parseSExp(rest)
       parseLineContents(sExp :: accum, remaining)
 
+    case Token.Dot :: rest =>
+      parseAtomOrSExp(rest) match {
+        case (Some(exp), remaining) =>
+          accum match {
+            case last :: beforeLast =>
+              parseLineContents(Select(last, exp) :: beforeLast, remaining)
+          }
+      }
+
     case Token.Newline :: Token.Indent :: rest =>
       val (exps, remaining) = parseIndentedContinuation(rest)
       parseLineContents(exps ++ accum, remaining)
@@ -114,7 +123,27 @@ case object Parse {
       val (sExp, remaining) = parseSExp(rest)
       parseSExpContents(sExp :: accum, remaining)
 
+    case Token.Dot :: rest =>
+      parseAtomOrSExp(rest) match {
+        case (Some(exp), remaining) =>
+          accum match {
+            case last :: beforeLast =>
+              parseSExpContents(Select(last, exp) :: beforeLast, remaining)
+          }
+      }
+
     case Token.RParen :: rest =>
       (accum.reverse, rest)
   }
+
+  private def parseAtomOrSExp(input: List[Token]): (Option[Exp], List[Token]) =
+    input match {
+      case (atom: Atom) :: rest => (Some(atom), rest)
+
+      case Token.LParen :: rest =>
+        val (sExp, remaining) = parseSExp(rest)
+        (Some(sExp), remaining)
+
+      case _ => (None, input)
+    }
 }
