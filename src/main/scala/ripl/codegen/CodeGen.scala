@@ -6,6 +6,7 @@ import cats.syntax.MonadOps
 import cats.instances._
 import cats.implicits._
 
+import ripl.ast.{typed => r}
 import ripl.ast.typed._
 import ripl.ast.common._
 import ripl.ast.common.TypeAtom._
@@ -107,7 +108,7 @@ case object CodeGen {
 
       } yield (result)
 
-    case ripl.ast.typed.Name(nm, exp :: Nil) =>
+    case r.Name(nm, exp :: Nil) =>
       for {
         locals <- State.inspect { s: m.IRBuilderState =>
           s.bindings
