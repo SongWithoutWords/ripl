@@ -368,24 +368,25 @@ Below is a list of programming languages ordered by the number of mentions in th
 #+RESULTS:
 | Language                 | Mentions in this Document |
 |--------------------------+---------------------------|
-| Haskell                  |                        34 |
-| C++                      |                        23 |
-| D                        |                        22 |
-| Rust                     |                        21 |
-| Lisp, Racket, and Scheme |                        17 |
-| Scala                    |                        13 |
-| Java                     |                        11 |
-| C#                       |                        10 |
-| ML                       |                        10 |
-| Idris                    |                         9 |
-| C                        |                         6 |
-| Python                   |                         5 |
-| JavaScript               |                         4 |
-| Kotlin                   |                         3 |
+| Haskell                  |                        75 |
+| Lisp, Racket, and Scheme |                        53 |
+| D                        |                        48 |
+| C++                      |                        45 |
+| Rust                     |                        43 |
+| Idris                    |                        35 |
+| Scala                    |                        30 |
+| C                        |                        28 |
+| C#                       |                        26 |
+| ML                       |                        25 |
+| Java                     |                        24 |
+| Python                   |                        23 |
+| Go                       |                        16 |
+| JavaScript               |                        16 |
+| Kotlin                   |                        16 |
+| Swift                    |                        13 |
 | Fortran                  |                         2 |
 | BASIC                    |                         1 |
 | COBOL                    |                         1 |
-| Go                       |                         0 |
 
 
 * Keywords and Symbols
