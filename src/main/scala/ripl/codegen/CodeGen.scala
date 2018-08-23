@@ -147,6 +147,22 @@ case object CodeGen {
             )
         })
 
+    case Select(_exp, name, typ) =>
+      for {
+        aggregate <- genExp(_exp)
+        fieldValue <- _exp.t match {
+          case struct: Struct =>
+            i.extractValue(aggregate, indexOfField(struct, name) :: Nil)
+        }
+
+        // Some thoughts:
+        // Value to value => extract value
+        // Reference to reference => gep
+        // Value to reference => extract value -> alloca -> store -> gep
+        // Reference to value => gep -> load
+
+      } yield (fieldValue)
+
     case VBln(b) => c.bit[IRBuilder](b)
     case VInt(i) => c.int64[IRBuilder](i)
   }
@@ -164,6 +180,9 @@ case object CodeGen {
       })
   }
 
+  def indexOfField(t: Struct, name: String) = t.fields.indexWhere {
+    _0: (String, Type) =>
+      _0._1 == name
   }
 
 }
