@@ -31,6 +31,11 @@ case object ParseTreeToAst {
             Fun(params.map(mapParam), Some(mapExp(returnType)), mapExp(value))
           )
       }
+    case SExp(Name("struct") :: rest) =>
+      rest match {
+        case Name(name) :: fields =>
+          (name, Struct(name, fields.map(mapStructMember)))
+      }
   }
 
   private def mapExp(exp: p.Exp): Exp = exp match {
@@ -68,4 +73,12 @@ case object ParseTreeToAst {
     case _                         => ???
     // TODO: error for invalid parameter form
   }
+
+  // TODO: use same type for struct members and parameters
+  private def mapStructMember(exp: p.Exp): (String, Exp) = exp match {
+    case SExp(t :: Name(n) :: Nil) => (n, mapExp(t))
+    case _                         => ???
+    // TODO: error for invalid parameter form
+  }
+
 }
