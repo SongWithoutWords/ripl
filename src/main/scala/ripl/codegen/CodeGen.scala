@@ -62,6 +62,30 @@ case object CodeGen {
     }
 
   def genExp(exp: Exp): IRBuilder[l.Operand] = exp match {
+
+    case App(Constructor(struct), _args) =>
+      for {
+        struct <- i.alloca(genType(struct), None, 0)
+        _ <- _args.traverseWithIndexM { (e: Exp, index: Int) =>
+          for {
+            op <- genExp(e)
+
+            fieldAddress <- i
+              .gep(
+                struct,
+                List(
+                  l.ConstantOperand(l.Constant.Integral(64, 0)),
+                  l.ConstantOperand(l.Constant.Integral(32, index))
+                )
+              )
+
+            write <- i.store(fieldAddress, 0, op)
+
+          } yield (write)
+        }
+        structValue <- i.load(struct, 0)
+      } yield (structValue)
+
     case App(fun, args) =>
       for {
         ops <- args.traverse { e: Exp =>
