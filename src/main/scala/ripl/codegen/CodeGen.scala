@@ -157,6 +157,13 @@ case object CodeGen {
     case TBln => l.IntegerType(1)
 
     case TFun(params, ret) => l.FunctionType(genType(ret), params.map(genType))
+
+    case Struct(_, fields) =>
+      l.StructureType(false, fields.map {
+        case (_: String, t: Type) => genType(t)
+      })
+  }
+
   }
 
 }
