@@ -93,15 +93,15 @@ class TestIntegration extends FreeSpec with Matchers {
     }
   }
 
-  "structs" - {}
-
-  test(
-    "pair-sum",
-    """define (main) (pair-sum (pair 4 9))
-      |struct pair
-      |  Int a
-      |  Int b
-      |define (pair-sum (pair p))
-      |  + p.a p.b""".stripMargin
-  )(Right(13))
+  "structs" - {
+    test(
+      "pair-sum",
+      """define (main) (pair-sum (pair 4 9))
+        |struct pair
+        |  Int a
+        |  Int b
+        |define (pair-sum (pair p))
+        |  + p.a p.b""".stripMargin
+    )(Right(13))
+  }
 }
