@@ -185,7 +185,8 @@ class Reduce(val astIn: a0.Definitions) {
 
   def mapAsExp(node: a0.Exp): List[ReduceM[a1.Exp]] =
     mapNode(KExp(None), node).collect {
-      case ReduceM(e: a1.Exp, errs) => ReduceM(e, errs)
+      case ReduceM(e: a1.Exp, errs)    => ReduceM(e, errs)
+      case ReduceM(s: a1.Struct, errs) => ReduceM(a1.Constructor(s), errs)
     }
 
   def mapAsExp(ot: Option[a1.Type], node: a0.Exp): ReduceM[a1.Exp] = ot match {

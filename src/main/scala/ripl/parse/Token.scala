@@ -7,6 +7,7 @@ case object Token {
   case object Dedent  extends Token
   case object LParen  extends Token
   case object RParen  extends Token
+  case object Dot     extends Token
 
   sealed trait PrefixOperator extends Token
   case object Apostrophe      extends PrefixOperator

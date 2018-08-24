@@ -171,7 +171,7 @@ case object IRBuilderInstruction {
       case ConstantOperand(c) => c;
       case _                  => throw new Exception()
     }
-    val gepType = getElementType(typeOf(addr))
+    val gepType = getElementPtrType(typeOf(addr), constantOperands)
     emitInstr(
       gepType,
       Instruction.GetElementPtr(false, addr, offsets, InstructionMetadata())

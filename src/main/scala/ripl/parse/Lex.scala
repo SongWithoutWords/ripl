@@ -62,6 +62,7 @@ case object Lex {
       case ' ' :: rest => lex(accum, indentLevels, rest)
       case '(' :: rest => lex(LParen :: accum, indentLevels, rest)
       case ')' :: rest => lex(RParen :: accum, indentLevels, rest)
+      case '.' :: rest => lex(Dot :: accum, indentLevels, rest)
 
       case '\'' :: rest => lex(Apostrophe :: accum, indentLevels, rest)
       case '^' :: rest  => lex(Circumflex :: accum, indentLevels, rest)

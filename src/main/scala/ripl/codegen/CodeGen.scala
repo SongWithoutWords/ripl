@@ -6,6 +6,7 @@ import cats.syntax.MonadOps
 import cats.instances._
 import cats.implicits._
 
+import ripl.ast.{typed => r}
 import ripl.ast.typed._
 import ripl.ast.common._
 import ripl.ast.common.TypeAtom._
@@ -61,6 +62,30 @@ case object CodeGen {
     }
 
   def genExp(exp: Exp): IRBuilder[l.Operand] = exp match {
+
+    case App(Constructor(struct), _args) =>
+      for {
+        struct <- i.alloca(genType(struct), None, 0)
+        _ <- _args.traverseWithIndexM { (e: Exp, index: Int) =>
+          for {
+            op <- genExp(e)
+
+            fieldAddress <- i
+              .gep(
+                struct,
+                List(
+                  l.ConstantOperand(l.Constant.Integral(64, 0)),
+                  l.ConstantOperand(l.Constant.Integral(32, index))
+                )
+              )
+
+            write <- i.store(fieldAddress, 0, op)
+
+          } yield (write)
+        }
+        structValue <- i.load(struct, 0)
+      } yield (structValue)
+
     case App(fun, args) =>
       for {
         ops <- args.traverse { e: Exp =>
@@ -107,7 +132,7 @@ case object CodeGen {
 
       } yield (result)
 
-    case ripl.ast.typed.Name(nm, exp :: Nil) =>
+    case r.Name(nm, exp :: Nil) =>
       for {
         locals <- State.inspect { s: m.IRBuilderState =>
           s.bindings
@@ -122,6 +147,22 @@ case object CodeGen {
             )
         })
 
+    case Select(_exp, name, typ) =>
+      for {
+        aggregate <- genExp(_exp)
+        fieldValue <- _exp.t match {
+          case struct: Struct =>
+            i.extractValue(aggregate, indexOfField(struct, name) :: Nil)
+        }
+
+        // Some thoughts:
+        // Value to value => extract value
+        // Reference to reference => gep
+        // Value to reference => extract value -> alloca -> store -> gep
+        // Reference to value => gep -> load
+
+      } yield (fieldValue)
+
     case VBln(b) => c.bit[IRBuilder](b)
     case VInt(i) => c.int64[IRBuilder](i)
   }
@@ -132,6 +173,16 @@ case object CodeGen {
     case TBln => l.IntegerType(1)
 
     case TFun(params, ret) => l.FunctionType(genType(ret), params.map(genType))
+
+    case Struct(_, fields) =>
+      l.StructureType(false, fields.map {
+        case (_: String, t: Type) => genType(t)
+      })
+  }
+
+  def indexOfField(t: Struct, name: String) = t.fields.indexWhere {
+    _0: (String, Type) =>
+      _0._1 == name
   }
 
 }
