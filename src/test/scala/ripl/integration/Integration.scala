@@ -82,8 +82,8 @@ class TestIntegration extends FreeSpec with Matchers {
       )(Right(1))
 
       test(
-        "xor-using-if-exps-true-true",
-        xorUsingIf(false, true)
+        "xor-using-if-exps-true-false",
+        xorUsingIf(true, false)
       )(Right(1))
 
       test(
