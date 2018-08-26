@@ -12,6 +12,7 @@ case object TypeAtom extends Enum[TypeAtom] {
   case object TBln  extends TypeAtom { val n = "Bln"  }
   case object TFlt  extends TypeAtom { val n = "Flt"  }
   case object TInt  extends TypeAtom { val n = "Int"  }
+  case object TI8   extends TypeAtom { val n = "i8"   }
   case object TNone extends TypeAtom { val n = "None" }
   case object TStr  extends TypeAtom { val n = "Str"  }
 }
