@@ -57,6 +57,8 @@ case object ParseTreeToAst {
       }
     case SExp(exps) =>
       exps match {
+        case Name("block") :: exps =>
+          Block(exps.map(mapExp))
         case Name("if") :: a :: b :: c :: Nil =>
           If(mapExp(a), mapExp(b), mapExp(c))
         case Name("set") :: a :: b :: Nil => Assign(mapExp(a), mapExp(b))
