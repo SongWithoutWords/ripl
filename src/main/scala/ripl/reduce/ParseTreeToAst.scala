@@ -31,6 +31,14 @@ case object ParseTreeToAst {
             Fun(params.map(mapParam), Some(mapExp(returnType)), mapExp(value))
           )
       }
+    case SExp(Name("external") :: rest) =>
+      rest match {
+        case SExp(Name(n) :: params) :: returnType :: Nil =>
+          (
+            n,
+            External(params.map(mapParam), Some(mapExp(returnType)))
+          )
+      }
     case SExp(Name("struct") :: rest) =>
       rest match {
         case Name(name) :: fields =>
