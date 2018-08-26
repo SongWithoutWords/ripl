@@ -107,6 +107,8 @@ case object CodeGen {
           case (Intrinsic.And, List(a, b)) => i.and(a, b)
           case (Intrinsic.Or, List(a, b))  => i.or(a, b)
 
+          case (Intrinsic.Truncate, List(a)) => i.trunc(a, l.IntegerType(8))
+
           case _ =>
             for {
               f   <- genExp(fun)
