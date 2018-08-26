@@ -350,6 +350,14 @@ class Reduce(val astIn: a0.Definitions) {
         }
       }.map(raise(info) >> _)
 
+    case a0.External(_params, _retType) =>
+      List(for {
+        params <- _params.traverse { p =>
+          for { t <- mapAsType(p.t) } yield a1.Param(p.n, t)
+        }
+        retType <- mapAsType(_retType)
+      } yield a1.External(params, retType))
+
     case a0.Fun(_params, _retType, _body) =>
       List(for {
         params <- _params.traverse { p =>

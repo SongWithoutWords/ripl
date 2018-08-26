@@ -73,6 +73,10 @@ case class Cycle(cycle: List[Cycle.Component]) extends Exp {
   }
 }
 
+case class External(params: List[Param], retType: Type) extends Exp {
+  def t = TFun(params.map(_.t), retType)
+}
+
 object Fun {
   def apply(params: Param*)(retType: Type)(body: Exp): Fun =
     Fun(params.toList, retType, body)
