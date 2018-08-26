@@ -135,4 +135,12 @@ class TestIntegration extends FreeSpec with Matchers {
       |      multiples-of-3-and-5 (- n 1)
       |""".stripMargin
   )(Right(23))
+
+  test(
+    "putchar",
+    """define (main) (putchar 42)
+      |
+      |external (putchar (i8 c)) None
+      |""".stripMargin
+  )(Right(24))
 }
