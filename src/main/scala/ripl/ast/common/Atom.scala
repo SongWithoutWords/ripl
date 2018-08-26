@@ -31,6 +31,10 @@ case class VInt(i: Int) extends ValAtom {
   def t = TInt
 }
 
+case object VNone extends ValAtom {
+  def t = TNone
+}
+
 case class VStr(i: String) extends ValAtom {
   def t = TStr
 }

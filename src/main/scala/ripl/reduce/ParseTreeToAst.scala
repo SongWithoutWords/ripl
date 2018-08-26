@@ -53,6 +53,7 @@ case object ParseTreeToAst {
         // but I don't really know where else it should go either
         case Name("true")  => VBln(true)
         case Name("false") => VBln(false)
+        case Name("none")  => VNone
         case _             => a
       }
     case SExp(exps) =>
