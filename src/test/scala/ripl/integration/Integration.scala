@@ -104,4 +104,35 @@ class TestIntegration extends FreeSpec with Matchers {
         |  + p.a p.b""".stripMargin
     )(Right(13))
   }
+
+  test(
+    "factorial",
+    """define (main) (fact 4)
+      |
+      |define (fact (Int n)) Int
+      |  if (<= n 1)
+      |    1
+      |    * n (fact (- n 1))
+      |""".stripMargin
+  )(Right(24))
+
+  test(
+    "% 13 5",
+    "define (main) (% 13 5)"
+  )(Right(3))
+
+  test(
+    "multiples-of-3-and-5",
+    """define (main) (multiples-of-3-and-5 9)
+      |
+      |define (multiples-of-3-and-5 (Int n)) Int
+      |  if (<= n 0)
+      |    0
+      |    +
+      |      if (or (== 0 (% n 3)) (== 0 (% n 5)))
+      |        n
+      |        0
+      |      multiples-of-3-and-5 (- n 1)
+      |""".stripMargin
+  )(Right(23))
 }
