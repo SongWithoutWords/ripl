@@ -116,6 +116,8 @@ case object CodeGen {
             i.icmp(l.IntegerPredicate.EQ, a, b)
           case (Intrinsic.ILeq, List(a, b)) =>
             i.icmp(l.IntegerPredicate.SLT, a, b)
+          case (Intrinsic.IGeq, List(a, b)) =>
+            i.icmp(l.IntegerPredicate.SGT, a, b)
 
           case (Intrinsic.And, List(a, b)) => i.and(a, b)
           case (Intrinsic.Or, List(a, b))  => i.or(a, b)
