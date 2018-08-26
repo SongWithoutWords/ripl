@@ -151,6 +151,16 @@ case object Intrinsic extends Enum[Intrinsic] {
     val n = "%"; val t = TFun(TFlt, TFlt)(TFlt)
   }
 
+  case object And extends Intrinsic {
+    val n = "and"; val t = TFun(TBln, TBln)(TBln)
+  }
+  case object Or extends Intrinsic {
+    val n = "or"; val t = TFun(TBln, TBln)(TBln)
+  }
+  case object Not extends Intrinsic {
+    val n = "not"; val t = TFun(TBln)(TBln)
+  }
+
   case object FEql extends Intrinsic {
     val n = "=="; val t = TFun(TFlt, TFlt)(TBln)
   }
