@@ -50,7 +50,7 @@ case object ParseTreeToAst {
     case a: Atom =>
       a match {
         // TODO: I don't really like this here,
-        // but I'm not really know where else it should go either
+        // but I don't really know where else it should go either
         case Name("true")  => VBln(true)
         case Name("false") => VBln(false)
         case _             => a
