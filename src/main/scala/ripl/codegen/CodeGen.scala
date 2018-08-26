@@ -132,6 +132,11 @@ case object CodeGen {
         }
       } yield (result)
 
+    case Block(_exps) =>
+      for {
+        exps <- _exps.traverse(genExp)
+      } yield (exps.head)
+
     case If(_a, _b, _c) =>
       for {
         branchName <- m.fresh()
