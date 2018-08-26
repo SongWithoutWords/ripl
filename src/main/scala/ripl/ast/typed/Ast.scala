@@ -179,6 +179,9 @@ case object Intrinsic extends Enum[Intrinsic] {
   case object FtoI extends Intrinsic {
     val n = "truncateToInteger"; val t = TFun(TFlt)(TInt)
   }
+  case object Truncate extends Intrinsic {
+    val n = "truncate"; val t = TFun(TInt)(TI8)
+  }
 }
 
 // Values

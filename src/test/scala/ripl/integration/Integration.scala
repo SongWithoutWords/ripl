@@ -138,7 +138,7 @@ class TestIntegration extends FreeSpec with Matchers {
 
   test(
     "putchar",
-    """define (main) (putchar 42)
+    """define (main) (putchar (truncate 42))
       |
       |external (putchar (i8 c)) None
       |""".stripMargin
