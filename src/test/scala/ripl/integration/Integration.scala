@@ -153,7 +153,7 @@ class TestIntegration extends FreeSpec with Matchers {
       |    if (>= n 10)
       |      (print-number (/ n 10))
       |      none
-      |    putchar (+ 48 (% n 10))
+      |    putchar (truncate (+ 48 (% n 10)))
       |
       |external (putchar (i8 c)) None
       |""".stripMargin
