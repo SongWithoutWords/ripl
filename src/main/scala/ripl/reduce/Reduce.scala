@@ -364,6 +364,8 @@ class Reduce(val astIn: a0.Definitions) {
           for { t <- mapAsType(p.t) } yield a1.Param(p.n, t)
         }
 
+        // TODO: This impure, global pushing and popping of scope is wrong and results
+        // in the leaking of parameter bindings outside of their functions
         retType <- _retType.traverse { mapAsType(_) }
         _       <- impure(pushScope(MultiMap(params.map(p => (p.n, p)): _*)))
         body    <- mapAsExp(retType, _body)
