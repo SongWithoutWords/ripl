@@ -66,15 +66,15 @@ case object CodeGen {
         }
         _     <- m.emitBlockStart(name)
         retOp <- genExp(e)
-        _ <- l.typeOf(retOp) match {
-          case l.VoidType => i.retVoid
-          case _          => i.ret(retOp)
+        _ <- retOp match {
+          case Some(op) => i.ret(op)
+          case None     => i.retVoid
         }
         _ <- m.emitBlockStart(l.Name(""))
       } yield ()
     }
 
-  def genExp(exp: Exp): IRBuilder[l.Operand] = exp match {
+  def genExp(exp: Exp): IRBuilder[Option[l.Operand]] = exp match {
 
     case App(Constructor(struct), _args) =>
       for {
@@ -92,12 +92,12 @@ case object CodeGen {
                 )
               )
 
-            write <- i.store(fieldAddress, 0, op)
+            write <- i.store(fieldAddress, 0, op.get)
 
           } yield (write)
         }
         structValue <- i.load(struct, 0)
-      } yield (structValue)
+      } yield (Some(structValue))
 
     case App(fun, args) =>
       for {
@@ -106,35 +106,40 @@ case object CodeGen {
         }
 
         result <- (fun, ops) match {
-          case (Intrinsic.IAdd, List(a, b)) => i.add(a, b)
-          case (Intrinsic.ISub, List(a, b)) => i.sub(a, b)
-          case (Intrinsic.IMul, List(a, b)) => i.mul(a, b)
-          case (Intrinsic.IDiv, List(a, b)) => i.sdiv(a, b)
-          case (Intrinsic.IMod, List(a, b)) => i.srem(a, b)
+          case (Intrinsic.IAdd, List(Some(a), Some(b))) => i.add(a, b)
+          case (Intrinsic.ISub, List(Some(a), Some(b))) => i.sub(a, b)
+          case (Intrinsic.IMul, List(Some(a), Some(b))) => i.mul(a, b)
+          case (Intrinsic.IDiv, List(Some(a), Some(b))) => i.sdiv(a, b)
+          case (Intrinsic.IMod, List(Some(a), Some(b))) => i.srem(a, b)
 
-          case (Intrinsic.IEql, List(a, b)) =>
+          case (Intrinsic.IEql, List(Some(a), Some(b))) =>
             i.icmp(l.IntegerPredicate.EQ, a, b)
-          case (Intrinsic.ILeq, List(a, b)) =>
+          case (Intrinsic.ILeq, List(Some(a), Some(b))) =>
             i.icmp(l.IntegerPredicate.SLT, a, b)
-          case (Intrinsic.IGeq, List(a, b)) =>
+          case (Intrinsic.IGeq, List(Some(a), Some(b))) =>
             i.icmp(l.IntegerPredicate.SGT, a, b)
 
-          case (Intrinsic.And, List(a, b)) => i.and(a, b)
-          case (Intrinsic.Or, List(a, b))  => i.or(a, b)
+          case (Intrinsic.And, List(Some(a), Some(b))) => i.and(a, b)
+          case (Intrinsic.Or, List(Some(a), Some(b)))  => i.or(a, b)
 
-          case (Intrinsic.Truncate, List(a)) => i.trunc(a, l.IntegerType(8))
+          case (Intrinsic.Truncate, List(Some(a))) =>
+            i.trunc(a, l.IntegerType(8))
 
           case _ =>
             for {
               f   <- genExp(fun)
-              app <- i.call(f, ops.map(l.Argument(_)))
+              app <- i.call(f.get, ops.map(op => l.Argument(op.get)))
             } yield (app)
         }
-      } yield (result)
+      } yield
+        (l.typeOf(result) match {
+          case l.VoidType => None
+          case _          => Some(result)
+        })
 
     case Block(_exps) =>
       for {
-        exps <- _exps.traverse(genExp)
+        exps <- _exps.traverse(genExp(_))
       } yield (exps.head)
 
     case If(_a, _b, _c) =>
@@ -146,7 +151,7 @@ case object CodeGen {
         ifElse = l.Name(branchName.s + ".else")
         ifExit = l.Name(branchName.s + ".exit")
 
-        _ <- i.condBr(a, ifThen, ifElse)
+        _ <- i.condBr(a.get, ifThen, ifElse)
 
         _         <- m.emitBlockStart(ifThen)
         b         <- genExp(_b)
@@ -158,8 +163,12 @@ case object CodeGen {
         _         <- i.br(ifExit)
         ifElseEnd <- m.getCurrentBlockName()
 
-        _      <- m.emitBlockStart(ifExit)
-        result <- i.phi(List(b -> ifThenEnd, c -> ifElseEnd))
+        _ <- m.emitBlockStart(ifExit)
+        result <- (b, c) match {
+          case (Some(opb), Some(opc)) =>
+            i.phi(List(opb -> ifThenEnd, opc -> ifElseEnd)).map(Some(_))
+          case _ => ret(None)
+        }
 
       } yield (result)
 
@@ -170,11 +179,12 @@ case object CodeGen {
         }
       } yield
         (locals.get(nm) match {
-          case Some(op) => op
+          case Some(op) => Some(op)
           case None =>
-            val tp = exp.t
-            l.ConstantOperand(
-              l.Constant.GlobalReference(genType(tp), l.Name(nm))
+            Some(
+              l.ConstantOperand(
+                l.Constant.GlobalReference(genType(exp.t), l.Name(nm))
+              )
             )
         })
 
@@ -183,7 +193,7 @@ case object CodeGen {
         aggregate <- genExp(_exp)
         fieldValue <- _exp.t match {
           case struct: Struct =>
-            i.extractValue(aggregate, indexOfField(struct, name) :: Nil)
+            i.extractValue(aggregate.get, indexOfField(struct, name) :: Nil)
         }
 
         // Some thoughts:
@@ -192,12 +202,16 @@ case object CodeGen {
         // Value to reference => extract value -> alloca -> store -> gep
         // Reference to value => gep -> load
 
-      } yield (fieldValue)
+      } yield (Some(fieldValue))
 
-    case VBln(b) => c.bit[IRBuilder](b)
-    case VInt(i) => c.int64[IRBuilder](i)
-    case VNone   => c.aggregatezero[IRBuilder](l.VoidType)
+    case VBln(b) =>
+      ret(Some(l.ConstantOperand(l.Constant.Integral(1, if (b) 1 else 0))))
+    case VInt(i) =>
+      ret(Some(l.ConstantOperand(l.Constant.Integral(64, i))))
+    case VNone => ret(None)
   }
+
+  def ret[A](a: A): IRBuilder[A] = Applicative[IRBuilder].pure(a)
 
   def genType(t: Type): l.Type = t match {
 
