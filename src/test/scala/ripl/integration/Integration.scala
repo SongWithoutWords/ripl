@@ -157,5 +157,5 @@ class TestIntegration extends FreeSpec with Matchers {
       |
       |external (putchar (i8 c)) None
       |""".stripMargin
-  )(Right(0))
+  )(Right(227))
 }
