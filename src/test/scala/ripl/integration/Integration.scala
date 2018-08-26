@@ -144,4 +144,18 @@ class TestIntegration extends FreeSpec with Matchers {
       |""".stripMargin
   )(Right(227))
 
+  test(
+    "print-number",
+    """define (main) (print-number 40782)
+      |
+      |define (print-number (Int n)) None
+      |  block
+      |    if (>= n 10)
+      |      (print-number (/ n 10))
+      |      none
+      |    putchar (+ 48 (% n 10))
+      |
+      |external (putchar (i8 c)) None
+      |""".stripMargin
+  )(Right(0))
 }
