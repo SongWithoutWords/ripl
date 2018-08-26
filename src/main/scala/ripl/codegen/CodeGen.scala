@@ -97,6 +97,15 @@ case object CodeGen {
           case (Intrinsic.ISub, List(a, b)) => i.sub(a, b)
           case (Intrinsic.IMul, List(a, b)) => i.mul(a, b)
           case (Intrinsic.IDiv, List(a, b)) => i.sdiv(a, b)
+          case (Intrinsic.IMod, List(a, b)) => i.srem(a, b)
+
+          case (Intrinsic.IEql, List(a, b)) =>
+            i.icmp(l.IntegerPredicate.EQ, a, b)
+          case (Intrinsic.ILeq, List(a, b)) =>
+            i.icmp(l.IntegerPredicate.SLT, a, b)
+
+          case (Intrinsic.And, List(a, b)) => i.and(a, b)
+          case (Intrinsic.Or, List(a, b))  => i.or(a, b)
 
           case _ =>
             for {
