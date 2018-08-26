@@ -196,6 +196,7 @@ case object CodeGen {
 
     case VBln(b) => c.bit[IRBuilder](b)
     case VInt(i) => c.int64[IRBuilder](i)
+    case VNone   => c.aggregatezero[IRBuilder](l.VoidType)
   }
 
   def genType(t: Type): l.Type = t match {

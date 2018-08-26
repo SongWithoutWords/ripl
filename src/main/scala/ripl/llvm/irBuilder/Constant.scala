@@ -35,4 +35,7 @@ case object Constant {
 
   def struct[F[_]: Applicative](members: List[Constant]): F[Operand] =
     Applicative[F].pure(ConstantOperand(Array(typeOf(members.head), members)))
+
+  def aggregatezero[F[_]: Applicative](t: Type): F[Operand] =
+    Applicative[F].pure(ConstantOperand(AggregateZero(t)))
 }
