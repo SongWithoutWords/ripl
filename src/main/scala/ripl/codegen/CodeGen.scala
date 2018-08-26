@@ -182,6 +182,7 @@ case object CodeGen {
 
     case TBln  => l.IntegerType(1)
     case TInt  => l.IntegerType(64)
+    case TI8   => l.IntegerType(8)
     case TNone => l.VoidType
 
     case TFun(params, ret) => l.FunctionType(genType(ret), params.map(genType))
