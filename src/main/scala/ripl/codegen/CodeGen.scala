@@ -27,6 +27,16 @@ case object CodeGen {
 
   def genUnit(name: String, node: Node): l.Definition =
     node match {
+      case External(params, rType) =>
+        l.GlobalDefinition(
+          l.Function(
+            callingConvention = l.CallingConvention.C,
+            name = l.Name(name),
+            parameters = l.Parameters(params.map(genParam)),
+            returnType = genType(rType),
+            basicBlocks = Nil
+          )
+        )
       case Fun(params, rType, exp) =>
         l.GlobalDefinition(
           l.Function(
