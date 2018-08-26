@@ -66,8 +66,11 @@ case object CodeGen {
         }
         _     <- m.emitBlockStart(name)
         retOp <- genExp(e)
-        _     <- i.ret(retOp)
-        _     <- m.emitBlockStart(l.Name(""))
+        _ <- l.typeOf(retOp) match {
+          case l.VoidType => i.retVoid
+          case _          => i.ret(retOp)
+        }
+        _ <- m.emitBlockStart(l.Name(""))
       } yield ()
     }
 
