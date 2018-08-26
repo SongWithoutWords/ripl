@@ -120,7 +120,7 @@ case object Intrinsic extends Enum[Intrinsic] {
     val n = "*"; val t = TFun(TInt, TInt)(TInt)
   }
   case object IDiv extends Intrinsic {
-    val n = "//"; val t = TFun(TInt, TInt)(TInt)
+    val n = "/"; val t = TFun(TInt, TInt)(TInt)
   }
   case object IMod extends Intrinsic {
     val n = "%"; val t = TFun(TInt, TInt)(TInt)
