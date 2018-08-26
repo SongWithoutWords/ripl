@@ -36,7 +36,7 @@ case object ParseTreeToAst {
         case SExp(Name(n) :: params) :: returnType :: Nil =>
           (
             n,
-            External(params.map(mapParam), Some(mapExp(returnType)))
+            External(params.map(mapParam), mapExp(returnType))
           )
       }
     case SExp(Name("struct") :: rest) =>
