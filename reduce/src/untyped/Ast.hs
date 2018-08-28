@@ -7,6 +7,9 @@ data Exp
   | If Exp Exp Exp
   | TFun [Exp] Exp
   | Fun [(Exp, Exp)] (Maybe Exp) Exp
+  | TStruct [(String, Exp)]
+  | Struct [(String, Exp)]
+  | Constructor Exp
   | Name String
   | Namespace (Map String Exp)
   | VBln Bool
