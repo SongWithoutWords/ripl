@@ -2,10 +2,17 @@
 
 module Indexed.Ast where
 
+import Data.Array
 import Data.Map
 
 newtype Id = Id Word
-  deriving(Eq, Num, Ord, Show)
+  deriving(Eq, Ix, Num, Ord, Show)
+
+-- type IndexedExps = 
+
+data Ast = Ast (Map String Id) (Array Id Exp)
+  deriving(Eq, Ord, Show)
+
 
 data Exp
   = App Exp [Exp]
