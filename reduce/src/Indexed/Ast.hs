@@ -8,11 +8,8 @@ import Data.Map
 newtype Id = Id Word
   deriving(Eq, Ix, Num, Ord, Show)
 
--- type IndexedExps = 
-
 data Ast = Ast (Map String Id) (Array Id Exp)
   deriving(Eq, Ord, Show)
-
 
 data Exp
   = App Exp [Exp]
