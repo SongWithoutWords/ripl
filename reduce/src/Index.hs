@@ -1,7 +1,10 @@
+{-# language TupleSections #-}
+
 module Index where
 
 import Control.Monad.State
-import Data.Map
+import Data.Array
+import qualified Data.Map as M
 
 import qualified Untyped.Ast as A0
 import Indexed.Ast
@@ -11,19 +14,23 @@ data IndexState = IndexState
   , exps :: [Exp]
   } deriving(Eq, Ord, Show)
 
+initialState = IndexState (Id 0) []
+
 type Index = State IndexState
 
 appendExp :: Exp -> Index Id
 appendExp exp = do
-  (IndexState nxt exps) <- get
-  put $ IndexState (nxt + Id 1) (exp : exps)
-  pure nxt
+  (IndexState next exps) <- get
+  put $ IndexState (next + Id 1) (exp : exps)
+  pure next
 
 index :: A0.Ast -> Ast
-index (A0.Ast exps) = undefined
+index exps =
+  let (namedIds, (IndexState next exps')) = runState (indexNamedExps exps) initialState
+  in Ast namedIds $ listArray (Id 0, next - Id 1) (reverse exps')
 
-indexNamedExps :: (Map String A0.Exp) -> Index (Map String Id)
-indexNamedExps = mapM indexNamedExp
+indexNamedExps :: A0.NamedExps -> Index (M.Map String Id)
+indexNamedExps namedExps = M.fromList <$> mapM (\(n, exp) -> (n,) <$> indexNamedExp exp) namedExps
 
 indexNamedExp :: A0.Exp -> Index Id
 indexNamedExp exp = do
@@ -43,4 +50,6 @@ mapExp e = case e of
     liftM3 Fun undefined (mapM mapExp mret) (mapExp exp)
 
   A0.Namespace exps -> Namespace <$> indexNamedExps exps
+
+  A0.VInt i -> pure $ VInt i
 

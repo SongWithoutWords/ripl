@@ -1,11 +1,9 @@
 module Untyped.Ast where
 
-import Data.Map
 
-type NamedExps = Map String Exp
+type NamedExps = [(String, Exp)]
 
-newtype Ast = Ast NamedExps
-  deriving(Eq, Ord, Show)
+type Ast = NamedExps
 
 data Exp
   = App Exp [Exp]
