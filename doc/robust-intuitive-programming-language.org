@@ -20,7 +20,7 @@
 # #+LATEX_HEADER: \usepackage{unicode-math}
 # #+LATEX_HEADER: \usepackage[utf8x]{inputenc}
 # #+LATEX_HEADER: \usepackage[mathletters]{ucs}
-#+EXPORT_FILE_NAME: Ian-McCall-CPEN499B-Robust-Intuitive-Programming-Language
+# #+EXPORT_FILE_NAME: Ian-McCall-CPEN499B-Robust-Intuitive-Programming-Language
 
 #+LATEX_HEADER: \setcounter{secnumdepth}{5}
 
@@ -319,7 +319,7 @@ Below is a list of programming languages ordered by the number of mentions in th
 ;; Search for words in the ASCII export so that we don't pick up on words in code blocks, comments, etc.
 (setq ascii-export-contents
   (with-temp-buffer
-    (insert-file-contents "Ian-McCall-CPEN499B-Robust-Intuitive-Programming-Language.txt")
+    (insert-file-contents "robust-intuitive-programming-language.txt")
     (buffer-string)))
 
 (defun occurrences-in-buffer (language-and-regex)
