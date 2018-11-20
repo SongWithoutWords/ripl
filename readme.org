@@ -1,0 +1,4 @@
+#+title: Robust Intuitive Programming Language (~ripl~)
+
+~ripl~ is a programming language that I began to design and implement during my undergrad thesis at UBC.
+A paper about this language (the thesis itself) can be found at [[doc/robust-intuitive-programming-language.pdf]].
